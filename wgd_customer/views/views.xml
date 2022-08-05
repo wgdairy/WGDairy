@@ -1,0 +1,58 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="wgd_customer.list">
+      <field name="name">wgd_customer list</field>
+      <field name="model">my.customer</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="customer_id"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="wgd_customer.action_window">
+      <field name="name">wgd_customer window</field>
+      <field name="res_model">my.customer</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+   <!--  <record model="ir.actions.server" id="wgd_customer.action_server">
+      <field name="name">wgd_customer server</field>
+      <field name="model_id" ref="model_wgd_customer_wgd_customer"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+
+ -->
+    <!-- Top menu item -->
+
+    <menuitem name="wgd_customer" id="wgd_customer.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Menu 1" id="wgd_customer.menu_1" parent="wgd_customer.menu_root"/>
+    <menuitem name="Menu 2" id="wgd_customer.menu_2" parent="wgd_customer.menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="List" id="wgd_customer.menu_1_list" parent="wgd_customer.menu_1"
+              action="wgd_customer.action_window"/>
+   <!--  <menuitem name="Server to list" id="wgd_customer" parent="wgd_customer.menu_2"
+              action="wgd_customer.action_server"/> -->
+
+  </data>
+</odoo>

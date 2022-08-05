@@ -1,0 +1,303 @@
+<odoo>
+
+<record id="vendor_details" model="ir.actions.act_window">
+    <field name="name">Vendors</field>
+    <field name="res_model">wgd.vendors</field>
+    <field name="view_mode">tree,form</field>
+</record>    
+
+<!-- wgd.vendors form view -->
+<record id="vendors_form_view" model="ir.ui.view">
+    <field name="name">vendors.view.form</field>
+    <field name="model">wgd.vendors</field>
+    <field name="arch" type="xml">
+        <form string="Vendors">
+            <sheet>
+                <div class="row" col="4" style="width:100%;">
+                    <div style="padding:2% !important;width:25%;">
+                        <label for="vendor" string="Vendor" style="width:30%;margin-bottom:-15px;"/>
+                        <field name="vendor" style="width:50%; margin-bottom:-15px;"/><br/>
+                    </div>
+                    <div style="padding:2% !important;width:25%;">
+                        <label for="sort_name" string="Sort Name" style="width:40%;margin-bottom:-15px;"/>
+                        <field name="sort_name" style="width:50%; margin-bottom:-15px;"/><br/>
+                    </div>
+                    <div style="padding:2% !important;width:25%;">
+                        <label for="pay_to_vendor" string="Pay to Vendor" style="width:40%;margin-bottom:-15px;"/>
+                        <field name="pay_to_vendor" style="width:25%;margin-bottom:-15px;"/>
+                        <field name="pay_to_vendor2" style="width:25%; margin-bottom:-15px;margin-left:1em;"/><br/>
+                    </div>
+                    <div style="padding:2% !important;width:25%;">
+                        <label for="company_id" string="Store" style="width:20%;margin-bottom:-15px;"/>
+                        <field name="company_id" style="width:50%; margin-bottom:-15px;"/><br/>
+                    </div>
+                </div>
+
+                <div class="row" col="4" style="width:100%;">
+                    <div style="padding:2% !important;width:50%;margin-top:-15px;">
+                        <label for="name" string="Name" style="width:14%;margin-top:-15px;"/>
+                        <field name="name" style="width:50%; margin-top:-15px;"/>
+                    </div>
+                </div>
+                
+            <notebook>
+                    <page string="Main" autofocus="1">
+                    <div class="row" col="2" style="width:100%;">
+                        <div style="padding:2% !important;width:45%;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                    <h6 style="color: #423e3e;position: relative;bottom: 9.2%;left: 0.5%;font-size: 12px;">Vendor Info</h6>
+                            <div class="row" col="2" style="width=100%;">
+                                <div style="width:25%;">
+                                    <label for="street" string="Address" style="width:23%;padding-left:10%;"/>
+                                </div>
+                                <div class="o_address_format" style="width:70%">
+                                    <field name="street" placeholder="Address" class="o_address_street"/>
+                                     <field name="street2" placeholder="Address" class="o_address_street" />
+                                    <field name="city" placeholder="City" class="o_address_city" />
+                                    <field name="state_id" class="o_address_state" placeholder="State" />
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip" />
+                                    <field  name="country_id" />
+                                </div>
+                            </div>
+                            <label for="phone" string="Phone" style="width:23%"/>
+                            <field  name="phone" style="width:55%;"/><br/>
+                            <label for="phone2" string="Alternate Phone" style="width:23%"/>
+                            <field  name="phone2" style="width:55%;"/><br/>
+                            <label for="fax" string="Fax" style="width:23%;"/>
+                            <field  name="fax" style="width:55%;"/><br/>
+                            <label for="contact" string="Contact" style="width:23%;"/>
+                            <field  name="contact" style="width:55%;"/><br/>
+                            <label for="assignee" string="Assigned Customer" style="width:23%;"/>
+                            <field  name="assignee" style="width:55%;"/><br/>
+                            <label for="vType" string="Type" style="width:23%;"/>
+                            <field  name="vType" style="width:15%;"/>
+                            <label for="codes" string="Code" style="width:13%;padding-left:5%;"/>
+                            <field  name="codes" style="width:26%;"/><br/><br/>
+                        </div>
+                        <div style="width:45%;margin-left:1.5%;">
+                            <div style="border:solid #e6e5e5 0.1px;padding:2%;margin-bottom:2%;">
+                            <h6 style="color: #423e3e;position: absolute;top: 31.5%;right: 46.5%;font-size: 12px;">Miscellaneous</h6>
+                                <label for="network_id" string="Network ID" style="width:30%;"/>
+                                <field  name="network_id" style="width:40%;"/>
+                                <label for="network_id_code" string="Network ID Code" style="width:30%;"/>
+                                <field  name="network_id_code" style="width:40%;"/>
+                            </div>
+                            <div style="border:solid #e6e5e5 0.1px;padding:2%;">
+                            <h6 style="color: #423e3e;position: absolute;top: 45.5%;left: 46.5%;font-size: 12px;">Transmit Options</h6>
+                                <label for="po_item_number" string="PO Item Number" style="width:30%;"/>
+                                <field  name="po_item_number" style="width:40%;"/>
+                                <label for="edi_po" string="EDI PO" style="width:30%;"/>
+                                <field  name="edi_po" style="width:40%;"/>
+                                <label for="edi_translation" string="EDI Translation" style="width:30%;"/>
+                                <field  name="edi_translation" style="width:40%;"/>
+                                <label for="alternate_fax" string="Alternate Fax" style="width:30%;"/>
+                                <field  name="alternate_fax" style="width:40%;"/>
+                                <label for="img_id" string="Catalog Image ID" style="width:30%;"/>
+                                <field  name="img_id" style="width:40%;"/>
+                                <label for="last_payment" string="Last Payment" style="width:30%;"/>
+                                <field  name="last_payment" style="width:40%;"/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- <group> -->
+                       <!-- <group>  -->
+                        <!-- <group string="Vendor info"> -->
+                            <!-- <div class="o_address_format"> -->
+                                <!-- <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State" options="{'no_open': True, 'no_quick_create': True}"
+                                    context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                                <field name="phone" />
+                                <field name="phone2" />
+                                <field name="fax" />
+                                <field name="contact" />
+                                <field name="assignee" /> -->
+                                <!-- <div> -->
+                                <!-- </div> -->
+                        <!-- </group> -->
+                        <!-- <group string="Miscellanous">
+                            <field name="network_id" />
+                            <field name="network_id_code" />
+                            <field name="po_item_number" />
+                            <field name="edi_po" />
+                            <field name="edi_translation" />
+                            <field name="alternate_fax" />
+                            <field name="image_id" />
+                            <field name="last_payment" />
+                        </group>
+                    </group> -->
+                                <!-- <group col="4">
+                                    <group>
+                                        <field name="vType" />
+                                    </group>
+                                    <group>
+                                        <field name="codes" />
+                                    </group>                    
+                                </group> -->
+                    </page>
+                    <page string="Order info">
+                        <group string="Order info">
+                            <group>
+                                <label for="minimum_dollars" string="Minimum Dollars" />
+                                <div>
+                                    <field name="minimum_dollars" style="width: 49%;margin-right:7px;"/>
+                                    <field name="minimum_dollars_code" style="width: 49%" />
+                                </div>
+                                <label for="minimum_weight" string="Minimum Weight" />
+                                <div>
+                                    <field name="minimum_weight" style="width: 49%;margin-right:7px;"/>
+                                    <field name="minimum_weight_code" style="width: 49%" />
+                                </div>
+                                <label for="minimum_units" string="Minimum Units" />
+                                <div>
+                                    <field name="minimum_units" style="width: 49%;margin-right:7px;"/>
+                                    <field name="minimum_units_code" style="width: 49%" />
+                                </div>
+                                <label for="minimum_bill" string="Minimum Bill" />
+                                <div>
+                                    <field name="minimum_bill" style="width: 49%;margin-right:7px;"/>
+                                    <field name="minimum_bill_code" style="width: 49%" />
+                                </div>
+                                <field name="minimum_po"/>
+                            </group>
+
+                            <group>
+                                <field name="lead_time"/>
+                                <field name="update_lead_time" />
+                                <field name="backorder" />
+                                <field name="print_date_due" />
+                                <field name="freight_policy" />
+                                <field name="drop_ship" />
+                                <field name="addertype" />
+                                <field name="dropship_certified" />
+                                <field name="buyer_id" />
+                            </group>
+
+                        </group>
+                            <group col="2">
+                                <group>
+                                    <field name="annual_dollars"/>
+                                    <field name="annual_units"/>
+                                </group>
+                            </group>
+                    </page>
+                    <page string="Account Payable">
+                        <group string="Accounts Payable">
+                        
+                            <group>
+                                <field name="acc_num"/>
+                                <field name="auto_distribute"/>
+                                <field name="federal_id_type"/>
+                                <field name="federal_id"/>
+                                <field name="temp_perm"/>
+                                <field name="category"/>
+                                <field name="last_activity"/>
+                                <field name="vendor_status"/>
+                                <field name="append_rv"/>
+                                <field name="bank_code"/>
+                            </group>
+                        
+                            <group>
+                                <field name="terms_code"/>
+                                <field name="due_days"/>
+                                <field name="disc_days"/>
+                                <field name="discount"/>
+                                <field name="print_check"/>
+                                <field name="vendor_language"/>
+                                <field name="remit_address"/>
+                                <field name="remit_street1"/>
+                                <field name="remit_street2"/>
+                                <field name="remit_city"/>
+                                <field name="remit_state"/>
+                                <field name="remit_country"/>
+                                <field name="zip_code"/>
+                                
+                            </group>
+
+                        </group>
+                    </page>
+                    <page string="History">
+
+                    </page>
+                    <page string="Notes">
+
+                    </page>
+                    <page string="Contacts">
+
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<!-- inheriting customer invoice  -->
+<record id="customer_invoice_tree_inherit" model="ir.ui.view">
+    <field name="name">account.out.invoice.tree.inherit</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_out_invoice_tree"/>
+    <field name="arch" type="xml">
+        <field name="name" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="invoice_partner_display_name" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="activity_ids" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="amount_untaxed_signed" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="payment_state" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="state" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="ref" position="attributes">
+            <attribute name="optional">Show</attribute>
+        </field>
+
+        <xpath expr="//field[@name='invoice_date']" position="before">
+            <field name="company_id" string="St"/>
+            <field name="name" string="Doc#"/>
+            <field name="type_name" string="Type"/>
+        </xpath>
+        <xpath expr="//field[@name='invoice_date_due']" position="after">
+            <field name="amount_total" string="Balance"/>
+            <field name="discount_allowed"/>
+            <field name="discount_take"/>
+            <field name="allowance"/>
+            <field name="amount_paid"/>
+            <field name="amount_untaxed" string="Net Balance"/>
+            <field name="days_past_disc"/>
+            <field name="action"/>
+            <field name="partner_id" string="customer id"/>
+            <field name="state" string="Open Item"/>
+            <field name="amount_residual_signed" string="Now Due"/>
+            <field name="stmnt_disc"/>
+            <field name="running_bal"/>
+            <field name="stmt_disc"/>
+            <field name="last_pay_date"/>
+        </xpath>
+        <xpath expr="//field[@name='ref']" position="after">
+            <field name="ar_note"/>
+        </xpath>
+            
+    </field>
+</record>
+
+<record id="account.menu_action_move_out_invoice_type" model="ir.ui.menu">
+    <field name="name">AR Unpaid Invoices</field>
+</record>
+
+<menuitem id="wgd_root_menu" name="Vendors" active="True" sequence="0"/>
+
+<menuitem id="Vendors" name="Vendor Details" parent="wgd_root_menu" action="vendor_details"/>
+
+
+</odoo>
