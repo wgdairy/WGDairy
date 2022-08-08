@@ -34,7 +34,17 @@ class vendors(models.Model):
     edi_translation = fields.Selection([],'EDI Translation')
     alternate_fax = fields.Char('Alternate Fax')
     img_id = fields.Selection([],'Catalog Image ID')
-    last_payment = fields.Date('Last Payment')
+    # function to get year as a list
+    @api.model
+    def year_selection(self):
+        year = 2000 # replace 2000 with your a start year
+        year_list = []
+        while year != 2030: # replace 2030 with your end year
+            year_list.append((str(year), str(year)))
+            year += 1
+        return year_list
+    lp_year = fields.Selection(year_selection, string="Year") #lp : last payment
+    lp_month = fields.Selection([('1','January')],string='Month')
 
     # order info fields 
     currency_id = fields.Many2one('res.currency', 'Currency', default=lambda self: self.env.user.company_id.currency_id.id)
@@ -55,7 +65,7 @@ class vendors(models.Model):
     print_date_due = fields.Selection([], "Print Date Due")
     freight_policy = fields.Selection([],'Fraight Policy')
     drop_ship = fields.Selection([], 'Drop/Ship')
-    ship = fields.Char('Ship Via')
+    ship_via = fields.Char('Ship Via')
     addertype = fields.Selection([],'Adder Type')
     dropship_certified = fields.Selection([],'Dropship Certified')
     buyer_id = fields.Selection([], "Buyer's ID")
@@ -108,19 +118,33 @@ class vendors(models.Model):
     warehouse_ly = fields.Integer()
     warehouse_ly_b = fields.Integer()
 
-    drop_ship  = fields.Integer('Drop/Ship')
-    special = fields.Char('Special')
+    dropshiip_cq = fields.Integer('Drop/Ship')
+    dropshiip_lq = fields.Integer()
+    dropshiip_ytd = fields.Integer()
+    dropshiip_ly = fields.Integer()
+
+    special_cq = fields.Integer('Special')
+    special_lq = fields.Integer()
+    special_ytd = fields.Integer()
+    special_ly = fields.Integer()
     
-    units_ordered = fields.Integer('Units Ordered')
-    received = fields.Date('Recieved')
+    units_ordered_ytd = fields.Integer('Units Ordered')
+    units_ordered_ly = fields.Integer('Units Ordered')
+    received_ytd = fields.Integer('Recieved')
+    recieved_ytd_fill = fields.Integer('Recieved YTD Fill', readonly=True)
+    received_ly = fields.Integer('Recieved')
+    recieved_ly_fill = fields.Integer('Recieved LY Fill', readonly=True)
     last_received = fields.Date('Last Recieved')
 
     #Notes Tab
     note_group = fields.Integer('Note Group')
-    note_type = fields.Integer('Type')
+    note_type = fields.Selection([],'Type')
     display_repeats = fields.Selection([], 'Display Repeats')
     print_repeats = fields.Selection([], 'Print Repeats')
-    message = fields.Text('Message')
+    message = fields.Html('Message')
+
+    # Contact Tab
+    contact_ids = fields.One2many('contact.lines', 'vendor', string="")
 
     # phone number validation 
     @api.onchange('phone')
@@ -222,8 +246,28 @@ class vendors(models.Model):
             start_group += seperator
             start_group += third_group
             self.alternate_fax  = start_group
+    
+    def button_(self):
+        pass
 
     
+class ContactLines(models.Model):
+    '''
+        Model for Contact tab in vendor form.
+    '''
+    _name = 'contact.lines'
+
+    vendor = fields.Many2one('wgd.vendors')
+    name = fields.Char('Name')
+    phone = fields.Char('Phone')
+    cell = fields.Integer('Cell')
+    fax = fields.Integer('Fax')
+    pager = fields.Char('Pager')
+    email = fields.Char('Email')
+    title = fields.Char('Title')
+    comments = fields.Char('Comments')
+    primary = fields.Char('Primary')
+    purchase_orders = fields.Char('Purchase Orders')
 
 
 class AccountMove(models.Model):

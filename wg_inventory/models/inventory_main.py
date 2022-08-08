@@ -11,13 +11,12 @@ class Inventorys(models.Model):
     dept = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     class_inven = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     prime_ved = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Prime Vend")
-    inv_vend = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Mfg Vend")
+    mfg_vend = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Mfg Vend")
     fineline = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Fineline")
     types = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     store = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     sequence = fields.Char('Sequence')
     instore = fields.Char('Instore')
-    # picking_id = fields.Many2one('stock.picking')
     pursku_ids = fields.Many2one('stock.picking')
     # quantity
     qut_on_hant = fields.Float('Qty On Hant ')
@@ -32,12 +31,10 @@ class Inventorys(models.Model):
     min_order_ponit = fields.Float('Min Order Ponit')
     max_stock_level = fields.Float('Max Stock Level')
     safety_stock = fields.Float('Safety Stock')
-    # stocking_UM = fields.Float([('type1', 'Type 1'), ('type2', 'Type 2'), ], string=" Stocking U/M")
     stockings_UM = fields.Float('Stocking U/M"')
     standard_pack = fields.Float('Standard Pack')
     order_multiple = fields.Float('Order Multiple')
-    # commited_qty = fields.Char('commited_qty')
-    # qty_on_order = fields.Char('qty_on_order')
+
     raincheck_qty = fields.Float('Raincheck Qty')
 
     # purchasing
@@ -331,6 +328,7 @@ class Pricetable(models.Model):
     stock = fields.Char(string="Stock")
     alt = fields.Char(string="Alt")
     gp = fields.Char(string="GP %")
+    blk = fields.Char()
     prc_ids = fields.Many2one('product.template')
 
 #Table for vendor

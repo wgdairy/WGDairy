@@ -3,7 +3,7 @@
 <record id="product_details" model="ir.actions.act_window">
     <field name="name">Product</field>
     <field name="res_model">product.template</field>
-    <field name="view_mode">tree,form</field>
+    <field name="view_mode">tree,form,kanban</field>
 </record>
 
 <!-- wgd.vendors form view -->
@@ -78,8 +78,8 @@
                                 <field name="prime_ved" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
                                 <div style="padding:10px; !important;width:20%;">
-                                <label for="inv_vend" string="Mfg Vend" style="width:35%;margin-bottom: -15px;"/>
-                                <field name="inv_vend" style="width:50%;margin-top: -15px;"/><br/>
+                                <label for="mfg_vend" string="Mfg Vend" style="width:35%;margin-bottom: -15px;"/>
+                                <field name="mfg_vend" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
                         </div>
                         </div>
@@ -204,11 +204,12 @@
                             <div style="padding:2% !important;width:40%;">
                                 <field name="tab_ids"  mode="tree"  style="border:solid;padding:2% !important;">
                                 <tree   editable="bottom" >
-                                    <field name="price"  />
-                                    <field name="stock"  />
-                                    <field name="alt" />
+                                    <field name="blk" string="  " style="width:25%;" />
+                                    <field name="price" style="width:30%;"  />
+                                    <field name="stock" style="width:25%;"  />
+                                    <field name="alt" style="width:25%;" />
 
-                                    <field name="gp" />
+                                    <field name="gp" style="width:20%;" />
 
 
                                 </tree>
@@ -797,6 +798,85 @@
         </xpath>
     </field>
 </record>
+    <!--Inventory Search view-->
+    <record id="my_customer_search_view" model="ir.ui.view">
+        <field name="name">inventory.search.view</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <search>
+
+                <field name="name" string="SKU"/>
+                <field name="dept" string="Department"/>
+                <field name="types" string="Type"/>
+                <field name="mfg" string="Manufacturer"/>
+                <field name="upc" string="UPC"/>
+                <field name="sequence" string="Sequence"/>
+                <field name="store" string="Store"/>
+                <field name="types" string="Type"/>
+                <field name="class_inven" string="Class"/>
+                <field name="fineline" string="Fineline"/>
+                <field name="prime_ved" string="Prime Vend"/>
+                <field name="mfg_vend" string="Mfg Vend"/>
+                <field name="qut_on_hant" string="Qty On Hand"/>
+                <field name="commited_qty" string="Committed Qty"/>
+                <field name="qty_on_order" string="Qty On Order"/>
+                <field name="custbackorder" string="Cust Backorder"/>
+
+            </search>
+        </field>
+    </record>
+
+        <!-- inheriting inventory tree view  -->
+
+
+    <record id="product_template_tree_view" model="ir.ui.view">
+        <field name="name">product.template.product.tree</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+
+        <field name="arch" type="xml">
+            <field name="default_code" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+            <field name="list_price" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+            <field name="responsible_id" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+            <field name="standard_price" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+            <field name="qty_available" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+            <field name="virtual_available" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+            <field name="uom_id" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+
+            <xpath expr="//field[@name='name']" position="replace">
+
+                <field name="name" string="SKU"/>
+                <field name="types" string="Type"/>
+                <field name="store" string="Store"/>
+                <field name="mfg" string="Mfg#"/>
+                <field name="upc" string="UPC"/>
+                <field name="sequence" string="Sequence"/>
+                <field name="instore" string="In Stores"/>
+                <field name="dept" string="Dept"/>
+                <field name="class_inven" string="Class"/>
+                <field name="fineline" string="Fineline"/>
+                <field name="prime_ved" string="Prime Vend"/>
+                <field name="mfg_vend" string="Mfg Vend"/>
+
+            </xpath>
+        </field>
+    </record>
+
+
 
 
 
