@@ -12,10 +12,10 @@
 
 
 
-from odoo.tests.common import TransactionCase, tagged, SavepointCase,Form 
- 
-@tagged('-standard', 'nice') 
-class TestInventory(TransactionCase):
- 
-    def setUp(self):
-        super(TestInventory, self).setUp()
+# from odoo.tests.common import TransactionCase, tagged, SavepointCase,Form
+#
+# @tagged('-standard', 'nice')
+# class TestInventory(TransactionCase):
+#
+#     def setUp(self):
+#         super(TestInventory, self).setUp()
