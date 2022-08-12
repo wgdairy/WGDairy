@@ -16,7 +16,7 @@
         <form>
 
             <sheet>
-                <div style="width:100%;border:solid;padding:2% !important;">
+                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                 <div class="row" col="4" style="width:100%;">
                         <div style="padding:10px; !important;width:20%;">
                                 <label for="name" string="SKU" style="width:18%;margin-bottom: -15px;"/>
@@ -90,9 +90,10 @@
                     <page  autofocus="1" string="Stocking">
                         <div class="row" col="4" style="width:100%;">
                             <div style="padding:2% !important;width:23%;" string="Quantites">
-                                <div style="border:solid;padding:2s% !important;">
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Quantites</h6>
+                                    <br />
                                     <div style="margin-left:15px;margin-bottom:125px;">
-                                <label for="qut_on_hant" string="Quantites" style="margin-top: 5px;"/><br/><br/>
                                 <label for="qut_on_hant" string="Qty On Hand" style="width:50%;"/>
                                 <field name="qut_on_hant" style="width:40%;" />
                                 <label for="commited_qty" string="Commited Qty" style="width:50%;"/>
@@ -109,9 +110,10 @@
                                 </div>
                             </div>
                             <div style="padding:2% !important;width:23%;" string="Stock Levels">
-                                <div style="border:solid;padding:2% !important;">
-                                    <div style="margin-left:15px;margin-bottom:65px;">
-                                <label for="order_point" string="Stock Levels"/><br/><br/>
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Stock Levels</h6>
+                                    <br />
+                                    <div style="margin-left:15px;margin-bottom:66px;">
                                 <label for="order_point" string="Order Point" style="width:60%;"/>
                                 <field name="order_point" style="width:30%;" />
                                 <label for="min_order_ponit" string="Min Order Point" style="width:60%;"/>
@@ -132,9 +134,10 @@
                                 </div>
                             </div>
                             <div style="padding:2% !important;width:27%;" string="Purchasing">
-                                <div style="border:solid;padding:2% !important;">
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Purchasing</h6>
+                                    <br />
                                     <div style="margin-left:15px;margin-bottom:10px;">
-                                <label for="purchasing_um" string="Purchasing"/><br/><br/>
                                 <label for="purchasing_um" string="Purchasing U/M" style="width:60%;"/>
                                 <field name="purchasing_um"  style="width:35%;" />
                                 <label for="order_indictor" string="Order Indicator" style="width:60%;"/>
@@ -162,9 +165,10 @@
                                 </div>
                             </div>
                             <div style="padding:2% !important;width:27%;" >
-                                <div style="border:solid;padding:2% !important;">
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Dates</h6>
+                                    <br />
                                     <div style="margin-left:15px;margin-bottom:37px;">
-                                        <label for="date_added" string="Dates"/><br/><br/>
                                         <label for="date_added" string="Date Added" style="width:60%;"/>
                                         <field name="date_added" style="width:35%;" />
                                         <label for="last_sale" string="Last Sale" style="width:60%;"/>
@@ -195,14 +199,13 @@
                             </div>
                                 </div>
                                 </div>
-<!--                            </div>-->
                         </div>
                     </page>
                     <page autofocus="1" string="Pricing">
 
                         <div class="row" col="3" style="width:100%;" >
                             <div style="padding:2% !important;width:40%;">
-                                <field name="tab_ids"  mode="tree"  style="border:solid;padding:2% !important;">
+                                <field name="tab_ids"  mode="tree"  style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                 <tree   editable="bottom" >
                                     <field name="blk" string="  " style="width:25%;" />
                                     <field name="price" style="width:30%;"  />
@@ -223,9 +226,10 @@
                                 <field name="retail_old" style="width:40%;"  />
                                 <label for="catalog_retail" string="Catalog Retail" style="width:30%;"/>
                                 <field name="catalog_retail" style="width:40%;" />
-                                <div style="border:solid;padding:2% !important;margin-top:10px;margin-bottom:10px;">
-                                    <label for="lumber_type" string="Lumber Info" style="width:50%;margin-left:10px;"/><br/>
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top: 10px;margin-bottom: 10px;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Lumber Info</h6>
                                     <br />
+
                                     <label for="lumber_type" string="Lumber Type" style="width:30%;margin-left:10px;"/>
                                     <field name="lumber_type" style="width:40%;margin-bottom:7px;" />
                                 </div>
@@ -246,9 +250,10 @@
                                 <field name="mfg_chg" style="width:40%;" />
                                 <label for="retail_chg" string="Retail Chg" style="width:30%;"/>
                                 <field name="retail_chg" style="width:40%;"/>
-                                <div style="border:solid;padding:2% !important;margin-top:10px;margin-bottom:10px;">
-                                    <label for="selling" string="Default POS Units" style="width:50%;margin-left:10px;"/><br />
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top: 10px;margin-bottom: 10px;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Default POS Units</h6>
                                     <br />
+
                                     <label for="selling" string="*Selling" style="width:30%;margin-left:10px;"/>
                                     <field name="selling" style="width:40%;" />
                                     <label for="pricing" string="*Pricing" style="width:30%;margin-left:10px;"/>
@@ -353,11 +358,11 @@
                                 <field name="promt_for_transfer" style="width:20%;" />
                                 <label for="multi_selling_user_code" string="Multi Selling User Code" style="width:70%;"/>
                                 <field name="multi_selling_user_code" style="width:20%;" />
-                                <div style="border:solid;padding:2% !important;margin-top:20px;">
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top:20px;">
                                         <div style="margin-left:10px;">
-                                            <label for="user" string="User Codes" style="width:50%;"/>
+                                            <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">User Codes</h6>
                                             <br />
-                                            <br />
+
                                             <label for="user" string="User" style="width:50%;"/>
                                             <field name="user" style="width: 7%;margin-right:3px;" />
                                             <field name="expanded_user_one" style="width: 7%;margin-right:3px;"  />
@@ -443,14 +448,14 @@
                                     <field name="last_per" style="width:40%;" />
                             </div>
 
-
                         </div>
-                                <div class="row" col="2" style="width:100%;border:solid;padding:1% !important;">
-                            <div style="padding:15px; !important;width:50%;">
-                                <label for="transactions" string="Year To Date" style="width:50%;"/>
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <h6 style="color: #423e3e;margin-top: -20px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Year To Date</h6><!--position: relative;-->
+                                    <br />
+                                <div class="row" col="2" >
 
-                                <br />
-                                <br />
+                                <div style="padding:15px; !important;width:50%;">
+
                                     <label for="transactions" string="Transactions" style="width:50%;"/>
                                     <field name="transactions" style="width:40%;" />
                                     <label for="sale_units" string="Sales Units" style="width:50%;"/>
@@ -476,8 +481,7 @@
                             </div>
 
                             <div style="padding:15px; !important;width:50%;">
-                                <br />
-                                <br />
+
                                     <label for="promo_unit" string="Promo Unit" style="width:50%;"/>
                                     <field name="promo_unit" style="width:40%;" />
                                     <label for="promo_sale" string="Promo Sale $" style="width:50%;"/>
@@ -503,14 +507,16 @@
                             </div>
 
                         </div>
+                                    </div>
                         </div>
 
                             <div style="padding:2% !important;width:25%;">
-                                <div style="border:solid;padding:8% !important;margin-bottom:11px;margin-top:25px;">
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top: 25px;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Last Year</h6>
+
                                     <br />
-                                <label for="last_year_sale_unit" string="Last Year" style="width:50%;"/>
-                                    <br />
-                                    <br />
+                                    <div style="padding:6% !important;">
+
                                 <label for="last_year_sale_unit" string="Sale Unit" style="width:70%;"/>
                                 <field name="last_year_sale_unit" style="width:25%;" />
                                 <label for="last_year_sale" string="Sales $" style="width:70%;"/>
@@ -526,9 +532,11 @@
                                 <label for="last_year_other_purchase" string="Other Purchases" style="width:70%;"/>
                                 <field name="last_year_other_purchase" style="width:25%;" />
                                 <label for="last_year_promo_units" string="Promo Units" style="width:70%;"/>
-                                <field name="last_year_promo_units" style="width:25%;" />
+                                <field name="last_year_promo_units" style="width:25%;margin-bottom: 10px;" />
                                 </div>
-                                <label for="on_hand_value" string="On Hand Value" style="width:70%;"/>
+
+                                </div>
+                                <label for="on_hand_value" string="On Hand Value" style="width:70%;margin-top:15px;"/>
                                 <field name="on_hand_value" style="width:25%;" />
                                 <label for="avg_sales_per_mont" string="Avg Sales$/Mo" style="width:70%;"/>
                                 <field name="avg_sales_per_mont" style="width:25%;" />
@@ -544,7 +552,7 @@
                     </page>
                     <page string="Note">
                         <div style="padding:15px; !important;">
-                        <div style="border:solid;padding:2% !important;">
+                        <div style="padding:2% !important;border:solid #e6e5e5 0.1px;">
                         <div class="row" col="3" style="width:100%;">
                             <div style="padding:15px; !important;width:30%;">
                                 <label for="note_group" string="Note Group" style="width:40%;margin-bottom: -15px;"/>
@@ -575,7 +583,7 @@
 
 
                         </div>
-                        <div style="border:solid;padding:1% !important;margin-top:10px;">
+                        <div style="padding:15px !important;border:solid #e6e5e5 0.1px;margin-top: 10px;">
                         <div class="row" style="width:100%;">
 
                             <div style="padding:15px; !important;width:39%;">
@@ -591,15 +599,17 @@
 
                     </page>
 
+
                     <page string="Vendor">
 
                         <div>
-                            <field name="vend_ids"  mode="tree"  style="border:solid;padding:2% !important;">
-                                <tree   editable="bottom" >
-                                    <field name="vendor_code" string="Vendor Code" />
-                                    <field name="vendor_name" string="Vendor Name"  />
-                                    <field name="vendor_part" string="Vendor Part #" />
-                                    <field name="vendor_order_multi" string="Vendor Order Multiple"  />
+                            <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                            <field name="vend_ids"  mode="tree"  style="padding:2% !important;">
+                                <tree   editable="bottom" class="tree_width_summary" >
+                                    <field name="vendor_code" string="Vendor Code" style="width:100px !important;" />  <!--readonly="1"-->
+                                    <field name="vendor_name" string="Vendor Name" />
+                                    <field name="vendor_part" string="Vendor Part #"  />
+                                    <field name="vendor_order_multi" string="Vendor Order Multiple" />
                                     <field name="min_od_ord_mult" string="Min # of Order Multiples"   />
                                     <field name="unit_to_order_by" string="Unit to Order By"   />
                                     <field name="vend_cost" string="Vendor Cost" />
@@ -615,15 +625,17 @@
                                     <field name="desc_line_two" string="Desc Line 2"  />
                                 </tree>
                             </field>
+                                </div>
                         </div>
                     </page>
 
                     <page  autofocus="1" string="Load">
                         <div class="row" col="4" style="width:100%;">
                             <div style="padding:1% !important;width:27%;" string="Quantites">
-                                <div style="border:solid;padding:2% !important;margin-top:20px;">
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Quantites/ Prices</h6>
+                                    <br />
                                     <div style="margin-left:10px;margin-bottom:50px;">
-                                        <label for="load_qut_on_hant" string="Quantites/ Prices"/><br/><br/>
                                         <label for="load_qut_on_hant" string="Qty On Hand" style="width:40%;"/>
                                         <field name="load_qut_on_hant" style="width:40%;" />
                                         <label for="load_retail" string="Retail" style="width:40%;"/>
@@ -646,10 +658,11 @@
                                 </div>
                             </div>
                             <div style="padding:1% !important;width:23%;" >
-                                <div style="border:solid;padding:2% !important;margin-top:20px;">
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">User Codes</h6>
+                                    <br />
                                     <div style="margin-bottom:160px;">
                                         <div style="margin-left:10px;">
-                                            <label for="load_user" string="User Codes"/><br/><br/>
                                             <label for="load_user" string="User" style="width:50%;"/>
                                             <field name="load_user" style="width: 7%;margin-right:3px;" />
                                             <field name="load_expanded_user_one" style="width: 7%;margin-right:3px;"  />
@@ -690,9 +703,10 @@
                                </div>
                             </div>
                             <div style="padding:1% !important;width:27%;" >
-                                <div style="border:solid;padding:5% !important;margin-top:20px;">
-                                    <div style="margin-left:10px;margin-bottom:10px;">
-                                        <label for="load_stocking_um" string="Purchasing"/><br/><br/>
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Purchasing</h6>
+                                    <br />
+                                    <div style="margin-left:10px;margin-bottom:20px;">
                                         <label for="load_stocking_um" string="Stocking U/M" style="width:50%;"/>
                                         <field name="load_stocking_um"  style="width:40%;margin-left:10px;" />
                                         <label for="load_standard_pack" string="Standard Pack" style="width:54%;"/>
@@ -720,9 +734,10 @@
                                 </div>
                             </div>
                             <div style="padding:1% !important;width:23%;" >
-                                    <div style="border:solid;padding:2% !important;margin-top:20px;">
+                                    <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                        <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Misc Codes</h6>
+                                        <br />
                                         <div style="margin-left:10px;margin-bottom:50px;">
-                                            <label for="load_print_label" string="Misc Codes"/><br/><br/>
                                             <label for="load_print_label" string="Print Labels" style="width:50%;"/>
                                             <field name="load_print_label" style="width:30%;" />
                                             <label for="load_discountable" string="Discountable" style="width:50%;"/>
@@ -750,10 +765,10 @@
                         <div class="row" col="4" style="width:100%;">
 
                             <div style="padding:2% !important;width:30%;" string="Quantites">
-                                <div style="border:solid;padding:5% !important;">
-                                    <label for="height" string="Item Dimensions" style="width:60%;"/>
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Item Dimensions</h6>
                                     <br />
-                                    <br />
+
                                 <label for="height" string="Height(inches)" style="width:40%;"/>
                                 <field name="height" style="width:40%;" />
                                 <label for="width" string="Width(inches)" style="width:40%;"/>
@@ -770,10 +785,11 @@
                                     <field name="cubes" style="width: 20%;margin-right:7px;" />
                                     <field name="cubes_unit" style="width: 20%;margin-bottom:15px;"  />
                                 </div>
+                                <br />
                             </div>
                             </div>
                             <div style="padding:2% !important;width:32%;" string="Stock Levels">
-                                <div style="border:solid;padding:5% !important;margin-bottom:5px;">
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                      <br />
                                 <label for="ebt" string="EBT/FS Item?" style="width:50%;"/>
                                 <field name="ebt" style="width:25%;" />
@@ -786,7 +802,7 @@
                                 <label for="special_fee_code" string="Special Fee Code" style="width:50%;"/>
                                 <field name="special_fee_code" style="width:25%;" />
                                 <label for="weighable" string="Weighable?" style="width:50%;"/>
-                                <field name="weighable" style="width:25%;" />
+                                <field name="weighable" style="width:25%;margin-bottom: 12px;" />
 
                                 </div>
                             </div>
@@ -874,6 +890,8 @@
 
             </xpath>
         </field>
+
+
     </record>
 
 

@@ -35,19 +35,19 @@
 
                 <div class="row" col="4" style="width:100%;">
                     <div style="padding:2% !important;width:50%;margin-top:-15px;">
-                        <label for="name" string="Name" style="width:14%;margin-top:-15px;"/>
-                        <field name="name" style="width:50%; margin-top:-15px;"/>
+                        <label for="vendor_name" string="Name" style="width:14%;margin-top:-15px;"/>
+                        <field name="vendor_name" style="width:50%; margin-top:-15px;"/>
                     </div>
                 </div>
                 
             <notebook>
                     <page string="Main">
                     <div class="row" col="2" style="width:100%;">
-                        <div style="padding:2% !important;width:45%;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                        <h6 style="color: #423e3e;position: relative;bottom: 9.2%;left: 0.5%;font-size: 12px;">Vendor Info</h6>
+                        <div style="padding:2% !important;width:50%;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                        <h6 style="color: #423e3e;position: relative;bottom: 10%;right: 1.5%;font-size: 12px;">Vendor Info</h6>
                             <div class="row" col="2" style="width:100%;">
                                 <div style="width:27%;">
-                                    <label for="street" string="Address" style="width:23%;padding-left:10%;"/>
+                                    <label for="street" string="Address" style="width:27%;padding-left:10%;"/>
                                 </div>
                                 <div class="o_address_format" style="width:50%">
                                     <field name="street" placeholder="Address" class="o_address_street"/>
@@ -75,14 +75,14 @@
                         </div>
                         <div style="width:45%;margin-left:1.5%;">
                             <div style="border:solid #e6e5e5 0.1px;padding:2%;margin-bottom:2%;">
-                            <h6 style="color: #423e3e;position: absolute;top: 31.5%;right: 46.5%;font-size: 12px;">Miscellaneous</h6>
+                            <h6 style="color: #423e3e;position: absolute;top: 32.5%;right: 41.5%;font-size: 12px;">Miscellaneous</h6>
                                 <label for="network_id" string="Network ID" style="width:30%;"/>
                                 <field  name="network_id" style="width:30%;"/><br/>
                                 <label for="network_id_code" string="Network ID Code" style="width:30%;"/>
                                 <field  name="network_id_code" style="width:30%;"/>
                             </div>
                             <div style="border:solid #e6e5e5 0.1px;padding:2%;">
-                            <h6 style="color: #423e3e;position: absolute;top: 45.5%;left: 46.5%;font-size: 12px;">Transmit Options</h6>
+                            <h6 style="color: #423e3e;position: absolute;top: 47%;left: 51.5%;font-size: 12px;">Transmit Options</h6>
                                 <label for="po_item_number" string="PO Item Number" style="width:30%;"/>
                                 <field  name="po_item_number" style="width:25%;"/><br/>
                                 <label for="edi_po" string="EDI PO" style="width:30%;"/>
@@ -103,6 +103,7 @@
                     </div>
                     </page>
                     <page string="Order info">
+                        <h6 style="color: #423e3e;position: absolute;top: 37%;left: 3.5%;font-size: 12px;">Order Info</h6>
                         <div class="row" style="width:100%;border:solid #e6e5e5 0.1px;margin-left:0.5%;" col="2">
                             <div style="padding:2% !important;width:45%;">
                                     <div style="padding-bottom:2%">
@@ -157,41 +158,66 @@
                         </div>
                     </page>
                     <page string="Account Payable">
-                        <group string="Accounts Payable">
-                        
-                            <group>
-                                <field name="acc_num"/>
-                                <field name="auto_distribute"/>
-                                <field name="federal_id_type"/>
-                                <field name="federal_id"/>
-                                <field name="temp_perm"/>
-                                <field name="category"/>
-                                <field name="last_activity"/>
-                                <field name="vendor_status"/>
-                                <field name="append_rv"/>
-                                <field name="bank_code"/>
-                            </group>
-                        
-                            <group>
-                                <field name="terms_code"/>
-                                <field name="due_days"/>
-                                <field name="disc_days"/>
-                                <field name="discount"/>
-                                <field name="print_check"/>
-                                <field name="vendor_language"/>
-                                <field name="remit_address"/>
-                                <field name="remit_street1"/>
-                                <field name="remit_street2"/>
-                                <field name="remit_city"/>
-                                <field name="remit_state"/>
-                                <field name="remit_country"/>
-                                <field name="zip_code"/>
-                                
-                            </group>
-
-                        </group>
+                        <h6 style="color: #423e3e;position: absolute;top: 35%;left: 3.5%;font-size: 12px;">Accounts Payable</h6>
+                        <div class="row" style="width:80%;border:solid #dadce1 1px;margin:1%;" col="2">
+                            <div style="width:40%;padding:2%;">
+                                    <label for="acc_num" string="Account Number" style="width:35%" />
+                                    <field name="acc_num" style="width: 22%;margin-right:2%;" /><b style="margin-right:2%;font-size:2em;">-</b>
+                                    <field name="acc_num2" style="width: 20%" /><br/>
+                                    <label for="auto_distribute" string="Auto Distribute" style="width:35%" />
+                                    <field name="auto_distribute" style="width: 20%" /><br/>
+                                    <label for="federal_id_type" string="Federal ID Type" style="width:35%" />
+                                    <field name="federal_id_type" style="width: 20%" /><br/>
+                                    <label for="federal_id" string="Federal ID" style="width:35%" />
+                                    <field name="federal_id" style="width: 50%" /><br/>
+                                    <label for="temp_perm" string="Temp/Perm" style="width:35%" />
+                                    <field name="temp_perm" style="width: 20%" /><br/>
+                                    <label for="category" string="1099 Category" style="width:35%" />
+                                    <field name="category" style="width: 20%" /><br/>
+                                    <label for="vendor_status" string="Vendor Status" style="width:35%" />
+                                    <field name="vendor_status" style="width: 20%" /><br/>
+                                    <label for="last_activity" string="Last Activity Date" style="width:35%" />
+                                    <field name="last_activity" style="width: 30%" /><br/>
+                                    <label for="append_rv" string="Append To RV?" style="width:35%" />
+                                    <field name="append_rv" style="width: 20%" /><br/>
+                                    <label for="bank_code" string="Bank Code" style="width:35%" />
+                                    <field name="bank_code" style="width: 30%" /><br/>
+                            </div>
+                            <div style="width:60%;padding:2%;">
+                                <label for="terms_code" string="Terms Code" style="width:20%" />
+                                <field name="terms_code" style="width: 20%"/>&amp;emsp; <b>NET <field name="terms_code" style="width:4%;margin-left:1%;" readonly="1"/> DAYS</b><br/>
+                                <label for="due_days" string="Due Days" style="width:20%" />
+                                <field name="due_days" style="width: 20%" />
+                                <label for="terms_type" string="Terms Type" style="width:25%;margin-left:5%;" />
+                                <field name="terms_type" style="width: 20%" /><br/>
+                                <label for="disc_days" string="Disc Days" style="width:20%" />
+                                <field name="disc_days" style="width: 20%" />
+                                <label for="discount" string="Discount %" style="width:25%;margin-left:5%;" />
+                                <field name="discount" style="width: 20%" /><br/>
+                                <label for="print_check" string="Print on Check" style="width:20%" />
+                                <field name="print_check" style="width: 20%" />
+                                <label for="vendor_language" string="Vendor Language" style="width:25%;margin-left:5%;" />
+                                <field name="vendor_language" style="width: 20%" /><br/><br/>
+                                <div class="row" col="2" style="width:100%;border:solid #dadce1 1px;padding:2%;">
+                                    <div style="width:25%;">
+                                        <label for="remit_address" string="Address" style="width:23%;padding-left:10%;"/>
+                                    </div>
+                                    <div class="o_address_format" style="width:50%">
+                                        <h6 style="color: #423e3e;position: absolute;bottom: 36.5%;left: 34.5%;font-size: 12px;">Remit to Address</h6>
+                                        <field name="remit_address" placeholder="Address" class="o_address_street"/>
+                                        <field name="remit_street1" placeholder="Address" class="o_address_street" />
+                                        <field name="remit_street2" placeholder="Address" class="o_address_street" />
+                                        <field name="remit_city" placeholder="City" class="o_address_city" style="width:30%;" />
+                                        <field name="remit_state" class="o_address_state" placeholder="State" style="width:30%;"/>
+                                        <field name="zip_code" placeholder="ZIP" class="o_address_zip" style="width:30%;"/>
+                                        <field  name="remit_country" style="width:40%;" placeholder="Country"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </page>
                     <page string="History">
+                        <h6 style="color: #423e3e;position: absolute;top: 31.5%;left: 3.5%;font-size: 12px;">Accounts Payable History</h6>
                         <div style="width:70%;border:solid #e6e5e5 0.1px;margin-bottom:1%;padding:1%;">
                             <div style="padding:1%;">
                                 <label for="amount_paid1" string="" style="width:15%" />
@@ -211,6 +237,7 @@
                             <field name="vendor_bal_due" style="width: 10%" /><br/><br/>
                         </div>
                         <div style="width:70%;border:solid #e6e5e5 0.1px;padding:1%;">
+                        <h6 style="color: #423e3e;position: absolute;bottom: 37.5%;left: 3.5%;font-size: 12px;">Purchasing History</h6>
                             <!-- headers -->
                             <label for="warehouse_cq" string="" style="width:17%" />
                             <label for="warehouse_cq" string="Current Qtr" style="width:20%" />
@@ -265,8 +292,8 @@
                         <div style="padding:2%;width:70%;border:solid #e6e5e5 0.1px;margin-bottom:1%;">
                             <label for="note_group" string="Note Group" style="width:10%"/>
                             <field  name="note_group" style="width:20%;margin-right:5%;"/>
-                            <label for="name" string="Name" style="width:10%"/>
-                            <field  name="name" style="width:30%;" readonly="1"/><br/>
+                            <label for="vendor_name" string="Name" style="width:10%"/>
+                            <field  name="vendor_name" style="width:30%;" readonly="1"/><br/>
                             <label for="note_type" string="Type" style="width:10%"/>
                             <field  name="note_type" style="width:10%;margin-right:15%;"/>
                             <label for="display_repeats" string="Display Repeats" style="width:15%"/>
@@ -312,6 +339,50 @@
         </form>
     </field>
 </record>
+
+ <!-- TREE VIEW OF Vendors -->
+    <record id="vendor_tree_view" model="ir.ui.view">
+        <field name="name">wgd.vendors.tree.view</field>
+        <field name="model">wgd.vendors</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <tree string="Vendors">
+                <field name="vendor"/>
+                <field name="vendor_name"/>
+                <field name="pay_to_vendor"/>
+                <field name="phone"/>
+                <field name="contact"/>
+                <field name="assignee"/>
+            </tree>
+        </field>
+    </record> 
+
+<!-- search view of vendors  -->
+    <record id="vendor_search_view" model="ir.ui.view">
+        <field name="name">venodor.search.view</field>
+        <field name="model">wgd.vendors</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="type" string="Type"/>
+                <field name="vendor" string="Vendor ID"/>
+                <field name="vendor_name" string="Name"/>
+                <field name="sort_name" string="Sort Name"/>
+                <field name="pay_to_vendor" string="Pay to Vendor"/>
+                <field name="phone" string="Phone"/>
+                <field name="fax" string="Fax"/>
+                <field name="street" string="Address"/>
+                <field name="city" string="City"/>
+                <field name="state_id" string="State"/>
+                <field name="contact" string="Contact"/>
+                <field name="assignee" string="Assigned Customer"/>
+                <field name="network_id" string="Network ID"/>
+                <field name="po_item_number" string="PO Item Number"/>
+                <field name="edi_po" string="EDI PO"/>
+                <field name="lp_month" string="Last Payment"/>
+                <field name="codes" string="Codes"/>
+            </search>
+        </field>
+    </record>
 
 <!-- inheriting customer invoice  -->
 <record id="customer_invoice_tree_inherit" model="ir.ui.view">

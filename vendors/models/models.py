@@ -72,7 +72,8 @@ class vendors(models.Model):
 
 
     # accounts payable tab
-    acc_num = fields.Char('Account Number')
+    acc_num = fields.Selection([],'Account Number')
+    acc_num2 = fields.Selection([],'Account Number')
     auto_distribute = fields.Selection([], 'Auto Distribute')
     federal_id_type = fields.Selection([], 'Federal ID Type')
     federal_id = fields.Char('Federal ID')
@@ -82,7 +83,7 @@ class vendors(models.Model):
     vendor_status = fields.Selection([], 'Vendor Status')
     append_rv = fields.Selection([], 'Append To RV')
     bank_code = fields.Selection([], 'Bank Code')
-    terms_code = fields.Selection([], 'Terms Code')
+    terms_code = fields.Selection([('30','30')], 'Terms Code')
     terms_type = fields.Selection([], 'Terms Type')
     due_days = fields.Integer('Due Days')
     disc_days = fields.Integer('Disc Days')
@@ -172,7 +173,7 @@ class vendors(models.Model):
         '''
             validate alternate phone number
         '''
-        if self.phone:
+        if self.phone2:
             phone   =str(self.phone2)
             letters = re.findall("[^0-9]",phone)
             for val in letters:
@@ -192,7 +193,7 @@ class vendors(models.Model):
         '''
             validate contact number
         '''
-        if self.phone:
+        if self.contact:
             contact   =str(self.contact)
             letters = re.findall("[^0-9]",contact)
             for val in letters:

@@ -36,4 +36,11 @@
     'demo': [
         'demo/demo.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            '/wg_inventory/static/src/style.css'
+
+        ]
+    }
+
 }
