@@ -79,7 +79,7 @@
                                     <label for="fax" string="Fax" style="width:23%;"/>
                                     <field  name="fax" style="width:55%;"/><br/>
                                     <label for="contact" string="Contact" style="width:23%;"/>
-                                    <field  name="contact" style="width:55%;"/><br/><br/><br/><br/><br/>
+                                    <field  name="contact" style="width:55%;"/><br/><br/>
                                     <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
                                         <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Credit Message</h6>
                                         <field  name="credit_message1"/><br/>
@@ -99,10 +99,10 @@
                                         <field  name="monthly_payment" style="width:50%;"/>
                                         <label for="category_plan_id" string="Category Plan" style="width:40%;"/>
                                         <field  name="category_plan_id" style="width:50%;"/>
-                                        <label for="tax_code" string="Tax Code" style="width:40%;"/>
+                                        <!-- <label for="tax_code" string="Tax Code" style="width:40%;"/>
                                         <field  name="tax_code" style="width:50%;"/>
                                         <label for="salesperson" string="Salesperson" style="width:40%;"/>
-                                        <field  name="salesperson" style="width:50%;"/>
+                                        <field  name="salesperson" style="width:50%;"/> -->
                                         <label for="terms_code" string="Terms Code" style="width:40%;"/>
                                         <field  name="terms_code" style="width:50%;"/>
                                         <label for="pure_archive_invoices" string="Pure Archive Invoices" style="width:41%;"/>
@@ -134,10 +134,10 @@
                                         <field  name="charge_allowed" style="width:50%;"/>
                                         <label for="check_allowed" string="Check Allowed" style="width:40%;"/>
                                         <field  name="check_allowed" style="width:50%;"/>
-                                        <label for="credit_are_only" string="Credit A/R Only" style="width:40%;"/>
+                                        <!-- <label for="credit_are_only" string="Credit A/R Only" style="width:40%;"/>
                                         <field  name="credit_are_only" style="width:50%;"/>
-                                        <label for="taxable" string="Taxable" style="width:40%;"/>
-                                        <field  name="taxable" style="width:50%;"/>
+                                        <label for="taxable" string="Taxable" style="width:40%;"/> 
+                                        <field  name="taxable" style="width:50%;"/>-->
                                         <label for="keep_dept_history" string="Keep Dept History" style="width:40%;"/>
                                         <field  name="keep_dept_history" style="width:50%;"/>
                                         <label for="print_invoices_in_pos" string="Print Invoices In POS" style="width:40%;"/>
@@ -236,7 +236,7 @@
                                 </div>
 
                                 <div style="padding:2% !important;width:33%;">
-                                    <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
+                                    <!-- <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
                                         <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Charge Options</h6>                              
                                         <label for="check_allowed" string="Check Allowed" style="width:60%;"/>
                                         <field  name="check_allowed" style="width:20%;"/><br/>
@@ -253,7 +253,7 @@
                                         <field  name="global_credit_check" style="width:20%;"/><br/>
                                         <label for="order_bal_credit_avail" string="Use Order Bal in Credit Avail" style="width:60%;"/>
                                         <field  name="order_bal_credit_avail" style="width:20%;"/><br/><br/>
-                                    </div>
+                                    </div> -->
                                     <div style="padding:2% !important;">
                                         <label for="last_sale" string="Last Sale" style="width:30%;"/>
                                         <field  name="last_sale" style="width:50%;"/><br/>
@@ -262,7 +262,7 @@
                                     </div>     
                                 </div>
                                 <div style="padding:2% !important;width:33%;">
-                                    <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
+                                    <!-- <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
                                         <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Charge Controls</h6>   
                                         <label for="balance_method" string="Balance Method" style="width:40%;"/>
                                         <field  name="balance_method" style="width:20%;"/>
@@ -283,11 +283,11 @@
                                         <field  name="amount_last_pay" style="width:35%;"/>
                                         <label for="special_charges" string="Special Charges" style="width:40%;"/>
                                         <field  name="special_charges" style="width:35%;"/>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>   
                         </page>
-                        <page string="3. Dept">
+                        <!-- <page string="3. Dept">
                             <div class="row" col="4" style="width:100%;"> 
                                 <div style="padding:2% !important;width:20%;">
                                     <label for="store" string="Store" style="width:40%;"/>
@@ -353,9 +353,9 @@
                                 </div>
                             </div>
                             
-                        </page>
-                        <page string="4. Sales">
-                           <div class="row" col="5" style="border:solid;width:90%;"> 
+                        </page> -->
+                        <page string="3. Sales">
+                           <div class="row" col="5" style="border:solid #e6e5e5 0.1px;width:90%;"> 
                                 <div style="padding:2% !important;width:10%;"><br/>
                                     
                                 </div>
@@ -391,7 +391,7 @@
                                 </div>
                             </div>
                             <group></group>
-                            <div class="row" col="5" style="border:solid;width:90%;"> 
+                            <div class="row" col="5" style="border:solid #e6e5e5 0.1px;width:90%;"> 
                                 <div style="padding:2% !important;width:10%;"><br/>
                                     
                                 </div>
@@ -413,10 +413,11 @@
                                 <div style="padding:2% !important;width:20%;">
                                     <br/><br/><br/><br/>
                                     <label for="customer_sales_summary" string="Customer Sales Summary" style="width:100%;"/><br/>
+                                    <field  name="customer_sales_summary" style="width:35%;" invisible='1'/>
                                 </div>
                             </div>
                         </page>
-                        <page string="5. Payment">
+                        <page string="4. Payment">
                             <!-- smart buttons  -->
                              <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150"
                                 type="object">
@@ -568,7 +569,7 @@
                                 </div>
                             </div>
                         </page>
-                        <page string="6. Misc">
+                        <page string="5. Names">
                             <div class="row" col="3" style="width:100%;"> 
                                 <div style="padding:2% !important;width:33%;">
                                     <div style="padding:2% !important;">
@@ -669,9 +670,41 @@
                                     <label for="statment_by_job" string="Additional Flags" style="width:60%;"/>
 
                                 </div>
-                            </div>   
+                            </div> 
+                            <div>
+                                <field name="names_ids">
+                                    <tree  editable="bottom">
+                                       <field name="name" />
+                                        <field name="show_in_POS" />
+                                        <field name="phone" />
+                                        <field name="fax" />
+                                        <field name="pager" />
+                                        <field name="email" />
+                                    </tree>
+                                </field>
+                            </div>
+                            <div class="row" col="6" style="width:100%;"> 
+                                <div style="width:10%;">
+                                    <button name="button_" class="oe_highlight" string="Add" type="object" style="margin-left: 15px;"/>
+                                </div>
+                                <div style="width:10%;">
+                                    <button name="button_" class="oe_highlight" string="Delete" type="object"/>
+                                </div>
+                                <div style="width:10%;">
+                                    <button name="button_" class="oe_highlight" string="Change" type="object"/>
+                                </div>
+                                <div style="width:10%;">
+                                    <button name="button_" class="oe_highlight" string="Merge" type="object"/>
+                                </div>
+                                <div style="width:10%;">
+                                    <button name="button_" class="oe_highlight" string="Viewer" type="object"/>
+                                </div>
+                                <div style="width:10%;">
+                                    <button name="button_" class="oe_highlight" string="Set Image" type="object"/>
+                                </div>
+                            </div>  
                         </page>
-                        <page string="7. Names">
+                        <!-- <page string="7. Names">
                            <div>
                                 <field name="names_ids">
                                     <tree  editable="bottom">
@@ -703,9 +736,9 @@
                                 <div style="width:10%;">
                                     <button name="button_" class="oe_highlight" string="Set Image" type="object"/>
                                 </div>
-                            </div>
-                        </page>
-                        <page string="8. Notes">
+                            </div> 
+                        </page>-->
+                        <page string="6. Notes">
                             <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
                                 <div class="row" col="2" style="width:100%;">  
                                     <div style="padding:2% !important;width:30%;">
@@ -787,8 +820,8 @@
                 <filter name="tax_code" string="Have Tax Code" domain="[('tax_code','=','yes')]"/>
                 <filter name="tax_code" string="Have No Tax Code" domain="[('tax_code','=','no')]"/>
                 <separator orientation="vertical"/>
-                <filter name="terms_code" string="Have Terms Code" domain="[('terms_code','=','yes')]"/>
-                <filter name="terms_code" string="Have No Terms Code" domain="[('terms_code','=','no')]"/>
+               <!--  <filter name="terms_code" string="Have Terms Code" domain="[('terms_code','=','yes')]"/>
+                <filter name="terms_code" string="Have No Terms Code" domain="[('terms_code','=','no')]"/> -->
                 <separator orientation="vertical"/>
                 <filter name="taxable" string="Have Taxable Code" domain="[('taxable','=','yes')]"/>
                 <filter name="taxable" string="Have No Taxable Code" domain="[('taxable','=','no')]"/>

@@ -7,3 +7,5 @@ sort,wgd_customer.sort,model_sort,base.group_user,1,1,1,1
 bill,wgd_customer.bill,model_bill,base.group_user,1,1,1,1
 names,wgd_customer.names,model_names,base.group_user,1,1,1,1
 category,wgd_customer.category,model_category,base.group_user,1,1,1,1
+terms,wgd_customer.terms,model_terms,base.group_user,1,1,1,1
+balance,wgd_customer.balance,model_balance,base.group_user,1,1,1,1

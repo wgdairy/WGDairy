@@ -68,10 +68,10 @@
                                 <label for="class_inven" string="Class" style="width:20%;margin-bottom: -15px;"/>
                                 <field  name="class_inven" style="width:40%;margin-top: -15px;"/><br/>
                             </div>
-                            <div style="padding:10px; !important;width:20%;">
-                                <label for="fineline" string="Fineline" style="width:25%;margin-bottom: -15px;"/>
-                                <field  name="fineline" style="width:50%;margin-top: -15px;"/><br/>
-                            </div>
+<!--                            <div style="padding:10px; !important;width:20%;">-->
+<!--                                <label for="fineline" string="Fineline" style="width:25%;margin-bottom: -15px;"/>-->
+<!--                                <field  name="fineline" style="width:50%;margin-top: -15px;"/><br/>-->
+<!--                            </div>-->
 
                             <div style="padding:10px; !important;width:20%;">
                                 <label for="prime_ved" string="Prime Vend" style="width:40%;margin-bottom: -15px;"/>
@@ -102,10 +102,10 @@
                                 <field name="qty_on_order" style="width:40%;"  />
                                 <label for="custbackorder" string="Cust backorder" style="width:50%;"/>
                                 <field name="custbackorder" style="width:40%;" />
-                                <label for="location" string="Location" style="width:50%;"/>
-                                <field name="location" style="width:40%;" />
-                                <label for="future_order" string="Future Order" style="width:50%;"/>
-                                <field name="future_order" style="width:40%;" />
+<!--                                <label for="location" string="Location" style="width:50%;"/>-->
+<!--                                <field name="location" style="width:40%;" />-->
+<!--                                <label for="future_order" string="Future Order" style="width:50%;"/>-->
+<!--                                <field name="future_order" style="width:40%;" />-->
                                         </div>
                                 </div>
                             </div>
@@ -113,7 +113,7 @@
                                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Stock Levels</h6>
                                     <br />
-                                    <div style="margin-left:15px;margin-bottom:66px;">
+                                    <div style="margin-left:15px;margin-bottom:17px;">
                                 <label for="order_point" string="Order Point" style="width:60%;"/>
                                 <field name="order_point" style="width:30%;" />
                                 <label for="min_order_ponit" string="Min Order Point" style="width:60%;"/>
@@ -137,11 +137,11 @@
                                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Purchasing</h6>
                                     <br />
-                                    <div style="margin-left:15px;margin-bottom:10px;">
+                                    <div style="margin-left:15px;margin-bottom:43px;">
                                 <label for="purchasing_um" string="Purchasing U/M" style="width:60%;"/>
                                 <field name="purchasing_um"  style="width:35%;" />
-                                <label for="order_indictor" string="Order Indicator" style="width:60%;"/>
-                                <field name="order_indictor"  style="width:35%;" />
+<!--                                <label for="order_indictor" string="Order Indicator" style="width:60%;"/>-->
+<!--                                <field name="order_indictor"  style="width:35%;" />-->
                                 <div>
                                 <label for="weight" string="Weight" style="width:56%;"/>
                                 <field name="weight"  style="width: 15%;margin-right:2px;" />
@@ -157,10 +157,10 @@
                                 <field name="min_of_std_pkgs"  style="width:35%;" />
                                 <label for="secondary_vend" string="Secondary Vend" style="width:60%;"/>
                                 <field name="secondary_vend"  style="width:35%;" />
-                                <label for="vend_stk" string="Vend Stk #" style="width:60%;"/>
-                                <field name="vend_stk"  style="width:35%;"  />
-                                <label for="po_season" string="PO Season" style="width:60%;"/>
-                                <field name="po_season"  style="width:35%;" />
+<!--                                <label for="vend_stk" string="Vend Stk #" style="width:60%;"/>-->
+<!--                                <field name="vend_stk"  style="width:35%;"  />-->
+<!--                                <label for="po_season" string="PO Season" style="width:60%;"/>-->
+<!--                                <field name="po_season"  style="width:35%;" />-->
                                 </div>
                                 </div>
                             </div>
@@ -168,7 +168,7 @@
                                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Dates</h6>
                                     <br />
-                                    <div style="margin-left:15px;margin-bottom:37px;">
+                                    <div style="margin-left:15px;margin-bottom:43px;">
                                         <label for="date_added" string="Date Added" style="width:60%;"/>
                                         <field name="date_added" style="width:35%;" />
                                         <label for="last_sale" string="Last Sale" style="width:60%;"/>
@@ -185,16 +185,16 @@
                                 <label for="altemate_ref" string="Altemate Ref" style="width:60%;"/>
                                 <field name="altemate_ref" style="width:35%;" />
 
-                                <div>
-                                    <label for="lost_sale" string="Lost Sale #/Units" style="width:56%;"/>
-                                    <field name="lost_sale" style="width: 15%;margin-right:7px;" />
-                                    <field name="lost_scale_unit" style="width: 15%"  />
-                                </div>
-                                <div>
-                                    <label for="lost_sale" string="Buyouts #/Units" style="width:56%;"/>
-                                    <field name="bayouts" style="width: 15%;margin-right:7px;" />
-                                    <field name="bayout_unit" style="width: 15%"  />
-                                </div>
+<!--                                <div>-->
+<!--                                    <label for="lost_sale" string="Lost Sale #/Units" style="width:56%;"/>-->
+<!--                                    <field name="lost_sale" style="width: 15%;margin-right:7px;" />-->
+<!--                                    <field name="lost_scale_unit" style="width: 15%"  />-->
+<!--                                </div>-->
+<!--                                <div>-->
+<!--                                    <label for="lost_sale" string="Buyouts #/Units" style="width:56%;"/>-->
+<!--                                    <field name="bayouts" style="width: 15%;margin-right:7px;" />-->
+<!--                                    <field name="bayout_unit" style="width: 15%"  />-->
+<!--                                </div>-->
 
                             </div>
                                 </div>
@@ -204,41 +204,146 @@
                     <page autofocus="1" string="Pricing">
 
                         <div class="row" col="3" style="width:100%;" >
-                            <div style="padding:2% !important;width:40%;">
-                                <field name="tab_ids"  mode="tree"  style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                                <tree   editable="bottom" >
-                                    <field name="blk" string="  " style="width:25%;" />
-                                    <field name="price" style="width:30%;"  />
-                                    <field name="stock" style="width:25%;"  />
-                                    <field name="alt" style="width:25%;" />
-
-                                    <field name="gp" style="width:20%;" />
 
 
-                                </tree>
-                    </field>
-                            </div>
 
-                            <div style="padding:2% !important;width:30%;">
-                                <label for="desiered_gp" string="Desiered GP %" style="width:30%;"/>
-                                <field name="desiered_gp" style="width:40%;"  />
-                                <label for="retail_old" string="Retail(old)" style="width:30%;"/>
-                                <field name="retail_old" style="width:40%;"  />
-                                <label for="catalog_retail" string="Catalog Retail" style="width:30%;"/>
-                                <field name="catalog_retail" style="width:40%;" />
-                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top: 10px;margin-bottom: 10px;">
-                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Lumber Info</h6>
-                                    <br />
-
-                                    <label for="lumber_type" string="Lumber Type" style="width:30%;margin-left:10px;"/>
-                                    <field name="lumber_type" style="width:40%;margin-bottom:7px;" />
+                            <div class="row" col="5" style="padding:2% !important;width:40%;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-left:15px;">
+                                <div style="padding:2% !important;width:28%;"><br/>
+<!--                                    <br />-->
+                                    <label for="units" string="Units" style="width:20%;margin-bottom: 9px;"/><br/>
+                                    <label for="decimal_place" string="Decimal Place" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="repl_cost" string="Repl Cost" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="mfg_cost" string="Mfg Cost" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="avg_cost" string="Avg Cost" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="mkt_cost" string="Mkt Cost" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="reail" string="Reail" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="list" string="List" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="price_one" string="Price 1" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="price_two" string="Price 2" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="price_three" string="Price 3" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="price_four" string="Price 4" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="price_five" string="Price 5" style="width:100%;margin-bottom: 9px;"/><br/>
+<!--                                    <label for="period_to_date_cost" string="Cost" style="width:100%;"/><br/>-->
+<!--                                    <label for="period_to_date_gp" string="GP %" style="width:100%;"/><br/>-->
                                 </div>
-                                <label for="market_cost" string="*Market Cost" style="width:40%;"/>
+                                <div style="padding:2% !important;width:18%;">
+                                    <label for="units" string="Pricing" style="width:100%;"/><br/>
+<!--                                    <br />-->
+                                    <field  name="units" style="width:60%;"/><br/>
+                                    <field  name="decimal_place" style="width:60%;"/><br/>
+                                    <field  name="repl_cost" style="width:60%;"/><br />
+                                    <field  name="mfg_cost" style="width:60%;"/><br/>
+                                    <field  name="avg_cost" style="width:60%;"/><br/>
+                                    <field  name="mkt_cost" style="width:60%;"/><br />
+                                    <field  name="reail" style="width:60%;"/><br/>
+                                    <field  name="list" style="width:60%;"/><br/>
+                                    <field  name="price_one" style="width:60%;"/><br />
+                                    <field  name="price_two" style="width:60%;"/><br/>
+                                    <field  name="price_three" style="width:60%;"/><br/>
+                                    <field  name="price_four" style="width:60%;"/><br />
+                                    <field  name="price_five" style="width:60%;"/><br/>
+
+                                </div>
+                                                                <div style="padding:2% !important;width:18%;">
+                                    <label for="units" string="Stock" style="width:100%;"/><br/>
+<!--                                    <br />-->
+                                    <field  name="units_stock" style="width:60%;"/><br/>
+                                    <field  name="decimal_place_stock" style="width:60%;"/><br/>
+                                    <field  name="repl_cost_stock" style="width:60%;"/><br />
+                                    <field  name="mfg_cost_stock" style="width:60%;"/><br/>
+                                    <field  name="avg_cost_stock" style="width:60%;"/><br/>
+                                    <field  name="mkt_cost_stock" style="width:60%;"/><br />
+                                    <field  name="reail_stock" style="width:60%;"/><br/>
+                                    <field  name="list_stock" style="width:60%;"/><br/>
+                                    <field  name="price_one_stock" style="width:60%;"/><br />
+                                    <field  name="price_two_stock" style="width:60%;"/><br/>
+                                    <field  name="price_three_stock" style="width:60%;"/><br/>
+                                    <field  name="price_four_stock" style="width:60%;"/><br />
+                                    <field  name="price_five_stock" style="width:60%;"/><br/>
+
+                                </div>
+                                                                <div style="padding:2% !important;width:18%;">
+                                    <label for="units" string="Alt" style="width:100%;"/><br/>
+<!--                                    <br />-->
+                                    <field  name="units_alt" style="width:60%;"/><br/>
+                                    <field  name="decimal_place_alt" style="width:60%;"/><br/>
+                                    <field  name="repl_cost_alt" style="width:60%;"/><br />
+                                    <field  name="mfg_cost_alt" style="width:60%;"/><br/>
+                                    <field  name="avg_cost_alt" style="width:60%;"/><br/>
+                                    <field  name="mkt_cost_alt" style="width:60%;"/><br />
+                                    <field  name="reail_alt" style="width:60%;"/><br/>
+                                    <field  name="list_alt" style="width:60%;"/><br/>
+                                    <field  name="price_one_alt" style="width:60%;"/><br />
+                                    <field  name="price_two_alt" style="width:60%;"/><br/>
+                                    <field  name="price_three_alt" style="width:60%;"/><br/>
+                                    <field  name="price_four_alt" style="width:60%;"/><br />
+                                    <field  name="price_five_alt" style="width:60%;"/><br/>
+
+                                </div>
+                                                                <div style="padding:2% !important;width:18%;">
+                                    <label for="units" string="GP %" style="width:100%;"/><br/>
+<!--                                    <br />-->
+                                    <field  name="units_gp" style="width:60%;"/><br/>
+                                    <field  name="decimal_place_gp" style="width:60%;"/><br/>
+                                    <field  name="repl_cost_gp" style="width:60%;"/><br />
+                                    <field  name="mfg_cost_gp" style="width:60%;"/><br/>
+                                    <field  name="avg_cost_gp" style="width:60%;"/><br/>
+                                    <field  name="mkt_cost_gp" style="width:60%;"/><br />
+                                    <field  name="reail_gp" style="width:60%;"/><br/>
+                                    <field  name="list_gp" style="width:60%;"/><br/>
+                                    <field  name="price_one_gp" style="width:60%;"/><br />
+                                    <field  name="price_two_gp" style="width:60%;"/><br/>
+                                    <field  name="price_three_gp" style="width:60%;"/><br/>
+                                    <field  name="price_four_gp" style="width:60%;"/><br />
+                                    <field  name="price_five_gp" style="width:60%;"/><br/>
+
+                                </div>
+                        </div>
+
+<!--                            </div>-->
+
+
+
+
+
+<!--                            <div style="padding:2% !important;width:40%;">-->
+<!--                                <field name="tab_ids"  mode="tree"  style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">-->
+<!--                                <tree   editable="bottom" >-->
+<!--                                    <field name="blk" string="  " style="width:25%;" />-->
+<!--                                    <field name="price" style="width:30%;"  />-->
+<!--                                    <field name="stock" style="width:25%;"  />-->
+<!--                                    <field name="alt" style="width:25%;" />-->
+
+<!--                                    <field name="gp" style="width:20%;" />-->
+
+
+<!--                                </tree>-->
+<!--                    </field>-->
+<!--                            </div>-->
+
+                            <div style="padding:2% !important;width:28%;margin-left:15px;">
+                                <label for="desiered_gp" string="Desiered GP %" style="width:50%;"/>
+                                <field name="desiered_gp" style="width:40%;"  />
+                                <label for="retail_old" string="Retail(old)" style="width:50%;"/>
+                                <field name="retail_old" style="width:40%;"  />
+                                <label for="catalog_retail" string="Catalog Retail" style="width:50%;"/>
+                                <field name="catalog_retail" style="width:40%;" />
+<!--                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top: 10px;margin-bottom: 10px;">-->
+<!--                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Lumber Info</h6>-->
+<!--                                    <br />-->
+
+<!--                                    <label for="lumber_type" string="Lumber Type" style="width:30%;margin-left:10px;"/>-->
+<!--                                    <field name="lumber_type" style="width:40%;margin-bottom:7px;" />-->
+<!--                                </div>-->
+                                <label for="market_cost" string="*Market Cost" style="width:50%;"/>
                                 <field name="market_cost" style="width:40%;"/>
-                                <label for="synchronize_price" string="Synchronize Price?" style="width:40%;"/>
+<!--                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top: 10px;margin-bottom: 10px;">-->
+
+                                <label for="synchronize_price" string="Synchronize Price?" style="width:50%;"/>
                                 <field name="synchronize_price" style="width:40%;" />
-                                <label for="synchronize_cost" string="Synchronize Cost?" style="width:40%;"/>
+                                <label for="synchronize_cost" string="Synchronize Cost?" style="width:50%;"/>
                                 <field name="synchronize_cost" style="width:40%;" />
+<!--                                </div>-->
 
                             </div>
                             <div style="padding:2% !important;width:30%;">
@@ -261,10 +366,10 @@
                                 </div>
                                 <label for="qut_on_hant" string="Qty On Hand" style="width:50%;"/>
                                 <field name="qut_on_hant" style="width:40%;" />
-                                <label for="level_price_overide" string="Level Price Overide" style="width:50%;"/>
-                                <field name="level_price_overide" style="width:40%;" />
-                                <label for="rebate_group" string="Rebate Group" style="width:50%;"/>
-                                <field name="rebate_group" style="width:40%;" />
+<!--                                <label for="level_price_overide" string="Level Price Overide" style="width:50%;"/>-->
+<!--                                <field name="level_price_overide" style="width:40%;" />-->
+<!--                                <label for="rebate_group" string="Rebate Group" style="width:50%;"/>-->
+<!--                                <field name="rebate_group" style="width:40%;" />-->
                             </div>
                         </div>
 
@@ -272,21 +377,21 @@
                     </page>
                     <page autofocus="'1" string="Codes">
 
-                        <div class="row" col="4" style="width:100%;">
+                        <div class="row" col="3" style="width:100%;">
 
-                            <div style="padding:2% !important;width:25%;">
+                            <div style="padding:2% !important;width:33%;">
                                 <label for="price_rounding" string="Pricing" style="width:50%;"/>
                                 <field name="price_rounding" style="width:40%;" />
                                 <label for="tax_status" string="Tax Status" style="width:50%;"/>
                                 <field name="tax_status" style="width:40%;" />
                                 <label for="rop_protect" string="ROP Protect?" style="width:50%;"/>
                                 <field name="rop_protect" style="width:40%;"/>
-                                <label for="special_record" string="Special Record" style="width:50%;"/>
-                                <field name="special_record" style="width:40%;" />
-                                <label for="tally" string="*Tally" style="width:50%;"/>
-                                <field name="tally" style="width:40%;" />
-                                <label for="tax_code" string="Tax Code" style="width:50%;"/>
-                                <field name="tax_code" style="width:40%;" />
+<!--                                <label for="special_record" string="Special Record" style="width:50%;"/>-->
+<!--                                <field name="special_record" style="width:40%;" />-->
+<!--                                <label for="tally" string="*Tally" style="width:50%;"/>-->
+<!--                                <field name="tally" style="width:40%;" />-->
+<!--                                <label for="tax_code" string="Tax Code" style="width:50%;"/>-->
+<!--                                <field name="tax_code" style="width:40%;" />-->
                                 <label for="loading_required" string="Loading Required" style="width:50%;"/>
                                 <field name="loading_required" style="width:40%;" />
                                 <label for="pos_return" string="POS Returnable" style="width:50%;"/>
@@ -297,43 +402,45 @@
                                 <field name="seas_sale_code" style="width:40%;" />
                                 <label for="bill_of_materials" string="Bill of Materials" style="width:50%;"/>
                                 <field name="bill_of_materials" style="width:40%;"/>
-                            </div>
-                            <div style="padding:2% !important;width:25%;">
-                                <label for="lifo_pool_code" string="Lifo Pool Code" style="width:50%;"/>
-                                <field name="lifo_pool_code" style="width:40%;" />
-                                <label for="qty_break_code" string="Qty Break Code" style="width:50%;"/>
-                                <field name="qty_break_code" style="width:40%;" />
-                                <label for="product_code" string="Product Code" style="width:50%;"/>
-                                <field name="product_code" style="width:40%;" />
                                 <label for="keep_stock_info" string="Keep Stock Info?" style="width:50%;"/>
                                 <field name="keep_stock_info" style="width:40%;" />
                                 <label for="keep_price" string="Keep Price?" style="width:50%;"/>
                                 <field name="keep_price" style="width:40%;" />
+                            </div>
+                            <div style="padding:2% !important;width:33%;">
+<!--                                <label for="lifo_pool_code" string="Lifo Pool Code" style="width:50%;"/>-->
+<!--                                <field name="lifo_pool_code" style="width:40%;" />-->
+<!--                                <label for="qty_break_code" string="Qty Break Code" style="width:50%;"/>-->
+<!--                                <field name="qty_break_code" style="width:40%;" />-->
+<!--                                <label for="product_code" string="Product Code" style="width:50%;"/>-->
+<!--                                <field name="product_code" style="width:40%;" />-->
+
                                 <label for="count_promo_sale" string="Count Promo Sale" style="width:50%;"/>
                                 <field name="count_promo_sale" style="width:40%;" />
                                 <label for="vendor_back_order" string="Vendor Backorder" style="width:50%;"/>
                                 <field name="vendor_back_order" style="width:40%;" />
                                 <label for="promo_sale_code" string="Promo Sale Code" style="width:50%;"/>
                                 <field name="promo_sale_code" style="width:40%;" />
-                                <label for="popularity_code" string="Popularity Code" style="width:50%;"/>
-                                <field name="popularity_code" style="width:40%;" />
+<!--                                <label for="popularity_code" string="Popularity Code" style="width:50%;"/>-->
+<!--                                <field name="popularity_code" style="width:40%;" />-->
                                 <label for="print_label" string="Print Label" style="width:50%;"/>
                                 <field name="print_label" style="width:40%;" />
                                 <label for="bin_labels" string="# of Bin Labels" style="width:50%;"/>
                                 <field name="bin_labels" style="width:40%;" />
+                                <label for="discontinued" string="Discontinued" style="width:50%;"/>
+                                <field name="discontinued" style="width:40%;" />
+                                <label for="store_closeout" string="Store Closeout" style="width:50%;"/>
+                                <field name="store_closeout" style="width:40%;" />
+                                <label for="kit_record" string="Kit Record" style="width:50%;"/>
+                                <field name="kit_record" style="width:40%;" />
+                                <label for="discountable" string="Discountable" style="width:50%;"/>
+                                <field name="discountable" style="width:40%;" />
+                                <label for="has_alt_part" string="Has Alt Part" style="width:50%;"/>
+                                <field name="has_alt_part" style="width:40%;" />
 
                         </div>
-                            <div style="padding:2% !important;width:25%;">
-                                <label for="discontinued" string="Discontinued" style="width:55%;"/>
-                                <field name="discontinued" style="width:40%;" />
-                                <label for="store_closeout" string="Store Closeout" style="width:55%;"/>
-                                <field name="store_closeout" style="width:40%;" />
-                                <label for="kit_record" string="Kit Record" style="width:55%;"/>
-                                <field name="kit_record" style="width:40%;" />
-                                <label for="discountable" string="Discountable" style="width:55%;"/>
-                                <field name="discountable" style="width:40%;" />
-                                <label for="has_alt_part" string="Has Alt Part" style="width:55%;"/>
-                                <field name="has_alt_part" style="width:40%;" />
+                            <div style="padding:2% !important;width:33%;">
+
                                 <label for="seas_promo" string="Seas Promo" style="width:55%;"/>
                                 <field name="seas_promo" style="width:40%;" />
                                 <label for="catalog_pg" string="Catalog Pg #" style="width:55%;"/>
@@ -342,64 +449,65 @@
                                 <field name="keep_sale_history" style="width:40%;" />
                                 <label for="keep_promo_history" string="Keep Promo History?" style="width:55%;"/>
                                 <field name="keep_promo_history" style="width:40%;" />
-                                <label for="amt_of_purchase_hist" string="Amt of Purchase Hist" style="width:55%;"/>
-                                <field name="amt_of_purchase_hist" style="width:40%;" />
+<!--                                <label for="amt_of_purchase_hist" string="Amt of Purchase Hist" style="width:55%;"/>-->
+<!--                                <field name="amt_of_purchase_hist" style="width:40%;" />-->
                                 <label for="exit_sale_history" string="Exit Sale History?" style="width:55%;"/>
                                 <field name="exit_sale_history" style="width:40%;" />
+                                 <label for="ext_desc_groups" string="Ext Desc Group" style="width:55%;"/>
+                                <field name="ext_desc_groups" style="width:40%;" />
+                                <label for="web" string="Web?" style="width:55%;"/>
+                                <field name="web" style="width:40%;" />
+                                <label for="lot_item" string="Lot Item?" style="width:55%;"/>
+                                <field name="lot_item" style="width:40%;" />
+                                <label for="promt_for_transfer" string="Prompt For Transfer" style="width:55%;"/>
+                                <field name="promt_for_transfer" style="width:40%;" />
+                                <label for="multi_selling_user_code" string="Multi Selling User Code" style="width:55%;"/>
+                                <field name="multi_selling_user_code" style="width:40%;" />
                         </div>
-                            <div style="padding:2% !important;width:25%;">
-                                <label for="ext_desc_groups" string="Ext Desc Group" style="width:50%;"/>
-                                <field name="ext_desc_groups" style="width:42%;" />
-                                <label for="web" string="Web?" style="width:70%;"/>
-                                <field name="web" style="width:20%;" />
-                                <label for="lot_item" string="Lot Item?" style="width:70%;"/>
-                                <field name="lot_item" style="width:20%;" />
-                                <label for="promt_for_transfer" string="Prompt For Transfer" style="width:70%;"/>
-                                <field name="promt_for_transfer" style="width:20%;" />
-                                <label for="multi_selling_user_code" string="Multi Selling User Code" style="width:70%;"/>
-                                <field name="multi_selling_user_code" style="width:20%;" />
-                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top:20px;">
-                                        <div style="margin-left:10px;">
-                                            <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">User Codes</h6>
-                                            <br />
+<!--                            <div style="padding:2% !important;width:25%;">-->
 
-                                            <label for="user" string="User" style="width:50%;"/>
-                                            <field name="user" style="width: 7%;margin-right:3px;" />
-                                            <field name="expanded_user_one" style="width: 7%;margin-right:3px;"  />
-                                            <field name="expanded_user_two" style="width: 7%;margin-right:3px;"  />
-                                            <field name="expanded_user_three" style="width: 7%;margin-right:3px;"  />
-                                       </div>
+<!--                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top:20px;">-->
+<!--                                        <div style="margin-left:10px;">-->
+<!--                                            <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">User Codes</h6>-->
+<!--                                            <br />-->
 
-                                        <div style="margin-left:10px;">
-                                            <label for="expanded_a" string="Expanded A" style="width:50%;"/>
-                                            <field name="expanded_a" style="width: 7%;margin-right:3px;" />
-                                            <field name="expanded_a_one" style="width: 7%;margin-right:3px;"  />
-                                            <field name="expanded_a_two" style="width: 7%;margin-right:3px;"  />
-                                            <field name="expanded_a_three" style="width: 7%;margin-right:3px;"  />
-                                       </div>
-                                        <div style="margin-left:10px;">
-                                            <label for="expanded_b" string="Expanded B" style="width:50%;"/>
-                                            <field name="expanded_b" style="width: 7%;margin-right:3px;" />
-                                            <field name="expanded_b_one" style="width: 7%;margin-right:3px;"  />
-                                            <field name="expanded_b_two" style="width: 7%;margin-right:3px;"  />
-                                            <field name="expanded_b_three" style="width: 7%;margin-right:3px;"  />
-                                       </div>
-                                        <div style="margin-left:10px;">
-                                            <label for="expanded_c" string="Expanded C" style="width:50%;"/>
-                                            <field name="expanded_c" style="width: 7%;margin-right:3px;" />
-                                            <field name="expanded_c_one" style="width: 7%;margin-right:3px;"  />
-                                            <field name="expanded_c_two" style="width: 7%;margin-right:3px;"  />
-                                            <field name="expanded_c_three" style="width: 7%;margin-right:3px;"  />
-                                       </div>
-                                        <div style="margin-left:10px;">
-                                            <label for="expanded_d" string="Expanded D" style="width:50%;"/>
-                                            <field name="expanded_d" style="width: 7%;margin-right:3px;" />
-                                            <field name="expanded_d_one" style="width: 7%;margin-right:3px;"  />
-                                            <field name="expanded_d_two" style="width: 7%;margin-right:3px;"  />
-                                            <field name="expanded_d_three" style="width: 7%;margin-right:3px;"  />
-                                       </div>
-                               </div>
-                        </div>
+<!--                                            <label for="user" string="User" style="width:50%;"/>-->
+<!--                                            <field name="user" style="width: 7%;margin-right:3px;" />-->
+<!--                                            <field name="expanded_user_one" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="expanded_user_two" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="expanded_user_three" style="width: 7%;margin-right:3px;"  />-->
+<!--                                       </div>-->
+
+<!--                                        <div style="margin-left:10px;">-->
+<!--                                            <label for="expanded_a" string="Expanded A" style="width:50%;"/>-->
+<!--                                            <field name="expanded_a" style="width: 7%;margin-right:3px;" />-->
+<!--                                            <field name="expanded_a_one" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="expanded_a_two" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="expanded_a_three" style="width: 7%;margin-right:3px;"  />-->
+<!--                                       </div>-->
+<!--                                        <div style="margin-left:10px;">-->
+<!--                                            <label for="expanded_b" string="Expanded B" style="width:50%;"/>-->
+<!--                                            <field name="expanded_b" style="width: 7%;margin-right:3px;" />-->
+<!--                                            <field name="expanded_b_one" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="expanded_b_two" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="expanded_b_three" style="width: 7%;margin-right:3px;"  />-->
+<!--                                       </div>-->
+<!--                                        <div style="margin-left:10px;">-->
+<!--                                            <label for="expanded_c" string="Expanded C" style="width:50%;"/>-->
+<!--                                            <field name="expanded_c" style="width: 7%;margin-right:3px;" />-->
+<!--                                            <field name="expanded_c_one" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="expanded_c_two" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="expanded_c_three" style="width: 7%;margin-right:3px;"  />-->
+<!--                                       </div>-->
+<!--                                        <div style="margin-left:10px;">-->
+<!--                                            <label for="expanded_d" string="Expanded D" style="width:50%;"/>-->
+<!--                                            <field name="expanded_d" style="width: 7%;margin-right:3px;" />-->
+<!--                                            <field name="expanded_d_one" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="expanded_d_two" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="expanded_d_three" style="width: 7%;margin-right:3px;"  />-->
+<!--                                       </div>-->
+<!--                               </div>-->
+<!--                        </div>-->
                         </div>
 
                     </page>
@@ -438,10 +546,10 @@
                             </div>
                             <div class="row" col="2" style="padding:2% !important;width:50%;">
                                 <div class="row" col="2" style="width:100%;">
-                            <div style="padding:15px; !important;width:50%;">
-                                    <label for="to_date" string="To Date" style="padding:2% !important;width:50%;"/>
-                                    <field name="to_date" style="width:40%;" />
-                            </div>
+<!--                            <div style="padding:15px; !important;width:50%;">-->
+<!--                                    <label for="to_date" string="To Date" style="padding:2% !important;width:50%;"/>-->
+<!--                                    <field name="to_date" style="width:40%;" />-->
+<!--                            </div>-->
 
                             <div style="padding:15px; !important;width:50%;">
                                     <label for="last_per" string="Last Per" style="padding:2% !important;width:50%;"/>
@@ -529,10 +637,10 @@
                                 <field name="last_year_gp" style="width:25%;" />
                                     <label for="last_year_prime_vend" string="Prime Vend" style="width:70%;"/>
                                 <field name="last_year_prime_vend" style="width:25%;" />
-                                <label for="last_year_other_purchase" string="Other Purchases" style="width:70%;"/>
-                                <field name="last_year_other_purchase" style="width:25%;" />
-                                <label for="last_year_promo_units" string="Promo Units" style="width:70%;"/>
-                                <field name="last_year_promo_units" style="width:25%;margin-bottom: 10px;" />
+<!--                                <label for="last_year_other_purchase" string="Other Purchases" style="width:70%;"/>-->
+<!--                                <field name="last_year_other_purchase" style="width:25%;" />-->
+<!--                                <label for="last_year_promo_units" string="Promo Units" style="width:70%;"/>-->
+<!--                                <field name="last_year_promo_units" style="width:25%;margin-bottom: 10px;" />-->
                                 </div>
 
                                 </div>
@@ -610,10 +718,10 @@
                                     <field name="vendor_name" string="Vendor Name" />
                                     <field name="vendor_part" string="Vendor Part #"  />
                                     <field name="vendor_order_multi" string="Vendor Order Multiple" />
-                                    <field name="min_od_ord_mult" string="Min # of Order Multiples"   />
-                                    <field name="unit_to_order_by" string="Unit to Order By"   />
+<!--                                    <field name="min_od_ord_mult" string="Min # of Order Multiples"   />-->
+<!--                                    <field name="unit_to_order_by" string="Unit to Order By"   />-->
                                     <field name="vend_cost" string="Vendor Cost" />
-                                    <field name="po_back_order" string="P.O. Backorder" />
+<!--                                    <field name="po_back_order" string="P.O. Backorder" />-->
                                     <field name="last_pur_cost" string="Last Purchase Cost"  />
                                     <field name="last_cost_change" string="Last Cost Change"  />
                                     <field name="last_pur_qty" string="Last Purchase  Qty" />
@@ -631,11 +739,11 @@
 
                     <page  autofocus="1" string="Load">
                         <div class="row" col="4" style="width:100%;">
-                            <div style="padding:1% !important;width:27%;" string="Quantites">
+                            <div style="padding:1% !important;width:24%;" string="Quantites">
                                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Quantites/ Prices</h6>
                                     <br />
-                                    <div style="margin-left:10px;margin-bottom:50px;">
+                                    <div style="margin-left:10px;margin-bottom:125px;">
                                         <label for="load_qut_on_hant" string="Qty On Hand" style="width:40%;"/>
                                         <field name="load_qut_on_hant" style="width:40%;" />
                                         <label for="load_retail" string="Retail" style="width:40%;"/>
@@ -650,63 +758,63 @@
                                         <field name="load_desired_gp" style="width:40%;" />
                                         <label for="load_repl_gp" string="Repl GP" style="width:40%;"/>
                                         <field name="load_repl_gp" style="width:40%;" />
-                                        <label for="load_order_point" string="Order Point" style="width:40%;"/>
-                                        <field name="load_order_point" style="width:40%;" />
-                                        <label for="max_stk_level" string="Max Stk Level" style="width:40%;"/>
-                                        <field name="max_stk_level" style="width:40%;" />
+<!--                                        <label for="load_order_point" string="Order Point" style="width:40%;"/>-->
+<!--                                        <field name="load_order_point" style="width:40%;" />-->
+<!--                                        <label for="max_stk_level" string="Max Stk Level" style="width:40%;"/>-->
+<!--                                        <field name="max_stk_level" style="width:40%;" />-->
                                     </div>
                                 </div>
                             </div>
-                            <div style="padding:1% !important;width:23%;" >
-                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">User Codes</h6>
-                                    <br />
-                                    <div style="margin-bottom:160px;">
-                                        <div style="margin-left:10px;">
-                                            <label for="load_user" string="User" style="width:50%;"/>
-                                            <field name="load_user" style="width: 7%;margin-right:3px;" />
-                                            <field name="load_expanded_user_one" style="width: 7%;margin-right:3px;"  />
-                                            <field name="load_expanded_user_two" style="width: 7%;margin-right:3px;"  />
-                                            <field name="load_expanded_user_three" style="width: 7%;margin-right:3px;"  />
-                                       </div>
+<!--                            <div style="padding:1% !important;width:23%;" >-->
+<!--                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">-->
+<!--                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">User Codes</h6>-->
+<!--                                    <br />-->
+<!--                                    <div style="margin-bottom:160px;">-->
+<!--                                        <div style="margin-left:10px;">-->
+<!--                                            <label for="load_user" string="User" style="width:50%;"/>-->
+<!--                                            <field name="load_user" style="width: 7%;margin-right:3px;" />-->
+<!--                                            <field name="load_expanded_user_one" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="load_expanded_user_two" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="load_expanded_user_three" style="width: 7%;margin-right:3px;"  />-->
+<!--                                       </div>-->
 
-                                        <div style="margin-left:10px;">
-                                            <label for="load_expanded_a" string="Expanded A" style="width:50%;"/>
-                                            <field name="load_expanded_a" style="width: 7%;margin-right:3px;" />
-                                            <field name="load_expanded_a_one" style="width: 7%;margin-right:3px;"  />
-                                            <field name="load_expanded_a_two" style="width: 7%;margin-right:3px;"  />
-                                            <field name="load_expanded_a_three" style="width: 7%;margin-right:3px;"  />
-                                       </div>
-                                        <div style="margin-left:10px;">
-                                            <label for="load_expanded_b" string="Expanded B" style="width:50%;"/>
-                                            <field name="load_expanded_b" style="width: 7%;margin-right:3px;" />
-                                            <field name="load_expanded_b_one" style="width: 7%;margin-right:3px;"  />
-                                            <field name="load_expanded_b_two" style="width: 7%;margin-right:3px;"  />
-                                            <field name="load_expanded_b_three" style="width: 7%;margin-right:3px;"  />
-                                       </div>
-                                        <div style="margin-left:10px;">
-                                            <label for="load_expanded_c" string="Expanded C" style="width:50%;"/>
-                                            <field name="load_expanded_c" style="width: 7%;margin-right:3px;" />
-                                            <field name="load_expanded_c_one" style="width: 7%;margin-right:3px;"  />
-                                            <field name="load_expanded_c_two" style="width: 7%;margin-right:3px;"  />
-                                            <field name="load_expanded_c_three" style="width: 7%;margin-right:3px;"  />
-                                       </div>
-                                        <div style="margin-left:10px;">
-                                            <label for="load_expanded_d" string="Expanded D" style="width:50%;"/>
-                                            <field name="load_expanded_d" style="width: 7%;margin-right:3px;" />
-                                            <field name="load_expanded_d_one" style="width: 7%;margin-right:3px;"  />
-                                            <field name="load_expanded_d_two" style="width: 7%;margin-right:3px;"  />
-                                            <field name="load_expanded_d_three" style="width: 7%;margin-right:3px;"  />
+<!--                                        <div style="margin-left:10px;">-->
+<!--                                            <label for="load_expanded_a" string="Expanded A" style="width:50%;"/>-->
+<!--                                            <field name="load_expanded_a" style="width: 7%;margin-right:3px;" />-->
+<!--                                            <field name="load_expanded_a_one" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="load_expanded_a_two" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="load_expanded_a_three" style="width: 7%;margin-right:3px;"  />-->
+<!--                                       </div>-->
+<!--                                        <div style="margin-left:10px;">-->
+<!--                                            <label for="load_expanded_b" string="Expanded B" style="width:50%;"/>-->
+<!--                                            <field name="load_expanded_b" style="width: 7%;margin-right:3px;" />-->
+<!--                                            <field name="load_expanded_b_one" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="load_expanded_b_two" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="load_expanded_b_three" style="width: 7%;margin-right:3px;"  />-->
+<!--                                       </div>-->
+<!--                                        <div style="margin-left:10px;">-->
+<!--                                            <label for="load_expanded_c" string="Expanded C" style="width:50%;"/>-->
+<!--                                            <field name="load_expanded_c" style="width: 7%;margin-right:3px;" />-->
+<!--                                            <field name="load_expanded_c_one" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="load_expanded_c_two" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="load_expanded_c_three" style="width: 7%;margin-right:3px;"  />-->
+<!--                                       </div>-->
+<!--                                        <div style="margin-left:10px;">-->
+<!--                                            <label for="load_expanded_d" string="Expanded D" style="width:50%;"/>-->
+<!--                                            <field name="load_expanded_d" style="width: 7%;margin-right:3px;" />-->
+<!--                                            <field name="load_expanded_d_one" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="load_expanded_d_two" style="width: 7%;margin-right:3px;"  />-->
+<!--                                            <field name="load_expanded_d_three" style="width: 7%;margin-right:3px;"  />-->
 
-                                       </div>
-                                        </div>
-                               </div>
-                            </div>
-                            <div style="padding:1% !important;width:27%;" >
+<!--                                       </div>-->
+<!--                                        </div>-->
+<!--                               </div>-->
+<!--                            </div>-->
+                            <div style="padding:1% !important;width:26%;" >
                                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Purchasing</h6>
                                     <br />
-                                    <div style="margin-left:10px;margin-bottom:20px;">
+                                    <div style="margin-left:10px;margin-bottom:100px;">
                                         <label for="load_stocking_um" string="Stocking U/M" style="width:50%;"/>
                                         <field name="load_stocking_um"  style="width:40%;margin-left:10px;" />
                                         <label for="load_standard_pack" string="Standard Pack" style="width:54%;"/>
@@ -715,8 +823,8 @@
                                         <field name="load_order_multiple"  style="width:40%;" />
                                         <label for="load_purchase_um" string="Purchasing U/M" style="width:54%;"/>
                                         <field name="load_purchase_um"  style="width:40%;" />
-                                        <label for="order_indicator" string="Order Indicator" style="width:54%;"/>
-                                        <field name="order_indicator"  style="width:40%;" />
+<!--                                        <label for="order_indicator" string="Order Indicator" style="width:54%;"/>-->
+<!--                                        <field name="order_indicator"  style="width:40%;" />-->
                                         <div>
                                         <label for="load_weight" string="Weight" style="width:52%;"/>
                                         <field name="load_weight"  style="width: 18%;margin-right:2px;" />
@@ -728,8 +836,8 @@
                                         <field name="load_secondary_vend"  style="width:40%;" />
                                         <label for="load_vend_stk" string="Vend Stk #" style="width:54%;"/>
                                         <field name="load_vend_stk"  style="width:40%;"  />
-                                        <label for="load_po_season" string="PO Season" style="width:54%;"/>
-                                        <field name="load_po_season"  style="width:40%;" />
+<!--                                        <label for="load_po_season" string="PO Season" style="width:54%;"/>-->
+<!--                                        <field name="load_po_season"  style="width:40%;" />-->
                                     </div>
                                 </div>
                             </div>
@@ -737,77 +845,122 @@
                                     <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                         <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Misc Codes</h6>
                                         <br />
-                                        <div style="margin-left:10px;margin-bottom:50px;">
-                                            <label for="load_print_label" string="Print Labels" style="width:50%;"/>
+                                        <div style="margin-left:10px;margin-bottom:155px;">
+                                            <label for="load_print_label" string="Print Labels" style="width:60%;"/>
                                             <field name="load_print_label" style="width:30%;" />
-                                            <label for="load_discountable" string="Discountable" style="width:50%;"/>
+                                            <label for="load_discountable" string="Discountable" style="width:60%;"/>
                                             <field name="load_discountable" style="width:30%;"/>
-                                            <label for="load_product_code" string="Product Code" style="width:50%;"/>
+                                            <label for="load_product_code" string="Product Code" style="width:60%;"/>
                                             <field name="load_product_code" style="width:30%;"  />
-                                            <label for="load_tax_status" string="Tax Status" style="width:50%;"/>
+                                            <label for="load_tax_status" string="Tax Status" style="width:60%;"/>
                                             <field name="load_tax_status" style="width:30%;" />
-                                            <label for="load_special_record" string="Special Record" style="width:50%;"/>
+                                            <label for="load_special_record" string="Special Record" style="width:60%;"/>
                                             <field name="load_special_record" style="width:30%;" />
-                                            <label for="load_cataloh_pg" string="Catalog PG#" style="width:50%;"/>
+                                            <label for="load_cataloh_pg" string="Catalog PG#" style="width:60%;"/>
                                             <field name="load_cataloh_pg" style="width:30%;" />
-                                            <label for="load_seas_sales_code" string="Seas Sales Code" style="width:50%;"/>
-                                            <field name="load_seas_sales_code" style="width:30%;" />
-                                            <label for="load_location" string="Location" style="width:50%;"/>
-                                            <field name="load_location" style="width:30%;" />
-                                            <label for="load_pricing_um" string="Pricing U/M" style="width:50%;"/>
-                                            <field name="load_pricing_um" style="width:30%;" />
+<!--                                            <label for="load_seas_sales_code" string="Seas Sales Code" style="width:50%;"/>-->
+<!--                                            <field name="load_seas_sales_code" style="width:30%;" />-->
+<!--                                            <label for="load_location" string="Location" style="width:50%;"/>-->
+<!--                                            <field name="load_location" style="width:30%;" />-->
+<!--                                            <label for="load_pricing_um" string="Pricing U/M" style="width:50%;"/>-->
+<!--                                            <field name="load_pricing_um" style="width:30%;" />-->
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </page>
-                    <page  autofocus="1" string="Misc">
-                        <div class="row" col="4" style="width:100%;">
-
-                            <div style="padding:2% !important;width:30%;" string="Quantites">
-                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Item Dimensions</h6>
-                                    <br />
-
-                                <label for="height" string="Height(inches)" style="width:40%;"/>
+                                                        <div style="padding:1% !important;width:27%;" >
+                                    <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-bottom:10px;">
+                                        <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Item Dimensions</h6>
+                                        <br />
+                                        <div style="margin-left:10px;">
+                                <label for="height" string="Height(inches)" style="width:50%;"/>
                                 <field name="height" style="width:40%;" />
-                                <label for="width" string="Width(inches)" style="width:40%;"/>
+                                <label for="width" string="Width(inches)" style="width:50%;"/>
                                 <field name="width" style="width:40%;"/>
-                                <label for="depth" string="Depth(inches)" style="width:40%;"/>
+                                <label for="depth" string="Depth(inches)" style="width:50%;"/>
                                 <field name="depth" style="width:40%;"  />
                                 <div>
-                                    <label for="weight_mic" string="Weight" style="width:40%;"/>
+                                    <label for="weight_mic" string="Weight" style="width:50%;"/>
                                     <field name="weight_mic" style="width: 20%;margin-right:7px;" />
                                     <field name="weight_mic_unit" style="width: 20%"  />
                                 </div>
                                 <div>
-                                    <label for="cubes" string="Cubes" style="width:40%;"/>
+                                    <label for="cubes" string="Cubes" style="width:50%;"/>
                                     <field name="cubes" style="width: 20%;margin-right:7px;" />
                                     <field name="cubes_unit" style="width: 20%;margin-bottom:15px;"  />
                                 </div>
-                                <br />
-                            </div>
-                            </div>
-                            <div style="padding:2% !important;width:32%;" string="Stock Levels">
-                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                                     <br />
-                                <label for="ebt" string="EBT/FS Item?" style="width:50%;"/>
+<!--                                            <label for="load_seas_sales_code" string="Seas Sales Code" style="width:50%;"/>-->
+<!--                                            <field name="load_seas_sales_code" style="width:30%;" />-->
+<!--                                            <label for="load_location" string="Location" style="width:50%;"/>-->
+<!--                                            <field name="load_location" style="width:30%;" />-->
+<!--                                            <label for="load_pricing_um" string="Pricing U/M" style="width:50%;"/>-->
+<!--                                            <field name="load_pricing_um" style="width:30%;" />-->
+                                    </div>
+                                    </div>
+                                <div style="margin-left:20px;">
+                                        <label for="ebt" string="EBT/FS Item?" style="width:70%;"/>
                                 <field name="ebt" style="width:25%;" />
-                                <label for="fsa" string="FSA/HBC Item?" style="width:50%;"/>
+                                <label for="fsa" string="FSA/HBC Item?" style="width:70%;"/>
                                 <field name="fsa" style="width:25%;" />
-                                <label for="restricted_houres" string="Restricted Houres" style="width:50%;"/>
+                                <label for="restricted_houres" string="Restricted Houres" style="width:70%;"/>
                                 <field name="restricted_houres"  style="width:25%;" />
-                                <label for="age_restrict" string="Age/Selling Restricted " style="width:50%;"/>
+                                <label for="age_restrict" string="Age/Selling Restricted " style="width:70%;"/>
                                 <field name="age_restrict" style="width:25%;" />
-                                <label for="special_fee_code" string="Special Fee Code" style="width:50%;"/>
+                                <label for="special_fee_code" string="Special Fee Code" style="width:70%;"/>
                                 <field name="special_fee_code" style="width:25%;" />
-                                <label for="weighable" string="Weighable?" style="width:50%;"/>
+                                <label for="weighable" string="Weighable?" style="width:70%;"/>
                                 <field name="weighable" style="width:25%;margin-bottom: 12px;" />
-
                                 </div>
-                            </div>
+                                                        </div>
+
                         </div>
                     </page>
+<!--                    <page  autofocus="1" string="Misc">-->
+<!--                        <div class="row" col="4" style="width:100%;">-->
+
+<!--                            <div style="padding:2% !important;width:30%;" string="Quantites">-->
+<!--                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">-->
+<!--                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Item Dimensions</h6>-->
+<!--                                    <br />-->
+
+<!--                                <label for="height" string="Height(inches)" style="width:40%;"/>-->
+<!--                                <field name="height" style="width:40%;" />-->
+<!--                                <label for="width" string="Width(inches)" style="width:40%;"/>-->
+<!--                                <field name="width" style="width:40%;"/>-->
+<!--                                <label for="depth" string="Depth(inches)" style="width:40%;"/>-->
+<!--                                <field name="depth" style="width:40%;"  />-->
+<!--                                <div>-->
+<!--                                    <label for="weight_mic" string="Weight" style="width:40%;"/>-->
+<!--                                    <field name="weight_mic" style="width: 20%;margin-right:7px;" />-->
+<!--                                    <field name="weight_mic_unit" style="width: 20%"  />-->
+<!--                                </div>-->
+<!--                                <div>-->
+<!--                                    <label for="cubes" string="Cubes" style="width:40%;"/>-->
+<!--                                    <field name="cubes" style="width: 20%;margin-right:7px;" />-->
+<!--                                    <field name="cubes_unit" style="width: 20%;margin-bottom:15px;"  />-->
+<!--                                </div>-->
+<!--                                <br />-->
+<!--                            </div>-->
+<!--                            </div>-->
+<!--                            <div style="padding:2% !important;width:32%;" string="Stock Levels">-->
+<!--                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">-->
+<!--                                     <br />-->
+<!--                                <label for="ebt" string="EBT/FS Item?" style="width:50%;"/>-->
+<!--                                <field name="ebt" style="width:25%;" />-->
+<!--                                <label for="fsa" string="FSA/HBC Item?" style="width:50%;"/>-->
+<!--                                <field name="fsa" style="width:25%;" />-->
+<!--                                <label for="restricted_houres" string="Restricted Houres" style="width:50%;"/>-->
+<!--                                <field name="restricted_houres"  style="width:25%;" />-->
+<!--                                <label for="age_restrict" string="Age/Selling Restricted " style="width:50%;"/>-->
+<!--                                <field name="age_restrict" style="width:25%;" />-->
+<!--                                <label for="special_fee_code" string="Special Fee Code" style="width:50%;"/>-->
+<!--                                <field name="special_fee_code" style="width:25%;" />-->
+<!--                                <label for="weighable" string="Weighable?" style="width:50%;"/>-->
+<!--                                <field name="weighable" style="width:25%;margin-bottom: 12px;" />-->
+
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </page>-->
                 </notebook>
             </sheet>
         </form>
@@ -884,7 +1037,7 @@
                 <field name="instore" string="In Stores"/>
                 <field name="dept" string="Dept"/>
                 <field name="class_inven" string="Class"/>
-                <field name="fineline" string="Fineline"/>
+<!--                <field name="fineline" string="Fineline"/>-->
                 <field name="prime_ved" string="Prime Vend"/>
                 <field name="mfg_vend" string="Mfg Vend"/>
 

@@ -38,17 +38,19 @@ class Customer(models.Model):
     # tax_code                = fields.Many2one("", string='Tax Code', ondelete='restrict',help='Exportable')
     # salesperson             = fields.Many2one("", string='Salesperson', ondelete='restrict',help='Exportable')
     # terms_code              = fields.Many2one("", string='Terms Code', ondelete='restrict',help='Exportable')
+    terms_code              = fields.Many2one('terms',default=lambda self: self.env['terms'].search([('name','=','Net 20')], limit=1))
     category_plan_id        = fields.Many2one('category')
     tax_code                = fields.Selection([('yes','Y'),('no','N')], "Tax Code", default='yes',help='Exportable')
     salesperson             = fields.Selection([('yes','Y'),('no','N')], "Salesperson", default='no',help='Exportable')
-    terms_code              = fields.Selection([('yes','Y'),('no','N')], "Terms Code", default='no')
+    # terms_code              = fields.Selection([('yes','Y'),('no','N')], "Terms Code", default='no')
     pure_archive_invoices   = fields.Char('Pure Archive Invoices',help='Exportable')
 
     po_required             = fields.Selection([('yes','Y'),('no','N')], "PO Required", default='no',help='Exportable')
     default_po              = fields.Char('Default PO',help='Exportable')
     
-    balance_method          = fields.Selection([('yes','0'),('no','0')], "Balance Method", default='no')
     charge_allowed          = fields.Selection([('yes','Y'),('no','N')], "Charge Allowed", default='yes',help='Exportable')
+    balance_method          = fields.Many2one('balance',default=lambda self: self.env['balance'].search([('name','=','O')]), limit=1)
+
     std_sell_price          = fields.Selection([('yes','R'),('no','R')], "Std Sell Price/POS", default='no',help='Exportable')
     finace_charges          = fields.Selection([('yes','Y'),('no','N')], "Finace Charges", default='no')
     store_acct_opened_id    = fields.Many2one('res.company')
@@ -351,6 +353,23 @@ class Names(models.Model):
     fax                     = fields.Char('Fax',help='Exportable')
     pager                   = fields.Char('Pager',help='Exportable')
     email                   = fields.Char('Email',help='Exportable')
+
+
+class BalanceMethod(models.Model):
+    '''
+        The class is used to create a Many2one relation with the balance_method field in customer class.
+    '''
+    _name = 'balance'
+
+    name                    = fields.Char('Balance Method',help='Exportable')
+
+class Terms(models.Model):
+    '''
+        The class is used to create a Many2one relation with the terms_code field in customer class.
+    '''
+    _name = 'terms'
+
+    name                    = fields.Char('Terms code',help='Exportable')
 
 class Job(models.Model):
     '''

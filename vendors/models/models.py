@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 import re
 
 
@@ -17,11 +17,12 @@ class vendors(models.Model):
     # main tab fields
     vendor = fields.Char('Vendor')
     vendor_name = fields.Char('Name')
-    sort_name = fields.Selection([],'Sort Name')
-    pay_to_vendor = fields.Selection([],'Pay To Vendor')
-    pay_to_vendor2 = fields.Selection([], 'Pay to Vendor')
+    sort_name = fields.Many2one('res.partner','Sort Name')
+    pay_to_vendor = fields.Many2one('res.partner','Pay To Vendor')
+    pay_to_vendor2 = fields.Many2one('res.partner', 'Pay to Vendor')
     phone = fields.Char('Phone')
     phone2 = fields.Char('Alternate Phone')
+    country_id = fields.Many2one('res.country', string='Country', ondelete='restrict', default=lambda self: self.env.company.country_id)
     fax = fields.Char('Fax')
     contact = fields.Char('Contact')
     assignee = fields.Char('Assigned Customer')
@@ -60,11 +61,11 @@ class vendors(models.Model):
     annual_dollars = fields.Monetary('Annual Dollars')
     annual_units = fields.Float('Annual Units')
     lead_time = fields.Char('Lead Time')
-    update_lead_time = fields.Selection([],'Update Lead Time')
-    backorder = fields.Selection([], "Backorder")
-    print_date_due = fields.Selection([], "Print Date Due")
-    freight_policy = fields.Selection([],'Fraight Policy')
-    drop_ship = fields.Selection([], 'Drop/Ship')
+    update_lead_time = fields.Selection([('yes','Y'),('no','N')],'Update Lead Time')
+    backorder = fields.Selection([('yes','Y'),('no','N')], "Backorder")
+    print_date_due = fields.Selection([('yes','Y'),('no','N')], "Print Date Due")
+    freight_policy = fields.Selection([('yes','Y'),('no','N')],'Fraight Policy')
+    drop_ship = fields.Selection([('yes','Y'),('no','N')], 'Drop/Ship')
     ship_via = fields.Char('Ship Via')
     addertype = fields.Selection([],'Adder Type')
     dropship_certified = fields.Selection([],'Dropship Certified')
@@ -75,7 +76,7 @@ class vendors(models.Model):
     acc_num = fields.Selection([],'Account Number')
     acc_num2 = fields.Selection([],'Account Number')
     auto_distribute = fields.Selection([], 'Auto Distribute')
-    federal_id_type = fields.Selection([], 'Federal ID Type')
+    federal_id_type = fields.Selection([('Federal ID', 'F'), ('Social Security', 'S')], 'Federal ID Type')
     federal_id = fields.Char('Federal ID')
     temp_perm = fields.Selection([], "Temp/Perm")
     category = fields.Selection([], '1099 Category')
@@ -262,13 +263,55 @@ class ContactLines(models.Model):
     name = fields.Char('Name')
     phone = fields.Char('Phone')
     cell = fields.Integer('Cell')
-    fax = fields.Integer('Fax')
+    fax = fields.Char('Fax')
     pager = fields.Char('Pager')
     email = fields.Char('Email')
     title = fields.Char('Title')
     comments = fields.Char('Comments')
     primary = fields.Char('Primary')
     purchase_orders = fields.Char('Purchase Orders')
+
+    # phone number validation 
+    @api.onchange('phone')
+    def _onchange_phone(self):
+        '''
+            validate phone number
+        '''
+        if self.phone:
+            phone   =str(self.phone)
+            letters = re.findall("[^0-9]",phone)
+            for val in letters:
+                phone = phone.replace(val,'')
+            seperator="-"
+            start_group =phone[:3]
+            second_group=phone[3:6]
+            third_group =phone[6:10]
+            start_group += seperator
+            start_group += second_group
+            start_group += seperator
+            start_group += third_group
+            self.phone  = start_group
+
+    # fax number validation 
+    @api.onchange('fax')
+    def _onchange_fax(self):
+        '''
+            validate fax number
+        '''
+        if self.fax:
+            fax   =str(self.fax)
+            letters = re.findall("[^0-9]",fax)
+            for val in letters:
+                fax = fax.replace(val,'')
+            seperator="-"
+            start_group =fax[:3]
+            second_group=fax[3:6]
+            third_group =fax[6:10]
+            start_group += seperator
+            start_group += second_group
+            start_group += seperator
+            start_group += third_group
+            self.fax  = start_group
 
 
 class AccountMove(models.Model):
@@ -293,6 +336,15 @@ class AccountMove(models.Model):
     stmt_disc = fields.Char('Stmt Disc')
     last_pay_date = fields.Date('Last Pay Date')
     invoice_date = fields.Date(string='Doc Date')
+
+
+# class MonthlyStatement(models.AbstractModel):
+#     _inherit = ['account.partner.ledger']
+
+#     @api.model
+#     def _get_report_name(self):
+#         return _('Monthly Statement')
+
 
 
 

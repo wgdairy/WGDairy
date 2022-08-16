@@ -1,7 +1,7 @@
 
 
 .tree_width_summary table {
-  width: 300% !important;
+  width: 250% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(1){
   width: 10% !important;
@@ -13,13 +13,13 @@
   width: 10% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(4){
-  width: 20% !important;
+  width: 15% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(5){
-  width: 20% !important;
+  width: 10% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(6){
-  width: 20% !important;
+  width: 15% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(7){
   width: 10% !important;
@@ -28,30 +28,21 @@
   width: 10% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(9){
-  width: 20% !important;
+  width: 15% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(10){
-  width: 20% !important;
+  width: 15% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(11){
-  width: 20% !important;
+  width: 10% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(12){
-  width: 20% !important;
+  width: 10% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(13){
   width: 10% !important;
 }
 .tree_width_summary table thead > tr > th:nth-child(14){
-  width: 10% !important;
-}
-.tree_width_summary table thead > tr > th:nth-child(15){
-  width: 10% !important;
-}
-.tree_width_summary table thead > tr > th:nth-child(16){
-  width: 10% !important;
-}
-.tree_width_summary table thead > tr > th:nth-child(17){
   width: 10% !important;
 }
 
