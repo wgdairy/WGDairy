@@ -93,15 +93,15 @@
                                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Quantites</h6>
                                     <br />
-                                    <div style="margin-left:15px;margin-bottom:125px;">
+                                    <div style="margin-left:15px;margin-bottom:155px;">
                                 <label for="qut_on_hant" string="Qty On Hand" style="width:50%;"/>
                                 <field name="qut_on_hant" style="width:40%;" />
                                 <label for="commited_qty" string="Commited Qty" style="width:50%;"/>
                                 <field name="commited_qty" style="width:40%;"/>
                                 <label for="qty_on_order" string="Qty On Order" style="width:50%;"/>
                                 <field name="qty_on_order" style="width:40%;"  />
-                                <label for="custbackorder" string="Cust backorder" style="width:50%;"/>
-                                <field name="custbackorder" style="width:40%;" />
+<!--                                <label for="custbackorder" string="Cust backorder" style="width:50%;"/>-->
+<!--                                <field name="custbackorder" style="width:40%;" />-->
 <!--                                <label for="location" string="Location" style="width:50%;"/>-->
 <!--                                <field name="location" style="width:40%;" />-->
 <!--                                <label for="future_order" string="Future Order" style="width:50%;"/>-->
@@ -178,7 +178,7 @@
                                         <label for="last_phy_inv" string="Last Phys Inv" style="width:60%;"/>
                                         <field name="last_phy_inv" style="width:35%;" />
                                         <label for="catalog_date" string="Catalog Date" style="width:60%;"/>
-                                        <field name="catalog_date" style="width:35%;" />
+                                        <field name="catalog_date" style="width:35%;" widget="url"/>
 
                                 <label for="fixed_order_qty" string="Fixed Order QTY" style="width:60%;"/>
                                 <field name="fixed_order_qty" style="width:35%;" />
@@ -322,7 +322,7 @@
 <!--                            </div>-->
 
                             <div style="padding:2% !important;width:28%;margin-left:15px;">
-                                <label for="desiered_gp" string="Desiered GP %" style="width:50%;"/>
+                                <label for="desiered_gp" string="Desired GP %" style="width:50%;"/>
                                 <field name="desiered_gp" style="width:40%;"  />
                                 <label for="retail_old" string="Retail(old)" style="width:50%;"/>
                                 <field name="retail_old" style="width:40%;"  />
@@ -596,8 +596,8 @@
                                     <field name="promo_sale" style="width:40%;" />
                                     <label for="promo_cost" string="Promo Cost" style="width:50%;"/>
                                     <field name="promo_cost" style="width:40%;" />
-                                    <label for="prime_vend_history" string="Prime Vend" style="width:50%;"/>
-                                    <field name="prime_vend_history" style="width:40%;" />
+<!--                                    <label for="prime_vend_history" string="Prime Vend" style="width:50%;"/>-->
+<!--                                    <field name="prime_vend_history" style="width:40%;" />-->
                                     <label for="other_purch" string="Other Purch" style="width:50%;"/>
                                     <field name="other_purch" style="width:40%;" />
                                     <label for="kit_sales_unit" string="Kit Sales Unit" style="width:50%;"/>
@@ -635,8 +635,8 @@
                                 <field name="last_year_avg_cost" style="width:25%;" />
                                 <label for="last_year_gp" string="GP % 38.54 $" style="width:70%;"/>
                                 <field name="last_year_gp" style="width:25%;" />
-                                    <label for="last_year_prime_vend" string="Prime Vend" style="width:70%;"/>
-                                <field name="last_year_prime_vend" style="width:25%;" />
+<!--                                    <label for="last_year_prime_vend" string="Prime Vend" style="width:70%;"/>-->
+<!--                                <field name="last_year_prime_vend" style="width:25%;" />-->
 <!--                                <label for="last_year_other_purchase" string="Other Purchases" style="width:70%;"/>-->
 <!--                                <field name="last_year_other_purchase" style="width:25%;" />-->
 <!--                                <label for="last_year_promo_units" string="Promo Units" style="width:70%;"/>-->
@@ -658,7 +658,7 @@
 
 
                     </page>
-                    <page string="Note">
+                    <page string="Notes">
                         <div style="padding:15px; !important;">
                         <div style="padding:2% !important;border:solid #e6e5e5 0.1px;">
                         <div class="row" col="3" style="width:100%;">
@@ -836,6 +836,8 @@
                                         <field name="load_secondary_vend"  style="width:40%;" />
                                         <label for="load_vend_stk" string="Vend Stk #" style="width:54%;"/>
                                         <field name="load_vend_stk"  style="width:40%;"  />
+                                        <label for="prime_vend_history" string="Prime Vend" style="width:54%;"/>
+                                        <field name="prime_vend_history" style="width:40%;" />
 <!--                                        <label for="load_po_season" string="PO Season" style="width:54%;"/>-->
 <!--                                        <field name="load_po_season"  style="width:40%;" />-->
                                     </div>

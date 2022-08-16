@@ -100,7 +100,7 @@ class Customer(models.Model):
 # notebook page3 Dept
     store                   = fields.Selection([('1','1'),('2','2')], "Store", default='1',help='Exportable')
     std_sell_prices         = fields.Integer("Std Sell Price")
-    delete_all              = fields.Boolean(string = "Delete All Department History?", required = True)
+    delete_all              = fields.Boolean(string = "Delete All Department History?")
     customer_sales_summary  = fields.Char('Customer Sales Summary',help='Exportable')
 
     credit_ids              = fields.One2many('credit', 'customer_ids',string=" ")  

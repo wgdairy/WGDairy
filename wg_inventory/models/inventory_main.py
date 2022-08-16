@@ -57,7 +57,7 @@ class Inventorys(models.Model):
     last_sale = fields.Date(string="Last Sale")
     last_receipt = fields.Date(string="Last Receipt")
     last_phy_inv = fields.Date(string="Last Phys Inv")
-    catalog_date = fields.Date(string="Catalog Date")
+    catalog_date = fields.Char(string="Catalog Date")
     fixed_order_qty = fields.Float('Fixed Order QTY')
     altemate_ref = fields.Char('Altemate Ref')
     lost_sale = fields.Char('Lost Sale #/Units')  # Lost Sale #/Units
@@ -71,8 +71,8 @@ class Inventorys(models.Model):
     retail_old = fields.Float('Retail')
     catalog_retail = fields.Float('Catalog Retail')
     market_cost = fields.Char('Market Cost')
-    synchronize_price = fields.Float('Synchronize Price')
-    synchronize_cost = fields.Float('Synchronize Cost')
+    synchronize_price = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
+    synchronize_cost = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
     repl_chg = fields.Date(string="Repl Chg")
     retail_chg = fields.Date(string="Retail Chg")
     selling = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Selling")
@@ -196,7 +196,7 @@ class Inventorys(models.Model):
     promo_sale = fields.Float()
     promo_cost = fields.Float()
     #doubt in prime vend
-    prime_vend_history = fields.Char()
+    prime_vend_history = fields.Many2one('res.partner',ondelete='restrict', index=True,)
     other_purch = fields.Char()
     kit_sales_unit = fields.Char()
     kit_sale = fields.Char()

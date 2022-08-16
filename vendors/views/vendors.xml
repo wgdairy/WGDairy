@@ -41,10 +41,10 @@
                 </div>
                 
             <notebook>
-                    <page string="Main">
-                    <div class="row" col="2" style="width:100%;">
+                    <page string="1. Main">
+                    <div class="row" col="2" style="width:100%;padding-left:1%;">
                         <div style="padding:2% !important;width:50%;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                        <h6 style="color: #423e3e;position: relative;bottom: 7.5%;right: 1.5%;font-size: 12px;">Vendor Info</h6>
+                        <h6 style="color: #423e3e;position: relative;bottom: 9%;right: 1.5%;font-size: 12px;">Vendor Info</h6>
                             <div class="row" col="2" style="width:100%;">
                                 <div style="width:27%;">
                                     <label for="street" string="Address" style="width:27%;padding-left:10%;"/>
@@ -74,15 +74,32 @@
                             <field  name="codes" style="width:21%;"/><br/><br/>
                         </div>
                         <div style="width:45%;margin-left:1.5%;">
-                            <div style="border:solid #e6e5e5 0.1px;padding:2%;margin-bottom:2%;">
-                            <h6 style="color: #423e3e;position: absolute;top: 28%;right: 41.5%;font-size: 12px;">Miscellaneous</h6>
+                            <!-- <div style="border:solid #e6e5e5 0.1px;padding:2%;margin-bottom:2%;">
+                                <h6 style="color: #423e3e;position: absolute;top: 28%;right: 41.5%;font-size: 12px;">Miscellaneous</h6>
                                 <label for="network_id" string="Network ID" style="width:30%;"/>
                                 <field  name="network_id" style="width:30%;"/><br/>
                                 <label for="network_id_code" string="Network ID Code" style="width:30%;"/>
                                 <field  name="network_id_code" style="width:30%;"/>
+                            </div> -->
+                            <div style="padding:2%;border:solid #e6e5e5 0.1px;margin-bottom:2%;">
+                                <h6 style="color: #423e3e;position: absolute;top: 24%;left: 52%;font-size: 12px;">Order Info</h6>
+                                <label for="lead_time" string="Lead Time" style="width:17%;"/>
+                                <field  name="lead_time" style="width:20%;margin-right:2%;"/>
+                                <label for="update_lead_time" string="Update Lead Time" style="width:25%;"/>
+                                <field  name="update_lead_time" style="width:15%;"/><br/>
+                                <label for="backorder" string="Backorder" style="width:17%;"/>
+                                <field  name="backorder" style="width:20%;margin-right:2%;"/>
+                                <label for="print_date_due" string="Print Date Due" style="width:25%;"/>
+                                <field  name="print_date_due" style="width:15%;"/><br/>
+                                <label for="freight_policy" string="Freight Policy" style="width:17%;"/>
+                                <field  name="freight_policy" style="width:20%;"/><br/>
+                                <label for="drop_ship" string="Drop/Ship" style="width:17%;"/>
+                                <field  name="drop_ship" style="width:20%;"/><br/>
+                                <label for="ship_via" string="Ship Via" style="width:17%;"/>
+                                <field  name="ship_via" style="width:20%;"/><br/>
                             </div>
                             <div style="border:solid #e6e5e5 0.1px;padding:2%;">
-                            <h6 style="color: #423e3e;position: absolute;top: 40.5%;left: 51.5%;font-size: 12px;">Transmit Options</h6>
+                            <h6 style="color: #423e3e;position: absolute;top: 45%;left: 52%;font-size: 12px;">Transmit Options</h6>
                                 <label for="po_item_number" string="PO Item Number" style="width:30%;"/>
                                 <field  name="po_item_number" style="width:25%;"/><br/>
                                 <label for="edi_po" string="EDI PO" style="width:30%;"/>
@@ -99,25 +116,12 @@
                                 <field  name="lp_month" style="width:15%;padding-left:5%;" placeholder="Month"/>&amp;emsp;/
                                 <field  name="lp_year" style="width:10%;" placeholder="Year"/>
                             </div>
-                            <div style="padding:2%;border:solid #e6e5e5 0.1px;">
-                                <h6 style="color: #423e3e;position: absolute;bottom: 26.5%;left: 51.5%;font-size: 12px;">Order Info</h6>
-                                <label for="lead_time" string="Lead Time" style="width:17%;"/>
-                                <field  name="lead_time" style="width:20%;margin-right:2%;"/>
-                                <label for="update_lead_time" string="Update Lead Time" style="width:25%;"/>
-                                <field  name="update_lead_time" style="width:15%;"/><br/>
-                                <label for="backorder" string="Backorder" style="width:17%;"/>
-                                <field  name="backorder" style="width:20%;margin-right:2%;"/>
-                                <label for="print_date_due" string="Print Date Due" style="width:25%;"/>
-                                <field  name="print_date_due" style="width:15%;"/><br/>
-                                <label for="freight_policy" string="Freight Policy" style="width:17%;"/>
-                                <field  name="freight_policy" style="width:20%;"/><br/>
-                                <label for="drop_ship" string="Drop/Ship" style="width:17%;"/>
-                                <field  name="drop_ship" style="width:20%;"/><br/>
-                                <label for="ship_via" string="Ship Via" style="width:17%;"/>
-                                <field  name="ship_via" style="width:20%;"/><br/>
-                            </div>
                         </div>
                     </div>
+                    <div style="padding:2% !important;border:solid #e6e5e5 0.1px;width:95%;margin-top:1%;" >
+                            <h6 style="color: #423e3e;position: relative;margin-top: -30px;left: 0.5%;font-size: 12px;">Message</h6><br/><br/>
+                            <field  name="message" style="width:98%;margin-top: -30px;margin-left: 10px;margin-right: -10px;"/>
+                        </div>
                     </page>
                     <!-- <page string="Order info">
                         <h6 style="color: #423e3e;position: absolute;top: 37%;left: 3.5%;font-size: 12px;">Order Info</h6>
@@ -174,7 +178,7 @@
                         
                         </div>
                     </page> -->
-                    <page string="Account Payable">
+                    <page string="2. Account Payable">
                         <h6 style="color: #423e3e;position: absolute;top: 36%;left: 3.5%;font-size: 12px;">Accounts Payable</h6>
                         <div class="row" style="width:80%;border:solid #dadce1 1px;margin:1%;" col="2">
                             <div style="width:40%;padding:2%;">
@@ -233,7 +237,7 @@
                             </div>
                         </div>
                     </page>
-                    <page string="History">
+                    <page string="3. History">
                         <h6 style="color: #423e3e;position: absolute;top: 34.5%;left: 3.5%;font-size: 12px;">Accounts Payable History</h6>
                         <div style="width:70%;border:solid #e6e5e5 0.1px;margin-bottom:1%;padding:1%;">
                             <div style="padding:1%;">
@@ -305,7 +309,7 @@
                             
                         </div>
                     </page>
-                    <page string="Notes">
+                    <!-- <page string="Notes">
                         <div style="padding:2%;width:70%;border:solid #e6e5e5 0.1px;margin-bottom:1%;">
                             <label for="note_group" string="Note Group" style="width:10%"/>
                             <field  name="note_group" style="width:20%;margin-right:5%;"/>
@@ -317,13 +321,13 @@
                             <field  name="display_repeats" style="width:10%;margin-right:5%;"/>
                             <label for="print_repeats" string="Print Repeats" style="width:15%"/>
                             <field  name="print_repeats" style="width:10%;"/><br/>
-                        </div>
-                        <div style="padding:2% !important;border:solid #e6e5e5 0.1px;width:70%;" >
+                        </div> -->
+                        <!-- <div style="padding:2% !important;border:solid #e6e5e5 0.1px;width:70%;" >
                             <h6 style="color: #423e3e;position: relative;margin-top: -30px;left: 0.5%;font-size: 12px;">Message</h6><br/><br/>
                             <field  name="message" style="width:98%;margin-top: -30px;margin-left: 10px;margin-right: -10px;"/>
-                        </div>
-                    </page>
-                    <page string="Contacts">
+                        </div> -->
+                    <!-- </page> -->
+                    <!-- <page string="Contacts">
                          <div>
                             <field name="contact_ids">
                                 <tree  editable="bottom">
@@ -351,7 +355,7 @@
                                     <button name="button_" string="Change" type="object"/>
                                 </div>
                             </div>
-                    </page>
+                    </page> -->
                 </notebook>
             </sheet>
         </form>
