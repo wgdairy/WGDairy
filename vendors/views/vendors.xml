@@ -35,8 +35,8 @@
 
                 <div class="row" col="4" style="width:100%;">
                     <div style="padding:2% !important;width:50%;margin-top:-15px;">
-                        <label for="partner_id" string="Name" style="width:14%;margin-top:-15px;"/>
-                        <field name="partner_id" style="width:50%; margin-top:-15px;"/> 
+                        <label for="name" string="Name" style="width:14%;margin-top:-15px;"/>
+                        <field name="name" style="width:50%; margin-top:-15px;"/>
                     </div>
                 </div>
                 
@@ -44,7 +44,7 @@
                     <page string="1. Main">
                     <div class="row" col="2" style="width:100%;padding-left:1%;">
                         <div style="padding:2% !important;width:50%;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                        <h6 style="color: #423e3e;position: relative;bottom: 9%;left: 0.5%;font-size: 12px;z-index:1;">Vendor Info</h6>
+                        <h6 style="color: #423e3e;position: relative;bottom: 8%;left: 0.5%;font-size: 12px;z-index:1;">Vendor Info</h6>
                             <div class="row" col="2" style="width:100%;">
                                 <div style="width:27%;">
                                     <label for="street" string="Address" style="width:27%;padding-left:10%;"/>

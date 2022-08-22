@@ -2,15 +2,15 @@
 
 <record id="product_details" model="ir.actions.act_window">
     <field name="name">Product</field>
-    <field name="res_model">product.template</field>
+    <field name="res_model">product.product</field>
     <field name="view_mode">tree,form,kanban</field>
 </record>
 
 <!-- wgd.vendors form view -->
 <record id="product_new" model="ir.ui.view">
     <field name="name">product.view.form</field>
-    <field name="model">product.template</field>
-    <field name="inherit_id" ref="product.product_template_only_form_view"/>
+    <field name="model">product.product</field>
+    <field name="inherit_id" ref="product.product_normal_form_view"/>
     <field name="arch" type="xml">
     <xpath expr="//form" position="replace">
         <form>
@@ -19,8 +19,8 @@
                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                 <div class="row" col="4" style="width:100%;">
                         <div style="padding:10px; !important;width:20%;">
-                                <label for="name" string="SKU" style="width:18%;margin-bottom: -15px;"/>
-                                <field name="name" style="width:50%;margin-bottom: -15px;"></field>
+                                <label for="default_code" string="SKU" style="width:18%;margin-bottom: -15px;"/>
+                                <field name="default_code" style="width:50%;margin-bottom: -15px;"></field>
                             </div>
 
                             <div style="padding:10px; !important;width:39%;">
@@ -45,8 +45,8 @@
                             </div>
 
                             <div style="padding:10px; !important;width:20%;">
-                                <label for="upc" string="UPC" style="width:18%;margin-bottom: -15px;"/>
-                                <field  name="upc" style="width:50%;margin-top: -15px;"/><br/>
+                                <label for="barcode" string="UPC" style="width:18%;margin-bottom: -15px;"/>
+                                <field  name="barcode" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
                             <div style="padding:10px; !important;width:20%;">
                                 <label for="sequence" string="Sequence" style="width:30%;margin-bottom: -15px;"/>
@@ -61,7 +61,7 @@
                         <div class="row" col="5" style="width:100%;">
                             <div style="padding:10px; !important;width:15%;">
                                 <label for="deptart" string="Dept" style="width:20%;margin-bottom: -15px;"/>
-                                <field name="deptart" style="width:40%;margin-top: -15px;"></field><br/>
+                                <field name="deptart" style="width:40%;margin-top: -15px;" options="{'no_create_edit': True}"></field><br/>
                             </div>
 
                             <div style="padding:10px; !important;width:15%;">
@@ -75,11 +75,11 @@
 
                             <div style="padding:10px; !important;width:20%;">
                                 <label for="prime_vede" string="Prime Vend" style="width:40%;margin-bottom: -15px;"/>
-                                <field name="prime_vede" style="width:50%;margin-top: -15px;"/><br/>
+                                <field name="prime_vede" style="width:50%;margin-top: -15px;" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier'}"/><br/>
                             </div>
                                 <div style="padding:10px; !important;width:20%;">
                                 <label for="mfg_vende" string="Mfg Vend" style="width:35%;margin-bottom: -15px;"/>
-                                <field name="mfg_vende" style="width:50%;margin-top: -15px;"/><br/>
+                                <field name="mfg_vende" style="width:50%;margin-top: -15px;" /><br/>
                             </div>
                         </div>
                         </div>
@@ -94,12 +94,12 @@
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Quantites</h6>
                                     <br />
                                     <div style="margin-left:15px;margin-bottom:155px;">
-                                <label for="qut_on_hant" string="Qty On Hand" style="width:50%;"/>
-                                <field name="qut_on_hant" style="width:40%;" />
+                                <label for="qty_available" string="Qty On Hand" style="width:50%;"/>
+                                <field name="qty_available" style="width:40%;" />
                                 <label for="commited_qty" string="Commited Qty" style="width:50%;"/>
                                 <field name="commited_qty" style="width:40%;"/>
-                                <label for="qty_on_order" string="Qty On Order" style="width:50%;"/>
-                                <field name="qty_on_order" style="width:40%;"  />
+                                <label for="purchased_product_qty" string="Qty On Order" style="width:50%;"/>
+                                <field name="purchased_product_qty" style="width:40%;"  />
 <!--                                <label for="custbackorder" string="Cust backorder" style="width:50%;"/>-->
 <!--                                <field name="custbackorder" style="width:40%;" />-->
 <!--                                <label for="location" string="Location" style="width:50%;"/>-->
@@ -114,12 +114,12 @@
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Stock Levels</h6>
                                     <br />
                                     <div style="margin-left:15px;margin-bottom:17px;">
-                                <label for="order_point" string="Order Point" style="width:60%;"/>
-                                <field name="order_point" style="width:30%;" />
-                                <label for="min_order_ponit" string="Min Order Point" style="width:60%;"/>
-                                <field name="min_order_ponit" style="width:30%;" />
-                                <label for="max_stock_level" string="Max Stock Level" style="width:60%;"/>
-                                <field name="max_stock_level"  style="width:30%;" />
+                                <label for="name" string="Order Point" style="width:60%;"/>
+                                <field name="name" style="width:30%;" />
+                                <label for="reordering_min_qty" string="Min Order Point" style="width:60%;"/>
+                                <field name="reordering_min_qty" style="width:30%;" />
+                                <label for="reordering_max_qty" string="Max Stock Level" style="width:60%;"/>
+                                <field name="reordering_max_qty"  style="width:30%;" />
                                 <label for="safety_stock" string="Safety Stock" style="width:60%;"/>
                                 <field name="safety_stock" style="width:30%;" />
                                 <label for="stockings_UM" string="Stocking U/M" style="width:60%;"/>
@@ -143,9 +143,9 @@
 <!--                                <label for="order_indictor" string="Order Indicator" style="width:60%;"/>-->
 <!--                                <field name="order_indictor"  style="width:35%;" />-->
                                 <div>
-                                <label for="weight" string="Weight" style="width:56%;"/>
+                                <label for="weight" string="Weight" style="width:60%;"/>
                                 <field name="weight"  style="width: 15%;margin-right:2px;" />
-                                <field name="weight_uom"  style="width: 15%;" />
+                                <field name="weight_uom_id"  style="width: 15%;" domain="[('category_id.name', '=', 'Weight')]"/>
                                 </div>
                                 <label for="new_order_qty" string="New Order Qty" style="width:60%;"/>
                                 <field name="new_order_qty"  style="width:35%;" />
@@ -214,7 +214,7 @@
                                     <label for="decimal_place" string="Decimal Place" style="width:100%;margin-bottom: 9px;"/><br/>
                                     <label for="repl_cost" string="Repl Cost" style="width:100%;margin-bottom: 9px;"/><br/>
                                     <label for="mfg_cost" string="Mfg Cost" style="width:100%;margin-bottom: 9px;"/><br/>
-                                    <label for="avg_cost" string="Avg Cost" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="avg_cost_pricing" string="Avg Cost" style="width:100%;margin-bottom: 9px;"/><br/>
                                     <label for="mkt_cost" string="Mkt Cost" style="width:100%;margin-bottom: 9px;"/><br/>
                                     <label for="reail" string="Reail" style="width:100%;margin-bottom: 9px;"/><br/>
                                     <label for="list" string="List" style="width:100%;margin-bottom: 9px;"/><br/>
@@ -234,7 +234,7 @@
                                     <field  name="decimal_place" style="width:60%;"/><br/>
                                     <field  name="repl_cost" style="width:60%;"/><br />
                                     <field  name="mfg_cost" style="width:60%;"/><br/>
-                                    <field  name="avg_cost" style="width:60%;"/><br/>
+                                    <field  name="avg_cost_pricing" style="width:60%;"/><br/>
                                     <field  name="mkt_cost" style="width:60%;"/><br />
                                     <field  name="reail" style="width:60%;"/><br/>
                                     <field  name="list" style="width:60%;"/><br/>
@@ -369,8 +369,8 @@
                                     <label for="pricing" string="*Pricing" style="width:30%;margin-left:10px;"/>
                                     <field name="pricing" style="width:40%;margin-bottom:8px;" />
                                 </div>
-                                <label for="qut_on_hant" string="Qty On Hand" style="width:50%;"/>
-                                <field name="qut_on_hant" style="width:40%;" />
+                                <label for="qty_available" string="Qty On Hand" style="width:50%;"/>
+                                <field name="qty_available" style="width:40%;" />
 <!--                                <label for="level_price_overide" string="Level Price Overide" style="width:50%;"/>-->
 <!--                                <field name="level_price_overide" style="width:40%;" />-->
 <!--                                <label for="rebate_group" string="Rebate Group" style="width:50%;"/>-->
@@ -544,7 +544,7 @@
                                 <field name="sep" style="width:40%;" />
                                 <label for="aug" string="Aug 21" style="width:50%;"/>
                                 <field name="aug" style="width:40%;" />
-                                <label for="july" string="July 22" style="width:50%;"/>
+                                <label for="july" string="July 21" style="width:50%;"/>
                                 <field name="july" style="width:40%;" />
                                 <label for="jun_21" string="Jun 21" style="width:50%;"/>
                                 <field name="jun_21" style="width:40%;"/>
@@ -831,9 +831,9 @@
 <!--                                        <label for="order_indicator" string="Order Indicator" style="width:54%;"/>-->
 <!--                                        <field name="order_indicator"  style="width:40%;" />-->
                                         <div>
-                                        <label for="load_weight" string="Weight" style="width:52%;"/>
+                                        <label for="load_weight" string="Weight" style="width:54%;"/>
                                         <field name="load_weight"  style="width: 18%;margin-right:2px;" />
-                                        <field name="load_weight_unit"  style="width: 15%;" />
+                                        <field name="load_weight_units"  style="width: 15%;" domain="[('category_id.name', '=', 'Weight')]"/>
                                         </div>
                                         <label for="load_min_of_std_pack" string="Min # of Std Pkgs" style="width:54%;"/>
                                         <field name="load_min_of_std_pack"  style="width:40%;" />
@@ -888,7 +888,7 @@
                                 <div>
                                     <label for="weight_mic" string="Weight" style="width:50%;"/>
                                     <field name="weight_mic" style="width: 20%;margin-right:7px;" />
-                                    <field name="weight_mic_unit" style="width: 20%"  />
+                                    <field name="weight_mic_units" style="width: 20%" domain="[('category_id.name', '=', 'Weight')]" />
                                 </div>
                                 <div>
                                     <label for="cubes" string="Cubes" style="width:50%;"/>
@@ -977,15 +977,15 @@
     <!--Inventory Search view-->
     <record id="my_customer_search_view" model="ir.ui.view">
         <field name="name">inventory.search.view</field>
-        <field name="model">product.template</field>
+        <field name="model">product.product</field>
         <field name="arch" type="xml">
             <search>
 
-                <field name="name" string="SKU"/>
+                <field name="default_code" string="SKU"/>
                 <field name="deptart" string="Department"/>
                 <field name="types" string="Type"/>
                 <field name="mfg" string="Manufacturer"/>
-                <field name="upc" string="UPC"/>
+                <field name="barcode" string="UPC"/>
                 <field name="sequence" string="Sequence"/>
                 <field name="stores" string="Store"/>
                 <field name="types" string="Type"/>
@@ -993,9 +993,9 @@
                 <field name="fineline" string="Fineline"/>
                 <field name="prime_vede" string="Prime Vend"/>
                 <field name="mfg_vende" string="Mfg Vend"/>
-                <field name="qut_on_hant" string="Qty On Hand"/>
+                <field name="qty_available" string="Qty On Hand"/>
                 <field name="commited_qty" string="Committed Qty"/>
-                <field name="qty_on_order" string="Qty On Order"/>
+                <field name="purchased_product_qty" string="Qty On Order"/>
                 <field name="custbackorder" string="Cust Backorder"/>
 
             </search>
@@ -1007,39 +1007,51 @@
 
     <record id="product_template_tree_view" model="ir.ui.view">
         <field name="name">product.template.product.tree</field>
-        <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
 
         <field name="arch" type="xml">
             <field name="default_code" position="attributes">
                 <attribute name="optional">Hide</attribute>
             </field>
-            <field name="list_price" position="attributes">
+            <field name="qty_available" position="attributes">
                 <attribute name="optional">Hide</attribute>
             </field>
-            <field name="responsible_id" position="attributes">
+            <field name="barcode" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+            <field name="name" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+            <field name="product_template_variant_value_ids" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+            <field name="lst_price" position="attributes">
                 <attribute name="optional">Hide</attribute>
             </field>
             <field name="standard_price" position="attributes">
                 <attribute name="optional">Hide</attribute>
             </field>
-            <field name="qty_available" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-            <field name="virtual_available" position="attributes">
+            <field name="price" position="attributes">
                 <attribute name="optional">Hide</attribute>
             </field>
             <field name="uom_id" position="attributes">
                 <attribute name="optional">Hide</attribute>
             </field>
+            <field name="virtual_available" position="attributes">
+                <attribute name="optional">Hide</attribute>
+            </field>
+<!--            <field name="standard_price" position="attributes">-->
+<!--                <attribute name="optional">Hide</attribute>-->
+<!--            </field>-->
 
-            <xpath expr="//field[@name='name']" position="replace">
+            <xpath expr="//field[@name='default_code']" position="after">
 
-                <field name="name" string="SKU"/>
+                <field name="default_code" string="SKU"/>
                 <field name="types" string="Type"/>
                 <field name="stores" string="Store"/>
                 <field name="mfg" string="Mfg#"/>
-                <field name="upc" string="UPC"/>
+                <field name="barcode" string="UPC"/>
                 <field name="sequence" string="Sequence"/>
                 <field name="instores" string="In Stores"/>
 <!--                <field name="dept" string="Dept"/>-->

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from pyexpat import model
 from odoo import models, fields, api, _
 import re
 
@@ -15,7 +14,6 @@ class vendors(models.Model):
     # main tab fields
     partner_id = fields.Many2one('res.partner', 'Vendor Details', help="Link this vendor to it's partner", ondelete='cascade', required=True)
     vendor = fields.Char('Vendor')
-    name = fields.Char('Name')
     sort_name = fields.Char('Sort Name')
     pay_to_vendor = fields.Many2one('res.partner','Pay To Vendor')
     pay_to_vendor2 = fields.Many2one('res.partner', 'Pay to Vendor')
@@ -363,6 +361,9 @@ class PaymentTerms(models.Model):
 
 
 class stateModel(models.Model):
+    '''
+    Inherits res.country.state model
+    '''
     _inherit = 'res.country.state'
 
     def name_get(self):

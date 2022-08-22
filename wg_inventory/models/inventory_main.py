@@ -3,13 +3,13 @@ from odoo.exceptions import ValidationError
 
 
 class Inventorys(models.Model):
-    _inherit = "product.template"
+    _inherit = "product.product"
 
-    sku = fields.Char('SKU')
+    # sku = fields.Char('SKU')
     desc = fields.Char('Desc')
     mfg = fields.Char('Mfg#')
     Desc = fields.Char('Desc')
-    upc = fields.Char('UPC')
+    # upc = fields.Char('UPC')
     # dept = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     deptart = fields.Many2one('hr.department',ondelete='restrict', index=True,)
     class_inven = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
@@ -49,7 +49,7 @@ class Inventorys(models.Model):
     purchasing_um = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Purchasing U/M")
     order_indictor = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Order Indictor")
     weight = fields.Float('Weight')
-    weight_uom = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
+    weight_uom_id = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     # upc = fields.Integer('UPC')
     new_order_qty = fields.Float('New Order Qty')
     purch_conv_factor = fields.Float('*Purch Conv Factor')
@@ -287,7 +287,8 @@ class Inventorys(models.Model):
     load_purchase_um = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     order_indicator = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     load_weight = fields.Float()
-    load_weight_unit = fields.Selection([('LB', 'LB'), ('KG', 'KG'),('Gram', 'Gram') ])
+
+    load_weight_units = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     load_min_of_std_pack = fields.Float()
     load_secondary_vend = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     load_vend_stk = fields.Char()
@@ -311,7 +312,7 @@ class Inventorys(models.Model):
     width = fields.Float()
     depth = fields.Float()
     weight_mic = fields.Float()
-    weight_mic_unit = fields.Selection([('LB', 'LB'), ('KG', 'KG'),('Gram', 'Gram') ])
+    weight_mic_units = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     cubes = fields.Float()
     cubes_unit = fields.Char()
     ebt = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
@@ -332,7 +333,7 @@ class Inventorys(models.Model):
     conversion = fields.Float()
     repl_cost = fields.Float()
     mfg_cost = fields.Float()
-    avg_cost = fields.Float()
+    avg_cost_pricing = fields.Float()
     mkt_cost = fields.Float()
     reail = fields.Float()
     list = fields.Char()
@@ -439,10 +440,63 @@ class Inventorys(models.Model):
             val = "*Purch Decimal PI"
             self.validate_float_five(self.purch_decimal_pi, val)
 
+    # onchange 5 digit validation
+
+    @api.onchange('weight', 'purch_conv_factor','purch_decimal_pi')
+    def validate_oc_stocking_five_digit(self):
+        if self.weight:
+            val = "Weight"
+            self.validate_float_five(self.weight, val)
+        if self.purch_conv_factor:
+            val = "*Purch Conv Factor"
+            self.validate_float_five(self.purch_conv_factor, val)
+        if self.purch_decimal_pi:
+            val = "*Purch Decimal PI"
+            self.validate_float_five(self.purch_decimal_pi, val)
+
     # 10 digit validation
 
     @api.constrains('qut_on_hant', 'commited_qty','qty_on_order','order_point','min_order_ponit','safety_stock','standard_pack','order_multiple','raincheck_qty','raincheck_qty','new_order_qty','fixed_order_qty')
     def validate_con_qut_on_hant(self):
+        if self.qut_on_hant:
+            val = "Qty On Hand"
+            self.validate_float(self.qut_on_hant, val)
+        if self.commited_qty:
+            val = "Commited Qty"
+            self.validate_float(self.commited_qty, val)
+
+        if self.qty_on_order:
+            val = "Qty On Order"
+            self.validate_float(self.qty_on_order, val)
+        if self.order_point:
+            val = "Order Point"
+            self.validate_float(self.order_point, val)
+        if self.min_order_ponit:
+            val = "Min Order Point"
+            self.validate_float(self.min_order_ponit, val)
+        if self.safety_stock:
+            val = "Safety Stock"
+            self.validate_float(self.safety_stock, val)
+        if self.standard_pack:
+            val = "Standard Pack"
+            self.validate_float(self.standard_pack, val)
+        if self.order_multiple:
+            val = "Order Multiple"
+            self.validate_float(self.order_multiple, val)
+        if self.raincheck_qty:
+            val = "Raincheck Qty"
+            self.validate_float(self.raincheck_qty, val)
+        if self.new_order_qty:
+            val = "New Order Qty"
+            self.validate_float(self.new_order_qty, val)
+        if self.fixed_order_qty:
+            val = "Fixed Order QTY"
+            self.validate_float(self.fixed_order_qty, val)
+
+    # onchange 10 digit validation
+
+    @api.onchange('qut_on_hant', 'commited_qty','qty_on_order','order_point','min_order_ponit','safety_stock','standard_pack','order_multiple','raincheck_qty','raincheck_qty','new_order_qty','fixed_order_qty')
+    def validate_oc_ten_digit(self):
         if self.qut_on_hant:
             val = "Qty On Hand"
             self.validate_float(self.qut_on_hant, val)
@@ -484,6 +538,64 @@ class Inventorys(models.Model):
     # 5 digits
     @api.constrains('decimal_place', 'decimal_place_stock','repl_cost_gp', 'decimal_place_alt', 'decimal_place_gp', 'mkt_cost_gp', 'mfg_cost_gp','avg_cost_gp', 'reail_gp', 'promotion_gp', 'price_one_gp','price_two_gp','price_three_gp','price_four_gp','price_five_gp','desiered_gp','repl_gp')
     def validate_con_pricing_five_digit(self):
+        if self.decimal_place:
+            val = "Decimal Place Price"
+            self.validate_float_five(self.decimal_place, val)
+        if self.decimal_place_stock:
+            val = "Decimal Place Stock"
+            self.validate_float_five(self.decimal_place_stock, val)
+
+        if self.decimal_place_alt:
+            val = "Decimal Place Alt"
+            self.validate_float_five(self.decimal_place_alt, val)
+        if self.repl_cost_gp:
+            val = "Repl Cost GP%"
+            self.validate_float_five(self.repl_cost_gp, val)
+        if self.decimal_place_gp:
+            val = "Decimal Place GP"
+            self.validate_float_five(self.decimal_place_gp, val)
+        if self.mkt_cost_gp:
+            val = "Mkt Cost GP"
+            self.validate_float_five(self.mkt_cost_gp, val)
+        if self.mfg_cost_gp:
+            val = "Mfg Cost GP"
+            self.validate_float_five(self.mfg_cost_gp, val)
+        if self.avg_cost_gp:
+            val = "Avg Cost GP"
+            self.validate_float_five(self.avg_cost_gp, val)
+        if self.reail_gp:
+            val = "Reail GP"
+            self.validate_float_five(self.reail_gp, val)
+        if self.promotion_gp:
+            val = "Promotion GP"
+            self.validate_float_five(self.promotion_gp, val)
+        if self.price_one_gp:
+            val = "Price 1 GP"
+            self.validate_float_five(self.price_one_gp, val)
+        if self.price_two_gp:
+            val = "Price 2 GP"
+            self.validate_float_five(self.price_two_gp, val)
+        if self.price_three_gp:
+            val = "Price 3 GP"
+            self.validate_float_five(self.price_three_gp, val)
+        if self.price_four_gp:
+            val = "Price 4 GP"
+            self.validate_float_five(self.price_four_gp, val)
+        if self.price_five_gp:
+            val = "Price 5"
+            self.validate_float_five(self.price_five_gp, val)
+        if self.desiered_gp:
+            val = "Desired GP %"
+            self.validate_float_five(self.desiered_gp, val)
+        if self.repl_gp:
+            val = "Repl GP%"
+            self.validate_float_five(self.repl_gp, val)
+
+
+    # onchange 5 digit
+
+    @api.onchange('decimal_place', 'decimal_place_stock','repl_cost_gp', 'decimal_place_alt', 'decimal_place_gp', 'mkt_cost_gp', 'mfg_cost_gp','avg_cost_gp', 'reail_gp', 'promotion_gp', 'price_one_gp','price_two_gp','price_three_gp','price_four_gp','price_five_gp','desiered_gp','repl_gp')
+    def validate_oc_pricing_five_digit(self):
         if self.decimal_place:
             val = "Decimal Place Price"
             self.validate_float_five(self.decimal_place, val)
@@ -669,6 +781,136 @@ class Inventorys(models.Model):
             val = "Mfg Chg"
             self.validate_float(self.mfg_chg, val)
 
+
+    # onchange 10 digit
+
+
+    @api.onchange('repl_cost', 'repl_cost_stock','repl_cost_alt','mfg_cost','mfg_cost_stock','mfg_cost_alt','avg_cost_pricing','avg_cost_stock','avg_cost_alt','mkt_cost','mkt_cost_stock','mkt_cost_alt','reail','reail_stock','reail_alt')
+    def validate_oc_pricing_one(self):
+        if self.repl_cost:
+            val = "Repl Cost Pricing"
+            self.validate_float(self.repl_cost, val)
+        if self.repl_cost_stock:
+            val = "Repl Cost Stock"
+            self.validate_float(self.repl_cost_stock, val)
+
+        if self.repl_cost_alt:
+            val = "Repl Cost Alt"
+            self.validate_float(self.repl_cost_alt, val)
+        if self.mfg_cost:
+            val = "Mfg Cost Price"
+            self.validate_float(self.mfg_cost, val)
+        if self.mfg_cost_stock:
+            val = "Mfg Cost Stock"
+            self.validate_float(self.mfg_cost_stock, val)
+        if self.mfg_cost_alt:
+            val = "Mfg Cost Alt"
+            self.validate_float(self.mfg_cost_alt, val)
+        if self.avg_cost_pricing:
+            val = "Avg Cost Pricing"
+            self.validate_float(self.avg_cost_pricing, val)
+        if self.avg_cost_stock:
+            val = "Avg Cost Stock"
+            self.validate_float(self.avg_cost_stock, val)
+        if self.avg_cost_alt:
+            val = "Avg Cost Alt"
+            self.validate_float(self.avg_cost_alt, val)
+        if self.mkt_cost:
+            val = "Mkt Cost Pricing"
+            self.validate_float(self.mkt_cost, val)
+        if self.mkt_cost_stock:
+            val = "Mkt Cost Stock"
+            self.validate_float(self.mkt_cost_stock, val)
+        if self.mkt_cost_alt:
+            val = "Mkt Cost Alt"
+            self.validate_float(self.mkt_cost_alt, val)
+        if self.reail:
+            val = "Reail Pricing"
+            self.validate_float(self.reail, val)
+        if self.reail_stock:
+            val = "Reail Stock"
+            self.validate_float(self.reail_stock, val)
+        if self.reail_alt:
+            val = "Reail Alt"
+            self.validate_float(self.reail_alt, val)
+
+    # 10 digit two
+    @api.onchange('promotion', 'promotion_stock', 'promotion_alt', 'price_one', 'price_one_stock','price_one_alt', 'price_two', 'price_two_stock', 'price_two_alt', 'price_three','price_three_stock', 'price_three_alt', 'price_four', 'price_four_stock', 'price_four_alt','price_five','price_five_stock','price_five_alt')
+    def validate_oc_pricing_two(self):
+        if self.promotion:
+            val = "Promotion Pricing"
+            self.validate_float(self.promotion, val)
+        if self.promotion_stock:
+            val = "Promotion Stock"
+            self.validate_float(self.promotion_stock, val)
+
+        if self.promotion_alt:
+            val = "Promotion Alt"
+            self.validate_float(self.promotion_alt, val)
+        if self.price_one:
+            val = "Price 1 Priceing"
+            self.validate_float(self.price_one, val)
+        if self.price_one_stock:
+            val = "Price 1 Stock"
+            self.validate_float(self.price_one_stock, val)
+        if self.price_one_alt:
+            val = "Price 1 Alt"
+            self.validate_float(self.price_one_alt, val)
+        if self.price_two:
+            val = "Price 2 Pricing"
+            self.validate_float(self.price_two, val)
+        if self.price_two_stock:
+            val = "Price 2 Stock"
+            self.validate_float(self.price_two_stock, val)
+        if self.price_two_alt:
+            val = "Price 2 Alt"
+            self.validate_float(self.price_two_alt, val)
+        if self.price_three:
+            val = "Price 3 Pricing"
+            self.validate_float(self.price_three, val)
+        if self.price_three_stock:
+            val = "Price 3 Stock"
+            self.validate_float(self.price_three_stock, val)
+        if self.price_three_alt:
+            val = "Price 3 Alt"
+            self.validate_float(self.price_three_alt, val)
+        if self.price_four:
+            val = "Price 4 Pricing"
+            self.validate_float(self.price_four, val)
+        if self.price_four_stock:
+            val = "Price 4 Stock"
+            self.validate_float(self.price_four_stock, val)
+        if self.price_four_alt:
+            val = "Price 4 Alt"
+            self.validate_float(self.price_four_alt, val)
+        if self.price_five:
+            val = "Price 5 Pricing"
+            self.validate_float(self.price_five, val)
+        if self.price_five_stock:
+            val = "Price 5 Stock"
+            self.validate_float(self.price_five_stock, val)
+        if self.price_five_alt:
+            val = "Price 5 Alt"
+            self.validate_float(self.price_five_alt, val)
+
+
+
+    # 10 digit three
+    @api.onchange('retail_old', 'catalog_retail', 'market_cost', 'mfg_chg')
+    def validate_oc_pricing_three(self):
+        if self.retail_old:
+            val = "Retail(old)"
+            self.validate_float(self.retail_old, val)
+        if self.catalog_retail:
+            val = "Catalog Retail"
+            self.validate_float(self.catalog_retail, val)
+
+        if self.market_cost:
+            val = "*Market Cost"
+            self.validate_float(self.market_cost, val)
+        if self.mfg_chg:
+            val = "Mfg Chg"
+            self.validate_float(self.mfg_chg, val)
 
 
 
