@@ -1,5 +1,8 @@
 from odoo import fields, models, api #, re
 import re
+import odoo.addons.decimal_precision as dp
+from odoo.exceptions import ValidationError
+from datetime import datetime
 
 class Customer(models.Model):
     '''
@@ -13,7 +16,11 @@ class Customer(models.Model):
     #                                   ondelete="cascade", required=True),
     # }
 
+    def _get_default_country(self):
 
+        country = self.env['res.country'].search([('code', '=', 'US')], limit=1)
+
+        return country
     
     customer_id             = fields.Char("Customer ID",help='Exportable')
     partner_id              = fields.Many2one('res.partner')    
@@ -21,17 +28,16 @@ class Customer(models.Model):
     sort_name_id            = fields.Many2one('sort')
     bill_to_id              = fields.Many2one('bill')
     ace_rewards             = fields.Char("Ace Rewards",help='Exportable')
-
     # notebook page1 Main
     phone                   = fields.Char('Phone',help='Exportable')
     fax                     = fields.Char('Fax',help='Exportable')
     contact                 = fields.Char('contact',help='Exportable')
-
+    country_id              = fields.Many2one('res.country', string='Country',default=_get_default_country)
     credit_message1         = fields.Char(' ',help='Exportable')
     credit_message2         = fields.Char(' ',help='Exportable')
 
     credit_limit            = fields.Float("Credit Limit")
-    trade_discount          = fields.Char('Trade Discount %',help='Exportable')
+    trade_discount          = fields.Char('Trade Discount %',help='Exportable',size=4)
     account_code1           = fields.Char('account_code1',help='Exportable')
     monthly_payment         = fields.Integer('Monthly Payment',help='Exportable')
     # category_plan           = fields.Many2one("", string='Category Plan', ondelete='restrict',help='Exportable')
@@ -39,6 +45,7 @@ class Customer(models.Model):
     # salesperson             = fields.Many2one("", string='Salesperson', ondelete='restrict',help='Exportable')
     # terms_code              = fields.Many2one("", string='Terms Code', ondelete='restrict',help='Exportable')
     terms_code              = fields.Many2one('terms',default=lambda self: self.env['terms'].search([('name','=','Net 20')], limit=1))
+
     category_plan_id        = fields.Many2one('category')
     tax_code                = fields.Selection([('yes','Y'),('no','N')], "Tax Code", default='yes',help='Exportable')
     salesperson             = fields.Selection([('yes','Y'),('no','N')], "Salesperson", default='no',help='Exportable')
@@ -48,11 +55,12 @@ class Customer(models.Model):
     po_required             = fields.Selection([('yes','Y'),('no','N')], "PO Required", default='no',help='Exportable')
     default_po              = fields.Char('Default PO',help='Exportable')
     
+    # balance_method          = fields.Selection([('yes','0'),('no','0')], "Balance Method", default='no')
     charge_allowed          = fields.Selection([('yes','Y'),('no','N')], "Charge Allowed", default='yes',help='Exportable')
     balance_method          = fields.Many2one('balance',default=lambda self: self.env['balance'].search([('name','=','O')]), limit=1)
 
     std_sell_price          = fields.Selection([('yes','R'),('no','R')], "Std Sell Price/POS", default='no',help='Exportable')
-    finace_charges          = fields.Selection([('yes','Y'),('no','N')], "Finace Charges", default='no')
+    finace_charges          = fields.Monetary(string="Finace Charges")
     store_acct_opened_id    = fields.Many2one('res.company')
     transfer_to_store       = fields.Selection([('yes','Y'),('no','N')], "Transfer To Store", default='no',help='Exportable')
     print_statments         = fields.Selection([('yes','Y'),('no','N')], "Print Statments", default='no')
@@ -65,15 +73,15 @@ class Customer(models.Model):
     
 
 # notebook page2 Credit
-    finace_chgs_ytd         = fields.Float("Finace Chgs YTD")
+    finace_chgs_ytd         = fields.Float("Finace Chgs YTD", digits=(2,2))
     #credit_limit_2          = fields.Integer("Credit Limit")
     higest_acc_balance      = fields.Float("Higest Acct Balance")
-    credit_available        = fields.Float("Credit Available")
+    credit_available        = fields.Float("Credit Available",compute="_total_credit") 
     running_balance         = fields.Float("Running Balance")
-    statment_balance        = fields.Float("Statment Balance")
+    statment_balance        = fields.Float("Statment Balance",compute="_total_stmt_bal")
     statment_discount       = fields.Float("Statment Discount")
-    returns                 = fields.Float("Returns")
-    transations             = fields.Float("Transations")
+    returns                 = fields.Float("Returns",compute="_total_refund")
+    transations             = fields.Float("Transations",compute="_total_invoices")
 
     # check_allowed           = fields.Selection([('yes','Y'),('no','N')], "Check Allowed", default='no',help='Exportable')
     # credit_are_only         = fields.Selection([('yes','Y'),('no','N')], "Credit Are Only", default='no',help='Exportable')
@@ -93,7 +101,7 @@ class Customer(models.Model):
     monthly_payment         = fields.Integer('Monthly Payment',help='Exportable')
     lyr_fin_charge          = fields.Float('LYR Fin Charge',help='Exportable')
     date_last_pay           = fields.Date("Date Last Pay")
-    amount_last_pay         = fields.Float("Amount Last Pay")
+    amount_last_pay         = fields.Monetary("Amount Last Pay")
     special_charges         = fields.Integer("Special Charges")
 
 
@@ -176,14 +184,14 @@ class Customer(models.Model):
     nov                     = fields.Selection([('1-30','1-30'),('31-60','31-60'),('61-90','61-90'),('over_90','Over 90')], "Nov", default='1-30',help='Exportable')
     dec                     = fields.Selection([('1-30','1-30'),('31-60','31-60'),('61-90','61-90'),('over_90','Over 90')], "Dec", default='1-30',help='Exportable')
 
-# notebook page6 Misc
+# notebook page6 Names
     social_security         = fields.Char('Social Security',help='Exportable')
     birth_date              = fields.Date("Birth Date")
-    pst_registration        = fields.Char('PST Regisration',help='Exportable')
-    gst_registration        = fields.Char('GST Regisration',help='Exportable')
-    pesticide_license       = fields.Char('Pesticide License',help='Exportable')
-    pesticide_lic_exp       = fields.Char('Pesticide Lic. Exp.',help='Exportable')
-    freght_factor           = fields.Char('Freght Factor',help='Exportable')
+    pst_registration        = fields.Date('PST Regisration',help='Exportable')
+    gst_registration        = fields.Date('GST Regisration',help='Exportable')
+    pesticide_license       = fields.Date('Pesticide License',help='Exportable')
+    pesticide_lic_exp       = fields.Date('Pesticide Lic. Exp.',help='Exportable')
+    freght_factor           = fields.Float('Freght Factor',help='Exportable')
     rescale_code            = fields.Char('Rescale Code',help='Exportable')
     alternate_phone         = fields.Char('Alternative Phone',help='Exportable')
     alternate_fax           = fields.Char('Alternative Fax',help='Exportable')
@@ -196,8 +204,8 @@ class Customer(models.Model):
     customer_rank           = fields.Selection([('1',' '),('2','2')], "Customer Rank",help='Exportable')
     statment_type           = fields.Selection([('1',' '),('2','2')], "Statment Type",help='Exportable')
 
-    statment_fmt            = fields.Selection([('1',' '),('2','2')], "Statment/Fmt",help='Exportable')
-    statment_fmt2           = fields.Selection([('1',' '),('2','2')], "",help='Exportable')
+    statment_fmt            = fields.Selection([('1','Statement'),('2','Digital')], "Statment/Fmt",help='Exportable')
+    statment_fmt2           = fields.Selection([('1','E'),('2','M')], "",help='Exportable')
     Invoice_credit          = fields.Selection([('1',' '),('2','2')], "Invoice/Credit",help='Exportable')
     order_sp_ord_estimate   = fields.Selection([('1',' '),('2','2')], "Order/Sp.Ord/Estimate",help='Exportable')
 
@@ -219,7 +227,6 @@ class Customer(models.Model):
 
     additional_flag          = fields.Char('Additional Flags',help='Exportable')
     
-# notebook page7 Names
     names_ids              = fields.One2many('names', 'customer_ids',string=" ") 
 
 # notebook page8 Note
@@ -228,15 +235,172 @@ class Customer(models.Model):
     print_repeat            = fields.Selection([('yes','Y'),('no','N')], "Print Repeats", default='no',help='Exportable')                 
     message                 = fields.Html("Message")
 
-    def button_(self):
-        '''
-            For button action
-        '''
-        x = 10
 
     def action_student_schedules(self):
         pass
     
+
+    def validate_float(self, float_value, val):
+        if float_value:
+            if val == "Period GP %" or val == "Last Year GP":
+                if len(str(float_value)) > 6:
+                    raise ValidationError("4 digits be allowed in %s" % val)
+            elif len(str(float_value)) > 12:
+                raise ValidationError("10 digits be allowed in %s" % val)
+
+            
+    @api.constrains('credit_limit','finace_chgs_ytd','higest_acc_balance','credit_available',
+        'running_balance','statment_balance','statment_discount','returns','period_to_date_sale','year_to_date_sale','year_to_date_cost',
+            'year_to_date_gp','last_year_sale','last_year_cost','period_to_date_gp_dollor'
+            ,'year_to_date__dollor','last_year_gp_dollor','terms_disc','year_to_date_fin_chrgs',
+            'last_year_gp_fin_chrgs','year_to_date_returns','year_to_date_transaction',
+            'customer_sales_summary','period_to_date_gp','last_year_gp','amount_last_pay','monthly_payment')
+    def validate_con_qut_on_hant(self):
+        if self.credit_limit:
+            val = "Credit Limit"
+            self.validate_float(self.credit_limit,val)
+        if self.finace_chgs_ytd:
+            val = "Finance YTD"
+            self.validate_float(self.finace_chgs_ytd,val)
+        if self.higest_acc_balance:
+            val = "Higest Acc Balance"
+            self.validate_float(self.higest_acc_balance,val)        
+        if self.credit_available:
+            val = "Credit Available"
+            self.validate_float(self.credit_available,val)
+        if self.running_balance:
+            val = "Running Balance"
+            self.validate_float(self.running_balance,val)
+        if self.statment_balance:
+            val = "Statment Balance"
+            self.validate_float(self.statment_balance,val)
+        if self.statment_discount:
+            val = "Statment Discount"
+            self.validate_float(self.statment_discount,val)
+        if self.returns:
+            val = "Returns ($) YTD"
+            self.validate_float(self.returns,val)
+        if self.period_to_date_sale:
+            val = "Period Cost"
+            self.validate_float(self.period_to_date_sale,val)
+        if self.year_to_date_sale:
+            val = "Year Sale"
+            self.validate_float(self.year_to_date_sale,val)
+        if self.year_to_date_cost:
+            val = "Year Cost"
+            self.validate_float(self.year_to_date_cost,val)
+        if self.year_to_date_gp:
+            val = "Year GP %"
+            self.validate_float(self.year_to_date_gp,val)
+        if self.last_year_sale:
+            val = "Last Year Sale"
+            self.validate_float(self.last_year_sale,val)
+        if self.last_year_cost:
+            val = "Last Year Cost"
+            self.validate_float(self.last_year_cost,val)
+        if self.period_to_date_gp_dollor:
+            val = "Period GP $"
+            self.validate_float(self.period_to_date_gp_dollor,val)
+        if self.year_to_date__dollor:
+            val = "Year GP $"
+            self.validate_float(self.year_to_date__dollor,val)
+        if self.last_year_gp_dollor:
+            val = "Last Year GP $"
+            self.validate_float(self.last_year_gp_dollor,val)
+        if self.terms_disc:
+            val = "Terms Disc"
+            self.validate_float(self.terms_disc,val)
+        if self.year_to_date_fin_chrgs:
+            val = "Year Finance Charges"
+            self.validate_float(self.year_to_date_fin_chrgs,val)
+        if self.last_year_gp_fin_chrgs:
+            val = "Last Year Finance Charges"
+            self.validate_float(self.last_year_gp_fin_chrgs,val)
+        if self.year_to_date_returns:
+            val = "year Returns"
+            self.validate_float(self.year_to_date_returns,val)
+        if self.year_to_date_transaction:
+            val = "Year Transations"
+            self.validate_float(self.year_to_date_transaction,val)
+        if self.customer_sales_summary:
+            val = "Customer Sales Summary"
+            self.validate_float(self.customer_sales_summary,val)
+        if self.period_to_date_gp:
+            val = "Period GP %"
+            self.validate_float(self.period_to_date_gp,val)
+        if self.last_year_gp:
+            val = "Last Year GP"
+            self.validate_float(self.last_year_gp,val)
+        if self.amount_last_pay:
+            val = "Amount Last Pay"
+            self.validate_float(self.amount_last_pay,val)
+        if self.monthly_payment:
+            val = "Monthly Payment"
+            self.validate_float(self.monthly_payment,val)
+   
+
+    # @api.onchange('finace_chgs_ytd')
+    # def validate_float_limit(self):
+    #     if self.qut_on_hant:
+    #         qut_on_hant = self.qut_on_hant
+    #         self.validate_qut_on_hant(qut_on_hant)
+
+    @api.depends('statment_balance')
+    def _total_stmt_bal(self):
+        '''
+            Returns YTD = credit limit - sum of invoices
+        '''
+        invoices = self.env['account.move'].search([('move_type', '=', 'out_refund'),('partner_id', '=', self.partner_id.id)])
+        total = 0
+        for record in invoices:
+            total = total + record.balance
+            print("ballllllllllllllllllll",record.balance)
+        self.statment_balance = float(total)
+
+    @api.depends('returns')
+    def _total_refund(self):
+        '''
+            Returns YTD = sum of invoices due amount
+        '''
+        invoices = self.env['account.move'].search([('move_type', '=', 'out_refund'),('partner_id', '=', self.partner_id.id)])
+        total = 0
+        for record in invoices:
+            total = total + record.amount_residual
+        self.returns = float(total)
+
+
+    @api.onchange('birth_date')
+    def _onchange_birth_date(self):
+        '''
+            validate birth_date 
+        '''
+        if self.birth_date:
+            current_date=datetime.now()
+            current_year=current_date.year
+            difference = current_year - self.birth_date.year
+            if  self.birth_date.year >= current_year or difference < 10:
+                raise ValidationError('Invalid DOB.Please enter a valid BIRTH DATE')
+
+    @api.onchange('social_security')
+    def _onchange_social_security(self):
+        '''
+            validate social_security
+        '''
+        if self.social_security:
+            social_security1   =str(self.social_security)
+            letters = re.findall("[^0-9]",social_security1)
+            for val in letters:
+                social_security1 = social_security1.replace(val,'')
+            seperator="-"
+            start_group =social_security1[:3]
+            second_group=social_security1[3:5]
+            third_group =social_security1[5:9]
+            start_group += seperator
+            start_group += second_group
+            start_group += seperator
+            start_group += third_group
+            self.social_security  = start_group
+
     @api.onchange('phone')
     def _onchange_phone(self):
         '''
@@ -318,7 +482,32 @@ class Customer(models.Model):
             start_group += seperator
             start_group += third_group
             self.alternate_fax= start_group
-            
+
+    @api.depends('transations')
+    def _total_invoices(self):
+        '''
+            total invoices count
+        '''
+        current_date=datetime.now()
+        current_year=current_date.year
+        date = datetime(current_year-1, 12, 31)
+        invoices = self.env['account.move'].search([('invoice_date', '>', date),('move_type', '=', 'out_invoice'),('partner_id', '=', self.partner_id.id)])
+        self.transations = len(invoices)
+
+    @api.depends('credit_limit')
+    def _total_credit(self):
+        '''
+            Credit available = credit limit - sum of invoices due amount
+        '''
+        invoices = self.env['account.move'].search([('move_type', '=', 'out_refund'),('partner_id', '=', self.partner_id.id)])
+        total = 0
+        for record in invoices:
+            total = total + record.amount_residual
+        for record in self:
+            credit_limits = record.credit_limit
+        self.credit_available = float(credit_limits) - float(total)
+
+
 class Credit(models.Model):
     '''
         The class is used to create a one2many relation with the customer class.
@@ -338,7 +527,33 @@ class Credit(models.Model):
     lyr_sales               = fields.Float('LYR Sales',help='Exportable')
     lyr_cost                = fields.Float('LYR Cost',help='Exportable')
     lyr_gp                  = fields.Float('LYR GP%',help='Exportable')
-    
+
+class resCountryState(models.Model):
+    _inherit = 'res.country.state'
+    '''
+        To setup name get function to get code instead of state name
+    '''
+
+    def name_get(self):
+        result = []
+        for row in self:
+            name = row.code
+            result.append((row.id, name))
+        return result
+
+class resCountry(models.Model):
+    _inherit = 'res.country'
+    '''
+        To setup name get function to get code instead of country name
+    '''
+
+    def name_get(self):
+        result = []
+        for row in self:
+            name = row.code
+            result.append((row.id, name))
+        return result
+   
 class Names(models.Model):
     '''
         The class is used to create a one2many relation with the customer class.
@@ -354,6 +569,75 @@ class Names(models.Model):
     pager                   = fields.Char('Pager',help='Exportable')
     email                   = fields.Char('Email',help='Exportable')
 
+    @api.onchange('email')
+    def validate_mail(self):
+        '''
+            validate email
+        '''
+        if self.email:
+            match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', self.email)
+            if match == None:
+                raise ValidationError('Not a valid E-mail ID')
+
+    @api.onchange('phone')
+    def _onchange_phone(self):
+        '''
+            validate phone number
+        '''
+        if self.phone:
+            phone1   =str(self.phone)
+            letters = re.findall("[^0-9]",phone1)
+            for val in letters:
+                phone1 = phone1.replace(val,'')
+            seperator="-"
+            start_group =phone1[:3]
+            second_group=phone1[3:6]
+            third_group =phone1[6:10]
+            start_group += seperator
+            start_group += second_group
+            start_group += seperator
+            start_group += third_group
+            self.phone  = start_group
+
+    @api.onchange('cell')
+    def _onchange_cell(self):
+        '''
+            validate cell number
+        '''
+        if self.cell:
+            phone1   =str(self.cell)
+            letters = re.findall("[^0-9]",phone1)
+            for val in letters:
+                phone1 = phone1.replace(val,'')
+            seperator="-"
+            start_group =phone1[:3]
+            second_group=phone1[3:6]
+            third_group =phone1[6:10]
+            start_group += seperator
+            start_group += second_group
+            start_group += seperator
+            start_group += third_group
+            self.cell  = start_group
+
+    @api.onchange('fax')
+    def _onchange_fax(self):
+        '''
+            validate fax
+        '''
+        if self.fax:
+            phone = str(self.fax)
+            letters = re.findall("[^0-9]", phone)
+            for val in letters:
+                phone = phone.replace(val, '')
+            seperator = "-"
+            start_group = phone[:3]
+            second_group = phone[3:6]
+            third_group = phone[6:10]
+            start_group += seperator
+            start_group += second_group
+            start_group += seperator
+            start_group += third_group
+            self.fax= start_group
 
 class BalanceMethod(models.Model):
     '''
@@ -386,6 +670,20 @@ class Sort(models.Model):
     _name = 'sort'
 
     name                    = fields.Char('Sort Name',help='Exportable')
+
+    @api.onchange('name')
+    def _onchange_sort_name_id(self):
+        '''
+            validate sort_name_id number
+        '''
+        if self.name:
+            name1   =str(self.name)
+            letters = re.findall("[a-zA-Z]",name1)
+            for val in letters:
+                name1 = name1.replace(val,'')
+        
+            self.name  = name1
+        
 
 class Bill(models.Model):
     '''

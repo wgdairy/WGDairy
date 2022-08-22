@@ -28,6 +28,8 @@
         'views/customer.xml',
         # 'views/views.xml',
         'views/templates.xml',
+        'views/company.xml',
+
     ],
     # css view
     'css': [
