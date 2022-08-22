@@ -36,7 +36,7 @@
                 <div class="row" col="4" style="width:100%;">
                     <div style="padding:2% !important;width:50%;margin-top:-15px;">
                         <label for="partner_id" string="Name" style="width:14%;margin-top:-15px;"/>
-                        <field name="partner_id" style="width:50%; margin-top:-15px;"/>
+                        <field name="partner_id" style="width:50%; margin-top:-15px;"/> 
                     </div>
                 </div>
                 
@@ -44,7 +44,7 @@
                     <page string="1. Main">
                     <div class="row" col="2" style="width:100%;padding-left:1%;">
                         <div style="padding:2% !important;width:50%;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                        <h6 style="color: #423e3e;position: relative;bottom: 9%;right: 1.5%;font-size: 12px;">Vendor Info</h6>
+                        <h6 style="color: #423e3e;position: relative;bottom: 9%;left: 0.5%;font-size: 12px;z-index:1;">Vendor Info</h6>
                             <div class="row" col="2" style="width:100%;">
                                 <div style="width:27%;">
                                     <label for="street" string="Address" style="width:27%;padding-left:10%;"/>
@@ -81,8 +81,7 @@
                                 <label for="network_id_code" string="Network ID Code" style="width:30%;"/>
                                 <field  name="network_id_code" style="width:30%;"/>
                             </div> -->
-                            <div style="padding:2%;border:solid #e6e5e5 0.1px;margin-bottom:2%;">
-                                <h6 style="color: #423e3e;position: absolute;top: 24%;left: 52%;font-size: 12px;">Order Info</h6>
+                            <div style="padding:2%;border:solid #e6e5e5 0.1px;">
                                 <label for="lead_time" string="Lead Time" style="width:17%;"/>
                                 <field  name="lead_time" style="width:20%;margin-right:2%;"/>
                                 <label for="update_lead_time" string="Update Lead Time" style="width:25%;"/>
@@ -98,8 +97,8 @@
                                 <label for="ship_via" string="Ship Via" style="width:17%;"/>
                                 <field  name="ship_via" style="width:20%;"/><br/>
                             </div>
+                            <h6 style="color: #423e3e;position: relative;top: 3.5%;left: 3%;font-size: 12px;">Transmit Options</h6>
                             <div style="border:solid #e6e5e5 0.1px;padding:2%;">
-                            <h6 style="color: #423e3e;position: absolute;top: 45%;left: 52%;font-size: 12px;">Transmit Options</h6>
                                 <label for="po_item_number" string="PO Item Number" style="width:30%;"/>
                                 <field  name="po_item_number" style="width:25%;"/><br/>
                                 <label for="edi_po" string="EDI PO" style="width:30%;"/>
@@ -116,11 +115,12 @@
                                 <field  name="lp_month" style="width:15%;padding-left:5%;" placeholder="Month"/>&amp;emsp;/
                                 <field  name="lp_year" style="width:10%;" placeholder="Year"/>
                             </div>
+                            <h6 style="color: #423e3e;position: relative;bottom: 97%;left: 4%;font-size: 12px;">Order Info</h6>
                         </div>
                     </div>
                     <div style="padding:2% !important;border:solid #e6e5e5 0.1px;width:95%;margin-top:1%;" >
                             <h6 style="color: #423e3e;position: relative;margin-top: -30px;left: 0.5%;font-size: 12px;">Message</h6><br/><br/>
-                            <field  name="message" style="width:98%;margin-top: -30px;margin-left: 10px;margin-right: -10px;"/>
+                            <field  name="message" style="width:98%;margin-top: -30px;margin-left: 10px;margin-right: -10px;" widget="html"/>
                         </div>
                     </page>
                     <!-- <page string="Order info">
@@ -370,7 +370,7 @@
         <field name="arch" type="xml">
             <tree string="Vendors">
                 <field name="vendor"/>
-                <field name="vendor_name"/>
+                <field name="name"/>
                 <field name="pay_to_vendor"/>
                 <field name="phone"/>
                 <field name="contact"/>
@@ -387,7 +387,7 @@
             <search>
                 <filter name="type" string="Type"/>
                 <field name="vendor" string="Vendor ID"/>
-                <field name="vendor_name" string="Name"/>
+                <field name="name" string="Name"/>
                 <field name="sort_name" string="Sort Name"/>
                 <field name="pay_to_vendor" string="Pay to Vendor"/>
                 <field name="phone" string="Phone"/>

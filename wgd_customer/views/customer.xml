@@ -32,25 +32,29 @@
                                 <field name="customer_id" style="width:50%;margin-bottom: -15px;"></field><br/>
                             </div>    
 
-                            <div style="padding:2% !important;width:25%;">
+                            <div style="padding:2% !important;width:20%;">
                                 <label for="job_id" string="Job" style="width:25%;margin-bottom: -15px;"/>
                                 <field  name="job_id" style="width:50%;margin-bottom: -15px;"/><br/>
                             </div> 
-                            <div style="padding:2% !important;width:25%;">
+                            <div style="padding:2% !important;width:20%;">
                                 <label for="sort_name_id" string="Sort Name" style="width:40%;margin-bottom: -15px;"/>
                                 <field  name="sort_name_id" style="width:50%;margin-bottom: -15px;"/><br/>
                             </div>    
 
-                            <div style="padding:2% !important;width:25%;">
-                                <label for="bill_to_id" string="Bill To" style="width:25%;margin-bottom: -15px;"/>
-                                <field name="bill_to_id" style="width:50%;margin-bottom: -15px;"/><br/>
+                            <div style="padding:2% !important;width:35%;">
+                                <label for="bill_to_id" string="Bill To" style="width:20%;margin-bottom: -15px;"/>
+                                <field name="bill_to_id" style="width:70%;margin-bottom: -15px;"/><br/>
                             </div> 
                         </div> 
                         <div class="row" col="4" style="width:100%;">
                             <div style="padding:2% !important;width:50%;margin-top: -15px;">
                                 <label for="partner_id" string="Name" style="width:14%;margin-top: -15px;"/>
-                                <field  name="partner_id" style="width:50%;margin-top: -15px;"/>
+                                <field  name="partner_id" style="width:50%;margin-top: -15px;"  domain="[('customer_rank', '=', True)]" context="{'default_customer_rank': 1}"/>
                             </div>
+                            <!-- <div style="padding:2% !important;width:25%;">
+                                <label for="bill_to_id" string="Bill To" style="width:25%;margin-bottom: -15px;"/>
+                                <field name="bill_to_id" style="width:50%;margin-bottom: -15px;"/><br/>
+                            </div>  -->
                             <!-- <div style="padding:2% !important;width:50%;margin-top: -15px;">
                                 <label for="ace_rewards" string="Ace Rewards" style="width:17%;margin-top: -15px;"/>
                                 <field  name="ace_rewards" style="width:50%;margin-top: -15px;"/>
@@ -71,7 +75,7 @@
                                             <field name="city" placeholder="City" class="o_address_city" />
                                             <field name="state_id" class="o_address_state" placeholder="State" />
                                             <field name="zip" placeholder="ZIP" class="o_address_zip" />
-                                            <field  name="country_id" />
+                                            <field  name="country_id" />                 
                                         </div>
                                     </div>
                                     <label for="phone" string="Phone" style="width:23%;"/>
@@ -123,11 +127,11 @@
                                         <label for="std_sell_price" string="Std Sell Price" style="width:40%;"/>
                                         <field  name="std_sell_price" style="width:50%;"/>
                                         <label for="finace_charges" string="Finance Charges" style="width:40%;"/>
-                                        <field  name="finace_charges" style="width:50%;"/>
+                                        <field  name="finace_charges" style="width:50%;" widget="monetary"/>
                                         <label for="store_acct_opened_id" string="Store Acct Opened" style="width:40%;"/>
                                         <field  name="store_acct_opened_id" style="width:50%;"/>
-                                        <label for="transfer_to_store" string="Transfer To Store" style="width:40%;"/>
-                                        <field  name="transfer_to_store" style="width:50%;"/>
+                                        <!-- <label for="transfer_to_store" string="Transfer To Store" style="width:40%;"/>
+                                        <field  name="transfer_to_store" style="width:50%;"/> -->
                                         <label for="print_statments" string="Print Statments" style="width:40%;"/>
                                         <field  name="print_statments" style="width:50%;"/>
                                         <label for="charge_allowed" string="Charge Allowed" style="width:40%;"/>
@@ -135,13 +139,13 @@
                                         <label for="check_allowed" string="Check Allowed" style="width:40%;"/>
                                         <field  name="check_allowed" style="width:50%;"/>
                                         <!-- <label for="credit_are_only" string="Credit A/R Only" style="width:40%;"/>
-                                        <field  name="credit_are_only" style="width:50%;"/>
-                                        <label for="taxable" string="Taxable" style="width:40%;"/> 
-                                        <field  name="taxable" style="width:50%;"/>-->
+                                        <field  name="credit_are_only" style="width:50%;"/>-->
                                         <label for="keep_dept_history" string="Keep Dept History" style="width:40%;"/>
                                         <field  name="keep_dept_history" style="width:50%;"/>
                                         <label for="print_invoices_in_pos" string="Print Invoices In POS" style="width:40%;"/>
                                         <field  name="print_invoices_in_pos" style="width:50%;"/>
+                                        <label for="taxable" string="Taxable" style="width:40%;"/> 
+                                        <field  name="taxable" style="width:50%;"/>
                                     </div>
                                 </div>            
                         </page>
@@ -215,22 +219,22 @@
                                     <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
                                         <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Balance History</h6>                                    
                                         <label for="finace_chgs_ytd" string="Finace Chgs YTD" style="width:50%;"/>
-                                        <field  name="finace_chgs_ytd" style="width:35%;"/><br/>
-                                        <label for="credit_limit" string="Credit Limit" style="width:50%;"/>
-                                        <field  name="credit_limit" style="width:35%;"/><br/>
+                                        <field  name="finace_chgs_ytd" style="width:35%;" widget="monetary"/><br/>
+                                        <label for="credit_limit" string="Credit Limit" style="width:50%;" />
+                                        <field  name="credit_limit" style="width:35%;" widget="monetary"/><br/>
                                         <label for="higest_acc_balance" string="Higest Acct Balance" style="width:50%;"/>
-                                        <field  name="higest_acc_balance" style="width:35%;"/><br/>
+                                        <field  name="higest_acc_balance" widget="monetary" style="width:35%;"/><br/>
                                         <label for="credit_available" string="Credit Available" style="width:50%;"/>
-                                        <field  name="credit_available" style="width:35%;"/><br/>
+                                        <field  name="credit_available" widget="monetary" style="width:35%;"/><br/>
                                         <label for="running_balance" string="Running Balance" style="width:50%;"/>
-                                        <field  name="running_balance" style="width:35%;"/><br/>
+                                        <field  name="running_balance" widget="monetary" style="width:35%;"/><br/>
                                         <label for="statment_balance" string="Statment Balance" style="width:50%;"/>
-                                        <field  name="statment_balance" style="width:35%;"/><br/>
+                                        <field  name="statment_balance" widget="monetary" style="width:35%;"/><br/>
                                         <label for="statment_discount" string="Statment Discount" style="width:50%;"/>
-                                        <field  name="statment_discount" style="width:35%;"/><br/>
+                                        <field  name="statment_discount" widget="monetary" style="width:35%;"/><br/>
                                         <label for="returns" string="Returns ($) YTD" style="width:50%;"/>
-                                        <field  name="returns" style="width:35%;"/><br/>
-                                        <label for="transations" string="# Transations YTD" style="width:50%;"/>
+                                        <field  name="returns" widget="monetary" style="width:35%;"/><br/>
+                                        <label for="transations" widget="monetary" string="# Transations YTD" style="width:50%;"/>
                                         <field  name="transations" style="width:35%;"/><br/><br/>
                                     </div>
                                 </div>
@@ -495,7 +499,7 @@
                                     <label for="amount_last_pay" string="Amount Last Pay" style="width:50%;"/>
                                     <field  name="amount_last_pay" style="width:35%;"/>
                                     <label for="finace_charges" string="Finance Charges" style="width:50%;"/>
-                                    <field  name="finace_charges" style="width:35%;"/>
+                                    <field  name="finace_charges" style="width:35%;" widget="monetary"/>
                                     <label for="monthly_payment" string="Monthly Payment" style="width:50%;"/>
                                     <field  name="monthly_payment" style="width:35%;"/>
                                     <label for="credit_limit" string="Credit Limit" style="width:50%;"/>
@@ -540,7 +544,7 @@
 
 
                                 
-                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;width:15%;" >
+                                <!-- <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;width:15%;" >
                                     <h6 style="color: #423e3e;position: relative;margin-top: -40px;bottom: -3.2%;left: 0.5%;font-size: 12px;">Previous Pay History</h6><br/>
                                     <label for="jan" string="Jan" style="width:40%;"/>
                                     <field  name="jan" style="width:50%;"/>
@@ -566,7 +570,7 @@
                                     <field  name="nov" style="width:50%;"/>
                                     <label for="dec" string="Dec" style="width:40%;"/>
                                     <field  name="dec" style="width:50%;"/>
-                                </div>
+                                </div> -->
                             </div>
                         </page>
                         <page string="5. Names">
@@ -677,13 +681,14 @@
                                        <field name="name" />
                                         <field name="show_in_POS" />
                                         <field name="phone" />
+                                        <field name="cell" />
                                         <field name="fax" />
                                         <field name="pager" />
                                         <field name="email" />
                                     </tree>
                                 </field>
                             </div>
-                            <div class="row" col="6" style="width:100%;"> 
+                            <!-- <div class="row" col="6" style="width:100%;"> 
                                 <div style="width:10%;">
                                     <button name="button_" class="oe_highlight" string="Add" type="object" style="margin-left: 15px;"/>
                                 </div>
@@ -702,7 +707,7 @@
                                 <div style="width:10%;">
                                     <button name="button_" class="oe_highlight" string="Set Image" type="object"/>
                                 </div>
-                            </div>  
+                            </div>   -->
                         </page>
                         <!-- <page string="7. Names">
                            <div>

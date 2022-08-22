@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from pyexpat import model
 from odoo import models, fields, api, _
 import re
 
@@ -10,23 +11,27 @@ class vendors(models.Model):
     '''
     _name = "wgd.vendors"
     _inherits = {"res.partner": 'partner_id'}
-    _columns = {
-        'partner_id' : fields.Many2one('wgd.vendors', 'Vendor Details', help="Link this vendor to it's partner", ondelete='cascade', required=True)
-    }
 
     # main tab fields
+    partner_id = fields.Many2one('res.partner', 'Vendor Details', help="Link this vendor to it's partner", ondelete='cascade', required=True)
     vendor = fields.Char('Vendor')
-    vendor_name = fields.Char('Name')
-    sort_name = fields.Many2one('res.partner','Sort Name')
+    name = fields.Char('Name')
+    sort_name = fields.Char('Sort Name')
     pay_to_vendor = fields.Many2one('res.partner','Pay To Vendor')
     pay_to_vendor2 = fields.Many2one('res.partner', 'Pay to Vendor')
     phone = fields.Char('Phone')
     phone2 = fields.Char('Alternate Phone')
-    country_id = fields.Many2one('res.country', string='Country', ondelete='restrict', default=lambda self: self.env.company.country_id)
+    # function for getting 'United States' as default country 
+    @api.model
+    def _get_default_country(self):
+        country = self.env['res.country'].search([('code', '=', 'US')], limit=1)
+        return country
+    country_id = fields.Many2one('res.country', string='Country', ondelete='restrict', default=_get_default_country)
+
     fax = fields.Char('Fax')
     contact = fields.Char('Contact')
     assignee = fields.Char('Assigned Customer')
-    vType = fields.Selection([],'Type')
+    vType = fields.Selection([('w','W'),('i','I')],'Type')
     codes = fields.Integer('Codes')
     network_id = fields.Char('Network ID')
     network_id_code = fields.Char('Network ID Code')
@@ -84,11 +89,11 @@ class vendors(models.Model):
     vendor_status = fields.Selection([], 'Vendor Status')
     append_rv = fields.Selection([], 'Append To RV')
     bank_code = fields.Selection([], 'Bank Code')
-    terms_code = fields.Selection([('30','30')], 'Terms Code')
-    terms_type = fields.Selection([], 'Terms Type')
-    due_days = fields.Integer('Due Days')
-    disc_days = fields.Integer('Disc Days')
-    discount = fields.Integer('Discount %')
+    terms_code = fields.Many2one('account.payment.term', 'Terms Code')
+    terms_type = fields.Selection([], 'Terms Type',related='terms_code.terms_type')
+    due_days = fields.Integer('Due Days',related='terms_code.line_ids.days')
+    disc_days = fields.Integer('Disc Days',related='terms_code.disc_days')
+    discount = fields.Integer('Discount %', related='terms_code.discount')
     print_check = fields.Selection([], 'Print on Checks')
     vendor_language = fields.Selection([], 'Vendor Language')
     remit_address = fields.Char('Address')
@@ -100,41 +105,41 @@ class vendors(models.Model):
     zip_code = fields.Char('Zip Code')
 
     # history tab 
-    amount_paid1 = fields.Integer('Amount Paid')
-    amount_paid2 = fields.Integer('Amount Paid')
-    discount_taken1 = fields.Integer('Discounts Taken')
-    discount_taken2 = fields.Integer('Discounts Taken')
-    discount_lost1 = fields.Integer('Discount_lost')
-    discount_lost2 = fields.Integer('Discount_lost')
+    amount_paid1 = fields.Monetary('Amount Paid')
+    amount_paid2 = fields.Monetary('Amount Paid')
+    discount_taken1 = fields.Monetary('Discounts Taken')
+    discount_taken2 = fields.Monetary('Discounts Taken')
+    discount_lost1 = fields.Monetary('Discount_lost')
+    discount_lost2 = fields.Monetary('Discount_lost')
     vendor_bal_due = fields.Float('Vendor Balance Due')
     ''' 
         cq for 'Current Qtr' lq for 'Last Qtr'
         b for 'Buys' field , ytd for YearToDate, ly for LastYear
     '''
-    warehouse_cq = fields.Integer('Warehouse ($/Buys)')
+    warehouse_cq = fields.Monetary('Warehouse ($/Buys)')
     warehouse_cq_b = fields.Integer()
-    warehouse_lq = fields.Integer()
+    warehouse_lq = fields.Monetary()
     warehouse_lq_b = fields.Integer()
-    warehouse_ytd = fields.Integer()
+    warehouse_ytd = fields.Monetary()
     warehouse_ytd_b = fields.Integer()
-    warehouse_ly = fields.Integer()
+    warehouse_ly = fields.Monetary()
     warehouse_ly_b = fields.Integer()
 
-    dropshiip_cq = fields.Integer('Drop/Ship')
-    dropshiip_lq = fields.Integer()
-    dropshiip_ytd = fields.Integer()
-    dropshiip_ly = fields.Integer()
+    dropshiip_cq = fields.Monetary('Drop/Ship')
+    dropshiip_lq = fields.Monetary()
+    dropshiip_ytd = fields.Monetary()
+    dropshiip_ly = fields.Monetary()
 
-    special_cq = fields.Integer('Special')
-    special_lq = fields.Integer()
-    special_ytd = fields.Integer()
-    special_ly = fields.Integer()
+    special_cq = fields.Monetary('Special')
+    special_lq = fields.Monetary()
+    special_ytd = fields.Monetary()
+    special_ly = fields.Monetary()
     
     units_ordered_ytd = fields.Integer('Units Ordered')
     units_ordered_ly = fields.Integer('Units Ordered')
-    received_ytd = fields.Integer('Recieved')
+    received_ytd = fields.Monetary('Recieved')
     recieved_ytd_fill = fields.Integer('Recieved YTD Fill', readonly=True)
-    received_ly = fields.Integer('Recieved')
+    received_ly = fields.Monetary('Recieved')
     recieved_ly_fill = fields.Integer('Recieved LY Fill', readonly=True)
     last_received = fields.Date('Last Recieved')
 
@@ -143,7 +148,7 @@ class vendors(models.Model):
     note_type = fields.Selection([],'Type')
     display_repeats = fields.Selection([], 'Display Repeats')
     print_repeats = fields.Selection([], 'Print Repeats')
-    message = fields.Html('Message')
+    message = fields.Text('Message')
 
     # Contact Tab
     contact_ids = fields.One2many('contact.lines', 'vendor', string="")
@@ -253,6 +258,7 @@ class vendors(models.Model):
         pass
 
     
+    
 class ContactLines(models.Model):
     '''
         Model for Contact tab in vendor form.
@@ -346,8 +352,21 @@ class AccountMove(models.Model):
 #         return _('Monthly Statement')
 
 
+class PaymentTerms(models.Model):
+    _inherit = 'account.payment.term'
+
+    due_days = fields.Integer('Due Days')
+    disc_days = fields.Integer('Disc Days')
+    discount = fields.Integer('Discount%')
+    terms_type = fields.Selection([],'Terms Type')
 
 
 
+class stateModel(models.Model):
+    _inherit = 'res.country.state'
 
-    
+    def name_get(self):
+        result = []
+        for record in self:
+            result.append((record.id, "{}".format(record.code)))
+        return result

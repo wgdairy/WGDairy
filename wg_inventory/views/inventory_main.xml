@@ -33,8 +33,8 @@
                             </div>
 
                             <div style="padding:10px; !important;width:12%;">
-                                <label for="store" string="Store" style="width:25%;margin-bottom: -15px;"/>
-                                <field name="store" style="width:50%;margin-bottom: -15px;"/>
+                                <label for="stores" string="Store" style="width:25%;margin-bottom: -15px;"/>
+                                <field name="stores" style="width:50%;margin-bottom: -15px;"/>
                             </div>
                         </div>
 
@@ -54,14 +54,14 @@
                             </div>
 
                             <div style="padding:10px; !important;width:20%;">
-                                <label for="instore" string="In Store" style="width:30%;margin-bottom: -15px;padding:5px;"/>
-                                <field name="instore" style="width:50%;margin-top: -15px;"/><br/>
+                                <label for="instores" string="In Store" style="width:30%;margin-bottom: -15px;padding:5px;"/>
+                                <field name="instores" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
                         </div>
                         <div class="row" col="5" style="width:100%;">
                             <div style="padding:10px; !important;width:15%;">
-                                <label for="dept" string="Dept" style="width:20%;margin-bottom: -15px;"/>
-                                <field name="dept" style="width:40%;margin-top: -15px;"></field><br/>
+                                <label for="deptart" string="Dept" style="width:20%;margin-bottom: -15px;"/>
+                                <field name="deptart" style="width:40%;margin-top: -15px;"></field><br/>
                             </div>
 
                             <div style="padding:10px; !important;width:15%;">
@@ -74,12 +74,12 @@
 <!--                            </div>-->
 
                             <div style="padding:10px; !important;width:20%;">
-                                <label for="prime_ved" string="Prime Vend" style="width:40%;margin-bottom: -15px;"/>
-                                <field name="prime_ved" style="width:50%;margin-top: -15px;"/><br/>
+                                <label for="prime_vede" string="Prime Vend" style="width:40%;margin-bottom: -15px;"/>
+                                <field name="prime_vede" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
                                 <div style="padding:10px; !important;width:20%;">
-                                <label for="mfg_vend" string="Mfg Vend" style="width:35%;margin-bottom: -15px;"/>
-                                <field name="mfg_vend" style="width:50%;margin-top: -15px;"/><br/>
+                                <label for="mfg_vende" string="Mfg Vend" style="width:35%;margin-bottom: -15px;"/>
+                                <field name="mfg_vende" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
                         </div>
                         </div>
@@ -155,8 +155,8 @@
                                 <field name="purch_decimal_pi"  style="width:35%;" />
                                 <label for="min_of_std_pkgs" string="Min # of Std Pkgs" style="width:60%;"/>
                                 <field name="min_of_std_pkgs"  style="width:35%;" />
-                                <label for="secondary_vend" string="Secondary Vend" style="width:60%;"/>
-                                <field name="secondary_vend"  style="width:35%;" />
+                                <label for="secondary_vends" string="Secondary Vend" style="width:60%;"/>
+                                <field name="secondary_vends"  style="width:35%;" />
 <!--                                <label for="vend_stk" string="Vend Stk #" style="width:60%;"/>-->
 <!--                                <field name="vend_stk"  style="width:35%;"  />-->
 <!--                                <label for="po_season" string="PO Season" style="width:60%;"/>-->
@@ -218,6 +218,7 @@
                                     <label for="mkt_cost" string="Mkt Cost" style="width:100%;margin-bottom: 9px;"/><br/>
                                     <label for="reail" string="Reail" style="width:100%;margin-bottom: 9px;"/><br/>
                                     <label for="list" string="List" style="width:100%;margin-bottom: 9px;"/><br/>
+                                    <label for="promotion" string="Promotion" style="width:100%;margin-bottom: 9px;"/><br/>
                                     <label for="price_one" string="Price 1" style="width:100%;margin-bottom: 9px;"/><br/>
                                     <label for="price_two" string="Price 2" style="width:100%;margin-bottom: 9px;"/><br/>
                                     <label for="price_three" string="Price 3" style="width:100%;margin-bottom: 9px;"/><br/>
@@ -237,6 +238,7 @@
                                     <field  name="mkt_cost" style="width:60%;"/><br />
                                     <field  name="reail" style="width:60%;"/><br/>
                                     <field  name="list" style="width:60%;"/><br/>
+                                    <field  name="promotion" style="width:60%;"/><br/>
                                     <field  name="price_one" style="width:60%;"/><br />
                                     <field  name="price_two" style="width:60%;"/><br/>
                                     <field  name="price_three" style="width:60%;"/><br/>
@@ -255,6 +257,7 @@
                                     <field  name="mkt_cost_stock" style="width:60%;"/><br />
                                     <field  name="reail_stock" style="width:60%;"/><br/>
                                     <field  name="list_stock" style="width:60%;"/><br/>
+                                    <field  name="promotion_stock" style="width:60%;"/><br/>
                                     <field  name="price_one_stock" style="width:60%;"/><br />
                                     <field  name="price_two_stock" style="width:60%;"/><br/>
                                     <field  name="price_three_stock" style="width:60%;"/><br/>
@@ -273,6 +276,7 @@
                                     <field  name="mkt_cost_alt" style="width:60%;"/><br />
                                     <field  name="reail_alt" style="width:60%;"/><br/>
                                     <field  name="list_alt" style="width:60%;"/><br/>
+                                    <field  name="promotion_alt" style="width:60%;"/><br/>
                                     <field  name="price_one_alt" style="width:60%;"/><br />
                                     <field  name="price_two_alt" style="width:60%;"/><br/>
                                     <field  name="price_three_alt" style="width:60%;"/><br/>
@@ -291,6 +295,7 @@
                                     <field  name="mkt_cost_gp" style="width:60%;"/><br />
                                     <field  name="reail_gp" style="width:60%;"/><br/>
                                     <field  name="list_gp" style="width:60%;"/><br/>
+                                    <field  name="promotion_gp" style="width:60%;"/><br/>
                                     <field  name="price_one_gp" style="width:60%;"/><br />
                                     <field  name="price_two_gp" style="width:60%;"/><br/>
                                     <field  name="price_three_gp" style="width:60%;"/><br/>
@@ -977,17 +982,17 @@
             <search>
 
                 <field name="name" string="SKU"/>
-                <field name="dept" string="Department"/>
+                <field name="deptart" string="Department"/>
                 <field name="types" string="Type"/>
                 <field name="mfg" string="Manufacturer"/>
                 <field name="upc" string="UPC"/>
                 <field name="sequence" string="Sequence"/>
-                <field name="store" string="Store"/>
+                <field name="stores" string="Store"/>
                 <field name="types" string="Type"/>
                 <field name="class_inven" string="Class"/>
                 <field name="fineline" string="Fineline"/>
-                <field name="prime_ved" string="Prime Vend"/>
-                <field name="mfg_vend" string="Mfg Vend"/>
+                <field name="prime_vede" string="Prime Vend"/>
+                <field name="mfg_vende" string="Mfg Vend"/>
                 <field name="qut_on_hant" string="Qty On Hand"/>
                 <field name="commited_qty" string="Committed Qty"/>
                 <field name="qty_on_order" string="Qty On Order"/>
@@ -1032,16 +1037,16 @@
 
                 <field name="name" string="SKU"/>
                 <field name="types" string="Type"/>
-                <field name="store" string="Store"/>
+                <field name="stores" string="Store"/>
                 <field name="mfg" string="Mfg#"/>
                 <field name="upc" string="UPC"/>
                 <field name="sequence" string="Sequence"/>
-                <field name="instore" string="In Stores"/>
-                <field name="dept" string="Dept"/>
+                <field name="instores" string="In Stores"/>
+<!--                <field name="dept" string="Dept"/>-->
                 <field name="class_inven" string="Class"/>
 <!--                <field name="fineline" string="Fineline"/>-->
-                <field name="prime_ved" string="Prime Vend"/>
-                <field name="mfg_vend" string="Mfg Vend"/>
+                <field name="prime_vede" string="Prime Vend"/>
+                <field name="mfg_vende" string="Mfg Vend"/>
 
             </xpath>
         </field>
