@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_pricingtables,access.pricingtables,wg_inventory.model_pricingtables,base.group_user,1,1,1,1
+access_inv_vendor,access.inv_vendor,wg_inventory.model_inv_vendor,base.group_user,1,1,1,1
+access_inv_vendor_new,access.inv_vendor_new,wg_inventory.model_inv_vendor_new,base.group_user,1,1,1,1
+
+
