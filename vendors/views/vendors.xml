@@ -4,6 +4,7 @@
     <field name="name">Vendors</field>
     <field name="res_model">wgd.vendors</field>
     <field name="view_mode">tree,form</field>
+    <field name="context">{'default_supplier_rank': 1}</field>
 </record>    
 
 <!-- wgd.vendors form view -->
@@ -13,30 +14,42 @@
     <field name="arch" type="xml">
         <form string="Vendors">
             <sheet>
+                <div class="row" col="2" style="width:100%;">  
+            <div style="padding:2% !important;width:56%;">
+                <label for="filter_by_vname" string="Filter By Name" style="width:16%;margin-bottom: -15px;"/>
+                <field name="filter_by_vname" style="width:42%;margin-bottom: -15px;"></field><br/>
+            </div>    
+            <div style="padding:2% !important;width:44%;">
+                <label for="filter_by_vid" string="Filter By ID" style="width:18%;margin-bottom: -15px;"/>
+                <field  name="filter_by_vid" style="width:22%;margin-bottom: -15px;"/><br/>
+                </div> 
+            </div> 
                 <div class="row" col="4" style="width:100%;">
                     <div style="padding:2% !important;width:25%;">
                         <label for="vendor" string="Vendor" style="width:30%;margin-bottom:-15px;"/>
                         <field name="vendor" style="width:50%; margin-bottom:-15px;"/><br/>
                     </div>
-                    <div style="padding:2% !important;width:25%;">
-                        <label for="sort_name" string="Sort Name" style="width:40%;margin-bottom:-15px;"/>
+                    <div style="padding-top:2% !important;width:25%;">
+                        <label for="sort_name" string="Sort Name" style="width:30%;margin-bottom:-15px;"/>
                         <field name="sort_name" style="width:50%; margin-bottom:-15px;"/><br/>
                     </div>
-                    <div style="padding:2% !important;width:25%;">
-                        <label for="pay_to_vendor" string="Pay to Vendor" style="width:40%;margin-bottom:-15px;"/>
-                        <field name="pay_to_vendor" style="width:25%;margin-bottom:-15px;"/>
-                        <field name="pay_to_vendor2" style="width:25%; margin-bottom:-15px;margin-left:1em;"/><br/>
+                    <div style="padding-top:2% !important;width:50%;">
+                        <label for="pay_to_vendor" string="Pay to Vendor" style="width:17%;margin-bottom:-15px;"/>
+                        <field name="pay_to_vendor" style="width:40%;margin-bottom:-15px;margin-right:2%;" domain="[('supplier_rank', '=', 1)]"/>
+                        <field name="pay_to_vendor2" style="width:40%; margin-bottom:-15px;" domain="[('supplier_rank', '=', 1)]"/><br/>
                     </div>
-                    <div style="padding:2% !important;width:25%;">
+                    <!-- <div style="padding:2% !important;width:25%;">
                         <label for="company_id" string="Store" style="width:20%;margin-bottom:-15px;"/>
                         <field name="company_id" style="width:50%; margin-bottom:-15px;"/><br/>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="row" col="4" style="width:100%;">
-                    <div style="padding:2% !important;width:50%;margin-top:-15px;">
-                        <label for="partner_id" string="Name" style="width:14%;margin-top:-15px;"/>
-                        <field name="partner_id" style="width:50%; margin-top:-15px;"/> 
+                    <div style="padding:2% !important;width:100%;margin-top:-15px;">
+                        <label for="name" string="Name" style="width:5%;margin-top:-15px;"/>
+                        <field name="name" style="width:25%; margin-top:-15px;margin-right:3%;"/>
+                        <label for="company_id" string="Store" style="width:5%;margin-bottom:-15px;"/>
+                        <field name="company_id" style="width:20%; margin-bottom:-15px;"/>
                     </div>
                 </div>
                 
@@ -44,7 +57,7 @@
                     <page string="1. Main">
                     <div class="row" col="2" style="width:100%;padding-left:1%;">
                         <div style="padding:2% !important;width:50%;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                        <h6 style="color: #423e3e;position: relative;bottom: 9%;left: 0.5%;font-size: 12px;z-index:1;">Vendor Info</h6>
+                        <h6 style="color: #423e3e;position: relative;bottom: 8%;left: 0.5%;font-size: 12px;z-index:1;">Vendor Info</h6>
                             <div class="row" col="2" style="width:100%;">
                                 <div style="width:27%;">
                                     <label for="street" string="Address" style="width:27%;padding-left:10%;"/>
@@ -67,7 +80,7 @@
                             <label for="contact" string="Contact" style="width:23%;"/>
                             <field  name="contact" style="width:50%;"/><br/>
                             <label for="assignee" string="Assigned Customer" style="width:23%;"/>
-                            <field  name="assignee" style="width:50%;"/><br/>
+                            <field  name="assignee" style="width:50%;" domain="[('customer_rank', '=', 1)]"/><br/>
                             <label for="vType" string="Type" style="width:23%;"/>
                             <field  name="vType" style="width:15%;"/>
                             <label for="codes" string="Code" style="width:13%;padding-left:5%;"/>
@@ -206,7 +219,7 @@
                             </div>
                             <div style="width:60%;padding:2%;">
                                 <label for="terms_code" string="Terms Code" style="width:20%" />
-                                <field name="terms_code" style="width: 20%"/>&amp;emsp; <b>NET <field name="terms_code" style="width:4%;margin-left:1%;" readonly="1"/> DAYS</b><br/>
+                                <field name="terms_code" style="width: 20%"/>&amp;emsp; <b>NET <field name="terms_code" style="width:30%;margin-left:1%;" readonly="1"/></b><br/>
                                 <label for="due_days" string="Due Days" style="width:20%" />
                                 <field name="due_days" style="width: 20%" />
                                 <label for="terms_type" string="Terms Type" style="width:25%;margin-left:5%;" />
@@ -246,14 +259,14 @@
                                 <label for="amount_paid1" string="Last Date" style="width:11%" /><br/>
                             </div>
                             <label for="amount_paid1" string="Amount Paid" style="width:15%" />
-                            <field name="amount_paid1" style="width: 10%;margin-right:5%"/>
-                            <field name="amount_paid2" style="width: 10%" /><br/>
+                            <field name="amount_paid1" style="width: 10%;margin-right:5%" widget="monetary"/>
+                            <field name="amount_paid2" style="width: 10%" widget="monetary"/><br/>
                             <label for="discount_taken1" string="Discounts Taken" style="width:15%" />
-                            <field name="discount_taken1" style="width: 10%;margin-right:5%"/>
-                            <field name="discount_taken2" style="width: 10%" /><br/>
+                            <field name="discount_taken1" style="width: 10%;margin-right:5%" widget="monetary"/>
+                            <field name="discount_taken2" style="width: 10%" widget="monetary" /><br/>
                             <label for="discount_lost1" string="Discounts Lost" style="width:15%" />
-                            <field name="discount_lost1" style="width: 10%;margin-right:5%"/>
-                            <field name="discount_lost2" style="width: 10%" />
+                            <field name="discount_lost1" style="width: 10%;margin-right:5%" widget="monetary"/>
+                            <field name="discount_lost2" style="width: 10%" widget="monetary"/>
                             <label for="vendor_bal_due" string="Vendor Balance Due" style="width:16%;margin-left:5%;" />
                             <field name="vendor_bal_due" style="width: 10%" /><br/><br/>
                         </div>
@@ -267,13 +280,13 @@
                             <label for="warehouse_cq" string="Last Year" style="width:18%" /><br/>
                             <!-- headers end -->
                             <label for="warehouse_cq" string="Warehouse($/Buys)" style="width:16%" />
-                            <field name="warehouse_cq" style="width: 10%;margin-right:1%;" />
+                            <field name="warehouse_cq" style="width: 10%;margin-right:1%;" widget="monetary"/>
                             <field name="warehouse_cq_b" style="width: 5%;margin-right:4%;" />
-                            <field name="warehouse_lq" style="width: 10%;margin-right:1%;" />
+                            <field name="warehouse_lq" style="width: 10%;margin-right:1%;" widget="monetary"/>
                             <field name="warehouse_lq_b" style="width: 5%;margin-right:4%;" />
-                            <field name="warehouse_ytd" style="width: 10%;margin-right:1%;" />
+                            <field name="warehouse_ytd" style="width: 10%;margin-right:1%;" widget="monetary"/>
                             <field name="warehouse_ytd_b" style="width: 5%;margin-right:7%;" />
-                            <field name="warehouse_ly" style="width: 10%;margin-right:1%;" />
+                            <field name="warehouse_ly" style="width: 10%;margin-right:1%;" widget="monetary"/>
                             <field name="warehouse_ly_b" style="width: 5%;margin-right:4%;"/><br/>
 
                             <!-- <label for="dropshiip_cq" string="Drop/Ship" style="width:16%" />
@@ -371,6 +384,7 @@
             <tree string="Vendors">
                 <field name="vendor"/>
                 <field name="name"/>
+                 <field name="sort_name" string="Sort Name"/>
                 <field name="pay_to_vendor"/>
                 <field name="phone"/>
                 <field name="contact"/>
@@ -386,17 +400,17 @@
         <field name="arch" type="xml">
             <search>
                 <filter name="type" string="Type"/>
-                <field name="vendor" string="Vendor ID"/>
-                <field name="name" string="Name"/>
-                <field name="sort_name" string="Sort Name"/>
-                <field name="pay_to_vendor" string="Pay to Vendor"/>
+                <field name="vendor" string="Vendor ID" filter_domain="[('vendor','=ilike',self)]"/>
+                <field name="name" string="Name" filter_domain="[('name','=ilike',self)]"/>
+                <field name="sort_name" string="Sort Name" filter_domain="[('sort_name','=ilike',self)]"/>
+                <field name="pay_to_vendor" string="Pay to Vendor" filter_domain="[('pay_to_vendor','=ilike',self)]"/>
                 <field name="phone" string="Phone"/>
                 <field name="fax" string="Fax"/>
-                <field name="street" string="Address"/>
-                <field name="city" string="City"/>
-                <field name="state_id" string="State"/>
+                <field name="street" string="Address" filter_domain="[('pay_to_vendor','=ilike',self)]"/>
+                <field name="city" string="City" filter_domain="[('city','=ilike',self)]"/>
+                <field name="state_id" string="State" filter_domain="[('state_id','=ilike',self)]"/>
                 <field name="contact" string="Contact"/>
-                <field name="assignee" string="Assigned Customer"/>
+                <field name="assignee" string="Assigned Customer" filter_domain="[('assignee','=ilike',self)]"/>
                 <field name="network_id" string="Network ID"/>
                 <field name="po_item_number" string="PO Item Number"/>
                 <field name="edi_po" string="EDI PO"/>
@@ -460,6 +474,20 @@
             <field name="ar_note"/>
         </xpath>
             
+    </field>
+</record>
+
+<record id="view_company_form" model="ir.ui.view">
+    <field name="name">res.company.form.inherit.vendor</field>
+    <field name="model">res.company</field>
+    <field name="inherit_id" ref="base.view_company_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="/form/sheet/notebook/page[1]/group/group/field[@name='partner_id']" position="before">
+            <field name="company_name"/>
+        </xpath>
+        <label for="name" position="replace">
+            <label for="name" string="Company Code"/>
+        </label>
     </field>
 </record>
 

@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="wg_purchase.list">
+      <field name="name">wg_purchase list</field>
+      <field name="model">wg_purchase.wg_purchase</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="wg_purchase.action_window">
+      <field name="name">wg_purchase window</field>
+      <field name="res_model">wg_purchase.wg_purchase</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="wg_purchase.action_server">
+      <field name="name">wg_purchase server</field>
+      <field name="model_id" ref="model_wg_purchase_wg_purchase"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="wg_purchase" id="wg_purchase.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="wg_purchase.menu_1" parent="wg_purchase.menu_root"/>
+    <menuitem name="Menu 2" id="wg_purchase.menu_2" parent="wg_purchase.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="wg_purchase.menu_1_list" parent="wg_purchase.menu_1"
+              action="wg_purchase.action_window"/>
+    <menuitem name="Server to list" id="wg_purchase" parent="wg_purchase.menu_2"
+              action="wg_purchase.action_server"/>
+-->
+  </data>
+</odoo>

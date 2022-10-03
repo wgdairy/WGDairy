@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from pyexpat import model
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 import re
 
 
@@ -15,7 +15,6 @@ class vendors(models.Model):
     # main tab fields
     partner_id = fields.Many2one('res.partner', 'Vendor Details', help="Link this vendor to it's partner", ondelete='cascade', required=True)
     vendor = fields.Char('Vendor')
-    name = fields.Char('Name')
     sort_name = fields.Char('Sort Name')
     pay_to_vendor = fields.Many2one('res.partner','Pay To Vendor')
     pay_to_vendor2 = fields.Many2one('res.partner', 'Pay to Vendor')
@@ -30,7 +29,7 @@ class vendors(models.Model):
 
     fax = fields.Char('Fax')
     contact = fields.Char('Contact')
-    assignee = fields.Char('Assigned Customer')
+    assignee = fields.Many2one('res.partner','Assigned Customer')
     vType = fields.Selection([('w','W'),('i','I')],'Type')
     codes = fields.Integer('Codes')
     network_id = fields.Char('Network ID')
@@ -43,14 +42,17 @@ class vendors(models.Model):
     # function to get year as a list
     @api.model
     def year_selection(self):
-        year = 2000 # replace 2000 with your a start year
+        year = 2000 # replace 2000 with your start year
         year_list = []
         while year != 2030: # replace 2030 with your end year
             year_list.append((str(year), str(year)))
             year += 1
         return year_list
     lp_year = fields.Selection(year_selection, string="Year") #lp : last payment
-    lp_month = fields.Selection([('1','January')],string='Month')
+    lp_month = fields.Selection([('1','1'),('2','2'),('3','3'),
+                                 ('4','4'),('5','5'),('6','6'),
+                                 ('7','7'),('8','8'),('9','9'),
+                                 ('10','10'),('11','11'),('12','12'),],string='Month')
 
     # order info fields 
     currency_id = fields.Many2one('res.currency', 'Currency', default=lambda self: self.env.user.company_id.currency_id.id)
@@ -100,29 +102,29 @@ class vendors(models.Model):
     remit_street1 = fields.Char('Address')
     remit_street2 = fields.Char('Address')
     remit_city = fields.Char('City')
-    remit_state = fields.Char('State')
-    remit_country = fields.Char('Country')
+    remit_state = fields.Many2one('res.country.state', string='State', ondelete='restrict', domain="[('country_id', '=?', country_id)]")
+    remit_country = fields.Many2one('res.country', string='Country', ondelete='restrict', default=_get_default_country)
     zip_code = fields.Char('Zip Code')
 
     # history tab 
-    amount_paid1 = fields.Monetary('Amount Paid')
-    amount_paid2 = fields.Monetary('Amount Paid')
-    discount_taken1 = fields.Monetary('Discounts Taken')
-    discount_taken2 = fields.Monetary('Discounts Taken')
-    discount_lost1 = fields.Monetary('Discount_lost')
-    discount_lost2 = fields.Monetary('Discount_lost')
+    amount_paid1 = fields.Float('Amount Paid')
+    amount_paid2 = fields.Float('Amount Paid')
+    discount_taken1 = fields.Float('Discounts Taken')
+    discount_taken2 = fields.Float('Discounts Taken')
+    discount_lost1 = fields.Float('Discount_lost')
+    discount_lost2 = fields.Float('Discount_lost')
     vendor_bal_due = fields.Float('Vendor Balance Due')
     ''' 
         cq for 'Current Qtr' lq for 'Last Qtr'
         b for 'Buys' field , ytd for YearToDate, ly for LastYear
     '''
-    warehouse_cq = fields.Monetary('Warehouse ($/Buys)')
+    warehouse_cq = fields.Float('Warehouse ($/Buys)')
     warehouse_cq_b = fields.Integer()
-    warehouse_lq = fields.Monetary()
+    warehouse_lq = fields.Float()
     warehouse_lq_b = fields.Integer()
-    warehouse_ytd = fields.Monetary()
+    warehouse_ytd = fields.Float()
     warehouse_ytd_b = fields.Integer()
-    warehouse_ly = fields.Monetary()
+    warehouse_ly = fields.Float()
     warehouse_ly_b = fields.Integer()
 
     dropshiip_cq = fields.Monetary('Drop/Ship')
@@ -137,9 +139,9 @@ class vendors(models.Model):
     
     units_ordered_ytd = fields.Integer('Units Ordered')
     units_ordered_ly = fields.Integer('Units Ordered')
-    received_ytd = fields.Monetary('Recieved')
+    received_ytd = fields.Float('Recieved')
     recieved_ytd_fill = fields.Integer('Recieved YTD Fill', readonly=True)
-    received_ly = fields.Monetary('Recieved')
+    received_ly = fields.Float('Recieved')
     recieved_ly_fill = fields.Integer('Recieved LY Fill', readonly=True)
     last_received = fields.Date('Last Recieved')
 
@@ -152,6 +154,69 @@ class vendors(models.Model):
 
     # Contact Tab
     contact_ids = fields.One2many('contact.lines', 'vendor', string="")
+
+    filter_by_vname = fields.Many2one('wgd.vendors')
+    filter_by_vid = fields.Many2one('wgd.vendors')
+
+    def name_get(self):
+        result = []
+        for rec in self:
+            if rec.vendor:
+                name = rec.vendor
+            else:
+                name = rec.name
+            result.append((rec.id, name))
+        return result
+    
+
+    # function to validate float fields,
+    #    when digits is more than 10
+    def validate_float(self, float_value, val):
+        if float_value:
+            if len(str(float_value)) > 12:
+                raise ValidationError("10 digits be allowed in %s" % val)
+    
+    # validation for monetary fields with more than 10 digits
+    @api.constrains('amount_paid1','amount_paid2','discount_taken1','discount_taken2',
+                    'discount_lost1','discount_lost2','warehouse_cq','warehouse_lq'
+                    'warehouse_ytd','warehouse_ly','received_ytd','received_ly')
+    def validate_monetary_fields(self):
+        if self.amount_paid1:
+            val = "Amount Paid"
+            self.validate_float(self.amount_paid1,val)
+        if self.amount_paid2:
+            val = "Amount Paid"
+            self.validate_float(self.amount_paid2,val)
+        if self.discount_taken1:
+            val = "Discount Taken"
+            self.validate_float(self.discount_taken1,val)
+        if self.discount_taken2:
+            val = "Discount Taken"
+            self.validate_float(self.discount_taken2,val)
+        if self.discount_lost1:
+            val = "Discount Lost"
+            self.validate_float(self.discount_lost1,val)
+        if self.discount_lost2:
+            val = "Discount Lost"
+            self.validate_float(self.discount_lost2,val)
+        if self.warehouse_cq:
+            val = "Warehouse Current Qtr"
+            self.validate_float(self.warehouse_cq,val)
+        if self.warehouse_lq:
+            val = "Warehouse Last Qtr"
+            self.validate_float(self.warehouse_lq,val)
+        if self.warehouse_ytd:
+            val = "Warehouse Year To Date"
+            self.validate_float(self.warehouse_ytd,val)
+        if self.warehouse_ly:
+            val = "Warehouse Last Year"
+            self.validate_float(self.warehouse_ly,val)
+        if self.received_ytd:
+            val = "Recieved Year To Date"
+            self.validate_float(self.received_ytd,val)
+        if self.received_ly:
+            val = "Recieved Last Year"
+            self.validate_float(self.received_ly,val)
 
     # phone number validation 
     @api.onchange('phone')
@@ -194,25 +259,25 @@ class vendors(models.Model):
             start_group += third_group
             self.phone2  = start_group
 
-    @api.onchange('contact')
-    def _onchange_contact(self):
-        '''
-            validate contact number
-        '''
-        if self.contact:
-            contact   =str(self.contact)
-            letters = re.findall("[^0-9]",contact)
-            for val in letters:
-                contact = contact.replace(val,'')
-            seperator="-"
-            start_group =contact[:3]
-            second_group=contact[3:6]
-            third_group =contact[6:10]
-            start_group += seperator
-            start_group += second_group
-            start_group += seperator
-            start_group += third_group
-            self.contact  = start_group
+    # @api.onchange('contact')
+    # def _onchange_contact(self):
+    #     '''
+    #         validate contact number
+    #     '''
+    #     if self.contact:
+    #         contact   =str(self.contact)
+    #         letters = re.findall("[^0-9]",contact)
+    #         for val in letters:
+    #             contact = contact.replace(val,'')
+    #         seperator="-"
+    #         start_group =contact[:3]
+    #         second_group=contact[3:6]
+    #         third_group =contact[6:10]
+    #         start_group += seperator
+    #         start_group += second_group
+    #         start_group += seperator
+    #         start_group += third_group
+    #         self.contact  = start_group
         
     @api.onchange('fax')
     def _onchange_fax(self):
@@ -363,6 +428,9 @@ class PaymentTerms(models.Model):
 
 
 class stateModel(models.Model):
+    '''
+    Inherits res.country.state model
+    '''
     _inherit = 'res.country.state'
 
     def name_get(self):
@@ -370,3 +438,11 @@ class stateModel(models.Model):
         for record in self:
             result.append((record.id, "{}".format(record.code)))
         return result
+
+class companyModel(models.Model):
+    '''
+    Inherits res.company model.
+    '''
+    _inherit = 'res.company'
+
+    company_name = fields.Char('Company Name')

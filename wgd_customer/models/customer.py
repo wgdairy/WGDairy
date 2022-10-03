@@ -2,7 +2,7 @@ from odoo import fields, models, api #, re
 import re
 import odoo.addons.decimal_precision as dp
 from odoo.exceptions import ValidationError
-from datetime import datetime
+from datetime import date, datetime
 
 class Customer(models.Model):
     '''
@@ -23,28 +23,33 @@ class Customer(models.Model):
         return country
     
     customer_id             = fields.Char("Customer ID",help='Exportable')
-    partner_id              = fields.Many2one('res.partner')    
-    job_id                  = fields.Many2one('job')
-    sort_name_id            = fields.Many2one('sort')
-    bill_to_id              = fields.Many2one('bill')
+    # partner_id              = fields.Many2one('res.partner')    
+    job_id                  = fields.Selection([('0','0'),('1','1'),('2','2')], "Store", default='1',help='Exportable')
+    has_job                 = fields.Selection([('Y','Y'),('N','N')], "Has Job?",help='Exportable')
+    # sort_name_id            = fields.Many2one('sort')
+    sort_name_id            = fields.Char("Sort",help='Exportable')
+    bill_to_id              = fields.Many2one('res.partner')
     ace_rewards             = fields.Char("Ace Rewards",help='Exportable')
+    filter_by_name          = fields.Char("Filter By Name",help='Exportable')
+    filter_by_id            = fields.Char("Filter By ID",help='Exportable')
+    
     # notebook page1 Main
     phone                   = fields.Char('Phone',help='Exportable')
     fax                     = fields.Char('Fax',help='Exportable')
-    contact                 = fields.Char('contact',help='Exportable')
+    contact                 = fields.Char('Contact',help='Exportable')
     country_id              = fields.Many2one('res.country', string='Country',default=_get_default_country)
     credit_message1         = fields.Char(' ',help='Exportable')
     credit_message2         = fields.Char(' ',help='Exportable')
 
     credit_limit            = fields.Float("Credit Limit")
-    trade_discount          = fields.Char('Trade Discount %',help='Exportable',size=4)
+    trade_discount          = fields.Float('Trade Discount %',help='Exportable',size=4)
     account_code1           = fields.Char('account_code1',help='Exportable')
     monthly_payment         = fields.Integer('Monthly Payment',help='Exportable')
     # category_plan           = fields.Many2one("", string='Category Plan', ondelete='restrict',help='Exportable')
     # tax_code                = fields.Many2one("", string='Tax Code', ondelete='restrict',help='Exportable')
     # salesperson             = fields.Many2one("", string='Salesperson', ondelete='restrict',help='Exportable')
     # terms_code              = fields.Many2one("", string='Terms Code', ondelete='restrict',help='Exportable')
-    terms_code              = fields.Many2one('terms',default=lambda self: self.env['terms'].search([('name','=','Net 20')], limit=1))
+    terms_code              = fields.Many2one('account.payment.term', 'Terms Code')
 
     category_plan_id        = fields.Many2one('category')
     tax_code                = fields.Selection([('yes','Y'),('no','N')], "Tax Code", default='yes',help='Exportable')
@@ -70,14 +75,15 @@ class Customer(models.Model):
     taxable                 = fields.Selection([('yes','Y'),('no','N')], "Taxable", default='no')
     keep_dept_history       = fields.Selection([('yes','Y'),('no','N')], "Keep Dept History", default='yes',help='Exportable')
     print_invoices_in_pos   = fields.Selection([('yes','Y'),('no','N')], "Print Invoices In POS", default='no',help='Exportable')
-    
+    last_activity_date      = fields.Date("Last Activity Date")
+
 
 # notebook page2 Credit
     finace_chgs_ytd         = fields.Float("Finace Chgs YTD", digits=(2,2))
     #credit_limit_2          = fields.Integer("Credit Limit")
     higest_acc_balance      = fields.Float("Higest Acct Balance")
     credit_available        = fields.Float("Credit Available",compute="_total_credit") 
-    running_balance         = fields.Float("Running Balance")
+    running_balance         = fields.Float("Running Balance",compute="_total_running_bal")
     statment_balance        = fields.Float("Statment Balance",compute="_total_stmt_bal")
     statment_discount       = fields.Float("Statment Discount")
     returns                 = fields.Float("Returns",compute="_total_refund")
@@ -157,12 +163,12 @@ class Customer(models.Model):
     # running_balance         = fields.Float("Running Balance")
     # credit_available        = fields.Float("Credit Available")
 
-    of_times_no_activity    = fields.Integer("No Activity")
-    of_times_current        = fields.Integer("Current")
-    of_times_1_30           = fields.Integer("1 - 30")
-    of_times_31_60          = fields.Integer("31 - 60")
-    of_times_61_90          = fields.Integer("61 - 90")
-    of_times_over_90        = fields.Integer("Over 90")
+    of_times_no_activity    = fields.Float("No Activity")
+    of_times_current        = fields.Float("Current")
+    of_times_1_30           = fields.Float("1 - 30")
+    of_times_31_60          = fields.Float("31 - 60")
+    of_times_61_90          = fields.Float("61 - 90")
+    of_times_over_90        = fields.Float("Over 90")
 
     last_occured_no_activity= fields.Date("")
     last_occured_current    = fields.Date("")
@@ -201,7 +207,7 @@ class Customer(models.Model):
     
     business_type           = fields.Selection([('1',' '),('2','2')], "Business Type",help='Exportable')
     location                = fields.Selection([('1',' '),('2','2')], "Location",help='Exportable')
-    customer_rank           = fields.Selection([('1',' '),('2','2')], "Customer Rank",help='Exportable')
+    customer_ranks          = fields.Selection([('1',' '),('2','2')], "Customer Rank",help='Exportable')
     statment_type           = fields.Selection([('1',' '),('2','2')], "Statment Type",help='Exportable')
 
     statment_fmt            = fields.Selection([('1','Statement'),('2','Digital')], "Statment/Fmt",help='Exportable')
@@ -211,7 +217,7 @@ class Customer(models.Model):
 
     fax_pos_stmt            = fields.Selection([('1',' '),('2','2')], "Fax POS/Stmt",help='Exportable')
     fax_pos_stmt1           = fields.Selection([('1',' '),('2','2')], "Fax POS/Stmt",help='Exportable')
-    ace_rewards_status      = fields.Selection([('1','A'),('2','2')], "Ace Rewards Status",default='1',help='Exportable')
+    ace_rewards_status      = fields.Selection([('A','A'),('I','I'),('N','N')], "Ace Rewards Status",default='A',help='Exportable')
     tax_override_plan       = fields.Selection([('1',' '),('2','2')], "Tax Override Plan",help='Exportable')
     
     prompt_in_pos           = fields.Selection([('1',' '),('2','2')], "Prompt in POS?",help='Exportable')
@@ -222,7 +228,9 @@ class Customer(models.Model):
     global_credit_check     = fields.Selection([('1',' '),('2','2')], "Global Credit Check",help='Exportable')
     print_lumber_totals     = fields.Selection([('y','Y'),('n','N')], "Print Lumber Totals", default='y',help='Exportable')
     # store_job_opened        = fields.Selection([('1','1'),('2','2')], "Store Job Opened", default='1',help='Exportable')
-    default_price_um        = fields.Selection([('1',' '),('2','2')], "Default Price UM",help='Exportable')
+    # default_price_um        = fields.Selection([('1',' '),('2','2')], "Default Price UM",help='Exportable')
+    default_price_uom       = fields.Many2one('uom.uom')
+
     statment_by_job         = fields.Selection([('s','S')], "Statment By Job", default='s',help='Exportable')
 
     additional_flag          = fields.Char('Additional Flags',help='Exportable')
@@ -235,10 +243,103 @@ class Customer(models.Model):
     print_repeat            = fields.Selection([('yes','Y'),('no','N')], "Print Repeats", default='no',help='Exportable')                 
     message                 = fields.Html("Message")
 
+#smart button
+    current_total           = fields.Float("Current",compute="_smart_button")  
+    thirty_total            = fields.Float("Current",compute="_smart_button")  
+    sixty_total             = fields.Float("Current",compute="_smart_button")  
+    ninety_total            = fields.Float("Current",compute="_smart_button")  
+    over_total              = fields.Float("Current",compute="_smart_button")  
 
     def action_student_schedules(self):
         pass
     
+    @api.depends('current_total','thirty_total','sixty_total','ninety_total','over_total')
+    def _smart_button(self):
+        '''
+            Fetch invoice details from aged recivable 
+        '''
+        current_date    = date.today()
+        customer_invoices = self.env['account.move'].search([('move_type', '=', 'out_invoice'),('partner_id', '=', self.partner_id.id),('state', '=', 'posted'),('invoice_date', '<=', current_date)])
+        refund__invoices  = self.env['account.move'].search([('move_type', '=', 'out_refund'),('partner_id', '=', self.partner_id.id),('state', '=', 'posted'),('invoice_date', '<=', current_date)])
+        day = 0
+        current_total1 = 0.0
+        total_30 = 0.0 
+        total_60 = 0.0
+        total_90 = 0.0 
+        over_90  = 0.0
+        for record in customer_invoices:
+            if record.invoice_date == current_date:
+                if record.invoice_date_due == current_date or record.invoice_date_due > current_date:
+                    current_total1 =  current_total1 + record.amount_residual
+                else:
+                    count = current_date - record.invoice_date_due
+                    day = count.days
+                    if day < 0:
+                        day = day * -1
+                    if day < 31:
+                        total_30 = total_30 + record.amount_residual
+                    elif day < 61:
+                        total_60 = total_60 + record.amount_residual
+                    elif day < 91:
+                        total_90 = total_90 + record.amount_residual
+                    else: 
+                        over_90 = over_90 + record.amount_residual
+            else:
+                if record.invoice_date_due == current_date or record.invoice_date_due > current_date:
+                    current_total1 =  current_total1 + record.amount_residual
+                else:
+                    count = current_date - record.invoice_date_due
+                    day = count.days
+                    if day < 0:
+                        day = day * -1
+                    if day < 31:
+                        total_30 = total_30 + record.amount_residual
+                    elif day < 61:
+                        total_60 = total_60 + record.amount_residual
+                    elif day < 91:
+                        total_90 = total_90 + record.amount_residual
+                    else: 
+                        over_90 = over_90 + record.amount_residual
+
+        for record in refund__invoices:
+            if record.invoice_date == current_date:
+                if record.invoice_date_due == current_date or record.invoice_date_due > current_date:
+                    current_total1 =  current_total1 - record.amount_residual
+                else:
+                    count = current_date - record.invoice_date_due
+                    day = count.days
+                    if day < 0:
+                        day = day * -1
+                    if day < 31:
+                        total_30 = total_30 - record.amount_residual
+                    elif day < 61:
+                        total_60 = total_60 - record.amount_residual
+                    elif day < 91:
+                        total_90 = total_90 - record.amount_residual
+                    else: 
+                        over_90 = over_90 - record.amount_residual
+            else:
+                if record.invoice_date_due == current_date or record.invoice_date_due > current_date:
+                    current_total1 =  current_total1 - record.amount_residual
+                else:
+                    count = current_date - record.invoice_date_due
+                    day = count.days
+                    if day < 0:
+                        day = day * -1
+                    if day < 31:
+                        total_30 = total_30 - record.amount_residual
+                    elif day < 61:
+                        total_60 = total_60 - record.amount_residual
+                    elif day < 91:
+                        total_90 = total_90 - record.amount_residual
+                    else: 
+                        over_90 = over_90 - record.amount_residual            
+        self.current_total = current_total1
+        self.thirty_total  = total_30
+        self.sixty_total   = total_60
+        self.ninety_total  = total_90
+        self.over_total    = over_90
+
 
     def validate_float(self, float_value, val):
         if float_value:
@@ -348,14 +449,34 @@ class Customer(models.Model):
     @api.depends('statment_balance')
     def _total_stmt_bal(self):
         '''
-            Returns YTD = credit limit - sum of invoices
+            Statment Balance =  sum of  journals debit sum - sum of journals credit sum
         '''
-        invoices = self.env['account.move'].search([('move_type', '=', 'out_refund'),('partner_id', '=', self.partner_id.id)])
-        total = 0
+        
+        invoices_recivable = self.env['account.move.line'].search([('account_id', '=', '121000 Account Receivable'),('partner_id', '=', self.partner_id.id)])
+        invoices_payable   = self.env['account.move.line'].search([('account_id', '=', '211000 Account Payable'),('partner_id', '=', self.partner_id.id)])
+        invoices            = invoices_recivable + invoices_payable
+        credit_total = 0.0
+        debit_total = 0.0
         for record in invoices:
-            total = total + record.balance
-            print("ballllllllllllllllllll",record.balance)
-        self.statment_balance = float(total)
+            credit_total = credit_total + record.credit
+            debit_total  = debit_total + record.debit
+        self.statment_balance =  float(debit_total) - float(credit_total)
+
+    @api.depends('running_balance')
+    def _total_running_bal(self):
+        '''
+            Running Balance =  sum of posted journals debit sum - sum of posted journals credit sum
+        '''
+
+        invoices_recivable = self.env['account.move.line'].search([('account_id', '=', '121000 Account Receivable'),('partner_id', '=', self.partner_id.id),('parent_state', '=', 'posted')])
+        invoices_payable   = self.env['account.move.line'].search([('account_id', '=', '211000 Account Payable'),('partner_id', '=', self.partner_id.id),('parent_state', '=', 'posted')])
+        invoices = invoices_recivable + invoices_payable
+        credit_total = 0.0
+        debit_total = 0.0
+        for record in invoices:
+            credit_total = credit_total + record.credit
+            debit_total  = debit_total + record.debit
+        self.running_balance =  float(debit_total) - float(credit_total)
 
     @api.depends('returns')
     def _total_refund(self):

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="inherit_purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.forms.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+
+
+                
+
+
+                <xpath expr="//field[@name='order_line']" position="attributes">>
+                    <attribute name="class">po_line</attribute>
+                </xpath>
+                <xpath expr="//field[@name='sequence']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_ref']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='receipt_reminder_email']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//div[@name='reminder']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_planned']" position="attributes">
+                    <attribute name="string">Due Date</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_planned']" position="attributes">
+                    <field name="date_planned" position="attributes">
+                        <attribute name="string">Due Date</attribute>
+                    </field>
+                </xpath>
+
+                <xpath expr="//page[@name='purchase_delivery_invoice']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="Store_ids" ></field>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="BkOrds" ></field>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="Total_Stk_Units" ></field>
+                    <field name="Total_Cost" ></field>
+                    <field name="Total_Weight" ></field>
+                </xpath>
+
+
+
+                <xpath expr="//field[@name='Store_ids']" position="after">
+
+                    <field name="ven_street" placeholder="Street 1" class="o_address_street" string="Vendor Address"/>
+                    <field name="ven_street2" placeholder="Street 2" class="o_address_street" string=" "/>
+                    <field name="ven_city" placeholder="City" class="o_address_city"  string=" "/>
+                    <field name="ven_state" class="o_address_state" placeholder="State"  string=" " domain="[('country_id','ilike','United States')]"/>
+                    <field name="ven_zip" placeholder="ZIP" class="o_address_zip"  string=" "/>
+                    <field  name="ven_country_id" placeholder="Country"  string=" " />
+
+
+
+                </xpath>
+                <xpath expr="//field[@name='ven_country_id']" position="after">
+
+
+                    <field  name="ven_phone" placeholder="Vendor Phone"  string="Vendor Phone" />
+                    <field  name="ven_fax" placeholder="Vendor Fax"  string="Vendor Fax" />
+
+
+
+                </xpath>
+                <xpath expr="//field[@name='Total_Weight']" position="after">
+
+                    <field name="ship_street" placeholder="Street 1" class="o_address_street" string="Ship To Address"/>
+                    <field name="ship_street2" placeholder="Street 2" class="o_address_street" string=" "/>
+                    <field name="ship_city" placeholder="City" class="o_address_city"  string=" "/>
+                    <field name="ship_state_id" class="o_address_state" placeholder="State"  string=" " domain="[('country_id','ilike','United States')]"/>
+                    <field name="ship_zip" placeholder="ZIP" class="o_address_zip"  string=" "/>
+                    <field  name="ship_country_id"  placeholder="Country" string=" " />
+
+
+
+                </xpath>
+                <xpath expr="//field[@name='ven_country_id']" position="after">
+                    <field name="Date_Created" />
+                    <field name="Reference" />
+                    <field name="Alt_po" />
+                    <field name="Order_Type"  />
+                    <field name="Buyerid" />
+
+
+                </xpath>
+                <xpath expr="//field[@name='ship_country_id']" position="after">
+                    <field  name="Special_Instructions" />
+                    <field  name="Line_Items" />
+                    <field  name="Total_Freight" />
+                    <field  name="Other_Charges" />
+                </xpath>
+
+
+
+                <xpath expr="//field[@name='order_line']//tree/field[@name='taxes_id']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='qty_invoiced']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='product_packaging_id']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='product_id']" position="before">
+                    <field name="ln" string="Ln#"/>
+                </xpath>
+<!--                <xpath expr="//field[@name='order_line']" class="tree_width_po" >-->
+<!--                </xpath>-->
+                <xpath expr="//field[@name='order_line']//tree/field[@name='price_subtotal']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='qty_received']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='name']" position="after">
+                    <field name="OM" string="OM" />
+                    <field name="qty_available" string="QOH" />
+                    <field name="product_qty" position="move" />
+                    <field name="price_unit" position="move" />
+                    <field name="load_retail" string="Current Retail"/>
+                    <field name="price_subtotal" string="Ext Cost" widget="monetary"/>
+                    <field name="product_uom" position="move" />
+                    <field name="order_point" string="Order Point" />
+                    <field name="min_op" string="Min OP+" />
+                    <field name="max_stock_level" string="Max Stock Level" />
+                    <field name="dept" string="Dept" />
+                </xpath>
+                <xpath expr="//page[@name='products']" position="attributes">
+                    <field name="pur_order_lines" class="tree_width_po" />
+                </xpath>
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='notes']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='product_id']" position="attributes">
+                    <attribute name="string">SKU</attribute>
+                </xpath>
+                <xpath expr="//page[@name='products']" position="attributes">
+                    <attribute name="string">SKU</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='product_qty']" position="attributes">
+                    <attribute name="string">QOO(Stk)</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='price_unit']" position="attributes">
+                    <attribute name="string">Cost(Stk)</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+
+</odoo>

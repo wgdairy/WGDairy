@@ -1,13 +1,38 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
-
+from datetime import date
 
 class Inventorys(models.Model):
     _inherit = "product.template"
 
-    sku = fields.Char('SKU')
+    # sku = fields.Char('SKU')
     desc = fields.Char('Desc')
-    mfg = fields.Char('Mfg#')
+    mfg = fields.Many2many('wg.mfg.vendor',string='Mfg#', compute="_get_mfg", store=True)
+    mfg_ven = fields.Text('Mfg#', compute="_combine_mfg_vendor")
+    
+
+    @api.depends('seller_ids')
+    def _get_mfg(self):
+        mfg_ids = []
+        ven_ids = []
+        for rec in self.seller_ids:
+            if rec.mfg:
+                mfg_ids.append(rec.mfg.id)
+            if rec.name:
+                ven_ids.append(rec.name.id)
+        self.write({'mfg':[(6,0, mfg_ids)],'mfg_vende':[(6,0, ven_ids)]})
+
+    @api.depends('mfg', 'mfg_vende')
+    def _combine_mfg_vendor(self):
+        mfg_ven = '\n'
+        for rec in self.seller_ids:
+            print(rec.mfg.name, rec.name.name)
+            if rec.mfg and rec.name:
+                mfg_ven += rec.mfg.name +' - '+ rec.name.name+'\n'
+            elif rec.mfg:
+                mfg_ven += rec.mfg.name +'\n'
+        self.mfg_ven = mfg_ven
+
     Desc = fields.Char('Desc')
     upc = fields.Char('UPC')
     # dept = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
@@ -17,13 +42,13 @@ class Inventorys(models.Model):
     # mfg_vend = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Mfg Vend")
     fineline = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Fineline")
     prime_vede = fields.Many2one('res.partner',ondelete='restrict', index=True,)
-    mfg_vende = fields.Many2one('res.partner',ondelete='restrict', index=True,)
+    mfg_vende = fields.Many2many('res.partner',ondelete='restrict', index=True, readonly=True)
     types = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     # store = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
-    stores = fields.Many2one('res.company',ondelete='restrict', index=True,)
+    company_id = fields.Many2one('res.company',ondelete='restrict', index=True,)
     sequence = fields.Char('Sequence')
     # instore = fields.Char('Instore')
-    instores = fields.Many2one('res.company',ondelete='restrict', index=True,)
+    instores = fields.Many2many('res.company',ondelete='restrict', index=True,)
     pursku_ids = fields.Many2one('stock.picking')
     # quantity
     qut_on_hant = fields.Float('Qty On Hant ')
@@ -32,24 +57,31 @@ class Inventorys(models.Model):
     custbackorder = fields.Char('Custbackorder')
     location = fields.Char('Location')
     future_order = fields.Char('Future Order')
+    company_onchange = fields.Many2one('res.company', ondelete='restrict', index=True,default=lambda self:self.env.company.id)
+    sku_onchange = fields.Many2one('product.template', ondelete='restrict', index=True, )
 
     # stock level------------------------------
     order_point = fields.Float('Order Point ')
     min_order_ponit = fields.Float('Min Order Ponit')
     max_stock_level = fields.Float('Max Stock Level')
     safety_stock = fields.Float('Safety Stock')
-    stockings_UM = fields.Float('Stocking U/M"')
+    stockings_UM = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
+    stockings_UM_id = fields.Float('Stocking U/M"')
+    stockings_UM_ids = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     standard_pack = fields.Float('Standard Pack')
     order_multiple = fields.Float('Order Multiple')
 
     raincheck_qty = fields.Float('Raincheck Qty')
+    loc_table_id = fields.Many2one('stock.location', ondelete='restrict', index=True, )
+
 
     # purchasing
 
     purchasing_um = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Purchasing U/M")
+    purchasing_um_id = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     order_indictor = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Order Indictor")
-    weight = fields.Float('Weight')
-    weight_uom = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
+    # weight = fields.Float('Weight')
+    weight_uom_id = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     # upc = fields.Integer('UPC')
     new_order_qty = fields.Float('New Order Qty')
     purch_conv_factor = fields.Float('*Purch Conv Factor')
@@ -79,8 +111,8 @@ class Inventorys(models.Model):
     retail_old = fields.Float('Retail')
     catalog_retail = fields.Float('Catalog Retail')
     market_cost = fields.Char('Market Cost')
-    synchronize_price = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
-    synchronize_cost = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
+    synchronize_price = fields.Selection([('Synchronize costs/prices', 'Y'), ('No do not synchronize', 'N'), ('use E4W','O')])
+    synchronize_cost = fields.Selection([('Synchronize costs/prices', 'Y'), ('No do not synchronize', 'N'), ('use E4W','O')])
     repl_chg = fields.Date(string="Repl Chg")
     retail_chg = fields.Date(string="Retail Chg")
     selling = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Selling")
@@ -188,8 +220,8 @@ class Inventorys(models.Model):
     last_per = fields.Date(string="Last Per")
     # year to date
     transactions = fields.Float()
-    sale_units = fields.Float()
-    sale = fields.Float()
+    sale_units = fields.Float(compute='validation_sale',)
+    sale = fields.Float(compute='total_sale_amount', )
     repl_cost = fields.Float()
     avg_cost = fields.Float()
     gross_pro = fields.Float()
@@ -214,8 +246,8 @@ class Inventorys(models.Model):
     his_popularity_code = fields.Selection([('y', 'Y'), ('n', 'N'), ])
 
     # last year
-    last_year_sale_unit = fields.Char()
-    last_year_sale = fields.Float()
+    last_year_sale_unit = fields.Char(compute='total_sale_last_year', )
+    last_year_sale = fields.Float(compute='total_sales_amount_last_year',)
     last_year_repl_cost = fields.Float()
     last_year_avg_cost = fields.Float()
     last_year_gp = fields.Float()
@@ -282,12 +314,15 @@ class Inventorys(models.Model):
     # purchasing in load
 
     load_stocking_um = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
+    load_stocking_um_ids = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     load_standard_pack = fields.Float()
     load_order_multiple = fields.Float()
     load_purchase_um = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
+    load_purchase_um_ids = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     order_indicator = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     load_weight = fields.Float()
-    load_weight_unit = fields.Selection([('LB', 'LB'), ('KG', 'KG'),('Gram', 'Gram') ])
+
+    load_weight_units = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     load_min_of_std_pack = fields.Float()
     load_secondary_vend = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     load_vend_stk = fields.Char()
@@ -311,7 +346,7 @@ class Inventorys(models.Model):
     width = fields.Float()
     depth = fields.Float()
     weight_mic = fields.Float()
-    weight_mic_unit = fields.Selection([('LB', 'LB'), ('KG', 'KG'),('Gram', 'Gram') ])
+    weight_mic_units = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     cubes = fields.Float()
     cubes_unit = fields.Char()
     ebt = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
@@ -324,7 +359,7 @@ class Inventorys(models.Model):
 
     # vendor
 
-    vend_ids = fields.One2many('inv_vendor', 'vend_ids', string="Trips and Tolls")
+    vend_ids = fields.One2many('inv_vendor_new', 'vend_ids', string="Trips and Tolls")
 
     # Pricing table
     units =  fields.Char(default="EA")
@@ -332,7 +367,7 @@ class Inventorys(models.Model):
     conversion = fields.Float()
     repl_cost = fields.Float()
     mfg_cost = fields.Float()
-    avg_cost = fields.Float()
+    avg_cost_pricing = fields.Float()
     mkt_cost = fields.Float()
     reail = fields.Float()
     list = fields.Char()
@@ -391,6 +426,8 @@ class Inventorys(models.Model):
     price_three_gp = fields.Float()
     price_four_gp = fields.Float()
     price_five_gp = fields.Float()
+
+    location_quan_id = fields.One2many('stock.quant', 'loc_quan_ids', string="Location")
     # -----------
     # units = fields.Char()
     # decimal_place = fields.Float()
@@ -418,10 +455,16 @@ class Inventorys(models.Model):
     # validate 5 digit
     def validate_float_five(self, float_value, val):
         if float_value:
-            print("*****************************************************", len(str(float_value)),float_value)
+            # print("*****************************************************", len(str(float_value)),float_value)
             if len(str(float_value)) > 7:
                 raise ValidationError("5 digits be allowed in %s" % val)
 
+    @api.onchange('company_id')
+    def validate_store(self):
+        if  self.company_id:
+            selected_companies = self.env['res.company'].browse(self._context.get('allowed_company_ids'))
+            if self.company_id not in selected_companies:
+                raise ValidationError("please select the company you are logged.")
 
     # Stocking
 
@@ -429,6 +472,20 @@ class Inventorys(models.Model):
 
     @api.constrains('weight', 'purch_conv_factor','purch_decimal_pi')
     def validate_con_stocking_five_digit(self):
+        if self.weight:
+            val = "Weight"
+            self.validate_float_five(self.weight, val)
+        if self.purch_conv_factor:
+            val = "*Purch Conv Factor"
+            self.validate_float_five(self.purch_conv_factor, val)
+        if self.purch_decimal_pi:
+            val = "*Purch Decimal PI"
+            self.validate_float_five(self.purch_decimal_pi, val)
+
+    # onchange 5 digit validation
+
+    @api.onchange('weight', 'purch_conv_factor','purch_decimal_pi')
+    def validate_oc_stocking_five_digit(self):
         if self.weight:
             val = "Weight"
             self.validate_float_five(self.weight, val)
@@ -478,12 +535,109 @@ class Inventorys(models.Model):
             val = "Fixed Order QTY"
             self.validate_float(self.fixed_order_qty, val)
 
+    # onchange 10 digit validation
+
+    @api.onchange('qut_on_hant', 'commited_qty','qty_on_order','order_point','min_order_ponit','safety_stock','standard_pack','order_multiple','raincheck_qty','raincheck_qty','new_order_qty','fixed_order_qty')
+    def validate_oc_ten_digit(self):
+        if self.qut_on_hant:
+            val = "Qty On Hand"
+            self.validate_float(self.qut_on_hant, val)
+        if self.commited_qty:
+            val = "Commited Qty"
+            self.validate_float(self.commited_qty, val)
+
+        if self.qty_on_order:
+            val = "Qty On Order"
+            self.validate_float(self.qty_on_order, val)
+        if self.order_point:
+            val = "Order Point"
+            self.validate_float(self.order_point, val)
+        if self.min_order_ponit:
+            val = "Min Order Point"
+            self.validate_float(self.min_order_ponit, val)
+        if self.safety_stock:
+            val = "Safety Stock"
+            self.validate_float(self.safety_stock, val)
+        if self.standard_pack:
+            val = "Standard Pack"
+            self.validate_float(self.standard_pack, val)
+        if self.order_multiple:
+            val = "Order Multiple"
+            self.validate_float(self.order_multiple, val)
+        if self.raincheck_qty:
+            val = "Raincheck Qty"
+            self.validate_float(self.raincheck_qty, val)
+        if self.new_order_qty:
+            val = "New Order Qty"
+            self.validate_float(self.new_order_qty, val)
+        if self.fixed_order_qty:
+            val = "Fixed Order QTY"
+            self.validate_float(self.fixed_order_qty, val)
+
 
     # pricing
 
     # 5 digits
     @api.constrains('decimal_place', 'decimal_place_stock','repl_cost_gp', 'decimal_place_alt', 'decimal_place_gp', 'mkt_cost_gp', 'mfg_cost_gp','avg_cost_gp', 'reail_gp', 'promotion_gp', 'price_one_gp','price_two_gp','price_three_gp','price_four_gp','price_five_gp','desiered_gp','repl_gp')
     def validate_con_pricing_five_digit(self):
+        if self.decimal_place:
+            val = "Decimal Place Price"
+            self.validate_float_five(self.decimal_place, val)
+        if self.decimal_place_stock:
+            val = "Decimal Place Stock"
+            self.validate_float_five(self.decimal_place_stock, val)
+
+        if self.decimal_place_alt:
+            val = "Decimal Place Alt"
+            self.validate_float_five(self.decimal_place_alt, val)
+        if self.repl_cost_gp:
+            val = "Repl Cost GP%"
+            self.validate_float_five(self.repl_cost_gp, val)
+        if self.decimal_place_gp:
+            val = "Decimal Place GP"
+            self.validate_float_five(self.decimal_place_gp, val)
+        if self.mkt_cost_gp:
+            val = "Mkt Cost GP"
+            self.validate_float_five(self.mkt_cost_gp, val)
+        if self.mfg_cost_gp:
+            val = "Mfg Cost GP"
+            self.validate_float_five(self.mfg_cost_gp, val)
+        if self.avg_cost_gp:
+            val = "Avg Cost GP"
+            self.validate_float_five(self.avg_cost_gp, val)
+        if self.reail_gp:
+            val = "Reail GP"
+            self.validate_float_five(self.reail_gp, val)
+        if self.promotion_gp:
+            val = "Promotion GP"
+            self.validate_float_five(self.promotion_gp, val)
+        if self.price_one_gp:
+            val = "Price 1 GP"
+            self.validate_float_five(self.price_one_gp, val)
+        if self.price_two_gp:
+            val = "Price 2 GP"
+            self.validate_float_five(self.price_two_gp, val)
+        if self.price_three_gp:
+            val = "Price 3 GP"
+            self.validate_float_five(self.price_three_gp, val)
+        if self.price_four_gp:
+            val = "Price 4 GP"
+            self.validate_float_five(self.price_four_gp, val)
+        if self.price_five_gp:
+            val = "Price 5"
+            self.validate_float_five(self.price_five_gp, val)
+        if self.desiered_gp:
+            val = "Desired GP %"
+            self.validate_float_five(self.desiered_gp, val)
+        if self.repl_gp:
+            val = "Repl GP%"
+            self.validate_float_five(self.repl_gp, val)
+
+
+    # onchange 5 digit
+
+    @api.onchange('decimal_place', 'decimal_place_stock','repl_cost_gp', 'decimal_place_alt', 'decimal_place_gp', 'mkt_cost_gp', 'mfg_cost_gp','avg_cost_gp', 'reail_gp', 'promotion_gp', 'price_one_gp','price_two_gp','price_three_gp','price_four_gp','price_five_gp','desiered_gp','repl_gp')
+    def validate_oc_pricing_five_digit(self):
         if self.decimal_place:
             val = "Decimal Place Price"
             self.validate_float_five(self.decimal_place, val)
@@ -670,8 +824,280 @@ class Inventorys(models.Model):
             self.validate_float(self.mfg_chg, val)
 
 
+    # onchange 10 digit
 
 
+    @api.onchange('repl_cost', 'repl_cost_stock','repl_cost_alt','mfg_cost','mfg_cost_stock','mfg_cost_alt','avg_cost_pricing','avg_cost_stock','avg_cost_alt','mkt_cost','mkt_cost_stock','mkt_cost_alt','reail','reail_stock','reail_alt')
+    def validate_oc_pricing_one(self):
+        if self.repl_cost:
+            val = "Repl Cost Pricing"
+            self.validate_float(self.repl_cost, val)
+        if self.repl_cost_stock:
+            val = "Repl Cost Stock"
+            self.validate_float(self.repl_cost_stock, val)
+
+        if self.repl_cost_alt:
+            val = "Repl Cost Alt"
+            self.validate_float(self.repl_cost_alt, val)
+        if self.mfg_cost:
+            val = "Mfg Cost Price"
+            self.validate_float(self.mfg_cost, val)
+        if self.mfg_cost_stock:
+            val = "Mfg Cost Stock"
+            self.validate_float(self.mfg_cost_stock, val)
+        if self.mfg_cost_alt:
+            val = "Mfg Cost Alt"
+            self.validate_float(self.mfg_cost_alt, val)
+        if self.avg_cost_pricing:
+            val = "Avg Cost Pricing"
+            self.validate_float(self.avg_cost_pricing, val)
+        if self.avg_cost_stock:
+            val = "Avg Cost Stock"
+            self.validate_float(self.avg_cost_stock, val)
+        if self.avg_cost_alt:
+            val = "Avg Cost Alt"
+            self.validate_float(self.avg_cost_alt, val)
+        if self.mkt_cost:
+            val = "Mkt Cost Pricing"
+            self.validate_float(self.mkt_cost, val)
+        if self.mkt_cost_stock:
+            val = "Mkt Cost Stock"
+            self.validate_float(self.mkt_cost_stock, val)
+        if self.mkt_cost_alt:
+            val = "Mkt Cost Alt"
+            self.validate_float(self.mkt_cost_alt, val)
+        if self.reail:
+            val = "Reail Pricing"
+            self.validate_float(self.reail, val)
+        if self.reail_stock:
+            val = "Reail Stock"
+            self.validate_float(self.reail_stock, val)
+        if self.reail_alt:
+            val = "Reail Alt"
+            self.validate_float(self.reail_alt, val)
+
+    # 10 digit two
+    @api.onchange('promotion', 'promotion_stock', 'promotion_alt', 'price_one', 'price_one_stock','price_one_alt', 'price_two', 'price_two_stock', 'price_two_alt', 'price_three','price_three_stock', 'price_three_alt', 'price_four', 'price_four_stock', 'price_four_alt','price_five','price_five_stock','price_five_alt')
+    def validate_oc_pricing_two(self):
+        if self.promotion:
+            val = "Promotion Pricing"
+            self.validate_float(self.promotion, val)
+        if self.promotion_stock:
+            val = "Promotion Stock"
+            self.validate_float(self.promotion_stock, val)
+
+        if self.promotion_alt:
+            val = "Promotion Alt"
+            self.validate_float(self.promotion_alt, val)
+        if self.price_one:
+            val = "Price 1 Priceing"
+            self.validate_float(self.price_one, val)
+        if self.price_one_stock:
+            val = "Price 1 Stock"
+            self.validate_float(self.price_one_stock, val)
+        if self.price_one_alt:
+            val = "Price 1 Alt"
+            self.validate_float(self.price_one_alt, val)
+        if self.price_two:
+            val = "Price 2 Pricing"
+            self.validate_float(self.price_two, val)
+        if self.price_two_stock:
+            val = "Price 2 Stock"
+            self.validate_float(self.price_two_stock, val)
+        if self.price_two_alt:
+            val = "Price 2 Alt"
+            self.validate_float(self.price_two_alt, val)
+        if self.price_three:
+            val = "Price 3 Pricing"
+            self.validate_float(self.price_three, val)
+        if self.price_three_stock:
+            val = "Price 3 Stock"
+            self.validate_float(self.price_three_stock, val)
+        if self.price_three_alt:
+            val = "Price 3 Alt"
+            self.validate_float(self.price_three_alt, val)
+        if self.price_four:
+            val = "Price 4 Pricing"
+            self.validate_float(self.price_four, val)
+        if self.price_four_stock:
+            val = "Price 4 Stock"
+            self.validate_float(self.price_four_stock, val)
+        if self.price_four_alt:
+            val = "Price 4 Alt"
+            self.validate_float(self.price_four_alt, val)
+        if self.price_five:
+            val = "Price 5 Pricing"
+            self.validate_float(self.price_five, val)
+        if self.price_five_stock:
+            val = "Price 5 Stock"
+            self.validate_float(self.price_five_stock, val)
+        if self.price_five_alt:
+            val = "Price 5 Alt"
+            self.validate_float(self.price_five_alt, val)
+
+
+
+    # 10 digit three
+    @api.onchange('retail_old', 'catalog_retail', 'market_cost', 'mfg_chg')
+    def validate_oc_pricing_three(self):
+        if self.retail_old:
+            val = "Retail(old)"
+            self.validate_float(self.retail_old, val)
+        if self.catalog_retail:
+            val = "Catalog Retail"
+            self.validate_float(self.catalog_retail, val)
+
+        if self.market_cost:
+            val = "*Market Cost"
+            self.validate_float(self.market_cost, val)
+        if self.mfg_chg:
+            val = "Mfg Chg"
+            self.validate_float(self.mfg_chg, val)
+
+
+    # Total sale order
+
+    def validation_sale(self):
+
+        todays_date = date.today().replace(month=1, day=1)
+        total_sales = self.env['sale.order'].search([('state', '=', 'sale'),('date_order', '>=', todays_date)])
+        self.sale_units = len(total_sales)
+
+
+    # Total amount
+
+    def total_sale_amount(self):
+
+        todays_date = date.today().replace(month=1, day=1)
+
+        amount=0
+        sales_invoice = self.env['sale.order'].search([('state', '=', 'sale'),('state', '!=', 'draft'),('state', '!=', 'cancel'), ('date_order', '>=', todays_date)])
+        if sales_invoice:
+            for sale in sales_invoice:
+                amount += sale.amount_total
+
+        self.sale = amount
+
+
+
+
+
+
+    # Total sale order in last year
+
+    def total_sale_last_year(self):
+        curr_year = date.today()
+        las_year = curr_year.year - 1
+        last_year_jan = date.today().replace(year=las_year ,month=1, day=1)
+
+        last_year_dec = date.today().replace(year=las_year ,month=12, day=31)
+        last_year_sale = self.env['sale.order'].search([('date_order', '>=', last_year_jan), ('date_order', '<', last_year_dec), ('state', '=', 'sale')])
+
+        self.last_year_sale_unit = len(last_year_sale)
+
+
+
+    # Total amount in last year
+    # @api.onchange('mfg_vende')
+    def total_sales_amount_last_year(self):
+        curr_year = date.today()
+        tot_amount = 0
+        las_year = curr_year.year - 1
+        last_year_january = date.today().replace(year=las_year ,month=1, day=1)
+        last_year_december = date.today().replace(year=las_year, month=12, day=31)
+        last_year_all_sale = self.env['sale.order'].search([('date_order', '>=', last_year_january), ('date_order', '<', last_year_december), ('state', '=', 'sale'),('state', '!=', 'draft'),('state', '!=', 'cancel')])
+        if last_year_all_sale:
+            for sal in last_year_all_sale:
+                tot_amount += sal.amount_total
+
+        self.last_year_sale = tot_amount
+
+
+
+    # @api.constrains('prime_vede')
+    # def asdf(self):
+    #     if self.prime_vede:
+    #         asd = self.env['res.partner'].search([('id', '=', self.prime_vede.id)])
+    #         for i in self.ids:
+    #             valu = i
+    #             dupli = self.env['inv_vendor_new'].search(
+    #                 [('partner_id', '=', self.prime_vede.id), ('vend_ids', '=', valu),
+    #                  ('vendor_name', '=', self.prime_vede.name)])
+    #             if len(dupli) == 0:
+    #                 vals = [(0, 0, {'partner_id': asd.id, 'vendor_name': asd.name, 'vend_ids': valu})]
+    #                 self.update({'vend_ids': vals})
+
+    # @api.constrains('prime_vede')
+    # def asdf(self):
+    #     if self.prime_vede:
+    #         asd = self.env['res.partner'].search([('id', '=', self.prime_vede.id)])
+    #         for i in self.ids:
+    #             valu = i
+    #             dupli = self.env['inv_vendor_new'].search(
+    #                 [('partner_id', '=', self.prime_vede.id), ('vend_ids', '=', valu),
+    #                  ('vendor_name', '=', self.prime_vede.name)])
+    #             recs = self.env['inv_vendor_new'].search(
+    #                 [('partner_id', '!=', self.prime_vede.id), ('vend_ids', '=', valu),
+    #                  ('on_create', '=', True)]).unlink()
+
+    #             if len(dupli) == 0:
+    #                 vals = [
+    #                     (0, 0, {'partner_id': asd.id, 'vendor_name': asd.name, 'vend_ids': valu, 'on_create': True})]
+    #                 self.update({'vend_ids': vals})
+
+    @api.onchange('sku_onchange')
+    def store_change(self):
+        # if self.company_onchange
+        # store_data = self.env['product.template'].search([('id', '=', self.sku_onchange.id), ('company_id.id', '=', self.company_onchange.id)],
+        #                                                  limit=1)
+        store_datas = self.env['product.template'].search([('id', '=', self.sku_onchange.id), ])
+
+        self.name = store_datas.name
+        self.desc = store_datas.desc
+        # self.mfg = store_datas.mfg
+        self.upc = store_datas.upc
+        self.sequence = store_datas.sequence
+        self.deptart = store_datas.deptart
+        self.class_inven = store_datas.class_inven
+        self.types = store_datas.types
+        self.instores = store_datas.instores
+        self.prime_vede = store_datas.prime_vede
+        self.mfg_vende = store_datas.mfg_vende
+        self.company_id = store_datas.company_id
+
+
+
+    @api.onchange('company_onchange')
+    def company_change(self):
+        # if self.company_onchange
+        store_data = self.env['product.template'].search([('company_id.id', '=', self.company_onchange.id)],
+                                                         limit=1)
+
+        self.name = store_data.name
+        self.desc = store_data.desc
+        # self.mfg = store_data.mfg
+        self.upc = store_data.upc
+        self.sequence = store_data.sequence
+        self.deptart = store_data.deptart
+        self.class_inven = store_data.class_inven
+        self.types = store_data.types
+        self.instores = store_data.instores
+        self.prime_vede = store_data.prime_vede
+        self.mfg_vende = store_data.mfg_vende
+        # self.company_id = store_data.company_id
+
+
+    @api.onchange('name','company_id')
+    def oncchange_comp_store_val(self):
+        val_sku = self.env['product.template'].search([('name', '=', self.name),('company_id.id', '=', self.company_id.id)])
+        if len(val_sku) != 0:
+            raise ValidationError("Product Already Exists")
+
+    # @api.constrains('name','company_id')
+    # def constrain_comp_store_val(self):
+    #     val_skus = self.env['product.template'].search([('name', '=', self.name),('company_id.id', '=', self.company_id.id)])
+    #     if len(val_skus) != 0:
+    #         raise ValidationError("Product Already Exists")
 
 #Table in pricing tab
 class Pricetable(models.Model):
@@ -687,6 +1113,11 @@ class Pricetable(models.Model):
 #Table for vendor
 class inv_vendor(models.Model):
     _name = "inv_vendor"
+
+
+class inv_vendornew(models.Model):
+    _name = "inv_vendor_new"
+    partner_id = fields.Integer()
     vendor_code = fields.Char()
     vendor_name = fields.Char()
     vendor_part = fields.Char()
@@ -704,6 +1135,71 @@ class inv_vendor(models.Model):
     store_closeout = fields.Char()
     desc_line_one = fields.Char()
     desc_line_two = fields.Char()
+    on_create = fields.Boolean()
     vend_ids = fields.Many2one('product.template')
 
 
+class inv_vendor(models.Model):
+    _inherit = "stock.quant"
+
+    loc_quan_ids = fields.Many2one('product.template')
+
+class SupplierInherit(models.Model):
+    _inherit = "product.supplierinfo"
+
+    mfg = fields.Many2one('wg.mfg.vendor')
+    name = fields.Many2one(
+        'res.partner', 'Vendor',
+        ondelete='cascade', required=False,
+        help="Vendor of this product", check_company=True)
+    vendor_code = fields.Char()
+    vendor_name = fields.Char()
+    vendor_part = fields.Char()
+    vendor_order_multi = fields.Float()
+    vendor_cost = fields.Float()
+    last_pur_cost = fields.Float()
+    last_cost_change = fields.Float()
+    last_pur_qty = fields.Float()
+    last_pur_date = fields.Date()
+    last_po_number = fields.Char()
+    discontinued = fields.Char()
+    store_closeout = fields.Char()
+    desc_line_one = fields.Char()
+    desc_line_two = fields.Char()
+
+    _sql_constraints = [
+        ('mfg_uniq', 'unique (mfg)', 'Mfg must be unique !')
+    ]
+
+    @api.onchange('mfg')
+    def name_onchange(self):
+        for rec in self:
+            if rec.mfg:
+                rec.name = rec.mfg.vendor.partner_id
+
+    # @api.model
+    # def create(self, vals):
+    #     res = super(SupplierInherit, self).create(vals)
+    #     if res.product_tmpl_id:
+    #         print(res.product_tmpl_id.mfg, res.product_tmpl_id.mfg_vende)
+
+
+class MfgVendor(models.Model):
+    _name = "wg.mfg.vendor"
+
+    name = fields.Char('Name')
+    vendor = fields.Many2one('wgd.vendors')
+    vendor_code = fields.Char(related='vendor.vendor')
+    company_id = fields.Many2one('res.company', 'Store')
+    # sku_id = fields.Many2one('product.template')
+
+    # def name_get(self):
+    #     result = []
+    #     for rec in self:
+    #         if rec.name and rec.vendor.name:
+    #             print(rec.name, rec.vendor.vendor)
+    #             name = rec.name + '-' + rec.vendor.name
+    #         else:
+    #             name = rec.name
+    #         result.append((rec.id, name))
+    #     return result
