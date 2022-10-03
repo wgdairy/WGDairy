@@ -42,14 +42,17 @@ class vendors(models.Model):
     # function to get year as a list
     @api.model
     def year_selection(self):
-        year = 2000 # replace 2000 with your a start year
+        year = 2000 # replace 2000 with your start year
         year_list = []
         while year != 2030: # replace 2030 with your end year
             year_list.append((str(year), str(year)))
             year += 1
         return year_list
     lp_year = fields.Selection(year_selection, string="Year") #lp : last payment
-    lp_month = fields.Selection([('1','January')],string='Month')
+    lp_month = fields.Selection([('1','1'),('2','2'),('3','3'),
+                                 ('4','4'),('5','5'),('6','6'),
+                                 ('7','7'),('8','8'),('9','9'),
+                                 ('10','10'),('11','11'),('12','12'),],string='Month')
 
     # order info fields 
     currency_id = fields.Many2one('res.currency', 'Currency', default=lambda self: self.env.user.company_id.currency_id.id)
@@ -151,6 +154,20 @@ class vendors(models.Model):
 
     # Contact Tab
     contact_ids = fields.One2many('contact.lines', 'vendor', string="")
+
+    filter_by_vname = fields.Many2one('wgd.vendors')
+    filter_by_vid = fields.Many2one('wgd.vendors')
+
+    def name_get(self):
+        result = []
+        for rec in self:
+            if rec.vendor:
+                name = rec.vendor
+            else:
+                name = rec.name
+            result.append((rec.id, name))
+        return result
+    
 
     # function to validate float fields,
     #    when digits is more than 10

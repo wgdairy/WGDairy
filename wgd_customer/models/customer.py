@@ -2,7 +2,7 @@ from odoo import fields, models, api #, re
 import re
 import odoo.addons.decimal_precision as dp
 from odoo.exceptions import ValidationError
-from datetime import datetime
+from datetime import date, datetime
 
 class Customer(models.Model):
     '''
@@ -24,15 +24,19 @@ class Customer(models.Model):
     
     customer_id             = fields.Char("Customer ID",help='Exportable')
     # partner_id              = fields.Many2one('res.partner')    
-    job_id                  = fields.Many2one('job')
+    job_id                  = fields.Selection([('0','0'),('1','1'),('2','2')], "Store", default='1',help='Exportable')
+    has_job                 = fields.Selection([('Y','Y'),('N','N')], "Has Job?",help='Exportable')
     # sort_name_id            = fields.Many2one('sort')
     sort_name_id            = fields.Char("Sort",help='Exportable')
-    bill_to_id              = fields.Many2one('bill')
+    bill_to_id              = fields.Many2one('res.partner')
     ace_rewards             = fields.Char("Ace Rewards",help='Exportable')
+    filter_by_name          = fields.Char("Filter By Name",help='Exportable')
+    filter_by_id            = fields.Char("Filter By ID",help='Exportable')
+    
     # notebook page1 Main
     phone                   = fields.Char('Phone',help='Exportable')
     fax                     = fields.Char('Fax',help='Exportable')
-    contact                 = fields.Char('contact',help='Exportable')
+    contact                 = fields.Char('Contact',help='Exportable')
     country_id              = fields.Many2one('res.country', string='Country',default=_get_default_country)
     credit_message1         = fields.Char(' ',help='Exportable')
     credit_message2         = fields.Char(' ',help='Exportable')
@@ -71,7 +75,8 @@ class Customer(models.Model):
     taxable                 = fields.Selection([('yes','Y'),('no','N')], "Taxable", default='no')
     keep_dept_history       = fields.Selection([('yes','Y'),('no','N')], "Keep Dept History", default='yes',help='Exportable')
     print_invoices_in_pos   = fields.Selection([('yes','Y'),('no','N')], "Print Invoices In POS", default='no',help='Exportable')
-    
+    last_activity_date      = fields.Date("Last Activity Date")
+
 
 # notebook page2 Credit
     finace_chgs_ytd         = fields.Float("Finace Chgs YTD", digits=(2,2))
@@ -158,12 +163,12 @@ class Customer(models.Model):
     # running_balance         = fields.Float("Running Balance")
     # credit_available        = fields.Float("Credit Available")
 
-    of_times_no_activity    = fields.Integer("No Activity")
-    of_times_current        = fields.Integer("Current")
-    of_times_1_30           = fields.Integer("1 - 30")
-    of_times_31_60          = fields.Integer("31 - 60")
-    of_times_61_90          = fields.Integer("61 - 90")
-    of_times_over_90        = fields.Integer("Over 90")
+    of_times_no_activity    = fields.Float("No Activity")
+    of_times_current        = fields.Float("Current")
+    of_times_1_30           = fields.Float("1 - 30")
+    of_times_31_60          = fields.Float("31 - 60")
+    of_times_61_90          = fields.Float("61 - 90")
+    of_times_over_90        = fields.Float("Over 90")
 
     last_occured_no_activity= fields.Date("")
     last_occured_current    = fields.Date("")
@@ -212,7 +217,7 @@ class Customer(models.Model):
 
     fax_pos_stmt            = fields.Selection([('1',' '),('2','2')], "Fax POS/Stmt",help='Exportable')
     fax_pos_stmt1           = fields.Selection([('1',' '),('2','2')], "Fax POS/Stmt",help='Exportable')
-    ace_rewards_status      = fields.Selection([('1','A'),('2','2')], "Ace Rewards Status",default='1',help='Exportable')
+    ace_rewards_status      = fields.Selection([('A','A'),('I','I'),('N','N')], "Ace Rewards Status",default='A',help='Exportable')
     tax_override_plan       = fields.Selection([('1',' '),('2','2')], "Tax Override Plan",help='Exportable')
     
     prompt_in_pos           = fields.Selection([('1',' '),('2','2')], "Prompt in POS?",help='Exportable')
@@ -238,10 +243,103 @@ class Customer(models.Model):
     print_repeat            = fields.Selection([('yes','Y'),('no','N')], "Print Repeats", default='no',help='Exportable')                 
     message                 = fields.Html("Message")
 
+#smart button
+    current_total           = fields.Float("Current",compute="_smart_button")  
+    thirty_total            = fields.Float("Current",compute="_smart_button")  
+    sixty_total             = fields.Float("Current",compute="_smart_button")  
+    ninety_total            = fields.Float("Current",compute="_smart_button")  
+    over_total              = fields.Float("Current",compute="_smart_button")  
 
     def action_student_schedules(self):
         pass
     
+    @api.depends('current_total','thirty_total','sixty_total','ninety_total','over_total')
+    def _smart_button(self):
+        '''
+            Fetch invoice details from aged recivable 
+        '''
+        current_date    = date.today()
+        customer_invoices = self.env['account.move'].search([('move_type', '=', 'out_invoice'),('partner_id', '=', self.partner_id.id),('state', '=', 'posted'),('invoice_date', '<=', current_date)])
+        refund__invoices  = self.env['account.move'].search([('move_type', '=', 'out_refund'),('partner_id', '=', self.partner_id.id),('state', '=', 'posted'),('invoice_date', '<=', current_date)])
+        day = 0
+        current_total1 = 0.0
+        total_30 = 0.0 
+        total_60 = 0.0
+        total_90 = 0.0 
+        over_90  = 0.0
+        for record in customer_invoices:
+            if record.invoice_date == current_date:
+                if record.invoice_date_due == current_date or record.invoice_date_due > current_date:
+                    current_total1 =  current_total1 + record.amount_residual
+                else:
+                    count = current_date - record.invoice_date_due
+                    day = count.days
+                    if day < 0:
+                        day = day * -1
+                    if day < 31:
+                        total_30 = total_30 + record.amount_residual
+                    elif day < 61:
+                        total_60 = total_60 + record.amount_residual
+                    elif day < 91:
+                        total_90 = total_90 + record.amount_residual
+                    else: 
+                        over_90 = over_90 + record.amount_residual
+            else:
+                if record.invoice_date_due == current_date or record.invoice_date_due > current_date:
+                    current_total1 =  current_total1 + record.amount_residual
+                else:
+                    count = current_date - record.invoice_date_due
+                    day = count.days
+                    if day < 0:
+                        day = day * -1
+                    if day < 31:
+                        total_30 = total_30 + record.amount_residual
+                    elif day < 61:
+                        total_60 = total_60 + record.amount_residual
+                    elif day < 91:
+                        total_90 = total_90 + record.amount_residual
+                    else: 
+                        over_90 = over_90 + record.amount_residual
+
+        for record in refund__invoices:
+            if record.invoice_date == current_date:
+                if record.invoice_date_due == current_date or record.invoice_date_due > current_date:
+                    current_total1 =  current_total1 - record.amount_residual
+                else:
+                    count = current_date - record.invoice_date_due
+                    day = count.days
+                    if day < 0:
+                        day = day * -1
+                    if day < 31:
+                        total_30 = total_30 - record.amount_residual
+                    elif day < 61:
+                        total_60 = total_60 - record.amount_residual
+                    elif day < 91:
+                        total_90 = total_90 - record.amount_residual
+                    else: 
+                        over_90 = over_90 - record.amount_residual
+            else:
+                if record.invoice_date_due == current_date or record.invoice_date_due > current_date:
+                    current_total1 =  current_total1 - record.amount_residual
+                else:
+                    count = current_date - record.invoice_date_due
+                    day = count.days
+                    if day < 0:
+                        day = day * -1
+                    if day < 31:
+                        total_30 = total_30 - record.amount_residual
+                    elif day < 61:
+                        total_60 = total_60 - record.amount_residual
+                    elif day < 91:
+                        total_90 = total_90 - record.amount_residual
+                    else: 
+                        over_90 = over_90 - record.amount_residual            
+        self.current_total = current_total1
+        self.thirty_total  = total_30
+        self.sixty_total   = total_60
+        self.ninety_total  = total_90
+        self.over_total    = over_90
+
 
     def validate_float(self, float_value, val):
         if float_value:

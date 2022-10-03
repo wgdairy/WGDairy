@@ -14,6 +14,16 @@
     <field name="arch" type="xml">
         <form string="Vendors">
             <sheet>
+                <div class="row" col="2" style="width:100%;">  
+            <div style="padding:2% !important;width:56%;">
+                <label for="filter_by_vname" string="Filter By Name" style="width:16%;margin-bottom: -15px;"/>
+                <field name="filter_by_vname" style="width:42%;margin-bottom: -15px;"></field><br/>
+            </div>    
+            <div style="padding:2% !important;width:44%;">
+                <label for="filter_by_vid" string="Filter By ID" style="width:18%;margin-bottom: -15px;"/>
+                <field  name="filter_by_vid" style="width:22%;margin-bottom: -15px;"/><br/>
+                </div> 
+            </div> 
                 <div class="row" col="4" style="width:100%;">
                     <div style="padding:2% !important;width:25%;">
                         <label for="vendor" string="Vendor" style="width:30%;margin-bottom:-15px;"/>
@@ -390,17 +400,17 @@
         <field name="arch" type="xml">
             <search>
                 <filter name="type" string="Type"/>
-                <field name="vendor" string="Vendor ID"/>
-                <field name="name" string="Name"/>
-                <field name="sort_name" string="Sort Name"/>
-                <field name="pay_to_vendor" string="Pay to Vendor"/>
+                <field name="vendor" string="Vendor ID" filter_domain="[('vendor','=ilike',self)]"/>
+                <field name="name" string="Name" filter_domain="[('name','=ilike',self)]"/>
+                <field name="sort_name" string="Sort Name" filter_domain="[('sort_name','=ilike',self)]"/>
+                <field name="pay_to_vendor" string="Pay to Vendor" filter_domain="[('pay_to_vendor','=ilike',self)]"/>
                 <field name="phone" string="Phone"/>
                 <field name="fax" string="Fax"/>
-                <field name="street" string="Address"/>
-                <field name="city" string="City"/>
-                <field name="state_id" string="State"/>
+                <field name="street" string="Address" filter_domain="[('pay_to_vendor','=ilike',self)]"/>
+                <field name="city" string="City" filter_domain="[('city','=ilike',self)]"/>
+                <field name="state_id" string="State" filter_domain="[('state_id','=ilike',self)]"/>
                 <field name="contact" string="Contact"/>
-                <field name="assignee" string="Assigned Customer"/>
+                <field name="assignee" string="Assigned Customer" filter_domain="[('assignee','=ilike',self)]"/>
                 <field name="network_id" string="Network ID"/>
                 <field name="po_item_number" string="PO Item Number"/>
                 <field name="edi_po" string="EDI PO"/>

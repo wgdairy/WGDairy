@@ -1,0 +1,112 @@
+<odoo>
+
+
+    <template id="sales_report"  inherit_id="purchase.report_purchaseorder">
+    <xpath expr="//t[@t-call='purchase.report_purchaseorder_document']" position="replace">
+            <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.external_layout">
+
+
+                <center><h3><b>W.G Dairy Supply Inc. </b></h3></center>
+                <center><h3><b>12993 Cleveland Rd</b></h3></center>
+                <center><h3><b><span t-field="o.company_id"/></b></h3></center>
+                <center><h3><b><span t-field="o.company_id.street"/></b></h3></center>
+                        <br/>
+
+                <div class="row" col="3" style="width:100%;">
+                    <div>
+
+
+                    </div>
+                    <div>
+
+                    </div>
+                    <div>
+
+                    </div>
+
+                </div>
+
+
+
+
+
+                    <div style="width:100%;margin-top:5px">
+                            <table class="table table-condensed">
+<!--                                background-color:#ccddff;-->
+
+
+
+                                <th style="border: 1px solid black;" class="text-center"><strong>LINE</strong></th>
+                                <th style="border: 1px solid black;" class="text-center"><strong>QTY</strong></th>
+                                 <th style="border: 1px solid black;" class="text-center"><strong>SKU</strong></th>
+                                <th style="border: 1px solid black;" class="text-center"><strong>DESCRIPTION</strong></th>
+                                <th style="border: 1px solid black;" class="text-center"><strong>UNITS</strong></th>
+                                <th style="border: 1px solid black;" class="text-center"><strong>SUGG</strong></th>
+                                <th style="border: 1px solid black;" class="text-center"><strong>PRICE / PER</strong></th>
+                                <th style="border: 1px solid black;" class="text-center"><strong>EXTENSION</strong></th>
+                                <th style="border: 1px solid black;" class="text-center"><strong></strong></th>
+
+
+
+                                <tr t-foreach="o.order_line" t-as="line" >
+                                    <td style="border: 1px solid black;width:2%" class="text-center">
+                                        <span t-esc="line_index + 1"/>
+                                    </td>
+                                    <td style="border: 1px solid black;width:5%" class="text-center">
+                                        <span t-field="line.product_qty"/>
+                                    </td>
+<!--                                     <td style="border: 1px solid black;width:15%">-->
+<!--                                        <span t-field="line.product_uom"/>-->
+<!--                                    </td>-->
+                                    <td style="border: 1px solid black;width:10%">
+                                        <span t-field="line.product_id"/>
+                                    </td>
+                                    <td style="border: 1px solid black;width:1%" class="text-center">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td style="border: 1px solid black;width:30%" class="text-right">
+                                        <span  t-esc="line.product_qty"/>
+                                    </td>
+                                    <td style="border: 1px solid black;width:5%" class="text-center">
+                                        <span t-esc="line.price_unit"/>
+                                    </td>
+                                    <td style="border: 1px solid black;width:5%" class="text-center">
+<!--                                        <span t-esc="line.price_subtotal"/>-->
+                                    </td>
+                                    <td style="border: 1px solid black;width:5%" class="text-center">
+                                        <span t-esc="line.price_subtotal"/>
+                                    </td>
+
+
+                                    <td style="border: 1px solid black;width:10%" class="text-center">
+<!--                                        <span t-esc="line.product_uom"/>-->
+                                    </td>
+
+                                </tr>
+                            </table>
+
+<!--                        <div class="text-right">-->
+<!--                            <tr t-foreach="o.tax_totals_json" t-as="lines" >-->
+<!--                                <strong style="width:5%;">TAXABLE:</strong>-->
+<!--                                <a class="text-right" style="width:5%;"><span t-field="lines.tax_totals_json"/></a><br />-->
+<!--                                <strong style="width:5%;"> NON-TAXABLE:</strong>-->
+<!--                                <a class="text-right" style="width:5%;"><span t-field="lines.non_taxable"/></a><br />-->
+<!--                                <strong style="width:5%;">SUBTOTAL:</strong>-->
+<!--                                <a class="text-right" style="width:5%;"><span t-field="lines.sub_total"/></a><br />-->
+<!--                            </tr>-->
+
+<!--                        </div>-->
+                    </div>
+            </t>
+        </t>
+            </t>
+
+    </xpath>
+    </template>
+
+
+</odoo>
+
+

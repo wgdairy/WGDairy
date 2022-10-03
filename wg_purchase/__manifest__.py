@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "wg_inventory",
+    'name': "wg_purchase",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,19 +20,15 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','stock','product','account','vendors'],
+    'depends': ['base','purchase','wg_inventory'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'views/inventory_main.xml',
-        'views/receiving_po_new.xml',
-        # 'reports/Receiving_Products.xml',
-        'reports/inventory_transfer.xml',
-
-
+        'views/purchase_order.xml',
+        'reports/po_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
@@ -40,9 +36,10 @@
     ],
     'assets': {
         'web.assets_backend': [
-            '/wg_inventory/static/src/style.css'
+            '/wg_purchase/static/src/style.css'
 
         ]
     }
+
 
 }

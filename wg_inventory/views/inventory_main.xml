@@ -2,21 +2,72 @@
 
 <record id="product_details" model="ir.actions.act_window">
     <field name="name">Product</field>
-    <field name="res_model">product.product</field>
+    <field name="res_model">product.template</field>
     <field name="view_mode">tree,form,kanban</field>
 </record>
 
 <!-- wgd.vendors form view -->
 <record id="product_new" model="ir.ui.view">
     <field name="name">product.view.form</field>
-    <field name="model">product.product</field>
-    <field name="inherit_id" ref="product.product_normal_form_view"/>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="product.product_template_only_form_view"/>
     <field name="arch" type="xml">
-    <xpath expr="//form" position="replace">
+        <xpath expr="//form" position="attributes">
+            <attribute name="class">product_form</attribute>
+        </xpath>
+        <xpath expr="//field[@name='name']" position="attributes">
+            <attribute name="invisible">True</attribute>
+        </xpath>
+        <xpath expr="//label[@for='name']" position="attributes">
+            <attribute name="invisible">True</attribute>
+        </xpath>
+        <xpath expr="//label[@for='sale_ok']" position="attributes">
+            <attribute name="invisible">True</attribute>
+        </xpath>
+        <xpath expr="//field[@name='sale_ok']" position="attributes">
+            <attribute name="invisible">True</attribute>
+        </xpath>
+        <xpath expr="//label[@for='purchase_ok']" position="attributes">
+            <attribute name="invisible">True</attribute>
+        </xpath>
+        <xpath expr="//field[@name='purchase_ok']" position="attributes">
+            <attribute name="invisible">True</attribute>
+        </xpath>
+        <xpath expr="//field[@name='priority']" position="attributes">
+            <attribute name="invisible">True</attribute>
+        </xpath>
+        <xpath expr="//field[@name='image_1920']" position="attributes">
+            <attribute name="invisible">True</attribute>
+        </xpath>
+        <xpath expr="." position="inside">
+            <style>
+                .o_FormRenderer_chatterContainer{
+                    display : none;
+                }
+                .product_form .o_form_sheet_bg > .o_form_sheet {
+                    max-width : 1800px !important;
+                }
+            </style>
+        </xpath>
+        <xpath expr="//notebook" position="attributes">
+            <attribute name="invisible">True</attribute>
+        </xpath>
+<!--    <xpath expr="//form" position="replace">-->
+        <xpath expr="//div" position="after">
         <form>
 
             <sheet>
                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                    <div class="row" style="width:100%;">
+                        <div style="padding:10px; !important;width:50%;">
+                        <label for="sku_onchange" string="Filter BY SKU" style="width:20%;margin-bottom: -15px;"/>
+                        <field name="sku_onchange" style="width:30%;margin-bottom: -15px;"></field>
+                    </div>
+                    <div style="padding:10px; !important;width:50%;">
+                        <label for="company_onchange" string="Filter BY Store" style="width:20%;margin-bottom: -15px;"/>
+                        <field name="company_onchange" style="width:30%;margin-bottom: -15px;"></field>
+                    </div>
+                    </div>
                 <div class="row" col="4" style="width:100%;">
                         <div style="padding:10px; !important;width:20%;">
                                 <label for="name" string="SKU" style="width:18%;margin-bottom: -15px;"/>
@@ -33,40 +84,42 @@
                             </div>
 
                             <div style="padding:10px; !important;width:12%;">
-                                <label for="stores" string="Store" style="width:25%;margin-bottom: -15px;"/>
-                                <field name="stores" style="width:50%;margin-bottom: -15px;"/>
+                                <label for="company_id" string="Store" style="width:35%;margin-bottom: -15px;"/>
+                                <field name="company_id" style="width:50%;margin-bottom: -15px;"/>
                             </div>
                         </div>
 
                         <div class="row" col="4" style="width:100%;">
                             <div style="padding:10px; !important;width:20%;">
                                 <label for="mfg" string="Mfg#" style="width:18%;margin-bottom: -15px;"/>
-                                <field name="mfg" style="width:50%;margin-top: -15px;"></field><br/>
+                                <field name="mfg" style="width:50%;margin-top: -15px;" widget="many2many_tags" invisible="1"></field>
+                                <field name="mfg_ven" style="width:50%;margin-top: -15px;vertical-align: top;"/>                                
+                                <br/>
                             </div>
 
                             <div style="padding:10px; !important;width:20%;">
-                                <label for="barcode" string="UPC" style="width:18%;margin-bottom: -15px;"/>
-                                <field  name="barcode" style="width:50%;margin-top: -15px;"/><br/>
+                                <label for="upc" string="UPC" style="width:18%;margin-bottom: -15px;"/>
+                                <field  name="upc" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
                             <div style="padding:10px; !important;width:20%;">
-                                <label for="sequence" string="Sequence" style="width:30%;margin-bottom: -15px;"/>
+                                <label for="sequence" string="Sequence" style="width:35%;margin-bottom: -15px;"/>
                                 <field  name="sequence" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
 
                             <div style="padding:10px; !important;width:20%;">
-                                <label for="instores" string="In Stores" style="width:35%;margin-bottom: -15px;padding:5px;"/>
+                                <label for="instores" string="In Stores" style="width:45%;margin-bottom: -15px;padding:5px;"/>
                                 <field name="instores" style="width:50%;margin-top: -15px;" widget="many2many_tags"/><br/>
                             </div>
                         </div>
                         <div class="row" col="5" style="width:100%;">
                             <div style="padding:10px; !important;width:15%;">
                                 <label for="deptart" string="Dept" style="width:20%;margin-bottom: -15px;"/>
-                                <field name="deptart" style="width:50%;margin-top: -15px;" options="{'no_create_edit': True}"></field><br/>
+                                <field name="deptart" style="width:55%;margin-top: -15px;" options="{'no_create_edit': True}"></field><br/>
                             </div>
 
                             <div style="padding:10px; !important;width:15%;">
                                 <label for="class_inven" string="Class" style="width:20%;margin-bottom: -15px;"/>
-                                <field  name="class_inven" style="width:40%;margin-top: -15px;"/><br/>
+                                <field  name="class_inven" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
 <!--                            <div style="padding:10px; !important;width:20%;">-->
 <!--                                <label for="fineline" string="Fineline" style="width:25%;margin-bottom: -15px;"/>-->
@@ -75,11 +128,11 @@
 
                             <div style="padding:10px; !important;width:20%;">
                                 <label for="prime_vede" string="Prime Vend" style="width:40%;margin-bottom: -15px;"/>
-                                <field name="prime_vede" style="width:50%;margin-top: -15px;" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier'}" domain="[('supplier_rank', '=', 1)]"/><br/>
+                                <field name="prime_vede" style="width:50%;margin-top: -15px;" domain="[('supplier_rank', '=', 1)]" context="{'default_supplier_rank' : 1}" /><br/>
                             </div>
                                 <div style="padding:10px; !important;width:20%;">
                                 <label for="mfg_vende" string="Mfg Vend" style="width:35%;margin-bottom: -15px;"/>
-                                <field name="mfg_vende" style="width:50%;margin-top: -15px;" domain="[('supplier_rank', '=', 1)]"/><br/>
+                                <field name="mfg_vende" style="width:55%;margin-top: -15px;" domain="[('supplier_rank', '=', 1)]" widget="many2many_tags"/><br/>
                             </div>
                         </div>
                         </div>
@@ -94,12 +147,14 @@
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Quantites</h6>
                                     <br />
                                     <div style="margin-left:15px;margin-bottom:155px;">
-                                <label for="qty_available" string="Qty On Hand" style="width:50%;"/>
+                                <label for="qty_available" string="Qty On Hand" style="width:55%;"/>
                                 <field name="qty_available" style="width:40%;" />
-                                <label for="commited_qty" string="Commited Qty" style="width:50%;"/>
+                                <label for="commited_qty" string="Commited Qty" style="width:55%;"/>
                                 <field name="commited_qty" style="width:40%;"/>
-                                <label for="purchased_product_qty" string="Qty On Order" style="width:50%;"/>
+                                <label for="purchased_product_qty" string="Qty On Order" style="width:55%;"/>
                                 <field name="purchased_product_qty" style="width:40%;"  />
+<!--                                        <label for="loc_table_id" string="Location" style="width:55%;"/>-->
+<!--                                <field name="loc_table_id" style="width:40%;"  />-->
 <!--                                <label for="custbackorder" string="Cust backorder" style="width:50%;"/>-->
 <!--                                <field name="custbackorder" style="width:40%;" />-->
 <!--                                <label for="location" string="Location" style="width:50%;"/>-->
@@ -122,8 +177,8 @@
                                 <field name="reordering_max_qty"  style="width:30%;" />
                                 <label for="safety_stock" string="Safety Stock" style="width:60%;"/>
                                 <field name="safety_stock" style="width:30%;" />
-                                <label for="stockings_UM" string="Stocking U/M" style="width:60%;"/>
-                                <field name="stockings_UM" style="width:30%;" />
+                                <label for="stockings_UM_ids" string="Stocking U/M" style="width:60%;"/>
+                                <field name="stockings_UM_ids" style="width:30%;" />
                                 <label for="standard_pack" string="Standard Pack" style="width:60%;"/>
                                 <field name="standard_pack" style="width:30%;" />
                                 <label for="order_multiple" string="Order Multiple" style="width:60%;"/>
@@ -138,13 +193,15 @@
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Purchasing</h6>
                                     <br />
                                     <div style="margin-left:15px;margin-bottom:43px;">
-                                <label for="purchasing_um" string="Purchasing U/M" style="width:60%;"/>
-                                <field name="purchasing_um"  style="width:35%;" />
+<!--                                <label for="purchasing_um" string="Purchasing U/M" style="width:60%;"/>-->
+<!--                                <field name="purchasing_um"  style="width:35%;" />-->
+                                        <label for="purchasing_um_id" string="Purchasing U/M" style="width:60%;"/>
+                                <field name="purchasing_um_id"  style="width:35%;" />
 <!--                                <label for="order_indictor" string="Order Indicator" style="width:60%;"/>-->
 <!--                                <field name="order_indictor"  style="width:35%;" />-->
                                 <div>
                                 <label for="weight" string="Weight" style="width:60%;"/>
-                                <field name="weight"  style="width: 15%;margin-right:2px;" />
+                                <field name="weight"  style="width: 18%;margin-right:2px;" />
                                 <field name="weight_uom_id"  style="width: 15%;" domain="[('category_id.name', '=', 'Weight')]"/>
                                 </div>
                                 <label for="new_order_qty" string="New Order Qty" style="width:60%;"/>
@@ -156,7 +213,7 @@
                                 <label for="min_of_std_pkgs" string="Min # of Std Pkgs" style="width:60%;"/>
                                 <field name="min_of_std_pkgs"  style="width:35%;" />
                                 <label for="secondary_vends" string="Secondary Vend" style="width:60%;"/>
-                                <field name="secondary_vends"  style="width:35%;" />
+                                <field name="secondary_vends"  style="width:35%;" domain="[('supplier_rank', '=', 1)]"/>
 <!--                                <label for="vend_stk" string="Vend Stk #" style="width:60%;"/>-->
 <!--                                <field name="vend_stk"  style="width:35%;"  />-->
 <!--                                <label for="po_season" string="PO Season" style="width:60%;"/>-->
@@ -199,6 +256,26 @@
                             </div>
                                 </div>
                                 </div>
+                        </div>
+                        <div style="border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                        <field name="location_quan_id"  mode="tree"  style="padding:2% !important;" > <!--context="{'partner_id': self.prime_vede.id}"-->
+                                <tree   editable="bottom" class="tree_width_location"  >
+                                    <field name="location_id" string="Location" />  <!--readonly="1"-->
+                                    <field name="product_id" string="Product" />
+<!--                                    <field name="product_id" string="Product" />-->
+<!--                                    <field name="product_categ_id" string="Product Category"  />-->
+<!--                                    <field name="available_quantity" string="Available Quantity" />-->
+                                    <field name="quantity" string="On Hand Quantity"   />
+
+                                    <field name="product_uom_id" string="UoM"   />
+<!--                                    <field name="accounting_date" string="Accounting Date" />-->
+                                    <field name="inventory_quantity" string="Counted Quantity" />
+                                    <field name="inventory_diff_quantity" string="Difference" />
+                                    <field name="inventory_date" string="Scheduled Date"  />
+                                    <field name="user_id" string="User"  />
+
+                                </tree>
+                            </field>
                         </div>
                     </page>
                     <page autofocus="1" string="Pricing">
@@ -685,7 +762,7 @@
                                 <field  name="not_type" style="width:20%;margin-bottom: -15px;"/>
                             </div>
                             <div style="padding:15px; !important;width:30%;">
-                                <label for="display_repeat" string="Display Repeat" style="width:34%;margin-bottom: -15px;"/>
+                                <label for="display_repeat" string="Display Repeat" style="width:40%;margin-bottom: -15px;"/>
                                 <field  name="display_repeat" style="width:20%;margin-bottom: -15px;"/>
                             </div>
                             <div style="padding:15px; !important;width:30%;">
@@ -703,7 +780,7 @@
                                 <label for="message" string="Message" style="width:20%;margin-bottom: -15px;"/>
                                 <br />
                                 <br />
-                                <field  name="message" style="width:1050px !important;height:120px !important;margin-bottom: -15px;" />
+                                <field  name="message" style="width:940px !important;height:120px !important;margin-bottom: -15px;" />
                             </div>
                             </div>
 
@@ -714,31 +791,10 @@
 
 
                     <page string="Vendor">
-
                         <div>
                             <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                            <field name="vend_ids"  mode="tree"  style="padding:2% !important;">
-                                <tree   editable="bottom" class="tree_width_summary" >
-                                    <field name="vendor_code" string="Vendor Code" style="width:100px !important;" />  <!--readonly="1"-->
-                                    <field name="vendor_name" string="Vendor Name" />
-                                    <field name="vendor_part" string="Vendor Part #"  />
-                                    <field name="vendor_order_multi" string="Vendor Order Multiple" />
-<!--                                    <field name="min_od_ord_mult" string="Min # of Order Multiples"   />-->
-<!--                                    <field name="unit_to_order_by" string="Unit to Order By"   />-->
-                                    <field name="vend_cost" string="Vendor Cost" />
-<!--                                    <field name="po_back_order" string="P.O. Backorder" />-->
-                                    <field name="last_pur_cost" string="Last Purchase Cost"  />
-                                    <field name="last_cost_change" string="Last Cost Change"  />
-                                    <field name="last_pur_qty" string="Last Purchase  Qty" />
-                                    <field name="last_pur_date" string="Last Purchase Date" />
-                                    <field name="last_po_number"  string="Last P.O. Number" />
-                                    <field name="discontinued"  string="Discontinued" />
-                                    <field name="store_closeout" string="Store Closeout"  />
-                                    <field name="desc_line_one" string="Desc Line 1" />
-                                    <field name="desc_line_two" string="Desc Line 2"  />
-                                </tree>
-                            </field>
-                                </div>
+                                <field name="seller_ids"/>
+                            </div>
                         </div>
                     </page>
 
@@ -748,13 +804,13 @@
                                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Quantites/ Prices</h6>
                                     <br />
-                                    <div style="margin-left:10px;margin-bottom:125px;">
-                                        <label for="load_qut_on_hant" string="Qty On Hand" style="width:40%;"/>
-                                        <field name="load_qut_on_hant" style="width:40%;" />
+                                    <div style="margin-left:10px;margin-bottom:129px;">
+                                        <label for="qty_available" string="Qty On Hand" style="width:40%;"/>
+                                        <field name="qty_available" style="width:40%;" />
                                         <label for="load_retail" string="Retail" style="width:40%;"/>
                                         <field name="load_retail" style="width:40%;"/>
-                                        <label for="load_list" string="List" style="width:40%;"/>
-                                        <field name="load_list" style="width:40%;"  />
+                                        <label for="list_price" string="List" style="width:40%;"/>
+                                        <field name="list_price" style="width:40%;"  />
                                         <label for="load_repl_cost" string="Repl Cost" style="width:40%;"/>
                                         <field name="load_repl_cost" style="width:40%;" />
                                         <label for="mfg_cost" string="Mfg Cost" style="width:40%;"/>
@@ -819,15 +875,19 @@
                                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                                     <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Purchasing</h6>
                                     <br />
-                                    <div style="margin-left:10px;margin-bottom:100px;">
-                                        <label for="load_stocking_um" string="Stocking U/M" style="width:50%;"/>
-                                        <field name="load_stocking_um"  style="width:40%;margin-left:10px;" />
+                                    <div style="margin-left:10px;margin-bottom:72px;">
+<!--                                        <label for="load_stocking_um" string="Stocking U/M" style="width:50%;"/>-->
+<!--                                        <field name="load_stocking_um"  style="width:40%;margin-left:10px;" />-->
+                                         <label for="load_stocking_um_ids" string="Stocking U/M" style="width:50%;"/>
+                                        <field name="load_stocking_um_ids"  style="width:40%;margin-left:10px;" />
                                         <label for="load_standard_pack" string="Standard Pack" style="width:54%;"/>
                                         <field name="load_standard_pack"  style="width:40%;" />
                                         <label for="load_order_multiple" string="Order Multiple" style="width:54%;"/>
                                         <field name="load_order_multiple"  style="width:40%;" />
-                                        <label for="load_purchase_um" string="Purchasing U/M" style="width:54%;"/>
-                                        <field name="load_purchase_um"  style="width:40%;" />
+<!--                                        <label for="load_purchase_um" string="Purchasing U/M" style="width:54%;"/>-->
+<!--                                        <field name="load_purchase_um"  style="width:40%;" />-->
+                                         <label for="load_purchase_um_ids" string="Purchasing U/M" style="width:54%;"/>
+                                        <field name="load_purchase_um_ids"  style="width:40%;" />
 <!--                                        <label for="order_indicator" string="Order Indicator" style="width:54%;"/>-->
 <!--                                        <field name="order_indicator"  style="width:40%;" />-->
                                         <div>
@@ -921,158 +981,437 @@
 
                         </div>
                     </page>
-<!--                    <page  autofocus="1" string="Misc">-->
-<!--                        <div class="row" col="4" style="width:100%;">-->
 
-<!--                            <div style="padding:2% !important;width:30%;" string="Quantites">-->
-<!--                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">-->
-<!--                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Item Dimensions</h6>-->
-<!--                                    <br />-->
+                    <page  autofocus="1" string="Other Info">
+                        <div class="row" col="3" style="width:100%;">
 
-<!--                                <label for="height" string="Height(inches)" style="width:40%;"/>-->
-<!--                                <field name="height" style="width:40%;" />-->
-<!--                                <label for="width" string="Width(inches)" style="width:40%;"/>-->
-<!--                                <field name="width" style="width:40%;"/>-->
-<!--                                <label for="depth" string="Depth(inches)" style="width:40%;"/>-->
-<!--                                <field name="depth" style="width:40%;"  />-->
-<!--                                <div>-->
-<!--                                    <label for="weight_mic" string="Weight" style="width:40%;"/>-->
-<!--                                    <field name="weight_mic" style="width: 20%;margin-right:7px;" />-->
-<!--                                    <field name="weight_mic_unit" style="width: 20%"  />-->
-<!--                                </div>-->
-<!--                                <div>-->
-<!--                                    <label for="cubes" string="Cubes" style="width:40%;"/>-->
-<!--                                    <field name="cubes" style="width: 20%;margin-right:7px;" />-->
-<!--                                    <field name="cubes_unit" style="width: 20%;margin-bottom:15px;"  />-->
-<!--                                </div>-->
-<!--                                <br />-->
-<!--                            </div>-->
-<!--                            </div>-->
-<!--                            <div style="padding:2% !important;width:32%;" string="Stock Levels">-->
-<!--                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">-->
-<!--                                     <br />-->
-<!--                                <label for="ebt" string="EBT/FS Item?" style="width:50%;"/>-->
-<!--                                <field name="ebt" style="width:25%;" />-->
-<!--                                <label for="fsa" string="FSA/HBC Item?" style="width:50%;"/>-->
-<!--                                <field name="fsa" style="width:25%;" />-->
-<!--                                <label for="restricted_houres" string="Restricted Houres" style="width:50%;"/>-->
-<!--                                <field name="restricted_houres"  style="width:25%;" />-->
-<!--                                <label for="age_restrict" string="Age/Selling Restricted " style="width:50%;"/>-->
-<!--                                <field name="age_restrict" style="width:25%;" />-->
-<!--                                <label for="special_fee_code" string="Special Fee Code" style="width:50%;"/>-->
-<!--                                <field name="special_fee_code" style="width:25%;" />-->
-<!--                                <label for="weighable" string="Weighable?" style="width:50%;"/>-->
-<!--                                <field name="weighable" style="width:25%;margin-bottom: 12px;" />-->
 
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </page>-->
+
+                            <div style="padding:2% !important;width:33%;">
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">General Info</h6>
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+
+                                    <label for="detailed_type" string="Product Type" style="width:30%;"/>
+                                    <field name="detailed_type" style="width:50%;" /><br />
+                                    <label for="supplier_taxes_id" string="Vendor Taxes" style="width:30%;"/>
+                                    <field name="supplier_taxes_id" style="width:50%;" /><br />
+                                    <label for="purchase_method" string="Control Policy" style="width:30%;"/>
+                                    <field name="purchase_method" style="width:50%;" /><br />
+                                    <label for="categ_id" string="Product Category" style="width:30%;"/>
+                                    <field name="categ_id" style="width:50%;" /><br />
+                                    <label for="invoice_policy" string="Invoicing Policy" style="width:30%;"/>
+                                    <field name="invoice_policy" style="width:50%;" />
+                                </div>
+
+                            </div>
+                            <div style="padding:2% !important;width:33%;">
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Inventory</h6>
+                                <br />
+                                <br />
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Operations</h6>
+                                <br />
+                                <br />
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <label for="route_ids" string="Routes" style="width:30%;"/>
+                                    <field name="route_ids" style="width:50%;" /><br />
+                                </div>
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Logistics</h6>
+                                <br />
+                                <br />
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <label for="responsible_id" string="Responsible" style="width:30%;"/>
+                                    <field name="responsible_id" style="width:50%;" /><br />
+                                    <label for="volume" string="Volume" style="width:30%;"/>
+                                    <field name="volume" style="width:50%;" /><br />
+                                    <label for="produce_delay" string="Manuf. Lead Time" style="width:30%;"/> <!-- depend on manifactor -->
+                                    <field name="produce_delay" style="width:50%;" /><br />
+                                    <label for="sale_delay" string="Customer Lead Time" style="width:30%;"/>
+                                    <field name="sale_delay" style="width:50%;" />
+                                    <label for="hs_code" string="HS Code" style="width:30%;"/><!--Depends on Delivery cost-->
+                                    <field name="hs_code" style="width:50%;" />
+
+                                </div>
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Traceability</h6>
+                                <br />
+                                <br />
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <label for="tracking" string="Tracking" style="width:30%;"/>
+                                    <field name="tracking" style="width:50%;" /><br />
+                                </div>
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Counterpart Locations</h6>
+                                <br />
+                                <br />
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <label for="property_stock_production" string="Production Location" style="width:30%;"/>
+                                    <field name="property_stock_production" style="width:50%;" /><br />
+                                    <label for="property_stock_inventory" string="Tracking" style="width:30%;"/>
+                                    <field name="property_stock_inventory" style="width:50%;" /><br />
+                                </div>
+                            </div>
+
+
+                                <br />
+                            <div style="padding:2% !important;width:33%;">
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Accounting</h6>
+                                <br />
+                                <br />
+
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Receivables</h6>
+                                <br />
+                                <br />
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                                    <label for="property_account_income_id" string="Income Account" style="width:30%;"/>
+                                    <field name="property_account_income_id" style="width:50%;" /><br />
+                                </div>
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Payables</h6>
+                                <br />
+                                <br />
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+
+                                    <label for="property_account_expense_id" string="Expense Account" style="width:40%;"/>
+                                    <field name="property_account_expense_id" style="width:50%;" /><br />
+                                    <label for="property_stock_inventory" string="Price Difference Account" style="width:40%;"/>
+                                    <field name="property_stock_inventory" style="width:50%;" /><br />
+                                    <label for="property_account_creditor_price_difference" string="Price Difference Account" style="width:40%;"/>
+                                    <field name="property_account_creditor_price_difference" style="width:50%;" /><br />
+                                </div>
+                            </div>
+                        </div>
+                    </page>
+
                 </notebook>
+
+
             </sheet>
         </form>
         </xpath>
     </field>
 </record>
     <!--Inventory Search view-->
-    <record id="my_customer_search_view" model="ir.ui.view">
-        <field name="name">inventory.search.view</field>
-        <field name="model">product.product</field>
-        <field name="arch" type="xml">
+
+    <record id="view_product_inherit_search" model="ir.ui.view">
+      <field name="name">sale.product.search.inherit.search</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="stock.product_template_search_form_view_stock"/>
+      <field name="arch" type="xml">
+        <xpath expr="//search" position="replace">
             <search>
-
-                <field name="name" string="SKU"/>
-                <field name="deptart" string="Department"/>
-                <field name="types" string="Type"/>
-                <field name="mfg" string="Manufacturer"/>
-                <field name="barcode" string="UPC"/>
-                <field name="sequence" string="Sequence"/>
-                <field name="stores" string="Store"/>
-                <field name="types" string="Type"/>
-                <field name="class_inven" string="Class"/>
-                <field name="fineline" string="Fineline"/>
-                <field name="prime_vede" string="Prime Vend"/>
-                <field name="mfg_vende" string="Mfg Vend"/>
-                <field name="qty_available" string="Qty On Hand"/>
-                <field name="commited_qty" string="Committed Qty"/>
-                <field name="purchased_product_qty" string="Qty On Order"/>
-                <field name="custbackorder" string="Cust Backorder"/>
-
+                <field name="name" string="SKU" filter_domain="[('name','=ilike',self)]"/>
+                <field name="deptart" string="Department" filter_domain="[('deptart','=ilike',self)]"/>
+                <field name="types" string="Type" filter_domain="[('types','=ilike',self)]"/>
+                <field name="mfg" string="Manufacturer" filter_domain="[('mfg','=ilike',self)]"/>
+                <field name="upc" string="UPC" filter_domain="[('upc','=ilike',self)]"/>
+                <field name="sequence" string="Sequence" filter_domain="[('sequence','=ilike',self)]"/>
+                <field name="company_id" string="Store" filter_domain="[('company_id','=ilike',self)]"/>
+                <field name="desc" string="Desc" filter_domain="[('desc','=ilike',self)]"/>
+                <field name="types" string="Type" filter_domain="[('types','=ilike',self)]"/>
+                <field name="class_inven" string="Class" filter_domain="[('class_inven','=ilike',self)]"/>
+                <field name="fineline" string="Fineline" filter_domain="[('fineline','=ilike',self)]"/>
+                <field name="prime_vede" string="Prime Vend" filter_domain="[('prime_vede','=ilike',self)]"/>
+                <field name="mfg_vende" string="Mfg Vend" filter_domain="[('mfg_vende','=ilike',self)]"/>
+                <field name="qty_available" string="Qty On Hand" filter_domain="[('qty_available','=ilike',self)]"/>
+                <field name="commited_qty" string="Committed Qty" filter_domain="[('commited_qty','=ilike',self)]"/>
+                <field name="purchased_product_qty" string="Qty On Order" filter_domain="[('purchased_product_qty','=ilike',self)]"/>
+                <field name="custbackorder" string="Cust Backorder" filter_domain="[('custbackorder','=ilike',self)]"/>
             </search>
-        </field>
+        </xpath>
+      </field>
     </record>
 
         <!-- inheriting inventory tree view  -->
 
-
     <record id="product_template_tree_view" model="ir.ui.view">
-        <field name="name">product.template.product.tree</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_product_tree_view"/>
-
-        <field name="arch" type="xml">
-            <field name="default_code" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-            <field name="qty_available" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-            <field name="barcode" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-            <field name="name" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-            <field name="product_template_variant_value_ids" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-            <field name="lst_price" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-            <field name="standard_price" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-            <field name="price" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-            <field name="uom_id" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-            <field name="virtual_available" position="attributes">
-                <attribute name="optional">Hide</attribute>
-            </field>
-<!--            <field name="standard_price" position="attributes">-->
-<!--                <attribute name="optional">Hide</attribute>-->
-<!--            </field>-->
-
-            <xpath expr="//field[@name='default_code']" position="after">
-
-                <field name="name" string="SKU"/>
-                <field name="types" string="Type"/>
-                <field name="stores" string="Store"/>
-                <field name="mfg" string="Mfg#"/>
-                <field name="barcode" string="UPC"/>
-                <field name="sequence" string="Sequence"/>
-                <field name="instores" string="In Stores"/>
-<!--                <field name="dept" string="Dept"/>-->
-                <field name="class_inven" string="Class"/>
-<!--                <field name="fineline" string="Fineline"/>-->
-                <field name="prime_vede" string="Prime Vend"/>
-                <field name="mfg_vende" string="Mfg Vend"/>
-
-            </xpath>
+    <field name="name">product.template.product.tree</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="product.product_template_tree_view"/>
+    <field name="arch" type="xml">
+        <field name="default_code" position="attributes">
+            <attribute name="optional">Hide</attribute>
         </field>
+        <field name="list_price" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="responsible_id" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="standard_price" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="qty_available" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="virtual_available" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <field name="uom_id" position="attributes">
+            <attribute name="optional">Hide</attribute>
+        </field>
+        <xpath expr="//field[@name='name']" position="replace">
+            <field name="name" string="SKU"/>
+            <field name="types" string="Type"/>
+            <field name="company_id" string="Store"/>
+            <field name="mfg" string="Mfg#"/>
+            <field name="upc" string="UPC"/>
+            <field name="sequence" string="Sequence"/>
+            <field name="desc" string="Desc"/>
+            <field name="instores" string="In Stores"/>
+            <field name="deptart" string="Dept"/>
+            <field name="class_inven" string="Class"/>
+            <!--                 <field name="fineline" string="Fineline"/> -->
+            <field name="prime_vede" string="Prime Vend"/>
+            <field name="mfg_vende" string="Mfg Vend"/>
+        </xpath>
+    </field>
+</record>
+
+<!-- inventory transfer report form view  -->
+        <record id="model_name_view_form" model="ir.ui.view">
+            <field name="name">Inventory Transfer Report</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <div class="row" col="2" style="width:100%;padding-left:1%;margin-bottom:2%;">
+                            <div style="width:45%;margin-left:5%">
+                                <label for="cust_no" string="Cust NO" style="width:20%"/>
+                                <field  name="cust_no" style="width:50%;"/><br/>
+                                <label for="purchase_order" string="Purchase Order" style="width:20%"/>
+                                <field  name="purchase_order" style="width:50%;"/><br/>
+                                <label for="terms" string="Terms" style="width:20%"/>
+                                <field  name="terms" style="width:50%;"/><br/>
+                                <label for="date_time" string="Date/Time" style="width:20%"/>
+                                <field  name="date_time" style="width:50%;"/><br/>
+                                <label for="ship_to" string="Ship TO" style="width:20%"/>
+                                <field  name="ship_to" style="width:50%;"/><br/>
+                                <label for="terminal" string="Terminal" style="width:20%"/>
+                                <field  name="terminal" style="width:50%;"/><br/>
+                                <label for="tax" string="TAX" style="width:20%"/>
+                                <field  name="tax" style="width:50%;"/><br/>
+                                <label for="picking_type_id" string="Operation Type" style="width:20%"/>
+                                <field name="company_id" readonly="1" invisible="1"/>
+                                <field  name="location_id" style="width:50%;" invisible="1"/>
+                                <field name="location_dest_id" invisible="1" />
+                                <field name="picking_type_id"/>
+                                <br/>
+                                <!-- <field name="location_id" invisible="1"/> -->
+                            </div>
+                            <div style="width:50%;">
+                                <label for="job_nos" string="Job NO" style="width:15%"/>
+                                <field  name="job_nos" style="width:50%;"/><br/>
+                                <label for="reference" string="Reference" style="width:15%"/>
+                                <field  name="reference" style="width:50%;"/><br/>
+                                <label for="clerk" string="Clerk" style="width:15%"/>
+                                <field  name="clerk" style="width:50%;"/><br/>
+                                <label for="sold_to" string="Sold TO" style="width:15%"/>
+                                <field  name="sold_to" style="width:50%;"/><br/>
+                                <label for="del_date" string="DEL.Date" style="width:15%"/>
+                                <field  name="del_date" style="width:50%;"/><br/>
+                                <label for="order" string="Order" style="width:15%"/>
+                                <field  name="order" style="width:50%;"/><br/>
+                                <label for="complete" string="Complete" style="width:15%"/>
+                                <field  name="complete" style="width:50%;"/><br/>
+                            </div>
+                        </div>
+                        <div>
+                            <field name="report_lines">
+                                <tree  editable="bottom">
+                                    <field name="line" string="LINE" />
+                                    <field name="shipped" string="SHIPPED" />
+                                    <field name="ordered" string="ORDERED"/>
+                                    <field name="um" string="UM" />
+                                    <field name="sku" string="SKU"/>
+                                    <field name="description" string="DESCRIPTION" />
+                                    <field name="location_id" string="LOCATION" />
+                                    <field name="location_dest_id" string="DESTINATION" />
+                                    <field name="unit" string="UNITS"/>
+                                    <field name="price" widget='monetary' string="PRICE/ PER" />
+                                    <field name="extension" widget='monetary' string="EXTENSION"/>
+                                </tree>
+                            </field>
+                        </div>
+                        <div class="text-right">
+                            <label for="taxable" string="TAXABLE" style="width:15%"/>
+                            <field  name="taxable" style="width:10%;"/><br/>
+                            <label for="non_taxable" string="NON-TAXABLE" style="width:15%"/>
+                            <field  name="non_taxable" style="width:10%;"/><br/>
+                            <label for="sub_total" string="SUBTOTAL" style="width:15%"/>
+                            <field  name="sub_total" style="width:10%;"/><br/>
+
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
 
+
+        <record id="inentory_transfer_tree" model="ir.ui.view">
+        <field name="name">Inventory.Transfer.Report.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <tree string="customers">
+                <field  name="cust_no" />
+                <field  name="purchase_order" />
+                <field  name="date_time" />
+                <field  name="terminal" />
+                <field  name="tax" />
+                <field  name="job_nos" />
+                <field  name="reference" />
+                <field  name="clerk" />
+                <field  name="sold_to" />
+                <field  name="del_date" />
+                <field  name="order" />
+                <field  name="complete" />
+            </tree>
+        </field>
     </record>
 
 
+    <record id="inv_transfer_report" model="ir.actions.act_window">
+    <field name="name">Inventory Transfer Report</field>
+    <field name="res_model">stock.picking</field>
+        <field name="view_id" ref="inentory_transfer_tree"/>
+    <field name="view_mode">tree,form</field>
+    </record>
 
 
+    <record id="inv_transfer_report_form" model="ir.actions.act_window">
+    <field name="name">Inventory Transfer Report Form</field>
+    <field name="res_model">stock.picking</field>
+        <field name="view_id" ref="model_name_view_form"/>
+    <field name="view_mode">form</field>
+</record>
+            <record id="action_report_picking" model="ir.actions.report">
+            <field name="name">Picking Operations</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">stock.report_picking</field>
+            <field name="report_file">stock.report_picking_operations</field>
+            <field name="print_report_name">'Picking Operations - %s - %s' % (object.partner_id.name or '', object.name)</field>
+<!--            <field name="binding_model_id" ref="model_stock_picking"/>-->
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+        <record id="action_report_delivery" model="ir.actions.report">
+            <field name="name">Delivery Slip</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">stock.report_deliveryslip</field>
+            <field name="report_file">stock.report_deliveryslip</field>
+            <field name="print_report_name">'Delivery Slip - %s - %s' % (object.partner_id.name or '', object.name)</field>
+<!--            <field name="binding_model_id" ref="model_stock_picking"/>-->
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+    <record id="stock.action_report_delivery" model="ir.actions.report">
+    <field name="binding_model_id" eval="False"/>
+    </record>
+        <record id="stock.action_report_picking" model="ir.actions.report">
+    <field name="binding_model_id" eval="False"/>
+    </record>
 
-<menuitem id="wgd_root_menu" name="WG Inventory" active="True" sequence="0"/>
+<record id="product_supplierinfo_tree_view3" model="ir.ui.view">
+            <field name="name">product.supplierinfo.tree.view3</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="purchase.product_supplierinfo_tree_view2"/>
+            <field name="arch" type="xml">
+            <xpath expr="//tree" position="replace">
+                <tree editable="bottom">
+                    <field name="mfg"/>
+                    <field name="vendor_part" string="Vendor Part #"/>
+                    <field name="name" domain="[('supplier_rank', '=', 1)]" context="{'default_supplier_rank' : 1}"/>
+                    <field name="min_qty"/>
+                    <field name="price"/>
+                    <field name="delay"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="vendor_code" string="Vendor Code"/>
+                    <field name="vendor_order_multi" string="Vendor Order Multiple"/>
+                    <field name="vendor_cost" string="Vendor Cost" />
+                    <field name="last_pur_cost" string="Last Purchase Cost"  />
+                    <field name="last_cost_change" string="Last Cost Change"  />
+                    <field name="last_pur_qty" string="Last Purchase  Qty" />
+                    <field name="last_pur_date" string="Last Purchase Date" />
+                    <field name="last_po_number"  string="Last P.O. Number" />
+                    <field name="discontinued"  string="Discontinued" />
+                    <field name="store_closeout" string="Store Closeout"  />
+                    <field name="desc_line_one" string="Desc Line 1" />
+                    <field name="desc_line_two" string="Desc Line 2"  />
+                </tree>
+            </xpath>
+            </field>
+    </record>
 
-<menuitem id="product" name="Product Details" parent="wgd_root_menu" action="product_details"/>
+    <record id="inventory_transfer_action_window_tree" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="inentory_transfer_tree" />
+            <field name="act_window_id" ref="inv_transfer_report" />
+    </record>
 
+    <record id="inventory_transfer_action_window_form" model="ir.actions.act_window.view">
+           <field name="view_mode">form</field>
+           <field name="view_id" ref="model_name_view_form" />
+           <field name="act_window_id" ref="inv_transfer_report" />
+    </record>
+
+    <!-- wg.mfg.vendor form view -->
+    <record id="wg_mfg_vendor_view_form" model="ir.ui.view">
+        <field name="name">wg.mfg.vendor.view.form</field>
+        <field name="model">wg.mfg.vendor</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <!-- Add your fields here -->
+                        <group>
+                            <field name="name"/>
+                            <field name="vendor"/>
+                        </group>
+                        <group>
+                            <field name="vendor_code"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- wg.mfg.vendor action window -->
+    <record id="wg_mfg_vendor_action" model="ir.actions.act_window">
+        <field name="name">MFG</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wg.mfg.vendor</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+            </p><p>
+                <!-- More details about what a user can do with this object will be OK --> 
+            </p>
+        </field>
+    </record>
+
+
+<!-- <menuitem id="wgd_root_menu" name="WG Inventory" active="True" sequence="0"/> -->
+
+<!-- <menuitem id="product" name="Product Details" parent="wgd_root_menu" action="product_details"/>
+        <menuitem id="menu_customer_details_report"
+         name="Inventory Transfer Report"
+         parent="wgd_root_menu"
+         action="inv_transfer_report"
+         sequence="3"/> -->
+ <menuitem
+    id="menu_mfg_vendor"
+    name="Mfg#"
+    action="wg_mfg_vendor_action"
+    parent="stock.menu_stock_config_settings"
+    sequence="200"/>
+ <menuitem id="inventory_transfer_report" name="Inventory Transfer Report" parent="stock.menu_warehouse_report" action="inv_transfer_report"/>
 
 </odoo>

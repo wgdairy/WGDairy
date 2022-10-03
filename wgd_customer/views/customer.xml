@@ -41,40 +41,54 @@
 
                 <sheet>
 
+                        <div class="row" col="2" style="width:100%;">  
+                            <div style="padding:2% !important;width:56%;">
+                                <label for="filter_by_name" string="Filter By Name" style="width:16%;margin-bottom: -15px;"/>
+                                <field name="filter_by_name" style="width:42%;margin-bottom: -15px;"></field><br/>
+                            </div>    
+                            <div style="padding:2% !important;width:44%;">
+                                <label for="filter_by_id" string="Filter By ID" style="width:18%;margin-bottom: -15px;"/>
+                                <field  name="filter_by_id" style="width:22%;margin-bottom: -15px;"/><br/>
+                            </div> 
+                        </div> 
                         <div class="row" col="4" style="width:100%;">  
-                            <div style="padding:2% !important;width:25%;">
-                                <label for="customer_id" string="Customer ID" style="width:40%;margin-bottom: -15px;"/>
-                                <field name="customer_id" style="width:50%;margin-bottom: -15px;"></field><br/>
+                            <div style="padding:2% !important;width:20%;">
+                                <label for="customer_id" string="Customer ID" style="width:45%;margin-bottom: -15px;"/>
+                                <field name="customer_id" style="width:49%;margin-bottom: -15px;"></field><br/>
                             </div>    
 
-                            <div style="padding:2% !important;width:20%;">
+                            <div style="padding:2% !important;width:18%;">
                                 <label for="job_id" string="Job" style="width:25%;margin-bottom: -15px;"/>
                                 <field  name="job_id" style="width:50%;margin-bottom: -15px;"/><br/>
                             </div> 
-                            <div style="padding:2% !important;width:20%;">
+                            <div style="padding:2% !important;width:18%;">
+                                <label for="has_job" string="Has Job?" style="width:37%;margin-bottom: -15px;"/>
+                                <field  name="has_job" style="width:5%;margin-bottom: -15px;"/><br/>
+                            </div>   
+                            <div style="padding:2% !important;width:22%;">
                                 <label for="sort_name_id" string="Sort Name" style="width:40%;margin-bottom: -15px;"/>
                                 <field  name="sort_name_id" style="width:50%;margin-bottom: -15px;"/><br/>
                             </div>    
 
-                            <div style="padding:2% !important;width:35%;">
+                            <div style="padding:2% !important;width:22%;">
                                 <label for="bill_to_id" string="Bill To" style="width:20%;margin-bottom: -15px;"/>
-                                <field name="bill_to_id" style="width:70%;margin-bottom: -15px;"/><br/>
+                                <field name="bill_to_id" style="width:70%;margin-bottom: -15px;" domain="[('customer_rank', '=', 1)]"/><br/>
                             </div> 
                         </div> 
                         <div class="row" col="4" style="width:100%;">
-                            <div style="padding:2% !important;width:45%;">
+                            <div style="padding:2% !important;width:38%;">
                                 <label for="name" string="Name" style="width:20%;margin-top: -15px;"/>
                                 <field  name="name" style="width:70%;margin-top: -15px;"/>
                             </div>
-                            <div style="padding:2% !important;width:20%;">
-                                <label for="phone" string="Phone" style="width:40%;margin-top: -15px;"/>
-                                <field name="phone" style="width:50%;margin-top: -15px;"/><br/>
+                            <div style="padding:2% !important;width:18%;">
+                                <label for="phone" string="Phone" style="width:35%;margin-top: -15px;"/>
+                                <field name="phone" style="width:55%;margin-top: -15px;"/><br/>
                             </div> 
-                            <div style="padding:2% !important;width:35%;">
-                                <label for="contact" string="Contact" style="width:20%;margin-top: -15px;"/>
-                                <field  name="contact" style="width:70%;margin-top: -15px;"/>
+                            <div style="padding:2% !important;width:44%;">
+                                <label for="contact" string="Contact" style="width:18%;margin-top: -15px;"/>
+                                <field  name="contact" style="width:80%;margin-top: -15px;"/>
                             </div>
-                        </div>  
+                        </div> 
 
                     <notebook>
                         <page string="1. Main" autofocus="'1">
@@ -158,12 +172,14 @@
                                         <field  name="print_invoices_in_pos" style="width:50%;"/>
                                         <label for="taxable" string="Taxable" style="width:40%;"/> 
                                         <field  name="taxable" style="width:50%;"/>
+                                        <label for="last_activity_date" string="Last Activity Date" style="width:40%;"/> 
+                                        <field  name="last_activity_date" style="width:50%;"/>
                                     </div>
                                 </div>            
                         </page>
                         <page string="2. Credit">
 
-                            <!-- smart buttons  -->
+                             <!-- smart buttons  -->
                             <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
                                 <div class="o_stat_info">
                                     <span class="o_stat_value">
@@ -180,9 +196,10 @@
                                         Current
                                     </span><br/>
                                     <span class="o_stat_text">
-                                        2,824.83
+                                        <field  name="current_total"/>
                                     </span>
-                                </div>
+                                </div>    
+
                             </button>
                             <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
                                 <div class="o_stat_info">
@@ -190,7 +207,7 @@
                                         1-30
                                     </span><br/>
                                     <span class="o_stat_text">
-                                        2,458.71
+                                        <field  name="thirty_total"/>
                                     </span>
                                 </div>
                             </button>
@@ -200,7 +217,7 @@
                                         31-60
                                     </span><br/>
                                     <span class="o_stat_text">
-                                        -10.38
+                                        <field  name="sixty_total"/>
                                     </span>
                                 </div>
                             </button>
@@ -210,7 +227,7 @@
                                         61-90
                                     </span><br/>
                                     <span class="o_stat_text">
-                                       -314.89.89
+                                       <field  name="ninety_total"/>
                                     </span>
                                 </div>
                             </button>
@@ -220,7 +237,7 @@
                                         Over 90
                                     </span><br/>
                                     <span class="o_stat_text">
-                                        -115.11
+                                        <field  name="over_total"/>
                                     </span>
                                 </div>
                             </button> 
@@ -434,71 +451,66 @@
                             </div>
                         </page>
                         <page string="4. Payment">
-                            <!-- smart buttons  -->
-                             <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150"
-                                type="object">
+                             <!-- smart buttons  -->
+                            <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
                                 <div class="o_stat_info">
-                                <span class="o_stat_value">
-                                    Future
-                                </span><br/>
-                                <span class="o_stat_text">
-                                    1,122.62
-                                </span>
+                                    <span class="o_stat_value">
+                                        Future
+                                    </span><br/>
+                                    <span class="o_stat_text">
+                                        1,122.62
+                                    </span>
                                 </div>
-                                 </button>
-                                <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150"
-                                type="object">
+                            </button>
+                            <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
                                 <div class="o_stat_info">
-                                <span class="o_stat_value">
-                                    Current
-                                </span><br/>
-                                <span class="o_stat_text">
-                                    2,824.83
-                                </span>
+                                    <span class="o_stat_value">
+                                        Current
+                                    </span><br/>
+                                    <span class="o_stat_text">
+                                        <field  name="current_total"/>
+                                    </span>
+                                </div>    
+
+                            </button>
+                            <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_value">
+                                        1-30
+                                    </span><br/>
+                                    <span class="o_stat_text">
+                                        <field  name="thirty_total"/>
+                                    </span>
                                 </div>
-                                 </button>
-                                <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150"
-                                type="object">
+                            </button>
+                            <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
                                 <div class="o_stat_info">
-                                <span class="o_stat_value">
-                                    1-30
-                                </span><br/>
-                                <span class="o_stat_text">
-                                    2,458.71
-                                </span>
+                                    <span class="o_stat_value">
+                                        31-60
+                                    </span><br/>
+                                    <span class="o_stat_text">
+                                        <field  name="sixty_total"/>
+                                    </span>
                                 </div>
-                                 </button>
-                                <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150"
-                                type="object">
+                            </button>
+                            <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
                                 <div class="o_stat_info">
-                                <span class="o_stat_value">
-                                    31-60
-                                </span><br/>
-                                <span class="o_stat_text">
-                                    -10.38
-                                </span>
+                                    <span class="o_stat_value">
+                                        61-90
+                                    </span><br/>
+                                    <span class="o_stat_text">
+                                       <field  name="ninety_total"/>
+                                    </span>
                                 </div>
-                                 </button>
-                                <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150"
-                                type="object">
+                            </button>
+                            <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
                                 <div class="o_stat_info">
-                                <span class="o_stat_value">
-                                    61-90
-                                </span><br/>
-                                <span class="o_stat_text">
-                                   -314.89.89
-                                </span>
-                                </div>
-                                 </button>
-                                <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150"
-                                type="object">
-                                <div class="o_stat_info">
-                                <span class="o_stat_value">
-                                    Over 90
-                                </span><br/>
-                                <span class="o_stat_text">
-                                    -115.11
-                                </span>
+                                    <span class="o_stat_value">
+                                        Over 90
+                                    </span><br/>
+                                    <span class="o_stat_text">
+                                        <field  name="over_total"/>
+                                    </span>
                                 </div>
                             </button> 
                             <hr style="width:100%;text-align:left;margin-left:0"/> 
@@ -665,25 +677,7 @@
                                         <field  name="prompt_threshold" style="width:35%;"/>
                                     </div>
                                     <group></group>
-                                    <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
-                                        <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Lumber Options</h6>
-                                        <label for="price_pick_ticket" string="Price Pick Ticket" style="width:60%;"/>
-                                        <field  name="price_pick_ticket" style="width:20%;"/><br/>
-                                        <label for="open_quotes" string="Open Quote" style="width:60%;"/>
-                                        <field  name="open_quotes" style="width:20%;"/><br/>
-                                        <label for="global_credit_check" string="Global Credit Check" style="width:60%;"/>
-                                        <field  name="global_credit_check" style="width:20%;"/><br/>
-                                        <label for="print_lumber_totals" string="Print Lumber Totals" style="width:60%;"/>
-                                        <field  name="print_lumber_totals" style="width:20%;"/><br/>
-                                        <label for="store_acct_opened_id" string="Store Job Opened" style="width:60%;"/>
-                                        <field  name="store_acct_opened_id" style="width:20%;"/><br/>
-                                        <label for="default_price_uom" string="Default Price UM" style="width:60%;"/>
-                                        <field  name="default_price_uom" style="width:20%;"/><br/>
-                                        <label for="statment_by_job" string="Statement By Job" style="width:60%;"/>
-                                        <field  name="statment_by_job" style="width:20%;"/><br/><br/>
-                                    </div>
-                                    <group></group>
-                                    <label for="statment_by_job" string="Additional Flags" style="width:60%;"/>
+        
 
                                 </div>
                             </div> 
@@ -842,20 +836,20 @@
                 <separator orientation="vertical"/>
                 <filter name="taxable" string="Have Taxable Code" domain="[('taxable','=','yes')]"/>
                 <filter name="taxable" string="Have No Taxable Code" domain="[('taxable','=','no')]"/>
-                <field name="customer_id" string="Customer ID"/>
-                <field name="name" string="Name"/>
-                <field name="job_id" string="Job"/>
-                <field name="sort_name_id" string="Sort Name"/>
-                <field name="bill_to_id" string="Bill To"/>
-                <field name="phone" string="Phone"/>
-                <field name="fax" string="Fax"/>
-                <field name="street" string="Address1"/>
-                <field name="city" string="City"/>
-                <field name="state_id" string="State"/>
-                <field name="contact" string="Contact"/>
-                <field name="credit_limit" string="Credit Limit"/>
-                <field name="account_code1" string="Account Code"/>
-                <field name="salesperson" string="Salesperson"/>
+                <field name="customer_id" string="Customer ID" filter_domain="[('customer_id','=ilike',self)]"/>
+                <field name="name" string="Name" filter_domain="[('name','=ilike',self)]"/>
+                <field name="job_id" string="Job" filter_domain="[('job_id','=ilike',self)]"/>
+                <field name="sort_name_id" string="Sort Name" filter_domain="[('sort_name_id','=ilike',self)]"/>
+                <field name="bill_to_id" string="Bill To" filter_domain="[('bill_to_id','=ilike',self)]"/>
+                <field name="phone" string="Phone" filter_domain="[('phone','=ilike',self)]"/>
+                <field name="fax" string="Fax" filter_domain="[('fax','=ilike',self)]"/>
+                <field name="street" string="Address1" filter_domain="[('street','=ilike',self)]"/>
+                <field name="city" string="City" filter_domain="[('city','=ilike',self)]"/>
+                <field name="state_id" string="State" filter_domain="[('state_id','=ilike',self)]"/>
+                <field name="contact" string="Contact" filter_domain="[('contact','=ilike',self)]"/>
+                <field name="credit_limit" string="Credit Limit" filter_domain="[('credit_limit','=ilike',self)]"/>
+                <field name="account_code1" string="Account Code" filter_domain="[('account_code1','=ilike',self)]"/>
+                <field name="salesperson" string="Salesperson" filter_domain="[('salesperson','=ilike',self)]"/>
             </search>
         </field>
     </record>
@@ -956,7 +950,7 @@
             sequence="3"/>
 
     <menuitem id="category_menu"
-            name="category"
+            name="Category"
             parent="configuration_menu"
             action="category_plan_form_action"
             sequence="4"/>
