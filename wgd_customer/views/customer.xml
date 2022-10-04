@@ -44,11 +44,11 @@
                         <div class="row" col="2" style="width:100%;">  
                             <div style="padding:2% !important;width:56%;">
                                 <label for="filter_by_name" string="Filter By Name" style="width:16%;margin-bottom: -15px;"/>
-                                <field name="filter_by_name" style="width:42%;margin-bottom: -15px;"></field><br/>
+                                <field name="filter_by_name" style="width:42%;margin-bottom: -15px;" context="{'hide_code': True}"></field><br/>
                             </div>    
                             <div style="padding:2% !important;width:44%;">
                                 <label for="filter_by_id" string="Filter By ID" style="width:18%;margin-bottom: -15px;"/>
-                                <field  name="filter_by_id" style="width:22%;margin-bottom: -15px;"/><br/>
+                                <field  name="filter_by_id" style="width:22%;margin-bottom: -15px;" /><br/>
                             </div> 
                         </div> 
                         <div class="row" col="4" style="width:100%;">  

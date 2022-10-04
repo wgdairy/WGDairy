@@ -53,8 +53,8 @@
                             <field name="product_uom_category_id" invisible="1"/>
                         <field name="quantity_done" string="Qty Being Recvd(Stk)"/>
                         <field name="Variance" />
-                        <field name="Varaiance_Pur" />
-                        <field name="Qty_Being_Recvd_Pur" />
+                        <field name="Varaiance_Pur" invisible="1" />
+                        <field name="Qty_Being_Recvd_Pur" invisible="1"/>
                         <field name="Cost_Pur" />
                         <field name="QOO_Ext_Cost" />
 <!--                        <field name="Added_in_Receiving" />-->

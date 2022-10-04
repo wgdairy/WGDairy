@@ -104,23 +104,18 @@
   width: 10% !important;
 }
 .res_po_line table thead > tr > th:nth-child(13){
-  width: 7% !important;
-}
-.res_po_line table thead > tr > th:nth-child(14){
-  width: 7% !important;
-}
-.res_po_line table thead > tr > th:nth-child(15){
   width: 11% !important;
 }
-.res_po_line table thead > tr > th:nth-child(16){
-  width: 8% !important;
+.res_po_line table thead > tr > th:nth-child(14){
+  width: 10% !important;
 }
-.res_po_line table thead > tr > th:nth-child(17){
+.res_po_line table thead > tr > th:nth-child(15){
   width: 9% !important;
 }
-.res_po_line table thead > tr > th:nth-child(18){
+.res_po_line table thead > tr > th:nth-child(16){
   width: 2% !important;
 }
+
 
 
 

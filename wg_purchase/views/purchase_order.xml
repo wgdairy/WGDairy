@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+
         <record id="inherit_purchase_order_form" model="ir.ui.view">
             <field name="name">purchase.order.forms.inherit</field>
             <field name="model">purchase.order</field>
@@ -8,10 +10,7 @@
             <field name="arch" type="xml">
 
 
-                
-
-
-                <xpath expr="//field[@name='order_line']" position="attributes">>
+                <xpath expr="//field[@name='order_line']" position="attributes">
                     <attribute name="class">po_line</attribute>
                 </xpath>
                 <xpath expr="//field[@name='sequence']" position="attributes">
@@ -33,78 +32,127 @@
                 <xpath expr="//field[@name='date_planned']" position="attributes">
                     <attribute name="string">Due Date</attribute>
                 </xpath>
-                <xpath expr="//field[@name='date_planned']" position="attributes">
-                    <field name="date_planned" position="attributes">
-                        <attribute name="string">Due Date</attribute>
-                    </field>
-                </xpath>
+
 
                 <xpath expr="//page[@name='purchase_delivery_invoice']" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
-                <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="Store_ids" ></field>
+
+
+
+
+
+                        <xpath expr="." position="inside">
+            <style>
+            .part_cla{
+            width:250px !important;
+            }
+                .part_ref_cla{
+                width:250px !important;
+
+                }
+            </style>
+        </xpath>
+
+                <xpath expr="//field[@name='order_line']" position="attributes">
+                    <attribute name="class">po_line</attribute>
                 </xpath>
 
-                <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="BkOrds" ></field>
+
+                <xpath expr="//field[@name='partner_ref']" position="attributes">
+                    <attribute name="class">part_ref_cla</attribute>
                 </xpath>
-                <xpath expr="//field[@name='date_order']" position="after">
-                    <field name="Total_Stk_Units" ></field>
-                    <field name="Total_Cost" ></field>
-                    <field name="Total_Weight" ></field>
+                <xpath expr="//form/sheet/group[1]" position="after">
+
+                    <div class="row" col="2" style="width:100%">
+                        <div class="row" style="width:50%;margin-left:20px;">
+
+                            <label for="BkOrds" string="BkOrds" style="width:30%;" />
+                            <field name="BkOrds" style="width:60%"/><br />
+                            <label for="Store_ids" string="Store"  style="width:30%;"/>
+                            <field name="Store_ids" style="width:60%" /><br />
+                                <div class="row" col="2" style="width:100%;">
+                                    <div style="width: 34%;">
+                                        <label for="ven_street" string="Vendor Address" style="margin-left: 15px;"/>
+                                    </div>
+                                    <div class="o_address_format" style="width:60%">
+                                        <field name="ven_street" placeholder="Street ..." class="o_address_street"/>
+                                        <field name="ven_street2" placeholder="Street2..." class="o_address_street" />
+                                        <field name="ven_city" placeholder="City" class="o_address_city" />
+                                        <field name="ven_state" class="o_address_state" placeholder="State" domain="[('country_id','ilike','United States')]"/>
+                                        <field name="ven_zip" placeholder="ZIP" class="o_address_zip" />
+                                        <field  name="ven_country_id" class="o_address_street"/>
+                                    </div>
+                                </div>
+
+                                                <label for="Date_Created" string="Date Created" style="width:30%;" />
+                    <field name="Date_Created" style="width:60%;" /><br />
+                    <label for="Reference" string="Reference" style="width:30%;" />
+                    <field name="Reference" style="width:60%"/><br />
+                    <label for="Alt_po" string="Alt po"  style="width:30%;"/>
+                    <field name="Alt_po" style="width:60%" /><br />
+                    <label for="Order_Type" string="Order Type" style="width:30%;" />
+                    <field name="Order_Type" style="width:60%;"  /><br />
+
+                                    <label for="ven_phone" string="Vendor Phone" style="width:30%;" />
+                    <field name="ven_phone" style="width:60%;"  /><br />
+                    <label for="ven_fax" string="Vendor Fax" style="width:30%;" />
+                    <field name="ven_fax" style="width:60%;"/><br />
+
+                            </div>
+
+
+
+                        <div class="row" style="width:50%;">
+
+
+                            <div style="margin-left:25px;width:100%;">
+                            <label for="Total_Stk_Units" string="Total Stk Units" style="width:30%;" />
+                            <field name="Total_Stk_Units" style="width:66%;" /><br />
+                            <label for="Total_Cost" string="Total Cost" style="width:30%;" />
+                            <field name="Total_Cost" style="width:66%"/><br />
+                            <label for="Total_Weight" string="Total Weight"  style="width:30%;"/>
+                            <field name="Total_Weight" style="width:66%" /><br />
+                                <div class="row" col="2" style="width:100%;">
+                                    <div style="width: 34%;">
+                                        <label for="ven_street" string="Ship To Address" style="margin-left: 15px;"/>
+                                    </div>
+                                    <div class="o_address_format" style="width:66%">
+                                        <field name="ship_street" placeholder="Street ..." class="o_address_street"/>
+                                        <field name="ship_street2" placeholder="Street 2..." class="o_address_street" />
+                                        <field name="ship_city" placeholder="City" class="o_address_city" />
+                                        <field name="ship_state_id" class="o_address_state" placeholder="State" domain="[('country_id','ilike','United States')]" />
+                                        <field name="ven_zip" placeholder="ZIP" class="o_address_zip" />
+                                        <field  name="ship_country_id" class="o_address_street" />
+                                    </div>
+
+                                </div>
+<!--                                <label for="date_planned" string="Due Date" style="width:30%;" />-->
+<!--                    <field name="date_planned" style="width:66%;" /><br />-->
+                    <label for="Other_Charges" string="Other Charges" style="width:30%;" />
+                    <field name="Other_Charges" style="width:66%"/><br />
+                    <label for="Line_Items" string="Alt po"  style="width:30%;"/>
+                    <field name="Line_Items" style="width:66%" /><br />
+                    <label for="Special_Instructions" string="Special Instructions" style="width:30%;" />
+                    <field name="Special_Instructions" style="width:66%;"  /><br />
+                                <label for="Buyerid" string="Buyer's ID" style="width:30%;" />
+                    <field name="Buyerid" style="width:66%;"/><br />
+                                <label for="Date_send" string="Date Sent" style="width:30%;" />
+                    <field name="Date_send" style="width:66%;"  /><br />
+
+                                </div>
+
+                        </div>
+
+                    </div>
+
+
+
                 </xpath>
-
-
-
-                <xpath expr="//field[@name='Store_ids']" position="after">
-
-                    <field name="ven_street" placeholder="Street 1" class="o_address_street" string="Vendor Address"/>
-                    <field name="ven_street2" placeholder="Street 2" class="o_address_street" string=" "/>
-                    <field name="ven_city" placeholder="City" class="o_address_city"  string=" "/>
-                    <field name="ven_state" class="o_address_state" placeholder="State"  string=" " domain="[('country_id','ilike','United States')]"/>
-                    <field name="ven_zip" placeholder="ZIP" class="o_address_zip"  string=" "/>
-                    <field  name="ven_country_id" placeholder="Country"  string=" " />
-
-
-
-                </xpath>
-                <xpath expr="//field[@name='ven_country_id']" position="after">
-
-
-                    <field  name="ven_phone" placeholder="Vendor Phone"  string="Vendor Phone" />
-                    <field  name="ven_fax" placeholder="Vendor Fax"  string="Vendor Fax" />
-
-
-
-                </xpath>
-                <xpath expr="//field[@name='Total_Weight']" position="after">
-
-                    <field name="ship_street" placeholder="Street 1" class="o_address_street" string="Ship To Address"/>
-                    <field name="ship_street2" placeholder="Street 2" class="o_address_street" string=" "/>
-                    <field name="ship_city" placeholder="City" class="o_address_city"  string=" "/>
-                    <field name="ship_state_id" class="o_address_state" placeholder="State"  string=" " domain="[('country_id','ilike','United States')]"/>
-                    <field name="ship_zip" placeholder="ZIP" class="o_address_zip"  string=" "/>
-                    <field  name="ship_country_id"  placeholder="Country" string=" " />
-
-
-
-                </xpath>
-                <xpath expr="//field[@name='ven_country_id']" position="after">
-                    <field name="Date_Created" />
-                    <field name="Reference" />
-                    <field name="Alt_po" />
-                    <field name="Order_Type"  />
-                    <field name="Buyerid" />
-
-
-                </xpath>
-                <xpath expr="//field[@name='ship_country_id']" position="after">
-                    <field  name="Special_Instructions" />
-                    <field  name="Line_Items" />
-                    <field  name="Total_Freight" />
-                    <field  name="Other_Charges" />
-                </xpath>
+<!--                <xpath expr="//form/sheet/group[1]/group[2]" position="after">-->
+<!--                    -->
+<!--                    -->
+<!--                </xpath>-->
 
 
 
@@ -162,8 +210,10 @@
                 <xpath expr="//field[@name='order_line']//tree/field[@name='price_unit']" position="attributes">
                     <attribute name="string">Cost(Stk)</attribute>
                 </xpath>
+
             </field>
         </record>
+
 
 
     </data>

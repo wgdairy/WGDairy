@@ -161,13 +161,85 @@ class vendors(models.Model):
     def name_get(self):
         result = []
         for rec in self:
-            if rec.vendor:
-                name = rec.vendor
-            else:
+            if self.env.context.get('hide_code'):
                 name = rec.name
+            else:
+                name = rec.vendor
             result.append((rec.id, name))
         return result
     
+    def write(self, vals):
+        if 'vendor' in vals:
+            vendor_dup = self.env['wgd.vendors'].search([('vendor','=',vals['vendor'])])
+            if len(vendor_dup) > 0:
+                raise ValidationError('Vendor ID already exists')
+        else:
+            res = super(vendors, self).write(vals)
+        return res
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if name :
+            args += ['|' , ('name', operator, name), ('vendor', operator, name)]
+        return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+
+    @api.onchange('filter_by_vname')
+    def onchange_by_name(self):
+        if self.filter_by_vname:
+            self.filter_by_vid = False
+            name = self.env['wgd.vendors'].search([('id','=',self.filter_by_vname.id)],limit=1)
+            self.vendor = name.vendor
+            self.name = name.name
+            self.sort_name = name.sort_name
+            self.pay_to_vendor = name.pay_to_vendor
+            self.pay_to_vendor2 = name.pay_to_vendor2
+            self.company_id = name.company_id
+
+            self.phone = name.phone
+            self.assignee = name.assignee
+            self.phone2 = name.phone2
+            self.fax = name.fax
+            self.contact = name.contact
+            self.vType = name.vType
+            self.codes = name.codes
+            self.street = name.street
+            self.street2 = name.street2
+            self.city = name.city
+            self.state_id = name.state_id
+            self.zip = name.zip
+            self.country_id = name.country_id
+            self.lead_time = name.lead_time
+            self.update_lead_time = name.update_lead_time
+
+    @api.onchange('filter_by_vid')
+    def onchange_by_id(self):
+        if self.filter_by_vid:
+            self.filter_by_vname = False
+            name = self.env['wgd.vendors'].search([('id','=',self.filter_by_vid.id)],limit=1)
+            self.vendor = name.vendor
+            self.name = name.name
+            self.sort_name = name.sort_name
+            self.pay_to_vendor = name.pay_to_vendor
+            self.pay_to_vendor2 = name.pay_to_vendor2
+            self.company_id = name.company_id
+
+            self.phone = name.phone
+            self.assignee = name.assignee
+            self.phone2 = name.phone2
+            self.fax = name.fax
+            self.contact = name.contact
+            self.vType = name.vType
+            self.codes = name.codes
+            self.street = name.street
+            self.street2 = name.street2
+            self.city = name.city
+            self.state_id = name.state_id
+            self.zip = name.zip
+            self.country_id = name.country_id
+            self.lead_time = name.lead_time
+            self.update_lead_time = name.update_lead_time
+
 
     # function to validate float fields,
     #    when digits is more than 10

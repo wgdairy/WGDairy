@@ -26,7 +26,6 @@ class Inventorys(models.Model):
     def _combine_mfg_vendor(self):
         mfg_ven = '\n'
         for rec in self.seller_ids:
-            print(rec.mfg.name, rec.name.name)
             if rec.mfg and rec.name:
                 mfg_ven += rec.mfg.name +' - '+ rec.name.name+'\n'
             elif rec.mfg:
@@ -1152,6 +1151,15 @@ class SupplierInherit(models.Model):
         'res.partner', 'Vendor',
         ondelete='cascade', required=False,
         help="Vendor of this product", check_company=True)
+    min_qty = fields.Float(
+        'Quantity', default=0.0, required=False, digits="Product Unit Of Measure",
+        help="The quantity to purchase from this vendor to benefit from the price, expressed in the vendor Product Unit of Measure if not any, in the default unit of measure of the product otherwise.")
+    price = fields.Float(
+        'Price', default=0.0, digits='Product Price',
+        required=False, help="The price to purchase a product")
+    delay = fields.Integer(
+        'Delivery Lead Time', default=1, required=False,
+        help="Lead time in days between the confirmation of the purchase order and the receipt of the products in your warehouse. Used by the scheduler for automatic computation of the purchase order planning.")
     vendor_code = fields.Char()
     vendor_name = fields.Char()
     vendor_part = fields.Char()
@@ -1166,11 +1174,7 @@ class SupplierInherit(models.Model):
     store_closeout = fields.Char()
     desc_line_one = fields.Char()
     desc_line_two = fields.Char()
-
-    _sql_constraints = [
-        ('mfg_uniq', 'unique (mfg)', 'Mfg must be unique !')
-    ]
-
+    
     @api.onchange('mfg')
     def name_onchange(self):
         for rec in self:
