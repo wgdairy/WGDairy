@@ -17,7 +17,7 @@
                 <div class="row" col="2" style="width:100%;">  
             <div style="padding:2% !important;width:56%;">
                 <label for="filter_by_vname" string="Filter By Name" style="width:16%;margin-bottom: -15px;"/>
-                <field name="filter_by_vname" style="width:42%;margin-bottom: -15px;"></field><br/>
+                <field name="filter_by_vname" style="width:42%;margin-bottom: -15px;" context="{'hide_code': True}"></field><br/>
             </div>    
             <div style="padding:2% !important;width:44%;">
                 <label for="filter_by_vid" string="Filter By ID" style="width:18%;margin-bottom: -15px;"/>
@@ -192,9 +192,9 @@
                         </div>
                     </page> -->
                     <page string="2. Account Payable">
-                        <h6 style="color: #423e3e;position: absolute;top: 36%;left: 3.5%;font-size: 12px;">Accounts Payable</h6>
                         <div class="row" style="width:80%;border:solid #dadce1 1px;margin:1%;" col="2">
                             <div style="width:40%;padding:2%;">
+                                    <h6 style="color: #423e3e;position: relative;bottom: 8%;left: 3.5%;font-size: 12px;">Accounts Payable</h6>
                                     <!-- <label for="acc_num" string="Account Number" style="width:35%" />
                                     <field name="acc_num" style="width: 22%;margin-right:2%;" /><b style="margin-right:2%;font-size:2em;">-</b>
                                     <field name="acc_num2" style="width: 20%" /><br/> -->
@@ -228,7 +228,7 @@
                                 <field name="disc_days" style="width: 20%" />
                                 <label for="discount" string="Discount %" style="width:25%;margin-left:5%;" />
                                 <field name="discount" style="width: 20%" /><br/>
-                                <label for="print_check" string="Print on Check" style="width:20%" />
+                                <label for="print_check" string="Print on Check" style="width:20%;margin-bottom:5%;" />
                                 <field name="print_check" style="width: 20%" />
                                 <!-- <label for="vendor_language" string="Vendor Language" style="width:25%;margin-left:5%;" />
                                 <field name="vendor_language" style="width: 20%" /><br/><br/> -->
@@ -237,7 +237,7 @@
                                         <label for="remit_address" string="Address" style="width:23%;padding-left:10%;"/>
                                     </div>
                                     <div class="o_address_format" style="width:50%">
-                                        <h6 style="color: #423e3e;position: absolute;bottom: 37.5%;left: 34.5%;font-size: 12px;">Remit to Address</h6>
+                                        <h6 style="color: #423e3e;position: relative;bottom: 10.5%;right: 44.5%;font-size: 12px;">Remit to Address</h6>
                                         <field name="remit_address" placeholder="Address" class="o_address_street"/>
                                         <field name="remit_street1" placeholder="Address" class="o_address_street" />
                                         <field name="remit_street2" placeholder="Address" class="o_address_street" />
@@ -251,9 +251,9 @@
                         </div>
                     </page>
                     <page string="3. History">
-                        <h6 style="color: #423e3e;position: absolute;top: 34.5%;left: 3.5%;font-size: 12px;">Accounts Payable History</h6>
                         <div style="width:70%;border:solid #e6e5e5 0.1px;margin-bottom:1%;padding:1%;">
                             <div style="padding:1%;">
+                                <h6 style="color: #423e3e;position: absolute;top: 41.5%;left: 3.5%;font-size: 12px;">Accounts Payable History</h6>
                                 <label for="amount_paid1" string="" style="width:15%" />
                                 <label for="amount_paid1" string="Year To Date" style="width:11%;margin-right:5%" />
                                 <label for="amount_paid1" string="Last Date" style="width:11%" /><br/>
@@ -271,7 +271,7 @@
                             <field name="vendor_bal_due" style="width: 10%" /><br/><br/>
                         </div>
                         <div style="width:70%;border:solid #e6e5e5 0.1px;padding:1%;">
-                        <h6 style="color: #423e3e;position: absolute;bottom: 31.5%;left: 3.5%;font-size: 12px;">Purchasing History</h6>
+                            <h6 style="color: #423e3e;position: absolute;bottom: 28.5%;left: 3.5%;font-size: 12px;">Purchasing History</h6>
                             <!-- headers -->
                             <label for="warehouse_cq" string="" style="width:17%" />
                             <label for="warehouse_cq" string="Current Qtr" style="width:20%" />

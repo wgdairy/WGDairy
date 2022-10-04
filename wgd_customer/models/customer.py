@@ -30,9 +30,9 @@ class Customer(models.Model):
     sort_name_id            = fields.Char("Sort",help='Exportable')
     bill_to_id              = fields.Many2one('res.partner')
     ace_rewards             = fields.Char("Ace Rewards",help='Exportable')
-    filter_by_name          = fields.Char("Filter By Name",help='Exportable')
-    filter_by_id            = fields.Char("Filter By ID",help='Exportable')
-    
+    filter_by_name          = fields.Many2one('my.customer')
+    filter_by_id            = fields.Many2one('my.customer')
+
     # notebook page1 Main
     phone                   = fields.Char('Phone',help='Exportable')
     fax                     = fields.Char('Fax',help='Exportable')
@@ -252,6 +252,103 @@ class Customer(models.Model):
 
     def action_student_schedules(self):
         pass
+    
+    @api.onchange('filter_by_name','filter_by_id')
+    def onchange_name_and_id(self):
+        if self.filter_by_name:
+            customer_name = self.search([('name', '=', self.filter_by_name.name)])
+            if customer_name:
+                self.street= customer_name.street
+                self.street2= customer_name.street2
+                self.city= customer_name.city
+                self.state_id= customer_name.state_id
+                self.zip= customer_name.zip
+                self.country_id= customer_name.country_id
+                self.phone= customer_name.phone
+                self.fax= customer_name.fax
+                self.contact= customer_name.contact
+                self.country_id= customer_name.country_id
+                self.credit_message1= customer_name.credit_message1
+                self.credit_message2= customer_name.credit_message2
+                self.credit_limit= customer_name.credit_limit
+                self.trade_discount= customer_name.trade_discount
+                self.account_code1= customer_name.account_code1
+                self.monthly_payment= customer_name.monthly_payment
+                self.terms_code= customer_name.terms_code
+                self.category_plan_id= customer_name.category_plan_id
+                self.tax_code= customer_name.tax_code
+                self.salesperson= customer_name.salesperson
+                self.pure_archive_invoices= customer_name.pure_archive_invoices
+                self.po_required= customer_name.po_required
+                self.default_po= customer_name.default_po
+                self.balance_method= customer_name.balance_method
+                self.std_sell_price= customer_name.std_sell_price
+                self.finace_charges= customer_name.finace_charges
+                self.store_acct_opened_id= customer_name.store_acct_opened_id
+                self.transfer_to_store= customer_name.transfer_to_store
+                self.print_statments= customer_name.print_statments
+                self.check_allowed= customer_name.check_allowed
+                self.credit_are_only= customer_name.credit_are_only
+                self.taxable= customer_name.taxable
+                self.keep_dept_history= customer_name.keep_dept_history
+                self.print_invoices_in_pos= customer_name.print_invoices_in_pos
+                self.last_activity_date=customer_name.last_activity_date
+
+                self.customer_id= customer_name.customer_id
+                self.job_id= customer_name.job_id
+                self.has_job= customer_name.has_job
+                self.sort_name_id= customer_name.sort_name_id
+                self.bill_to_id= customer_name.bill_to_id
+                self.ace_rewards= customer_name.ace_rewards
+                self.name= customer_name.name
+
+               
+        if self.filter_by_id:
+            customer_id = self.search([('customer_id', '=', self.filter_by_id.customer_id)])
+            if customer_id:
+                self.street= customer_id.street
+                self.street2= customer_id.street2
+                self.city= customer_id.city
+                self.state_id= customer_id.state_id
+                self.zip= customer_id.zip
+                self.country_id= customer_id.country_id
+                self.phone= customer_id.phone
+                self.fax= customer_id.fax
+                self.contact= customer_id.contact
+                self.country_id= customer_id.country_id
+                self.credit_message1= customer_id.credit_message1
+                self.credit_message2= customer_id.credit_message2
+                self.credit_limit= customer_id.credit_limit
+                self.trade_discount= customer_id.trade_discount
+                self.account_code1= customer_id.account_code1
+                self.monthly_payment= customer_id.monthly_payment
+                self.terms_code= customer_id.terms_code
+                self.category_plan_id= customer_id.category_plan_id
+                self.tax_code= customer_id.tax_code
+                self.salesperson= customer_id.salesperson
+                self.pure_archive_invoices= customer_id.pure_archive_invoices
+                self.po_required= customer_id.po_required
+                self.default_po= customer_id.default_po
+                self.balance_method= customer_id.balance_method
+                self.std_sell_price= customer_id.std_sell_price
+                self.finace_charges= customer_id.finace_charges
+                self.store_acct_opened_id= customer_id.store_acct_opened_id
+                self.transfer_to_store= customer_id.transfer_to_store
+                self.print_statments= customer_id.print_statments
+                self.check_allowed= customer_id.check_allowed
+                self.credit_are_only= customer_id.credit_are_only
+                self.taxable= customer_id.taxable
+                self.keep_dept_history= customer_id.keep_dept_history
+                self.print_invoices_in_pos= customer_id.print_invoices_in_pos
+                self.last_activity_date=customer_id.last_activity_date    
+
+                self.customer_id= customer_id.customer_id
+                self.job_id= customer_id.job_id
+                self.has_job= customer_id.has_job
+                self.sort_name_id= customer_id.sort_name_id
+                self.bill_to_id= customer_id.bill_to_id
+                self.ace_rewards= customer_id.ace_rewards
+                self.name= customer_id.name
     
     @api.depends('current_total','thirty_total','sixty_total','ninety_total','over_total')
     def _smart_button(self):
