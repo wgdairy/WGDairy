@@ -58,8 +58,8 @@
                             </div>    
 
                             <div style="padding:2% !important;width:18%;">
-                                <label for="job_id" string="Job" style="width:25%;margin-bottom: -15px;"/>
-                                <field  name="job_id" style="width:50%;margin-bottom: -15px;"/><br/>
+                                <label for="job_ids" string="Job" style="width:25%;margin-bottom: -15px;"/>
+                                <field  name="job_ids" style="width:50%;margin-bottom: -15px;"/><br/>
                             </div> 
                             <div style="padding:2% !important;width:18%;">
                                 <label for="has_job" string="Has Job?" style="width:37%;margin-bottom: -15px;"/>
@@ -801,7 +801,7 @@
             <tree string="customers">
                 <field  name="customer_id"/>
                 <field  name="name" string="Customer Name"/>
-                <field  name="job_id"/>
+                <field  name="job_ids"/>
                 <field  name="sort_name_id"/>
                 <field  name="bill_to_id"/>
                 <field  name="phone"/>
@@ -838,7 +838,7 @@
                 <filter name="taxable" string="Have No Taxable Code" domain="[('taxable','=','no')]"/>
                 <field name="customer_id" string="Customer ID" filter_domain="[('customer_id','=ilike',self)]"/>
                 <field name="name" string="Name" filter_domain="[('name','=ilike',self)]"/>
-                <field name="job_id" string="Job" filter_domain="[('job_id','=ilike',self)]"/>
+                <field name="job_ids" string="Job" filter_domain="[('job_ids','=ilike',self)]"/>
                 <field name="sort_name_id" string="Sort Name" filter_domain="[('sort_name_id','=ilike',self)]"/>
                 <field name="bill_to_id" string="Bill To" filter_domain="[('bill_to_id','=ilike',self)]"/>
                 <field name="phone" string="Phone" filter_domain="[('phone','=ilike',self)]"/>

@@ -24,7 +24,8 @@ class Customer(models.Model):
     
     customer_id             = fields.Char("Customer ID",help='Exportable')
     # partner_id              = fields.Many2one('res.partner')    
-    job_id                  = fields.Selection([('0','0'),('1','1'),('2','2')], "Store", default='1',help='Exportable')
+    # job_id                  = fields.Selection([('0','0'),('1','1'),('2','2')], "Store", default='1',help='Exportable')
+    job_ids                  = fields.Many2one('wgd.job.no')
     has_job                 = fields.Selection([('Y','Y'),('N','N')], "Has Job?",help='Exportable')
     # sort_name_id            = fields.Many2one('sort')
     sort_name_id            = fields.Char("Sort",help='Exportable')
@@ -252,32 +253,46 @@ class Customer(models.Model):
 
     def action_student_schedules(self):
         pass
+
+    def name_get(self): 
+        result = [] 
+        for rec in self:
+            if self.env.context.get('hide_code'):
+                name = rec.name
+            else:
+                name = rec.customer_id
+            result.append((rec.id, name))
+        return result
     
-    @api.onchange('filter_by_name','filter_by_id')
-    def onchange_name_and_id(self):
+    @api.onchange('filter_by_name')
+    def onchange_name(self):
+        '''
+            Auto fill the customer data on the all fields based on selected customer name 
+        '''
         if self.filter_by_name:
-            customer_name = self.search([('name', '=', self.filter_by_name.name)])
+            customer_name = self.search([('name', '=', self.filter_by_name.name)], limit=1)
             if customer_name:
-                self.street= customer_name.street
-                self.street2= customer_name.street2
-                self.city= customer_name.city
-                self.state_id= customer_name.state_id
-                self.zip= customer_name.zip
-                self.country_id= customer_name.country_id
-                self.phone= customer_name.phone
-                self.fax= customer_name.fax
-                self.contact= customer_name.contact
-                self.country_id= customer_name.country_id
+                self.filter_by_id   =""
+                self.street         = customer_name.street
+                self.street2        = customer_name.street2
+                self.city           = customer_name.city
+                self.state_id       = customer_name.state_id
+                self.zip            = customer_name.zip
+                self.country_id     = customer_name.country_id
+                self.phone          = customer_name.phone
+                self.fax            = customer_name.fax
+                self.contact        = customer_name.contact
+                self.country_id     = customer_name.country_id
                 self.credit_message1= customer_name.credit_message1
                 self.credit_message2= customer_name.credit_message2
-                self.credit_limit= customer_name.credit_limit
-                self.trade_discount= customer_name.trade_discount
-                self.account_code1= customer_name.account_code1
+                self.credit_limit   = customer_name.credit_limit
+                self.trade_discount = customer_name.trade_discount
+                self.account_code1  = customer_name.account_code1
                 self.monthly_payment= customer_name.monthly_payment
-                self.terms_code= customer_name.terms_code
+                self.terms_code     = customer_name.terms_code
                 self.category_plan_id= customer_name.category_plan_id
-                self.tax_code= customer_name.tax_code
-                self.salesperson= customer_name.salesperson
+                self.tax_code       = customer_name.tax_code
+                self.salesperson    = customer_name.salesperson
                 self.pure_archive_invoices= customer_name.pure_archive_invoices
                 self.po_required= customer_name.po_required
                 self.default_po= customer_name.default_po
@@ -295,17 +310,122 @@ class Customer(models.Model):
                 self.last_activity_date=customer_name.last_activity_date
 
                 self.customer_id= customer_name.customer_id
-                self.job_id= customer_name.job_id
+                self.job_ids= customer_name.job_ids
                 self.has_job= customer_name.has_job
                 self.sort_name_id= customer_name.sort_name_id
                 self.bill_to_id= customer_name.bill_to_id
                 self.ace_rewards= customer_name.ace_rewards
                 self.name= customer_name.name
 
-               
+                self.finace_chgs_ytd= customer_name.finace_chgs_ytd
+                self.higest_acc_balance= customer_name.higest_acc_balance
+                self.credit_available= customer_name.credit_available
+                self.running_balance= customer_name.running_balance
+                self.statment_balance= customer_name.statment_balance
+                self.statment_discount= customer_name.statment_discount
+                self.returns= customer_name.returns
+                self.transations= customer_name.transations
+                self.declining_credit_limit= customer_name.declining_credit_limit
+                self.global_credit_check= customer_name.global_credit_check
+                self.order_bal_credit_avail= customer_name.order_bal_credit_avail
+                self.acct_opened= customer_name.acct_opened
+                self.monthly_payment= customer_name.monthly_payment
+                self.lyr_fin_charge= customer_name.lyr_fin_charge
+                self.date_last_pay= customer_name.date_last_pay
+                self.amount_last_pay= customer_name.amount_last_pay
+                self.special_charges= customer_name.special_charges
+
+                self.store= customer_name.store
+                self.std_sell_prices= customer_name.std_sell_prices
+                self.delete_all= customer_name.delete_all
+                self.customer_sales_summary= customer_name.customer_sales_summary
+                self.credit_ids= customer_name.credit_ids
+                self.period_to_date_sale= customer_name.period_to_date_sale
+                self.period_to_date_cost= customer_name.period_to_date_cost
+                self.period_to_date_gp= customer_name.period_to_date_gp
+                self.year_to_date_sale= customer_name.year_to_date_sale
+                self.year_to_date_cost= customer_name.year_to_date_cost
+                self.year_to_date_gp= customer_name.year_to_date_gp
+                self.last_year_sale= customer_name.last_year_sale
+                self.last_year_cost= customer_name.last_year_cost
+                self.last_year_gp= customer_name.last_year_gp
+
+                self.period_to_date_gp_dollor= customer_name.period_to_date_gp_dollor
+                self.year_to_date__dollor= customer_name.year_to_date__dollor
+                self.last_year_gp_dollor= customer_name.last_year_gp_dollor
+                self.terms_disc= customer_name.terms_disc
+                self.year_to_date_fin_chrgs= customer_name.year_to_date_fin_chrgs
+                self.last_year_gp_fin_chrgs= customer_name.last_year_gp_fin_chrgs
+                self.year_to_date_returns= customer_name.year_to_date_returns
+                self.year_to_date_transaction= customer_name.year_to_date_transaction
+                self.customer_sales_summary= customer_name.customer_sales_summary
+
+                self.of_times_no_activity= customer_name.of_times_no_activity
+                self.of_times_current= customer_name.of_times_current
+                self.of_times_1_30= customer_name.of_times_1_30
+                self.of_times_31_60= customer_name.of_times_31_60
+                self.of_times_61_90= customer_name.of_times_61_90
+                self.of_times_over_90= customer_name.of_times_over_90
+                self.last_occured_no_activity= customer_name.last_occured_no_activity
+                self.last_occured_current= customer_name.last_occured_current
+                self.last_occured_1_30= customer_name.last_occured_1_30
+                self.last_occured_31_60= customer_name.last_occured_31_60
+                self.last_occured_61_90= customer_name.last_occured_61_90
+                self.last_occured_over_90= customer_name.last_occured_over_90
+
+                self.social_security= customer_name.social_security
+                self.birth_date= customer_name.birth_date
+                self.pst_registration= customer_name.pst_registration
+                self.gst_registration= customer_name.gst_registration
+                self.pesticide_license= customer_name.pesticide_license
+                self.pesticide_lic_exp= customer_name.pesticide_lic_exp
+                self.freght_factor= customer_name.freght_factor
+                self.rescale_code= customer_name.rescale_code
+                self.alternate_phone= customer_name.alternate_phone
+                self.alternate_fax= customer_name.alternate_fax
+                self.open_quote_1= customer_name.open_quote_1
+                self.open_quote_2= customer_name.open_quote_2
+                self.rebate_plan= customer_name.rebate_plan
+                self.business_type= customer_name.business_type
+                self.location= customer_name.location
+                self.customer_ranks= customer_name.customer_ranks
+                self.statment_type= customer_name.statment_type
+                self.statment_fmt= customer_name.statment_fmt
+                self.statment_fmt2= customer_name.statment_fmt2
+                self.Invoice_credit= customer_name.Invoice_credit
+                self.order_sp_ord_estimate= customer_name.order_sp_ord_estimate
+                self.fax_pos_stmt= customer_name.fax_pos_stmt
+                self.fax_pos_stmt1= customer_name.fax_pos_stmt1
+                self.ace_rewards_status= customer_name.ace_rewards_status
+                self.tax_override_plan= customer_name.tax_override_plan
+                self.prompt_in_pos= customer_name.prompt_in_pos
+                self.prompt_threshold= customer_name.prompt_threshold
+                self.price_pick_ticket= customer_name.price_pick_ticket
+                self.open_quotes= customer_name.open_quotes
+                self.global_credit_check= customer_name.global_credit_check
+                self.print_lumber_totals= customer_name.print_lumber_totals
+                self.default_price_uom= customer_name.default_price_uom
+                self.statment_by_job= customer_name.statment_by_job
+                self.additional_flag= customer_name.additional_flag
+                self.names_ids= customer_name.names_ids
+
+                self.current_total= customer_name.current_total
+                self.thirty_total= customer_name.thirty_total
+                self.sixty_total= customer_name.sixty_total
+                self.ninety_total= customer_name.ninety_total
+                self.over_total= customer_name.over_total
+                self.message= customer_name.message
+
+
+    @api.onchange('filter_by_id')
+    def onchange_id(self):       
+        '''
+            Auto fill the customer data on the all fields based on selected customer ID 
+        '''
         if self.filter_by_id:
-            customer_id = self.search([('customer_id', '=', self.filter_by_id.customer_id)])
+            customer_id = self.search([('customer_id', '=', self.filter_by_id.customer_id)], limit=1)
             if customer_id:
+                self.filter_by_name   =""
                 self.street= customer_id.street
                 self.street2= customer_id.street2
                 self.city= customer_id.city
@@ -343,12 +463,111 @@ class Customer(models.Model):
                 self.last_activity_date=customer_id.last_activity_date    
 
                 self.customer_id= customer_id.customer_id
-                self.job_id= customer_id.job_id
+                self.job_ids= customer_id.job_ids
                 self.has_job= customer_id.has_job
                 self.sort_name_id= customer_id.sort_name_id
                 self.bill_to_id= customer_id.bill_to_id
                 self.ace_rewards= customer_id.ace_rewards
                 self.name= customer_id.name
+
+                self.finace_chgs_ytd= customer_id.finace_chgs_ytd
+                self.higest_acc_balance= customer_id.higest_acc_balance
+                self.credit_available= customer_id.credit_available
+                self.running_balance= customer_id.running_balance
+                self.statment_balance= customer_id.statment_balance
+                self.statment_discount= customer_id.statment_discount
+                self.returns= customer_id.returns
+                self.transations= customer_id.transations
+                self.declining_credit_limit= customer_id.declining_credit_limit
+                self.global_credit_check= customer_id.global_credit_check
+                self.order_bal_credit_avail= customer_id.order_bal_credit_avail
+                self.acct_opened= customer_id.acct_opened
+                self.monthly_payment= customer_id.monthly_payment
+                self.lyr_fin_charge= customer_id.lyr_fin_charge
+                self.date_last_pay= customer_id.date_last_pay
+                self.amount_last_pay= customer_id.amount_last_pay
+                self.special_charges= customer_id.special_charges
+
+                self.store= customer_id.store
+                self.std_sell_prices= customer_id.std_sell_prices
+                self.delete_all= customer_id.delete_all
+                self.customer_sales_summary= customer_id.customer_sales_summary
+                self.credit_ids= customer_id.credit_ids
+                self.period_to_date_sale= customer_id.period_to_date_sale
+                self.period_to_date_cost= customer_id.period_to_date_cost
+                self.period_to_date_gp= customer_id.period_to_date_gp
+                self.year_to_date_sale= customer_id.year_to_date_sale
+                self.year_to_date_cost= customer_id.year_to_date_cost
+                self.year_to_date_gp= customer_id.year_to_date_gp
+                self.last_year_sale= customer_id.last_year_sale
+                self.last_year_cost= customer_id.last_year_cost
+                self.last_year_gp= customer_id.last_year_gp
+
+                self.period_to_date_gp_dollor= customer_id.period_to_date_gp_dollor
+                self.year_to_date__dollor= customer_id.year_to_date__dollor
+                self.last_year_gp_dollor= customer_id.last_year_gp_dollor
+                self.terms_disc= customer_id.terms_disc
+                self.year_to_date_fin_chrgs= customer_id.year_to_date_fin_chrgs
+                self.last_year_gp_fin_chrgs= customer_id.last_year_gp_fin_chrgs
+                self.year_to_date_returns= customer_id.year_to_date_returns
+                self.year_to_date_transaction= customer_id.year_to_date_transaction
+                self.customer_sales_summary= customer_id.customer_sales_summary
+
+                self.of_times_no_activity= customer_id.of_times_no_activity
+                self.of_times_current= customer_id.of_times_current
+                self.of_times_1_30= customer_id.of_times_1_30
+                self.of_times_31_60= customer_id.of_times_31_60
+                self.of_times_61_90= customer_id.of_times_61_90
+                self.of_times_over_90= customer_id.of_times_over_90
+                self.last_occured_no_activity= customer_id.last_occured_no_activity
+                self.last_occured_current= customer_id.last_occured_current
+                self.last_occured_1_30= customer_id.last_occured_1_30
+                self.last_occured_31_60= customer_id.last_occured_31_60
+                self.last_occured_61_90= customer_id.last_occured_61_90
+                self.last_occured_over_90= customer_id.last_occured_over_90
+
+                self.social_security= customer_id.social_security
+                self.birth_date= customer_id.birth_date
+                self.pst_registration= customer_id.pst_registration
+                self.gst_registration= customer_id.gst_registration
+                self.pesticide_license= customer_id.pesticide_license
+                self.pesticide_lic_exp= customer_id.pesticide_lic_exp
+                self.freght_factor= customer_id.freght_factor
+                self.rescale_code= customer_id.rescale_code
+                self.alternate_phone= customer_id.alternate_phone
+                self.alternate_fax= customer_id.alternate_fax
+                self.open_quote_1= customer_id.open_quote_1
+                self.open_quote_2= customer_id.open_quote_2
+                self.rebate_plan= customer_id.rebate_plan
+                self.business_type= customer_id.business_type
+                self.location= customer_id.location
+                self.customer_ranks= customer_id.customer_ranks
+                self.statment_type= customer_id.statment_type
+                self.statment_fmt= customer_id.statment_fmt
+                self.statment_fmt2= customer_id.statment_fmt2
+                self.Invoice_credit= customer_id.Invoice_credit
+                self.order_sp_ord_estimate= customer_id.order_sp_ord_estimate
+                self.fax_pos_stmt= customer_id.fax_pos_stmt
+                self.fax_pos_stmt1= customer_id.fax_pos_stmt1
+                self.ace_rewards_status= customer_id.ace_rewards_status
+                self.tax_override_plan= customer_id.tax_override_plan
+                self.prompt_in_pos= customer_id.prompt_in_pos
+                self.prompt_threshold= customer_id.prompt_threshold
+                self.price_pick_ticket= customer_id.price_pick_ticket
+                self.open_quotes= customer_id.open_quotes
+                self.global_credit_check= customer_id.global_credit_check
+                self.print_lumber_totals= customer_id.print_lumber_totals
+                self.default_price_uom= customer_id.default_price_uom
+                self.statment_by_job= customer_id.statment_by_job
+                self.additional_flag= customer_id.additional_flag
+                self.names_ids= customer_id.names_ids
+
+                self.current_total= customer_id.current_total
+                self.thirty_total= customer_id.thirty_total
+                self.sixty_total= customer_id.sixty_total
+                self.ninety_total= customer_id.ninety_total
+                self.over_total= customer_id.over_total
+                self.message= customer_id.message
     
     @api.depends('current_total','thirty_total','sixty_total','ninety_total','over_total')
     def _smart_button(self):
@@ -437,6 +656,17 @@ class Customer(models.Model):
         self.ninety_total  = total_90
         self.over_total    = over_90
 
+    @api.model    
+    def create(self, vals):
+        '''
+         Search customer id only, need to check company id also after working on res,.partner and csv
+        '''
+        if 'customer_id' in vals :  
+            cus_dup = self.env['my.customer'].search([('customer_id','=',vals['customer_id'])], limit=1) 
+            if len(cus_dup) > 0:
+                raise ValidationError(f'Customer ID ({cus_dup.customer_id}) already exists')
+            res = super(Customer, self).create(vals)
+            return res
 
     def validate_float(self, float_value, val):
         if float_value:
@@ -878,6 +1108,14 @@ class Job(models.Model):
         The class is used to create a Many2one relation with the job field in customer class.
     '''
     _name = 'job'
+
+    name                    = fields.Char('Job',help='Exportable')
+
+class Jobno(models.Model):
+    '''
+        The class is used to create a Many2one relation with the job field in customer class.
+    '''
+    _name = 'wgd.job.no'
 
     name                    = fields.Char('Job',help='Exportable')
 

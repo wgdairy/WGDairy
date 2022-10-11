@@ -41,7 +41,7 @@ class Inventorys(models.Model):
     # mfg_vend = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Mfg Vend")
     fineline = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Fineline")
     prime_vede = fields.Many2one('res.partner',ondelete='restrict', index=True,)
-    mfg_vende = fields.Many2many('res.partner',ondelete='restrict', index=True, readonly=True)
+    mfg_vende = fields.Many2many('res.partner',ondelete='restrict', index=True, readonly=True, compute="_get_mfg")
     types = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     # store = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     company_id = fields.Many2one('res.company',ondelete='restrict', index=True,)

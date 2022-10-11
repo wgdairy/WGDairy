@@ -9,3 +9,4 @@ names,wgd_customer.names,model_names,base.group_user,1,1,1,1
 category,wgd_customer.category,model_category,base.group_user,1,1,1,1
 terms,wgd_customer.terms,model_terms,base.group_user,1,1,1,1
 balance,wgd_customer.balance,model_balance,base.group_user,1,1,1,1
+wgd.job.no,wgd_customer.wgd.job.no,model_wgd_job_no,base.group_user,1,1,1,1

@@ -1250,33 +1250,33 @@
 
 
 
-        <record id="inentory_transfer_tree" model="ir.ui.view">
-        <field name="name">Inventory.Transfer.Report.tree</field>
-        <field name="model">stock.picking</field>
-        <field name="priority">2</field>
-        <field name="arch" type="xml">
-            <tree string="customers">
-                <field  name="cust_no" />
-                <field  name="purchase_order" />
-                <field  name="date_time" />
-                <field  name="terminal" />
-                <field  name="tax" />
-                <field  name="job_nos" />
-                <field  name="reference" />
-                <field  name="clerk" />
-                <field  name="sold_to" />
-                <field  name="del_date" />
-                <field  name="order" />
-                <field  name="complete" />
-            </tree>
-        </field>
-    </record>
+<!--        <record id="inentory_transfer_tree" model="ir.ui.view">-->
+<!--        <field name="name">Inventory.Transfer.Report.tree</field>-->
+<!--        <field name="model">stock.picking</field>-->
+<!--        <field name="priority">2</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="customers">-->
+<!--                <field  name="cust_no" />-->
+<!--                <field  name="purchase_order" />-->
+<!--                <field  name="date_time" />-->
+<!--                <field  name="terminal" />-->
+<!--                <field  name="tax" />-->
+<!--                <field  name="job_nos" />-->
+<!--                <field  name="reference" />-->
+<!--                <field  name="clerk" />-->
+<!--                <field  name="sold_to" />-->
+<!--                <field  name="del_date" />-->
+<!--                <field  name="order" />-->
+<!--                <field  name="complete" />-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
 
 
     <record id="inv_transfer_report" model="ir.actions.act_window">
     <field name="name">Inventory Transfer Report</field>
     <field name="res_model">stock.picking</field>
-        <field name="view_id" ref="inentory_transfer_tree"/>
+        <field name="view_id" ref="stock.vpicktree"/>
     <field name="view_mode">tree,form</field>
     </record>
 
@@ -1349,7 +1349,7 @@
 
     <record id="inventory_transfer_action_window_tree" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
-            <field name="view_id" ref="inentory_transfer_tree" />
+            <field name="view_id" ref="stock.vpicktree" />
             <field name="act_window_id" ref="inv_transfer_report" />
     </record>
 

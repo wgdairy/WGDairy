@@ -12,9 +12,9 @@ class wg_po(models.Model):
     Store_ids = fields.Many2one('res.company', ondelete='restrict', index=True, )
     # BkOrd = fields.Selection([('y', 'Y'), ('n', 'N'), ])
     BkOrds = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
-    Total_Stk_Units = fields.Char(string='Total Stk Units')
-    Total_Cost = fields.Char(string='Total Cost')
-    Total_Weight = fields.Char(string='Total Weight')
+    Total_Stk_Units = fields.Char(string='Total Stk Units',compute='_cal_stk_unit',readonly=True)
+    Total_Cost = fields.Char(string='Total Cost',compute='_cal_tot_cost',readonly=True)
+    Total_Weight = fields.Char(string='Total Weight',compute='_cal_tot_weight',readonly=True)
     # pur_order_line = fields.Many2one('product.template',ondelete='restrict', index=True,)
     pur_order_lines = fields.One2many('purchase.order.line', 'pur_ids', string="Trips and Tolls")
     Date_Created = fields.Date()
@@ -125,6 +125,28 @@ class wg_po(models.Model):
         self.ven_phone = onc_ve_fa.phone
         self.ven_fax = onc_ve_fa.fax
         self.Store_ids = onc_ve_fa.company_id
+
+
+
+    def _cal_tot_cost(self):
+        tot_cost = 0
+        for rec in self.order_line:
+            tot_cost += rec.price_unit
+        self.Total_Cost = str(tot_cost)
+
+    def _cal_stk_unit(self):
+        tot_stk = 0
+        for rec in self.order_line:
+            tot_stk += rec.qty_available
+        self.Total_Stk_Units = str(tot_stk)
+
+
+
+    def _cal_tot_weight(self):
+        tot_weight = 0
+        for rec in self.order_line:
+            tot_weight += rec.product_id.product_tmpl_id.weight
+        self.Total_Weight = str(tot_weight)
 
 
 class wg_po(models.Model):

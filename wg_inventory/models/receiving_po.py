@@ -49,6 +49,11 @@ class Stockmov(models.Model):
         for recs in self:
             recs.Variance = recs.product_uom_qty - recs.quantity_done
 
+    @api.onchange('product_id')
+    def _cal_qoh(self):
+        onc_sku = self.env['product.template'].search([('name', '=', self.product_id.name), ('id', '=', self.product_id.product_tmpl_id.id)])
+        self.QOH = onc_sku.qty_available
+
 
 class Stockpick(models.Model):
     _inherit = "stock.picking"

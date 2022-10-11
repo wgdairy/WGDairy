@@ -148,7 +148,7 @@ class InheritTask(models.Model):
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
 
-    job_no = fields.Selection([('0','0'),('1','1'),('2','2')])
+    job_no = fields.Many2one('wgd.job.no')
     po_no = fields.Integer()
     reference = fields.Char()
     clerk = fields.Many2one('hr.employee')
@@ -164,9 +164,9 @@ class SaleOrderInherit(models.Model):
     ship_to_country = fields.Many2one('res.country', string='Country', ondelete='restrict')
     zip_code = fields.Char()
     country_id = fields.Many2one('res.country', string='Country', ondelete='restrict')
-    # payment_term_id = fields.Many2one(
-    #     'account.payment.term', string='Payment Terms', check_company=True,  # Unrequired company
-    #     domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", related='partner_id.terms_code')
+    payment_term_id = fields.Many2one(
+        'account.payment.term', string='Payment Terms', check_company=True,  # Unrequired company
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", default=lambda self: self.partner_id.property_payment_term_id)
 
 class SaleOrderLineInherit(models.Model):
     _inherit = 'sale.order.line'
