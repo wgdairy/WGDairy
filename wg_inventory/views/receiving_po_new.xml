@@ -43,7 +43,7 @@
                         <tree editable="bottom">
                         <field name="company_id" invisible="1"/>
                         <field name="state" />
-                        <field name="ln" />
+<!--                        <field name="ln" />-->
                         <field name="location_id" string="Loc"  />
                         <field name="product_id" string="SKU" />
                         <field name="description_picking" string="Description" />

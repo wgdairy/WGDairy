@@ -10,7 +10,7 @@ class Customer(models.Model):
     '''
     _name = 'my.customer'
     _inherits = {'res.partner': 'partner_id'}
-    # _order = "name asc"
+    _order = "name asc"
     # _columns = {
     #     'partner_id': fields.Many2one('my.customer', 'Partner Details', help="Link this vendor to it's partner",
     #                                   ondelete="cascade", required=True),
@@ -254,16 +254,26 @@ class Customer(models.Model):
     def action_student_schedules(self):
         pass
 
-    def name_get(self): 
-        result = [] 
+    def name_get(self):
+        result = []
         for rec in self:
             if self.env.context.get('hide_code'):
                 name = rec.name
             else:
-                name = rec.customer_id
+                if rec.customer_id:
+                    name = rec.customer_id
+                else:
+                    name = rec.name
             result.append((rec.id, name))
         return result
-    
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if name :
+            args += ['|' , ('name', operator, name), ('customer_id', operator, name)]
+        return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+
     @api.onchange('filter_by_name')
     def onchange_name(self):
         '''
@@ -963,6 +973,7 @@ class Credit(models.Model):
     _name = 'credit'
 
     customer_ids            = fields.Many2one('my.customer')
+    customer_id             = fields.Many2one('res.partner')
     # dept_id                 = fields.Many2one('res.department')
     dept                    = fields.Char('Dept',help='Exportable')
     st                      = fields.Char('St',help='Exportable')
@@ -1009,6 +1020,7 @@ class Names(models.Model):
     _name = 'names'
 
     customer_ids            = fields.Many2one('my.customer')
+    customer_id             = fields.Many2one('res.partner')
     name                    = fields.Char('Name',help='Exportable')
     show_in_POS             = fields.Selection([('y','Y'),('n','N')], "Show In POS", default='y',help='Exportable')
     phone                   = fields.Char('Phone',help='Exportable')

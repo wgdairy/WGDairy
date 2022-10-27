@@ -65,12 +65,15 @@
                 <xpath expr="//form/sheet/group[1]" position="after">
 
                     <div class="row" col="2" style="width:100%">
-                        <div class="row" style="width:50%;margin-left:20px;">
+                        <div class="row" style="width:50%;margin-left:20px;margin-top:-9px;">
 
-                            <label for="BkOrds" string="BkOrds" style="width:30%;" />
-                            <field name="BkOrds" style="width:60%"/><br />
+
                             <label for="Store_ids" string="Store"  style="width:30%;"/>
                             <field name="Store_ids" style="width:60%" /><br />
+                            <label for="ven_phone" string="Vendor Phone" style="width:30%;" />
+                            <field name="ven_phone" style="width:60%;"  /><br />
+                            <label for="ven_fax" string="Vendor Fax" style="width:30%;" />
+                            <field name="ven_fax" style="width:60%;"/><br />
                                 <div class="row" col="2" style="width:100%;">
                                     <div style="width: 34%;">
                                         <label for="ven_street" string="Vendor Address" style="margin-left: 15px;"/>
@@ -86,18 +89,15 @@
                                 </div>
 
                                                 <label for="Date_Created" string="Date Created" style="width:30%;" />
-                    <field name="Date_Created" style="width:60%;" /><br />
-                    <label for="Reference" string="Reference" style="width:30%;" />
-                    <field name="Reference" style="width:60%"/><br />
-                    <label for="Alt_po" string="Alt po"  style="width:30%;"/>
-                    <field name="Alt_po" style="width:60%" /><br />
-                    <label for="Order_Type" string="Order Type" style="width:30%;" />
-                    <field name="Order_Type" style="width:60%;"  /><br />
-
-                                    <label for="ven_phone" string="Vendor Phone" style="width:30%;" />
-                    <field name="ven_phone" style="width:60%;"  /><br />
-                    <label for="ven_fax" string="Vendor Fax" style="width:30%;" />
-                    <field name="ven_fax" style="width:60%;"/><br />
+                            <field name="Date_Created" style="width:60%;" /><br />
+                            <label for="Reference" string="Reference" style="width:30%;" />
+                            <field name="Reference" style="width:60%"/><br />
+                            <label for="Alt_po" string="Alt po"  style="width:30%;"/>
+                            <field name="Alt_po" style="width:60%" /><br />
+                            <label for="BkOrds" string="BkOrds" style="width:30%;" />
+                            <field name="BkOrds" style="width:50%"/><br />
+                            <label for="Order_Type" string="Order Type" style="width:30%;" />
+                            <field name="Order_Type" style="width:15%;margin-bottom:20px;"  /><br />
 
                             </div>
 
@@ -107,12 +107,7 @@
 
 
                             <div style="margin-left:25px;width:100%;">
-                            <label for="Total_Stk_Units" string="Total Stk Units" style="width:30%;" />
-                            <field name="Total_Stk_Units" style="width:66%;" /><br />
-                            <label for="Total_Cost" string="Total Cost" style="width:30%;" />
-                            <field name="Total_Cost" style="width:66%"/><br />
-                            <label for="Total_Weight" string="Total Weight"  style="width:30%;"/>
-                            <field name="Total_Weight" style="width:66%" /><br />
+
                                 <div class="row" col="2" style="width:100%;">
                                     <div style="width: 34%;">
                                         <label for="ven_street" string="Ship To Address" style="margin-left: 15px;"/>
@@ -129,16 +124,22 @@
                                 </div>
 <!--                                <label for="date_planned" string="Due Date" style="width:30%;" />-->
 <!--                    <field name="date_planned" style="width:66%;" /><br />-->
-                    <label for="Other_Charges" string="Other Charges" style="width:30%;" />
-                    <field name="Other_Charges" style="width:66%"/><br />
-                    <label for="Line_Items" string="Alt po"  style="width:30%;"/>
-                    <field name="Line_Items" style="width:66%" /><br />
-                    <label for="Special_Instructions" string="Special Instructions" style="width:30%;" />
-                    <field name="Special_Instructions" style="width:66%;"  /><br />
+                                <label for="Other_Charges" string="Other Charges" style="width:30%;" />
+                                <field name="Other_Charges" style="width:66%"/><br />
+                                <label for="Line_Items" string="Alt po"  style="width:30%;"/>
+                                <field name="Line_Items" style="width:66%" /><br />
                                 <label for="Buyerid" string="Buyer's ID" style="width:30%;" />
-                    <field name="Buyerid" style="width:66%;"/><br />
+                                <field name="Buyerid" style="width:66%;"/><br />
                                 <label for="Date_send" string="Date Sent" style="width:30%;" />
-                    <field name="Date_send" style="width:66%;"  /><br />
+                                <field name="Date_send" style="width:66%;"  /><br />
+                                <label for="Special_Instructions" string="Special Instructions" style="width:30%;" />
+                                <field name="Special_Instructions" style="width:15%;"  /><br />
+                                <label for="Total_Stk_Units" string="Total Stk Units" style="width:30%;" />
+                                <field name="Total_Stk_Units" style="width:66%;margin-bottom:10px;" /><br />
+                                <label for="Total_Cost" string="Total Cost" style="width:30%;" />
+                                <field name="Total_Cost" style="width:66%;margin-bottom:10px;"/><br />
+                                <label for="Total_Weight" string="Total Weight"  style="width:30%;"/>
+                                <field name="Total_Weight" style="width:66%" /><br />
 
                                 </div>
 
@@ -180,9 +181,10 @@
                     <field name="OM" string="OM" />
                     <field name="qty_available" string="QOH" />
                     <field name="product_qty" position="move" />
-                    <field name="price_unit" position="move" />
+                    <field name="cost_stk" string="Cost(Stk)" />
                     <field name="load_retail" string="Current Retail"/>
-                    <field name="price_subtotal" string="Ext Cost" widget="monetary"/>
+<!--                    <field name="price_subtotal" string="Ext Cost" />  &lt;!&ndash; widget="monetary"&ndash;&gt;-->
+                    <field name="Ext_Cost" string="Ext Cost" />
                     <field name="product_uom" position="move" />
                     <field name="order_point" string="Order Point" />
                     <field name="min_op" string="Min OP+" />
@@ -207,9 +209,26 @@
                 <xpath expr="//field[@name='order_line']//tree/field[@name='product_qty']" position="attributes">
                     <attribute name="string">QOO(Stk)</attribute>
                 </xpath>
-                <xpath expr="//field[@name='order_line']//tree/field[@name='price_unit']" position="attributes">
-                    <attribute name="string">Cost(Stk)</attribute>
+<!--                <xpath expr="//field[@name='order_line']//tree/field[@name='price_unit']" position="attributes">-->
+<!--                    <attribute name="string">Cost(Stk)</attribute>-->
+<!--                </xpath>-->
+
+            </field>
+        </record>
+
+
+
+        <record id="inherit_purchase_order_picking_type_form" model="ir.ui.view">
+            <field name="name">purchase.order.forms.picking.type.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="invisible">True</attribute>
                 </xpath>
+
+
 
             </field>
         </record>

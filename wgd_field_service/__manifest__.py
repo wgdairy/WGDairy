@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'project','industry_fsm', 'industry_fsm_sale'],
+    'depends': ['base', 'project','industry_fsm', 'industry_fsm_sale','wgd_customer','wg_inventory'],
 
     # always loaded
     'data': [

@@ -2,14 +2,16 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import date
 
+
+# import datetime
+
 class Inventorys(models.Model):
     _inherit = "product.template"
 
     # sku = fields.Char('SKU')
     desc = fields.Char('Desc')
-    mfg = fields.Many2many('wg.mfg.vendor',string='Mfg#', compute="_get_mfg", store=True)
+    mfg = fields.Many2many('wg.mfg.vendor', string='Mfg#', compute="_get_mfg", store=True)
     mfg_ven = fields.Text('Mfg#', compute="_combine_mfg_vendor")
-    
 
     @api.depends('seller_ids')
     def _get_mfg(self):
@@ -20,34 +22,34 @@ class Inventorys(models.Model):
                 mfg_ids.append(rec.mfg.id)
             if rec.name:
                 ven_ids.append(rec.name.id)
-        self.write({'mfg':[(6,0, mfg_ids)],'mfg_vende':[(6,0, ven_ids)]})
+        self.write({'mfg': [(6, 0, mfg_ids)], 'mfg_vende': [(6, 0, ven_ids)]})
 
     @api.depends('mfg', 'mfg_vende')
     def _combine_mfg_vendor(self):
         mfg_ven = '\n'
         for rec in self.seller_ids:
             if rec.mfg and rec.name:
-                mfg_ven += rec.mfg.name +' - '+ rec.name.name+'\n'
+                mfg_ven += rec.mfg.name + ' - ' + rec.name.name + '\n'
             elif rec.mfg:
-                mfg_ven += rec.mfg.name +'\n'
+                mfg_ven += rec.mfg.name + '\n'
         self.mfg_ven = mfg_ven
 
     Desc = fields.Char('Desc')
     upc = fields.Char('UPC')
     # dept = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
-    deptart = fields.Many2one('hr.department',ondelete='restrict', index=True,)
+    deptart = fields.Many2one('hr.department', ondelete='restrict', index=True, )
     class_inven = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
-    #prime_ved = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Prime Vend")
+    # prime_ved = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Prime Vend")
     # mfg_vend = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Mfg Vend")
     fineline = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Fineline")
-    prime_vede = fields.Many2one('res.partner',ondelete='restrict', index=True,)
-    mfg_vende = fields.Many2many('res.partner',ondelete='restrict', index=True, readonly=True, compute="_get_mfg")
+    prime_vede = fields.Many2one('res.partner', ondelete='restrict', index=True, )
+    mfg_vende = fields.Many2many('res.partner', ondelete='restrict', index=True, readonly=True, compute="_get_mfg")
     types = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     # store = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
-    company_id = fields.Many2one('res.company',ondelete='restrict', index=True,)
+    company_id = fields.Many2one('res.company', ondelete='restrict', index=True, )
     sequence = fields.Char('Sequence')
     # instore = fields.Char('Instore')
-    instores = fields.Many2many('res.company',ondelete='restrict', index=True,)
+    instores = fields.Many2many('res.company', ondelete='restrict', index=True, )
     pursku_ids = fields.Many2one('stock.picking')
     # quantity
     qut_on_hant = fields.Float('Qty On Hant ')
@@ -56,8 +58,10 @@ class Inventorys(models.Model):
     custbackorder = fields.Char('Custbackorder')
     location = fields.Char('Location')
     future_order = fields.Char('Future Order')
-    company_onchange = fields.Many2one('res.company', ondelete='restrict', index=True,default=lambda self:self.env.company.id)
+    company_onchange = fields.Many2one('res.company', ondelete='restrict', index=True,
+                                       default=lambda self: self.env.company.id)
     sku_onchange = fields.Many2one('product.template', ondelete='restrict', index=True, )
+    onchange_dept = fields.Many2one('hr.department', ondelete='restrict', index=True, )
 
     # stock level------------------------------
     order_point = fields.Float('Order Point ')
@@ -73,7 +77,6 @@ class Inventorys(models.Model):
     raincheck_qty = fields.Float('Raincheck Qty')
     loc_table_id = fields.Many2one('stock.location', ondelete='restrict', index=True, )
 
-
     # purchasing
 
     purchasing_um = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Purchasing U/M")
@@ -87,7 +90,7 @@ class Inventorys(models.Model):
     purch_decimal_pi = fields.Float('*Purch Decimal PI')
     min_of_std_pkgs = fields.Char('Min # of Std Pkgs')
     # secondary_vend = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
-    secondary_vends = fields.Many2one('res.partner',ondelete='restrict', index=True,)
+    secondary_vends = fields.Many2one('res.partner', ondelete='restrict', index=True, )
     vend_stk = fields.Char('Vend Stk #')
     po_season = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="PO Season")
 
@@ -110,8 +113,10 @@ class Inventorys(models.Model):
     retail_old = fields.Float('Retail')
     catalog_retail = fields.Float('Catalog Retail')
     market_cost = fields.Char('Market Cost')
-    synchronize_price = fields.Selection([('Synchronize costs/prices', 'Y'), ('No do not synchronize', 'N'), ('use E4W','O')])
-    synchronize_cost = fields.Selection([('Synchronize costs/prices', 'Y'), ('No do not synchronize', 'N'), ('use E4W','O')])
+    synchronize_price = fields.Selection(
+        [('Synchronize costs/prices', 'Y'), ('No do not synchronize', 'N'), ('use E4W', 'O')])
+    synchronize_cost = fields.Selection(
+        [('Synchronize costs/prices', 'Y'), ('No do not synchronize', 'N'), ('use E4W', 'O')])
     repl_chg = fields.Date(string="Repl Chg")
     retail_chg = fields.Date(string="Retail Chg")
     selling = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Selling")
@@ -127,7 +132,6 @@ class Inventorys(models.Model):
     alt = fields.Char('Alt')
     gp = fields.Char('GP %')
     tab_ids = fields.One2many('pricingtables', 'prc_ids', string="Trips and Tolls")
-
 
     # code
 
@@ -198,28 +202,45 @@ class Inventorys(models.Model):
     expanded_d_three = fields.Char()
     expanded_d_four = fields.Char()
 
-
     # History tab
 
-    jan = fields.Integer()
-    feb = fields.Integer()
-    mar = fields.Integer()
-    apr = fields.Integer()
-    may = fields.Integer()
-    jun = fields.Integer()
-    july = fields.Integer()
-    aug = fields.Integer()
-    sep = fields.Integer()
-    oct = fields.Integer()
-    nov = fields.Integer()
-    dec = fields.Integer()
-    jun_21 = fields.Integer()
+    cur_jan = fields.Float()
+    cur_feb = fields.Float()
+    cur_mar = fields.Float()
+    cur_apr = fields.Float()
+    cur_may = fields.Float()
+    cur_jun = fields.Float()
+    cur_july = fields.Float()
+    cur_aug = fields.Float()
+    cur_sep = fields.Float()
+    cur_oct = fields.Float()
+    cur_nov = fields.Float()
+    cur_dec = fields.Float()
+
+    curent_year = fields.Char(default=date.today().year)
+    prev_year = fields.Char(default=date.today().year - 1)
+
+    # -------------------------
+
+    pre_jan = fields.Float()
+    pre_feb = fields.Float()
+    pre_mar = fields.Float()
+    pre_apr = fields.Float()
+    pre_may = fields.Float()
+    pre_jun = fields.Float()
+    pre_july = fields.Float()
+    pre_aug = fields.Float()
+    pre_sep = fields.Float()
+    pre_oct = fields.Float()
+    pre_nov = fields.Float()
+    pre_dec = fields.Float()
+    # jun_21 = fields.Integer()
 
     to_date = fields.Integer()
     last_per = fields.Date(string="Last Per")
     # year to date
     transactions = fields.Float()
-    sale_units = fields.Float(compute='validation_sale',)
+    sale_units = fields.Float(compute='validation_sale', )
     sale = fields.Float(compute='total_sale_amount', )
     repl_cost = fields.Float()
     avg_cost = fields.Float()
@@ -230,12 +251,11 @@ class Inventorys(models.Model):
     his_commited_qty = fields.Float()
     his_qty_on_order = fields.Float()
 
-
     promo_unit = fields.Float()
     promo_sale = fields.Float()
     promo_cost = fields.Float()
-    #doubt in prime vend
-    prime_vend_history = fields.Many2one('res.partner',ondelete='restrict', index=True,)
+    # doubt in prime vend
+    prime_vend_history = fields.Many2one('res.partner', ondelete='restrict', index=True, )
     other_purch = fields.Char()
     kit_sales_unit = fields.Char()
     kit_sale = fields.Char()
@@ -246,7 +266,7 @@ class Inventorys(models.Model):
 
     # last year
     last_year_sale_unit = fields.Char(compute='total_sale_last_year', )
-    last_year_sale = fields.Float(compute='total_sales_amount_last_year',)
+    last_year_sale = fields.Float(compute='total_sales_amount_last_year', )
     last_year_repl_cost = fields.Float()
     last_year_avg_cost = fields.Float()
     last_year_gp = fields.Float()
@@ -258,16 +278,13 @@ class Inventorys(models.Model):
     stock_purchase_um = fields.Float()
     standard_pack = fields.Float()
 
-
-    #note
+    # note
     note_group = fields.Char()
     not_name = fields.Char()
     not_type = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
     display_repeat = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
     print_repeat = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
     message = fields.Html()
-
-
 
     # load tab
 
@@ -355,13 +372,12 @@ class Inventorys(models.Model):
     special_fee_code = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
     weighable = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
 
-
     # vendor
 
     vend_ids = fields.One2many('inv_vendor_new', 'vend_ids', string="Trips and Tolls")
 
     # Pricing table
-    units =  fields.Char(default="EA")
+    units = fields.Char(default="EA")
     decimal_place = fields.Float()
     conversion = fields.Float()
     repl_cost = fields.Float()
@@ -427,6 +443,7 @@ class Inventorys(models.Model):
     price_five_gp = fields.Float()
 
     location_quan_id = fields.One2many('stock.quant', 'loc_quan_ids', string="Location")
+
     # -----------
     # units = fields.Char()
     # decimal_place = fields.Float()
@@ -444,7 +461,6 @@ class Inventorys(models.Model):
     # price_four = fields.Float()
     # price_five = fields.Float()
 
-
     # validate all
     def validate_float(self, float_value, val):
         if float_value:
@@ -460,7 +476,7 @@ class Inventorys(models.Model):
 
     @api.onchange('company_id')
     def validate_store(self):
-        if  self.company_id:
+        if self.company_id:
             selected_companies = self.env['res.company'].browse(self._context.get('allowed_company_ids'))
             if self.company_id not in selected_companies:
                 raise ValidationError("please select the company you are logged.")
@@ -469,7 +485,7 @@ class Inventorys(models.Model):
 
     # validate 5 digit validation
 
-    @api.constrains('weight', 'purch_conv_factor','purch_decimal_pi')
+    @api.constrains('weight', 'purch_conv_factor', 'purch_decimal_pi')
     def validate_con_stocking_five_digit(self):
         if self.weight:
             val = "Weight"
@@ -483,7 +499,7 @@ class Inventorys(models.Model):
 
     # onchange 5 digit validation
 
-    @api.onchange('weight', 'purch_conv_factor','purch_decimal_pi')
+    @api.onchange('weight', 'purch_conv_factor', 'purch_decimal_pi')
     def validate_oc_stocking_five_digit(self):
         if self.weight:
             val = "Weight"
@@ -497,7 +513,9 @@ class Inventorys(models.Model):
 
     # 10 digit validation
 
-    @api.constrains('qut_on_hant', 'commited_qty','qty_on_order','order_point','min_order_ponit','safety_stock','standard_pack','order_multiple','raincheck_qty','raincheck_qty','new_order_qty','fixed_order_qty')
+    @api.constrains('qut_on_hant', 'commited_qty', 'qty_on_order', 'order_point', 'min_order_ponit', 'safety_stock',
+                    'standard_pack', 'order_multiple', 'raincheck_qty', 'raincheck_qty', 'new_order_qty',
+                    'fixed_order_qty')
     def validate_con_qut_on_hant(self):
         if self.qut_on_hant:
             val = "Qty On Hand"
@@ -536,7 +554,9 @@ class Inventorys(models.Model):
 
     # onchange 10 digit validation
 
-    @api.onchange('qut_on_hant', 'commited_qty','qty_on_order','order_point','min_order_ponit','safety_stock','standard_pack','order_multiple','raincheck_qty','raincheck_qty','new_order_qty','fixed_order_qty')
+    @api.onchange('qut_on_hant', 'commited_qty', 'qty_on_order', 'order_point', 'min_order_ponit', 'safety_stock',
+                  'standard_pack', 'order_multiple', 'raincheck_qty', 'raincheck_qty', 'new_order_qty',
+                  'fixed_order_qty')
     def validate_oc_ten_digit(self):
         if self.qut_on_hant:
             val = "Qty On Hand"
@@ -573,11 +593,12 @@ class Inventorys(models.Model):
             val = "Fixed Order QTY"
             self.validate_float(self.fixed_order_qty, val)
 
-
     # pricing
 
     # 5 digits
-    @api.constrains('decimal_place', 'decimal_place_stock','repl_cost_gp', 'decimal_place_alt', 'decimal_place_gp', 'mkt_cost_gp', 'mfg_cost_gp','avg_cost_gp', 'reail_gp', 'promotion_gp', 'price_one_gp','price_two_gp','price_three_gp','price_four_gp','price_five_gp','desiered_gp','repl_gp')
+    @api.constrains('decimal_place', 'decimal_place_stock', 'repl_cost_gp', 'decimal_place_alt', 'decimal_place_gp',
+                    'mkt_cost_gp', 'mfg_cost_gp', 'avg_cost_gp', 'reail_gp', 'promotion_gp', 'price_one_gp',
+                    'price_two_gp', 'price_three_gp', 'price_four_gp', 'price_five_gp', 'desiered_gp', 'repl_gp')
     def validate_con_pricing_five_digit(self):
         if self.decimal_place:
             val = "Decimal Place Price"
@@ -632,10 +653,11 @@ class Inventorys(models.Model):
             val = "Repl GP%"
             self.validate_float_five(self.repl_gp, val)
 
-
     # onchange 5 digit
 
-    @api.onchange('decimal_place', 'decimal_place_stock','repl_cost_gp', 'decimal_place_alt', 'decimal_place_gp', 'mkt_cost_gp', 'mfg_cost_gp','avg_cost_gp', 'reail_gp', 'promotion_gp', 'price_one_gp','price_two_gp','price_three_gp','price_four_gp','price_five_gp','desiered_gp','repl_gp')
+    @api.onchange('decimal_place', 'decimal_place_stock', 'repl_cost_gp', 'decimal_place_alt', 'decimal_place_gp',
+                  'mkt_cost_gp', 'mfg_cost_gp', 'avg_cost_gp', 'reail_gp', 'promotion_gp', 'price_one_gp',
+                  'price_two_gp', 'price_three_gp', 'price_four_gp', 'price_five_gp', 'desiered_gp', 'repl_gp')
     def validate_oc_pricing_five_digit(self):
         if self.decimal_place:
             val = "Decimal Place Price"
@@ -690,12 +712,11 @@ class Inventorys(models.Model):
             val = "Repl GP%"
             self.validate_float_five(self.repl_gp, val)
 
+    # 10 digit
 
-
-
-    #10 digit
-
-    @api.constrains('repl_cost', 'repl_cost_stock','repl_cost_alt','mfg_cost','mfg_cost_stock','mfg_cost_alt','avg_cost_pricing','avg_cost_stock','avg_cost_alt','mkt_cost','mkt_cost_stock','mkt_cost_alt','reail','reail_stock','reail_alt')
+    @api.constrains('repl_cost', 'repl_cost_stock', 'repl_cost_alt', 'mfg_cost', 'mfg_cost_stock', 'mfg_cost_alt',
+                    'avg_cost_pricing', 'avg_cost_stock', 'avg_cost_alt', 'mkt_cost', 'mkt_cost_stock', 'mkt_cost_alt',
+                    'reail', 'reail_stock', 'reail_alt')
     def validate_con_pricing_one(self):
         if self.repl_cost:
             val = "Repl Cost Pricing"
@@ -745,7 +766,10 @@ class Inventorys(models.Model):
             self.validate_float(self.reail_alt, val)
 
     # 10 digit two
-    @api.constrains('promotion', 'promotion_stock', 'promotion_alt', 'price_one', 'price_one_stock','price_one_alt', 'price_two', 'price_two_stock', 'price_two_alt', 'price_three','price_three_stock', 'price_three_alt', 'price_four', 'price_four_stock', 'price_four_alt','price_five','price_five_stock','price_five_alt')
+    @api.constrains('promotion', 'promotion_stock', 'promotion_alt', 'price_one', 'price_one_stock', 'price_one_alt',
+                    'price_two', 'price_two_stock', 'price_two_alt', 'price_three', 'price_three_stock',
+                    'price_three_alt', 'price_four', 'price_four_stock', 'price_four_alt', 'price_five',
+                    'price_five_stock', 'price_five_alt')
     def validate_con_pricing_two(self):
         if self.promotion:
             val = "Promotion Pricing"
@@ -803,8 +827,6 @@ class Inventorys(models.Model):
             val = "Price 5 Alt"
             self.validate_float(self.price_five_alt, val)
 
-
-
     # 10 digit three
     @api.constrains('retail_old', 'catalog_retail', 'market_cost', 'mfg_chg')
     def validate_con_pricing_three(self):
@@ -822,11 +844,11 @@ class Inventorys(models.Model):
             val = "Mfg Chg"
             self.validate_float(self.mfg_chg, val)
 
-
     # onchange 10 digit
 
-
-    @api.onchange('repl_cost', 'repl_cost_stock','repl_cost_alt','mfg_cost','mfg_cost_stock','mfg_cost_alt','avg_cost_pricing','avg_cost_stock','avg_cost_alt','mkt_cost','mkt_cost_stock','mkt_cost_alt','reail','reail_stock','reail_alt')
+    @api.onchange('repl_cost', 'repl_cost_stock', 'repl_cost_alt', 'mfg_cost', 'mfg_cost_stock', 'mfg_cost_alt',
+                  'avg_cost_pricing', 'avg_cost_stock', 'avg_cost_alt', 'mkt_cost', 'mkt_cost_stock', 'mkt_cost_alt',
+                  'reail', 'reail_stock', 'reail_alt')
     def validate_oc_pricing_one(self):
         if self.repl_cost:
             val = "Repl Cost Pricing"
@@ -876,7 +898,10 @@ class Inventorys(models.Model):
             self.validate_float(self.reail_alt, val)
 
     # 10 digit two
-    @api.onchange('promotion', 'promotion_stock', 'promotion_alt', 'price_one', 'price_one_stock','price_one_alt', 'price_two', 'price_two_stock', 'price_two_alt', 'price_three','price_three_stock', 'price_three_alt', 'price_four', 'price_four_stock', 'price_four_alt','price_five','price_five_stock','price_five_alt')
+    @api.onchange('promotion', 'promotion_stock', 'promotion_alt', 'price_one', 'price_one_stock', 'price_one_alt',
+                  'price_two', 'price_two_stock', 'price_two_alt', 'price_three', 'price_three_stock',
+                  'price_three_alt', 'price_four', 'price_four_stock', 'price_four_alt', 'price_five',
+                  'price_five_stock', 'price_five_alt')
     def validate_oc_pricing_two(self):
         if self.promotion:
             val = "Promotion Pricing"
@@ -934,8 +959,6 @@ class Inventorys(models.Model):
             val = "Price 5 Alt"
             self.validate_float(self.price_five_alt, val)
 
-
-
     # 10 digit three
     @api.onchange('retail_old', 'catalog_retail', 'market_cost', 'mfg_chg')
     def validate_oc_pricing_three(self):
@@ -953,15 +976,13 @@ class Inventorys(models.Model):
             val = "Mfg Chg"
             self.validate_float(self.mfg_chg, val)
 
-
     # Total sale order
 
     def validation_sale(self):
 
         todays_date = date.today().replace(month=1, day=1)
-        total_sales = self.env['sale.order'].search([('state', '=', 'sale'),('date_order', '>=', todays_date)])
+        total_sales = self.env['sale.order'].search([('state', '=', 'sale'), ('date_order', '>=', todays_date)])
         self.sale_units = len(total_sales)
-
 
     # Total amount
 
@@ -969,32 +990,28 @@ class Inventorys(models.Model):
 
         todays_date = date.today().replace(month=1, day=1)
 
-        amount=0
-        sales_invoice = self.env['sale.order'].search([('state', '=', 'sale'),('state', '!=', 'draft'),('state', '!=', 'cancel'), ('date_order', '>=', todays_date)])
+        amount = 0
+        sales_invoice = self.env['sale.order'].search(
+            [('state', '=', 'sale'), ('state', '!=', 'draft'), ('state', '!=', 'cancel'),
+             ('date_order', '>=', todays_date)])
         if sales_invoice:
             for sale in sales_invoice:
                 amount += sale.amount_total
 
         self.sale = amount
 
-
-
-
-
-
     # Total sale order in last year
 
     def total_sale_last_year(self):
         curr_year = date.today()
         las_year = curr_year.year - 1
-        last_year_jan = date.today().replace(year=las_year ,month=1, day=1)
+        last_year_jan = date.today().replace(year=las_year, month=1, day=1)
 
-        last_year_dec = date.today().replace(year=las_year ,month=12, day=31)
-        last_year_sale = self.env['sale.order'].search([('date_order', '>=', last_year_jan), ('date_order', '<', last_year_dec), ('state', '=', 'sale')])
+        last_year_dec = date.today().replace(year=las_year, month=12, day=31)
+        last_year_sale = self.env['sale.order'].search(
+            [('date_order', '>=', last_year_jan), ('date_order', '<', last_year_dec), ('state', '=', 'sale')])
 
         self.last_year_sale_unit = len(last_year_sale)
-
-
 
     # Total amount in last year
     # @api.onchange('mfg_vende')
@@ -1002,16 +1019,16 @@ class Inventorys(models.Model):
         curr_year = date.today()
         tot_amount = 0
         las_year = curr_year.year - 1
-        last_year_january = date.today().replace(year=las_year ,month=1, day=1)
+        last_year_january = date.today().replace(year=las_year, month=1, day=1)
         last_year_december = date.today().replace(year=las_year, month=12, day=31)
-        last_year_all_sale = self.env['sale.order'].search([('date_order', '>=', last_year_january), ('date_order', '<', last_year_december), ('state', '=', 'sale'),('state', '!=', 'draft'),('state', '!=', 'cancel')])
+        last_year_all_sale = self.env['sale.order'].search(
+            [('date_order', '>=', last_year_january), ('date_order', '<', last_year_december), ('state', '=', 'sale'),
+             ('state', '!=', 'draft'), ('state', '!=', 'cancel')])
         if last_year_all_sale:
             for sal in last_year_all_sale:
                 tot_amount += sal.amount_total
 
         self.last_year_sale = tot_amount
-
-
 
     # @api.constrains('prime_vede')
     # def asdf(self):
@@ -1044,32 +1061,126 @@ class Inventorys(models.Model):
     #                     (0, 0, {'partner_id': asd.id, 'vendor_name': asd.name, 'vend_ids': valu, 'on_create': True})]
     #                 self.update({'vend_ids': vals})
 
+
     @api.onchange('sku_onchange')
-    def store_change(self):
+    def _store_change(self):
         # if self.company_onchange
         # store_data = self.env['product.template'].search([('id', '=', self.sku_onchange.id), ('company_id.id', '=', self.company_onchange.id)],
         #                                                  limit=1)
-        store_datas = self.env['product.template'].search([('id', '=', self.sku_onchange.id), ])
 
-        self.name = store_datas.name
-        self.desc = store_datas.desc
-        # self.mfg = store_datas.mfg
-        self.upc = store_datas.upc
-        self.sequence = store_datas.sequence
-        self.deptart = store_datas.deptart
-        self.class_inven = store_datas.class_inven
-        self.types = store_datas.types
-        self.instores = store_datas.instores
-        self.prime_vede = store_datas.prime_vede
-        self.mfg_vende = store_datas.mfg_vende
-        self.company_id = store_datas.company_id
+        if not self.company_onchange:
+            raise ValidationError("Filter BY Store is Empty")
+        else:
+            store_datas = self.env['product.template'].search([('id', '=', self.sku_onchange.id), ])
 
 
+            self.name = store_datas.name
+            self.desc = store_datas.desc
+            # self.mfg = store_datas.mfg
+            self.upc = store_datas.upc
+            self.sequence = store_datas.sequence
+            self.deptart = store_datas.deptart
+            self.class_inven = store_datas.class_inven
+            self.types = store_datas.types
+            self.instores = store_datas.instores
+            self.prime_vede = store_datas.prime_vede
+            self.mfg_vende = store_datas.mfg_vende
+            self.company_id = store_datas.company_id
+            self.class_inven = store_datas.class_inven
+            self.types = store_datas.types
+            self.instores = store_datas.instores
+
+
+            self.load_retail = store_datas.load_retail
+            self.qty_available = store_datas.qty_available
+            self.list_price = store_datas.list_price
+            self.load_repl_cost = store_datas.load_repl_cost
+            self.mfg_cost = store_datas.mfg_cost
+
+
+            # Fields in note book tab
+
+            self.qty_available = store_datas.qty_available
+            self.qty_available = store_datas.qty_available
+            self.purchased_product_qty = store_datas.purchased_product_qty
+            self.order_point = store_datas.order_point
+            self.reordering_min_qty = store_datas.reordering_min_qty
+            self.reordering_max_qty = store_datas.reordering_max_qty
+            self.safety_stock = store_datas.safety_stock
+            self.stockings_UM_ids = store_datas.stockings_UM_ids
+            self.standard_pack = store_datas.standard_pack
+            self.order_multiple = store_datas.order_multiple
+            self.raincheck_qty = store_datas.raincheck_qty
+            self.purchasing_um_id = store_datas.purchasing_um_id
+            self.weight = store_datas.weight
+            self.weight_uom_id = store_datas.weight_uom_id
+            self.new_order_qty = store_datas.new_order_qty
+            self.purch_conv_factor = store_datas.purch_conv_factor
+            self.purch_decimal_pi = store_datas.purch_decimal_pi
+            self.min_of_std_pkgs = store_datas.min_of_std_pkgs
+            self.secondary_vends = store_datas.secondary_vends
+
+
+            self.date_added = store_datas.date_added
+            self.last_sale = store_datas.last_sale
+            self.last_receipt = store_datas.last_receipt
+            self.last_phy_inv = store_datas.last_phy_inv
+            self.catalog_date = store_datas.catalog_date
+            self.fixed_order_qty = store_datas.fixed_order_qty
+            self.altemate_ref = store_datas.altemate_ref
+
+            self.name = store_datas.name
+            self.desc = store_datas.desc
+            # self.mfg = store_datas.mfg
+            self.upc = store_datas.upc
+            self.sequence = store_datas.sequence
+            self.deptart = store_datas.deptart
+            self.class_inven = store_datas.class_inven
+            self.types = store_datas.types
+            self.instores = store_datas.instores
+            self.prime_vede = store_datas.prime_vede
+            self.mfg_vende = store_datas.mfg_vende
+            self.company_id = store_datas.company_id
 
     @api.onchange('company_onchange')
-    def company_change(self):
+    def _company_change(self):
         # if self.company_onchange
-        store_data = self.env['product.template'].search([('company_id.id', '=', self.company_onchange.id)],
+        # store_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id),],
+        #                                                  limit=1)
+        company_onchange_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id)],
+                                                         limit=1)
+
+        self.name = company_onchange_data.name
+        self.desc = company_onchange_data.desc
+        # self.mfg = store_data.mfg
+        self.upc = company_onchange_data.upc
+        self.sequence = company_onchange_data.sequence
+        self.deptart = company_onchange_data.deptart
+        self.class_inven = company_onchange_data.class_inven
+        self.types = company_onchange_data.types
+        self.instores = company_onchange_data.instores
+        self.prime_vede = company_onchange_data.prime_vede
+        self.mfg_vende = company_onchange_data.mfg_vende
+        self.company_id = company_onchange_data.company_id
+        self.class_inven = company_onchange_data.class_inven
+        self.types = company_onchange_data.types
+        self.instores = company_onchange_data.instores
+
+
+        self.load_retail = company_onchange_data.load_retail
+        self.qty_available = company_onchange_data.qty_available
+        self.list_price = company_onchange_data.list_price
+        self.load_repl_cost = company_onchange_data.load_repl_cost
+        self.mfg_cost = company_onchange_data.mfg_cost
+        # self.company_id = store_data.company_id
+
+
+    @api.onchange('onchange_dept')
+    def _onchange_dept(self):
+        # if self.onchange_dept
+        # store_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id),],
+        #                                                  limit=1)
+        store_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id),('deptart', '=', self.onchange_dept.id)],
                                                          limit=1)
 
         self.name = store_data.name
@@ -1083,22 +1194,37 @@ class Inventorys(models.Model):
         self.instores = store_data.instores
         self.prime_vede = store_data.prime_vede
         self.mfg_vende = store_data.mfg_vende
-        # self.company_id = store_data.company_id
+        self.company_id = store_data.company_id
+        self.class_inven = store_data.class_inven
+        self.types = store_data.types
+        self.instores = store_data.instores
 
 
-    @api.onchange('name','company_id')
-    def oncchange_comp_store_val(self):
-        val_sku = self.env['product.template'].search([('name', '=', self.name),('company_id.id', '=', self.company_id.id)])
-        if len(val_sku) != 0:
+        self.load_retail = store_data.load_retail
+        self.qty_available = store_data.qty_available
+        self.list_price = store_data.list_price
+        self.load_repl_cost = store_data.load_repl_cost
+        self.mfg_cost = store_data.mfg_cost
+
+
+
+    @api.model
+    def create(self, vals):
+
+        valdate_sku = self.env['product.template'].search(
+            [('name', '=', vals['name']), ('company_id.id', '=', vals['company_id']),('deptart', '=', vals['deptart'])], limit=1)
+
+        if valdate_sku:
             raise ValidationError("Product Already Exists")
+        else:
+            return super(Inventorys, self).create(vals)
 
-    # @api.constrains('name','company_id')
-    # def constrain_comp_store_val(self):
-    #     val_skus = self.env['product.template'].search([('name', '=', self.name),('company_id.id', '=', self.company_id.id)])
-    #     if len(val_skus) != 0:
-    #         raise ValidationError("Product Already Exists")
 
-#Table in pricing tab
+    def action_student_schedules(self):
+        pass
+
+
+# Table in pricing tab
 class Pricetable(models.Model):
     _name = "pricingtables"
     units = fields.Char(string="Units")
@@ -1109,7 +1235,8 @@ class Pricetable(models.Model):
     blk = fields.Char()
     prc_ids = fields.Many2one('product.template')
 
-#Table for vendor
+
+# Table for vendor
 class inv_vendor(models.Model):
     _name = "inv_vendor"
 
@@ -1143,6 +1270,7 @@ class inv_vendor(models.Model):
 
     loc_quan_ids = fields.Many2one('product.template')
 
+
 class SupplierInherit(models.Model):
     _inherit = "product.supplierinfo"
 
@@ -1174,12 +1302,12 @@ class SupplierInherit(models.Model):
     store_closeout = fields.Char()
     desc_line_one = fields.Char()
     desc_line_two = fields.Char()
-    
+
     @api.onchange('mfg')
     def name_onchange(self):
         for rec in self:
             if rec.mfg:
-                rec.name = rec.mfg.vendor.partner_id
+                rec.name = rec.mfg.vendor
 
     # @api.model
     # def create(self, vals):
@@ -1192,8 +1320,8 @@ class MfgVendor(models.Model):
     _name = "wg.mfg.vendor"
 
     name = fields.Char('Name')
-    vendor = fields.Many2one('wgd.vendors')
-    vendor_code = fields.Char(related='vendor.vendor')
+    vendor = fields.Many2one('res.partner')
+    # vendor_code = fields.Char(related='vendor.vendor')
     company_id = fields.Many2one('res.company', 'Store')
     # sku_id = fields.Many2one('product.template')
 

@@ -11,7 +11,8 @@ class wg_po(models.Model):
 
     Store_ids = fields.Many2one('res.company', ondelete='restrict', index=True, )
     # BkOrd = fields.Selection([('y', 'Y'), ('n', 'N'), ])
-    BkOrds = fields.Selection([('Y', 'Y'), ('N', 'N'), ])
+    BkOrds = fields.Selection([('Y', 'Y'), ('N', 'N'), ],compute='_bak_order')
+    # BkOrds = fields.Char(comput='_bak_order')
     Total_Stk_Units = fields.Char(string='Total Stk Units',compute='_cal_stk_unit',readonly=True)
     Total_Cost = fields.Char(string='Total Cost',compute='_cal_tot_cost',readonly=True)
     Total_Weight = fields.Char(string='Total Weight',compute='_cal_tot_weight',readonly=True)
@@ -127,6 +128,22 @@ class wg_po(models.Model):
         self.Store_ids = onc_ve_fa.company_id
 
 
+    def _bak_order(self):
+        vari = 0
+        bk_order = self.env['stock.picking'].search([('origin', '=', self.name),('company_id', '=', self.company_id.id)])
+
+        for rec in bk_order.move_lines:
+            vari += rec.Variance
+
+        if vari == 0:
+            self.BkOrds = 'N'
+        else:
+            self.BkOrds = 'Y'
+
+
+
+
+
 
     def _cal_tot_cost(self):
         tot_cost = 0
@@ -154,8 +171,9 @@ class wg_po(models.Model):
 
     Popularity_Code = fields.Char(string='Popularity Code')
     OM = fields.Char()
-    Ext_Cost = fields.Float('Ext Cost')
+    Ext_Cost = fields.Float('Ext Cost',compute='_compute_extcost')
     UM_Pur = fields.Float('UM(Pur)')
+    cost_stk = fields.Float('Cost(Stk)',compute='_get_cost_stk')
     PO_Season = fields.Char(string='PO Season')
     ROP_Product = fields.Char(string='ROP Product')
     Last_12_Units = fields.Char(string='Last 12 Units')
@@ -166,16 +184,16 @@ class wg_po(models.Model):
     qty_available = fields.Float()
     # product_qty = fields.Float()
     # list_price = fields.Float()
-    load_retail = fields.Float()
-    order_point = fields.Float()
+    load_retail = fields.Float(related='product_id.product_tmpl_id.load_retail')
+    order_point = fields.Float(related='product_id.product_tmpl_id.order_point')
     UM_Pur = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
-    min_op = fields.Float()
-    max_stock_level = fields.Float()
-    Safety_Stock = fields.Float()
+    min_op = fields.Float(related='product_id.product_tmpl_id.reordering_min_qty')
+    max_stock_level = fields.Float(related='product_id.product_tmpl_id.reordering_max_qty')
+    Safety_Stock = fields.Float(related='product_id.product_tmpl_id.safety_stock')
     dept = fields.Many2one('hr.department', ondelete='restrict', index=True, )
     location_id = fields.Char()
     ln = fields.Integer(compute='_get_line_numbers', string='Serial Number', readonly=False, default=False)
-    price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price', )
+    price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price',related='product_id.product_tmpl_id.list_price' )
 
     def _get_line_numbers(self):
         line_num = 1
@@ -187,6 +205,16 @@ class wg_po(models.Model):
                 line_num += 1
 
     @api.onchange('product_id')
+    def _get_cost_stk(self):
+        for rec in self:
+
+            onc_cost = self.env['product.template'].search(
+            [('name', '=', rec.product_id.name), ('id', '=', rec.product_id.product_tmpl_id.id)],limit=1)
+
+            rec.cost_stk = onc_cost.list_price
+
+
+    @api.onchange('product_id')
     def _onchange_skus(self):
         onc_sku = self.env['product.template'].search(
             [('name', '=', self.product_id.name), ('id', '=', self.product_id.product_tmpl_id.id)])
@@ -196,8 +224,16 @@ class wg_po(models.Model):
 
         self.dept = onc_sku.deptart
         # self.price_unit = onc_sku.list_price
-        self.load_retail = onc_sku.load_retail
+        self.load_retail = float(onc_sku.load_retail)
         self.price_unit = onc_sku.list_price
+
+    @api.depends('product_qty','price_unit',)
+    def _compute_extcost(self):
+        ex_cost = 0
+        for rec in self:
+
+            ex_cost = rec.product_qty * rec.price_unit
+            rec.Ext_Cost = float(ex_cost)
 
 
 

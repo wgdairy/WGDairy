@@ -59,14 +59,18 @@
             <sheet>
                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
                     <div class="row" style="width:100%;">
-                        <div style="padding:10px; !important;width:50%;">
-                        <label for="sku_onchange" string="Filter BY SKU" style="width:20%;margin-bottom: -15px;"/>
-                        <field name="sku_onchange" style="width:30%;margin-bottom: -15px;"></field>
-                    </div>
-                    <div style="padding:10px; !important;width:50%;">
-                        <label for="company_onchange" string="Filter BY Store" style="width:20%;margin-bottom: -15px;"/>
-                        <field name="company_onchange" style="width:30%;margin-bottom: -15px;"></field>
-                    </div>
+                        <div style="padding:10px; !important;width:30%;">
+                            <label for="sku_onchange" string="Filter BY SKU" style="width:20%;margin-bottom: -15px;"/>
+                            <field name="sku_onchange" style="width:30%;margin-bottom: -15px;"></field>
+                        </div>
+                        <div style="padding:10px; !important;width:30%;">
+                            <label for="company_onchange" string="Filter BY Store" style="width:20%;margin-bottom: -15px;"/>
+                            <field name="company_onchange" style="width:30%;margin-bottom: -15px;"></field>
+                        </div>
+                        <div style="padding:10px; !important;width:30%;">
+                            <label for="onchange_dept" string="Filter BY Department" style="width:30%;margin-bottom: -15px;"/>
+                            <field name="onchange_dept" style="width:30%;margin-bottom: -15px;"></field>
+                        </div>
                     </div>
                 <div class="row" col="4" style="width:100%;">
                         <div style="padding:10px; !important;width:20%;">
@@ -93,7 +97,7 @@
                             <div style="padding:10px; !important;width:20%;">
                                 <label for="mfg" string="Mfg#" style="width:18%;margin-bottom: -15px;"/>
                                 <field name="mfg" style="width:50%;margin-top: -15px;" widget="many2many_tags" invisible="1"></field>
-                                <field name="mfg_ven" style="width:50%;margin-top: -15px;vertical-align: top;"/>                                
+                                <field name="mfg_ven" style="width:50%;margin-top: -15px;vertical-align: top;"/>
                                 <br/>
                             </div>
 
@@ -257,26 +261,26 @@
                                 </div>
                                 </div>
                         </div>
-                        <div style="border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                        <field name="location_quan_id"  mode="tree"  style="padding:2% !important;" > <!--context="{'partner_id': self.prime_vede.id}"-->
-                                <tree   editable="bottom" class="tree_width_location"  >
-                                    <field name="location_id" string="Location" />  <!--readonly="1"-->
-                                    <field name="product_id" string="Product" />
+<!--                        <div style="border:solid #e6e5e5 0.1px;margin-left:0.5%;">-->
+<!--                        <field name="location_quan_id"  mode="tree"  style="padding:2% !important;" > &lt;!&ndash;context="{'partner_id': self.prime_vede.id}"&ndash;&gt;-->
+<!--                                <tree   editable="bottom" class="tree_width_location"  >-->
+<!--                                    <field name="location_id" string="Location" />  -->
+<!--                                    <field name="product_id" string="Product" />-->
 <!--                                    <field name="product_id" string="Product" />-->
 <!--                                    <field name="product_categ_id" string="Product Category"  />-->
 <!--                                    <field name="available_quantity" string="Available Quantity" />-->
-                                    <field name="quantity" string="On Hand Quantity"   />
+<!--                                    <field name="quantity" string="On Hand Quantity"   />-->
 
-                                    <field name="product_uom_id" string="UoM"   />
+<!--                                    <field name="product_uom_id" string="UoM"   />-->
 <!--                                    <field name="accounting_date" string="Accounting Date" />-->
-                                    <field name="inventory_quantity" string="Counted Quantity" />
-                                    <field name="inventory_diff_quantity" string="Difference" />
-                                    <field name="inventory_date" string="Scheduled Date"  />
-                                    <field name="user_id" string="User"  />
+<!--                                    <field name="inventory_quantity" string="Counted Quantity" />-->
+<!--                                    <field name="inventory_diff_quantity" string="Difference" />-->
+<!--                                    <field name="inventory_date" string="Scheduled Date"  />-->
+<!--                                    <field name="user_id" string="User"  />-->
 
-                                </tree>
-                            </field>
-                        </div>
+<!--                                </tree>-->
+<!--                            </field>-->
+<!--                        </div>-->
                     </page>
                     <page autofocus="1" string="Pricing">
 
@@ -595,52 +599,118 @@
                     </page>
                     <page string="History">
                         <div class="row" col="3" style="width:100%;">
-                            <div style="padding:2% !important;width:25%;">
-                                <br />
-                                <label for="july" string="July 22" style="width:50%;"/>
-                                <field name="july" style="width:40%;" />
-                                <label for="jun" string="Jun 22" style="width:50%;"/>
-                                <field name="jun" style="width:40%;" />
-                                <label for="may" string="May 22" style="width:50%;"/>
-                                <field name="may" style="width:40%;" />
-                                <label for="apr" string="Apr 22" style="width:50%;"/>
-                                <field name="apr" style="width:40%;" />
-                                <label for="mar" string="Mar 22" style="width:50%;"/>
-                                <field name="mar" style="width:40%;" />
-                                <label for="feb" string="Feb 22" style="width:50%;"/>
-                                <field name="feb" style="width:40%;"/>
-                                <label for="jan" string="Jan 22" style="width:50%;"/>
-                                <field name="jan" style="width:40%;" />
-                                <label for="dec" string="Dec 21" style="width:50%;"/>
-                                <field name="dec" style="width:40%;" />
-                                <label for="nov" string="Nov 21" style="width:50%;"/>
-                                <field name="nov" style="width:40%;" />
-                                <label for="oct" string="Oct 21" style="width:50%;"/>
-                                <field name="oct" style="width:40%;" />
-                                <label for="sep" string="Sep 21" style="width:50%;"/>
-                                <field name="sep" style="width:40%;" />
-                                <label for="aug" string="Aug 21" style="width:50%;"/>
-                                <field name="aug" style="width:40%;" />
-                                <label for="july" string="July 21" style="width:50%;"/>
-                                <field name="july" style="width:40%;" />
-                                <label for="jun_21" string="Jun 21" style="width:50%;"/>
-                                <field name="jun_21" style="width:40%;"/>
-                            </div>
-                            <div class="row" col="2" style="padding:2% !important;width:50%;">
-                                <div class="row" col="2" style="width:100%;">
-<!--                            <div style="padding:15px; !important;width:50%;">-->
-<!--                                    <label for="to_date" string="To Date" style="padding:2% !important;width:50%;"/>-->
-<!--                                    <field name="to_date" style="width:40%;" />-->
-<!--                            </div>-->
+                            <div style="padding:2% !important;width:20%;">
 
-                            <div style="padding:15px; !important;width:50%;">
-                                    <label for="last_per" string="Last Per" style="padding:2% !important;width:50%;"/>
-                                    <field name="last_per" style="width:40%;" />
+                                                             <!-- smart buttons  -->
+                            <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                                <div class="o_stat_info" style="border:solid #e6e5e5 0.1px">
+                                    <span class="o_stat_text">
+                                        <field name="curent_year" />
+                                    </span>
+                                </div>
+                            </button>
+                                <br />
+                                <br />
+<!--                                <br />-->
+                                <label for="cur_jan" string="Jan" style="width:25%;"/>
+                                <field name="cur_jan" style="width:40%;" /><br />
+                                <label for="cur_feb" string="Feb" style="width:25%;"/>
+                                <field name="cur_feb" style="width:40%;"/><br />
+                                <label for="cur_mar" string="Mar" style="width:25%;"/>
+                                <field name="cur_mar" style="width:40%;" /><br />
+                                <label for="cur_apr" string="Apr" style="width:25%;"/>
+                                <field name="cur_apr" style="width:40%;" /><br />
+                                <label for="cur_may" string="May" style="width:25%;"/>
+                                <field name="cur_may" style="width:40%;" /><br />
+                                <label for="cur_jun" string="Jun" style="width:25%;"/>
+                                <field name="cur_jun" style="width:40%;" /><br />
+                                <label for="cur_july" string="July" style="width:25%;"/>
+                                <field name="cur_july" style="width:40%;" /><br />
+                                <label for="cur_aug" string="Aug" style="width:25%;"/>
+                                <field name="cur_aug" style="width:40%;" /><br />
+                                <label for="cur_sep" string="Sep" style="width:25%;"/>
+                                <field name="cur_sep" style="width:40%;" /><br />
+                                <label for="cur_oct" string="Oct" style="width:25%;"/>
+                                <field name="cur_oct" style="width:40%;" /><br />
+                                <label for="cur_nov" string="Nov" style="width:25%;"/>
+                                <field name="cur_nov" style="width:40%;" /><br />
+                                <label for="cur_dec" string="Dec" style="width:25%;"/>
+                                <field name="cur_dec" style="width:40%;" /><br />
+
                             </div>
+                            <div style="padding:2% !important;width:20%;">
+
+                                <!-- smart buttons  -->
+                            <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                                <div class="o_stat_info" style="border:solid #e6e5e5 0.1px">
+
+                                    <span class="o_stat_text">
+                                        <field name="prev_year" />
+                                    </span>
+                                </div>
+                            </button>
+                                <br />
+                                <br />
+<!--                                <br />-->
+                                <label for="pre_jan" string="Jan" style="width:25%;"/>
+                                <field name="pre_jan" style="width:40%;" /><br />
+                                <label for="pre_feb" string="Feb" style="width:25%;"/>
+                                <field name="pre_feb" style="width:40%;"/><br />
+                                <label for="pre_mar" string="Mar" style="width:25%;"/>
+                                <field name="pre_mar" style="width:40%;" /><br />
+                                <label for="pre_apr" string="Apr" style="width:25%;"/>
+                                <field name="pre_apr" style="width:40%;" /><br />
+                                <label for="pre_may" string="May" style="width:25%;"/>
+                                <field name="pre_may" style="width:40%;" /><br />
+                                <label for="pre_jun" string="Jun" style="width:25%;"/>
+                                <field name="pre_jun" style="width:40%;" /><br />
+                                <label for="pre_july" string="July" style="width:25%;"/>
+                                <field name="pre_july" style="width:40%;" /><br />
+                                <label for="pre_aug" string="Aug" style="width:25%;"/>
+                                <field name="pre_aug" style="width:40%;" /><br />
+                                <label for="pre_sep" string="Sep" style="width:25%;"/>
+                                <field name="pre_sep" style="width:40%;" /><br />
+                                <label for="pre_oct" string="Oct" style="width:25%;"/>
+                                <field name="pre_oct" style="width:40%;" /><br />
+                                <label for="pre_nov" string="Nov" style="width:25%;"/>
+                                <field name="pre_nov" style="width:40%;" /><br />
+                                <label for="pre_dec" string="Dec" style="width:25%;"/>
+                                <field name="pre_dec" style="width:40%;" /><br />
+                            </div>
+
+
+                            <div class="row" col="2" style="padding:1% !important;width:50%;">
+                                <div class="row" col="2" style="width:100%;">
+
+
+                            <div style="padding:15px; !important;width:50%;margin-top:20px;">
+                                    <label for="last_per" string="Last Per" style="padding:2% !important;width:30%;"/>
+                                    <field name="last_per" style="width:50%;" />
+                            </div>
+                                    <div style="padding:2% !important;width:50%;">
+                                <div style="padding:1% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top: 5px;">
+                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Last Year</h6>
+
+                                    <br />
+                                    <div style="padding:1% !important;margin-left:20px;">
+
+                                <label for="last_year_sale_unit" string="Sale Unit" style="width:50%;"/>
+                                <field name="last_year_sale_unit" style="width:35%;" />
+                                <label for="last_year_sale" string="Sales $" style="width:50%;"/>
+                                <field name="last_year_sale" style="width:35%;" />
+
+                                </div>
+
+                                </div>
+
+
+                        </div>
+
+
 
                         </div>
                                 <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                                    <h6 style="color: #423e3e;margin-top: -20px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Year To Date</h6><!--position: relative;-->
+                                    <h6 style="color: #423e3e;margin-top: -28px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Year To Date</h6><!--position: relative;-->
                                     <br />
                                 <div class="row" col="2" >
 
@@ -700,17 +770,17 @@
                                     </div>
                         </div>
 
-                            <div style="padding:2% !important;width:25%;">
-                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top: 25px;">
-                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Last Year</h6>
+<!--                            <div style="padding:2% !important;width:25%;">-->
+<!--                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top: 25px;">-->
+<!--                                    <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Last Year</h6>-->
 
-                                    <br />
-                                    <div style="padding:6% !important;">
+<!--                                    <br />-->
+<!--                                    <div style="padding:6% !important;">-->
 
-                                <label for="last_year_sale_unit" string="Sale Unit" style="width:70%;"/>
-                                <field name="last_year_sale_unit" style="width:25%;" />
-                                <label for="last_year_sale" string="Sales $" style="width:70%;"/>
-                                <field name="last_year_sale" style="width:25%;" />
+<!--                                <label for="last_year_sale_unit" string="Sale Unit" style="width:70%;"/>-->
+<!--                                <field name="last_year_sale_unit" style="width:25%;" />-->
+<!--                                <label for="last_year_sale" string="Sales $" style="width:70%;"/>-->
+<!--                                <field name="last_year_sale" style="width:25%;" />-->
 <!--                                <label for="last_year_repl_cost" string="Repl Cost $" style="width:70%;"/>-->
 <!--                                <field name="last_year_repl_cost" style="width:25%;" />-->
 <!--                                <label for="last_year_avg_cost" string="Avg Cost $" style="width:70%;"/>-->
@@ -723,9 +793,9 @@
 <!--                                <field name="last_year_other_purchase" style="width:25%;" />-->
 <!--                                <label for="last_year_promo_units" string="Promo Units" style="width:70%;"/>-->
 <!--                                <field name="last_year_promo_units" style="width:25%;margin-bottom: 10px;" />-->
-                                </div>
+<!--                                </div>-->
 
-                                </div>
+<!--                                </div>-->
 <!--                                <label for="on_hand_value" string="On Hand Value" style="width:70%;margin-top:15px;"/>-->
 <!--                                <field name="on_hand_value" style="width:25%;" />-->
 <!--                                <label for="avg_sales_per_mont" string="Avg Sales$/Mo" style="width:70%;"/>-->
@@ -735,7 +805,7 @@
 <!--                                <label for="standard_pack" string="Standard Pack" style="width:70%;"/>-->
 <!--                                <field name="standard_pack" style="width:25%;" />-->
 
-                        </div>
+<!--                        </div>-->
                         </div>
 
 
@@ -1006,6 +1076,8 @@
                                     <field name="categ_id" style="width:50%;" /><br />
                                     <label for="invoice_policy" string="Invoicing Policy" style="width:30%;"/>
                                     <field name="invoice_policy" style="width:50%;" />
+                                    <label for="taxes_id" string="Customer Taxes" style="width:30%;"/>
+                                    <field name="taxes_id" style="width:50%;" />
                                 </div>
 
                             </div>
@@ -1102,22 +1174,22 @@
         <xpath expr="//search" position="replace">
             <search>
                 <field name="name" string="SKU" filter_domain="[('name','=ilike',self)]"/>
-                <field name="deptart" string="Department" filter_domain="[('deptart','=ilike',self)]"/>
-                <field name="types" string="Type" filter_domain="[('types','=ilike',self)]"/>
+                <field name="deptart" string="Department" />
+                <field name="types" string="Type" />
                 <field name="mfg" string="Manufacturer" filter_domain="[('mfg','=ilike',self)]"/>
                 <field name="upc" string="UPC" filter_domain="[('upc','=ilike',self)]"/>
                 <field name="sequence" string="Sequence" filter_domain="[('sequence','=ilike',self)]"/>
                 <field name="company_id" string="Store" filter_domain="[('company_id','=ilike',self)]"/>
-                <field name="desc" string="Desc" filter_domain="[('desc','=ilike',self)]"/>
-                <field name="types" string="Type" filter_domain="[('types','=ilike',self)]"/>
-                <field name="class_inven" string="Class" filter_domain="[('class_inven','=ilike',self)]"/>
-                <field name="fineline" string="Fineline" filter_domain="[('fineline','=ilike',self)]"/>
-                <field name="prime_vede" string="Prime Vend" filter_domain="[('prime_vede','=ilike',self)]"/>
-                <field name="mfg_vende" string="Mfg Vend" filter_domain="[('mfg_vende','=ilike',self)]"/>
-                <field name="qty_available" string="Qty On Hand" filter_domain="[('qty_available','=ilike',self)]"/>
-                <field name="commited_qty" string="Committed Qty" filter_domain="[('commited_qty','=ilike',self)]"/>
-                <field name="purchased_product_qty" string="Qty On Order" filter_domain="[('purchased_product_qty','=ilike',self)]"/>
-                <field name="custbackorder" string="Cust Backorder" filter_domain="[('custbackorder','=ilike',self)]"/>
+                <field name="desc" string="Desc" />
+                <field name="types" string="Type" />
+                <field name="class_inven" string="Class" />
+                <field name="fineline" string="Fineline" />
+                <field name="prime_vede" string="Prime Vend" />
+                <field name="mfg_vende" string="Mfg Vend" />
+                <field name="qty_available" string="Qty On Hand" />
+                <field name="commited_qty" string="Committed Qty" />
+                <field name="purchased_product_qty" string="Qty On Order" />
+                <field name="custbackorder" string="Cust Backorder" />
             </search>
         </xpath>
       </field>
@@ -1155,7 +1227,7 @@
             <field name="name" string="SKU"/>
             <field name="types" string="Type"/>
             <field name="company_id" string="Store"/>
-            <field name="mfg" string="Mfg#"/>
+<!--            <field name="mfg" string="Mfg#"/>-->
             <field name="upc" string="UPC"/>
             <field name="sequence" string="Sequence"/>
             <field name="desc" string="Desc"/>
@@ -1164,7 +1236,7 @@
             <field name="class_inven" string="Class"/>
             <!--                 <field name="fineline" string="Fineline"/> -->
             <field name="prime_vede" string="Prime Vend"/>
-            <field name="mfg_vende" string="Mfg Vend"/>
+<!--            <field name="mfg_vende" string="Mfg Vend"/>-->
         </xpath>
     </field>
 </record>
@@ -1330,7 +1402,7 @@
                     <field name="price"/>
                     <field name="delay"/>
                     <field name="company_id" invisible="1"/>
-                    <field name="vendor_code" string="Vendor Code"/>
+<!--                    <field name="vendor_code" string="Vendor Code"/>-->
                     <field name="vendor_order_multi" string="Vendor Order Multiple"/>
                     <field name="vendor_cost" string="Vendor Cost" />
                     <field name="last_pur_cost" string="Last Purchase Cost"  />
@@ -1373,7 +1445,7 @@
                             <field name="vendor"/>
                         </group>
                         <group>
-                            <field name="vendor_code"/>
+<!--                            <field name="vendor_code"/>-->
                             <field name="company_id"/>
                         </group>
                     </group>
@@ -1392,7 +1464,7 @@
             <p class="oe_view_nocontent_create">
                 <!-- Add Text Here -->
             </p><p>
-                <!-- More details about what a user can do with this object will be OK --> 
+                <!-- More details about what a user can do with this object will be OK -->
             </p>
         </field>
     </record>

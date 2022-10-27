@@ -837,19 +837,19 @@
                 <filter name="taxable" string="Have Taxable Code" domain="[('taxable','=','yes')]"/>
                 <filter name="taxable" string="Have No Taxable Code" domain="[('taxable','=','no')]"/>
                 <field name="customer_id" string="Customer ID" filter_domain="[('customer_id','=ilike',self)]"/>
-                <field name="name" string="Name" filter_domain="[('name','=ilike',self)]"/>
-                <field name="job_ids" string="Job" filter_domain="[('job_ids','=ilike',self)]"/>
-                <field name="sort_name_id" string="Sort Name" filter_domain="[('sort_name_id','=ilike',self)]"/>
-                <field name="bill_to_id" string="Bill To" filter_domain="[('bill_to_id','=ilike',self)]"/>
-                <field name="phone" string="Phone" filter_domain="[('phone','=ilike',self)]"/>
-                <field name="fax" string="Fax" filter_domain="[('fax','=ilike',self)]"/>
-                <field name="street" string="Address1" filter_domain="[('street','=ilike',self)]"/>
-                <field name="city" string="City" filter_domain="[('city','=ilike',self)]"/>
-                <field name="state_id" string="State" filter_domain="[('state_id','=ilike',self)]"/>
-                <field name="contact" string="Contact" filter_domain="[('contact','=ilike',self)]"/>
-                <field name="credit_limit" string="Credit Limit" filter_domain="[('credit_limit','=ilike',self)]"/>
-                <field name="account_code1" string="Account Code" filter_domain="[('account_code1','=ilike',self)]"/>
-                <field name="salesperson" string="Salesperson" filter_domain="[('salesperson','=ilike',self)]"/>
+                <field name="name" string="Name" />
+                <field name="job_ids" string="Job" />
+                <field name="sort_name_id" string="Sort Name" />
+                <field name="bill_to_id" string="Bill To" />
+                <field name="phone" string="Phone" />
+                <field name="fax" string="Fax" />
+                <field name="street" string="Address1" />
+                <field name="city" string="City" />
+                <field name="state_id" string="State" />
+                <field name="contact" string="Contact" />
+                <field name="credit_limit" string="Credit Limit" />
+                <field name="account_code1" string="Account Code" />
+                <field name="salesperson" string="Salesperson" />
             </search>
         </field>
     </record>
@@ -941,7 +941,7 @@
     <menuitem id="customer_menu"
             name="Customer"
             parent="customer_menu_root"
-            action="customer_form_action"
+            action="account.res_partner_action_customer"
             sequence="2"/>
 
     <menuitem id="configuration_menu"

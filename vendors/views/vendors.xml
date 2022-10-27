@@ -7,6 +7,812 @@
     <field name="context">{'default_supplier_rank': 1}</field>
 </record>    
 
+<record id="vendor_contact_form" model="ir.ui.view">
+        <field name="name">vendor.contact.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+        <xpath expr="//span[@name='address_name']" position="before">
+            <field name="vendor" string="Vendor" attrs="{'invisible': [('is_customer_vendor', '=', 'is_customer')]}"/>
+            <field name="sort_name" string="Sort Name" attrs="{'invisible': [('is_customer_vendor', '=', 'is_customer')]}"/>
+            <field name="customer_rank" invisible="1"/>
+            <field name="supplier_rank" invisible="1"/>
+        </xpath>
+        <xpath expr="//field[@name='company_type']" position="replace">
+            <field name="company_type" widget="radio" options="{'horizontal': true}" invisible="1"/>
+        </xpath>
+        <xpath expr="//form/sheet/group/group[2]" position="replace">
+            <group attrs="{'invisible': [('is_customer_vendor', '=', 'is_customer')]}">
+                <label for="pay_to_vendor" string="Pay to Vendor"/>
+                <div>
+                    <field name="pay_to_vendor" style="width:45% !important;margin-right:5%;" domain="[('supplier_rank', '=', 1)]" class="oe_inline"/>
+                    <field name="pay_to_vendor2" style="width:50%;" domain="[('supplier_rank', '=', 1)]" class="oe_inline"/><br/>
+                </div>
+                <field name="user_ids" invisible="1"/>
+                <field name="lang" invisible='1'/>
+            </group>
+        </xpath>
+
+        <!-- CUSTOMER FORM START-->
+        <xpath expr="//field[@name='company_type']" position="after">
+                <field name="is_customer_vendor" options="{'horizontal': true}" widget="radio" />
+        </xpath>
+        <xpath expr="//form/sheet/div[2]" position="after">
+            <div class="row" col="2" style="width:100%;" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">  
+                <div style="padding:2% !important;width:56%;">
+                    <label for="filter_by_name" string="Filter By Name" style="width:16%;margin-bottom: -15px;"/>
+                    <field name="filter_by_name" style="width:42%;margin-bottom: -15px;" context="{'hide_code': True}"></field><br/>
+                </div>    
+                <div style="padding:2% !important;width:44%;">
+                    <label for="filter_by_id" string="Filter By ID" style="width:18%;margin-bottom: -15px;"/>
+                    <field  name="filter_by_id" style="width:22%;margin-bottom: -15px;" /><br/>
+                </div> 
+            </div> 
+            <div class="row" col="4" style="width:100%;" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">  
+                <div style="padding:2% !important;width:20%;">
+                    <label for="customer_id" string="Customer ID" style="width:45%;margin-bottom: -15px;"/>
+                    <field name="customer_id" style="width:49%;margin-bottom: -15px;"></field><br/>
+                </div>    
+
+                <div style="padding:2% !important;width:18%;">
+                    <label for="job_ids" string="Job" style="width:25%;margin-bottom: -15px;"/>
+                    <field  name="job_ids" style="width:50%;margin-bottom: -15px;"/><br/>
+                </div> 
+                <div style="padding:2% !important;width:18%;">
+                    <label for="has_job" string="Has Job?" style="width:37%;margin-bottom: -15px;"/>
+                    <field  name="has_job" style="width:5%;margin-bottom: -15px;"/><br/>
+                </div>   
+                <div style="padding:2% !important;width:22%;">
+                    <label for="sort_name_id" string="Sort Name" style="width:40%;margin-bottom: -15px;"/>
+                    <field  name="sort_name_id" style="width:50%;margin-bottom: -15px;"/><br/>
+                </div>    
+
+                <div style="padding:2% !important;width:22%;">
+                    <label for="bill_to_id" string="Bill To" style="width:20%;margin-bottom: -15px;"/>
+                    <field name="bill_to_id" style="width:70%;margin-bottom: -15px;" domain="[('customer_rank', '=', 1)]"/><br/>
+                </div> 
+            </div> 
+            <div class="row" col="4" style="width:100%;" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">
+                <!-- <div style="padding:2% !important;width:38%;">
+                    <label for="name" string="Name" style="width:20%;margin-top: -15px;"/>
+                    <field  name="name" style="width:70%;margin-top: -15px;"/>
+                </div> -->
+                <div style="padding:2% !important;width:18%;">
+                    <label for="phone" string="Phone" style="width:35%;margin-top: -15px;"/>
+                    <field name="phone" style="width:55%;margin-top: -15px;"/><br/>
+                </div> 
+                <div style="padding:2% !important;width:44%;">
+                    <label for="contact" string="Contact" style="width:18%;margin-top: -15px;"/>
+                    <field  name="contact" style="width:80%;margin-top: -15px;"/>
+                </div>
+            </div> 
+        </xpath>
+        <!-- CUSTOMER FORM STOP-->
+
+        <xpath expr="//page[@name='contact_addresses']" position="attributes">
+            <attribute name="autofocus"></attribute>
+        </xpath>
+
+
+        <xpath expr="//field[@name='vat']" position="attributes">
+            <attribute name="invisible">1</attribute>
+        </xpath>
+        <xpath expr="//span[@name='address_name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+        </xpath>
+            <xpath expr="//div[hasclass('o_address_format')]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='contact_addresses']" position="before">
+                <page string="Main" name="main_tab" autofocus="autofocus" attrs="{'invisible': [('is_customer_vendor', '=', 'is_customer')]}">
+                    <div class="row" col="2" style="width:100%;padding-left:1%;">
+                        <div style="padding:2% !important;width:50%;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
+                        <h6 style="color: #423e3e;position: relative;bottom: 8%;left: 0.5%;font-size: 12px;z-index:1;">Vendor Info</h6>
+                            <div class="row" col="2" style="width:100%;">
+                                <div style="width:27%;">
+                                    <label for="street" string="Address" style="width:27%;padding-left:10%;"/>
+                                </div>
+                                <div class="o_address_format" style="width:50%">
+                                    <field name="street" placeholder="Address" class="o_address_street"/>
+                                     <field name="street2" placeholder="Address" class="o_address_street" />
+                                    <field name="city" placeholder="City" class="o_address_city" />
+                                    <field name="state_id" class="o_address_state" placeholder="State" />
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip" />
+                                    <field  name="country_id" style="width:40%;"/>
+                                </div>
+                            </div>
+                            <label for="phone" string="Phone" style="width:23%"/>
+                            <field  name="phone" style="width:50%;"/><br/>
+                            <label for="phone2" string="Alternate Phone" style="width:23%"/>
+                            <field  name="phone2" style="width:50%;"/><br/>
+                            <label for="fax" string="Fax" style="width:23%;"/>
+                            <field  name="fax" style="width:50%;"/><br/>
+                            <label for="contact" string="Contact" style="width:23%;"/>
+                            <field  name="contact" style="width:50%;"/><br/>
+                            <label for="assignee" string="Assigned Customer" style="width:23%;"/>
+                            <field  name="assignee" style="width:50%;" domain="[('customer_rank', '=', 1)]"/><br/>
+                            <label for="vType" string="Type" style="width:23%;"/>
+                            <field  name="vType" style="width:15%;"/>
+                            <label for="codes" string="Code" style="width:13%;padding-left:5%;"/>
+                            <field  name="codes" style="width:21%;"/><br/><br/>
+                        </div>
+                        <div style="width:45%;margin-left:1.5%;">
+                            <!-- <div style="border:solid #e6e5e5 0.1px;padding:2%;margin-bottom:2%;">
+                                <h6 style="color: #423e3e;position: absolute;top: 28%;right: 41.5%;font-size: 12px;">Miscellaneous</h6>
+                                <label for="network_id" string="Network ID" style="width:30%;"/>
+                                <field  name="network_id" style="width:30%;"/><br/>
+                                <label for="network_id_code" string="Network ID Code" style="width:30%;"/>
+                                <field  name="network_id_code" style="width:30%;"/>
+                            </div> -->
+                            <div style="padding:2%;border:solid #e6e5e5 0.1px;">
+                                <label for="lead_time" string="Lead Time" style="width:17%;"/>
+                                <field  name="lead_time" style="width:20%;margin-right:2%;"/>
+                                <label for="update_lead_time" string="Update Lead Time" style="width:25%;"/>
+                                <field  name="update_lead_time" style="width:15%;"/><br/>
+                                <label for="backorder" string="Backorder" style="width:17%;"/>
+                                <field  name="backorder" style="width:20%;margin-right:2%;"/>
+                                <label for="print_date_due" string="Print Date Due" style="width:25%;"/>
+                                <field  name="print_date_due" style="width:15%;"/><br/>
+                                <label for="freight_policy" string="Freight Policy" style="width:17%;"/>
+                                <field  name="freight_policy" style="width:20%;"/><br/>
+                                <label for="drop_ship" string="Drop/Ship" style="width:17%;"/>
+                                <field  name="drop_ship" style="width:20%;"/><br/>
+                                <label for="ship_via" string="Ship Via" style="width:17%;"/>
+                                <field  name="ship_via" style="width:20%;"/><br/>
+                            </div>
+                            <h6 style="color: #423e3e;position: relative;top: 3.5%;left: 3%;font-size: 12px;">Transmit Options</h6>
+                            <div style="border:solid #e6e5e5 0.1px;padding:2%;">
+                                <label for="po_item_number" string="PO Item Number" style="width:30%;"/>
+                                <field  name="po_item_number" style="width:25%;"/><br/>
+                                <label for="edi_po" string="EDI PO" style="width:30%;"/>
+                                <field  name="edi_po" style="width:25%;"/><br/>
+                                <label for="edi_translation" string="EDI Translation" style="width:30%;"/>
+                                <field  name="edi_translation" style="width:25%;"/>
+                            </div>
+                            <div style="padding:2%;">
+                                <label for="alternate_fax" string="Alternate Fax" style="width:30%;"/>
+                                <field  name="alternate_fax" style="width:30%;"/><br/>
+                                <label for="img_id" string="Catalog Image ID" style="width:30%;"/>
+                                <field  name="img_id" style="width:30%;"/><br/>
+                                <label for="lp_year" string="Last Payment" style="width:30%;"/>
+                                <field  name="lp_month" style="width:15%;padding-left:5%;" placeholder="Month"/>&amp;emsp;/
+                                <field  name="lp_year" style="width:10%;" placeholder="Year"/>
+                            </div>
+                            <h6 style="color: #423e3e;position: relative;bottom: 97%;left: 4%;font-size: 12px;">Order Info</h6>
+                        </div>
+                    </div>
+                    <div style="padding:2% !important;border:solid #e6e5e5 0.1px;width:95%;margin-top:1%;" >
+                            <h6 style="color: #423e3e;position: relative;margin-top: -30px;left: 0.5%;font-size: 12px;">Message</h6><br/><br/>
+                            <field  name="message" style="width:98%;margin-top: -30px;margin-left: 10px;margin-right: -10px;" widget="html"/>
+                        </div>
+                </page>
+                <page string="Account Payable" name="acc_payable_tab" attrs="{'invisible': [('is_customer_vendor', '=', 'is_customer')]}">
+                    <div class="row" style="width:80%;border:solid #dadce1 1px;margin:1%;" col="2">
+                            <div style="width:40%;padding:2%;">
+                                    <h6 style="color: #423e3e;position: relative;bottom: 8%;left: 3.5%;font-size: 12px;">Accounts Payable</h6>
+                                    <!-- <label for="acc_num" string="Account Number" style="width:35%" />
+                                    <field name="acc_num" style="width: 22%;margin-right:2%;" /><b style="margin-right:2%;font-size:2em;">-</b>
+                                    <field name="acc_num2" style="width: 20%" /><br/> -->
+                                    <label for="auto_distribute" string="Auto Distribute" style="width:35%" />
+                                    <field name="auto_distribute" style="width: 20%" /><br/>
+                                    <label for="federal_id_type" string="Federal ID Type" style="width:35%" />
+                                    <field name="federal_id_type" style="width: 20%" /><br/>
+                                    <label for="federal_id" string="Federal ID" style="width:35%" />
+                                    <field name="federal_id" style="width: 50%" /><br/>
+                                    <label for="temp_perm" string="Temp/Perm" style="width:35%" />
+                                    <field name="temp_perm" style="width: 20%" /><br/>
+                                    <label for="category" string="1099 Category" style="width:35%" />
+                                    <field name="category" style="width: 20%" /><br/>
+                                    <!-- <label for="vendor_status" string="Vendor Status" style="width:35%" />
+                                    <field name="vendor_status" style="width: 20%" /><br/> -->
+                                    <label for="last_activity" string="Last Activity Date" style="width:35%" />
+                                    <field name="last_activity" style="width: 30%" /><br/>
+                                    <label for="append_rv" string="Append To RV?" style="width:35%" />
+                                    <field name="append_rv" style="width: 20%" /><br/>
+                                    <!-- <label for="bank_code" string="Bank Code" style="width:35%" />
+                                    <field name="bank_code" style="width: 30%" /><br/> -->
+                            </div>
+                            <div style="width:60%;padding:2%;">
+                                <label for="terms_code" string="Terms Code" style="width:20%" />
+                                <field name="terms_code" style="width: 20%"/>&amp;emsp; <b>NET <field name="terms_code" style="width:30%;margin-left:1%;" readonly="1"/></b><br/>
+                                <label for="due_days" string="Due Days" style="width:20%" />
+                                <field name="due_days" style="width: 20%" />
+                                <label for="terms_type" string="Terms Type" style="width:25%;margin-left:5%;" />
+                                <field name="terms_type" style="width: 20%" /><br/>
+                                <label for="disc_days" string="Disc Days" style="width:20%" />
+                                <field name="disc_days" style="width: 20%" />
+                                <label for="discount" string="Discount %" style="width:25%;margin-left:5%;" />
+                                <field name="discount" style="width: 20%" /><br/>
+                                <label for="print_check" string="Print on Check" style="width:20%;margin-bottom:5%;" />
+                                <field name="print_check" style="width: 20%" />
+                                <!-- <label for="vendor_language" string="Vendor Language" style="width:25%;margin-left:5%;" />
+                                <field name="vendor_language" style="width: 20%" /><br/><br/> -->
+                                <div class="row" col="2" style="width:100%;border:solid #dadce1 1px;padding:2%;">
+                                    <div style="width:25%;">
+                                        <label for="remit_address" string="Address" style="width:23%;padding-left:10%;"/>
+                                    </div>
+                                    <div class="o_address_format" style="width:50%">
+                                        <h6 style="color: #423e3e;position: relative;bottom: 10.5%;right: 44.5%;font-size: 12px;">Remit to Address</h6>
+                                        <field name="remit_address" placeholder="Address" class="o_address_street"/>
+                                        <field name="remit_street1" placeholder="Address" class="o_address_street" />
+                                        <field name="remit_street2" placeholder="Address" class="o_address_street" />
+                                        <field name="remit_city" placeholder="City" class="o_address_city" style="width:30%;" />
+                                        <field name="remit_state" class="o_address_state" placeholder="State" style="width:30%;"/>
+                                        <field name="zip_code" placeholder="ZIP" class="o_address_zip" style="width:30%;"/>
+                                        <field  name="remit_country" style="width:40%;" placeholder="Country"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </page>
+                <page string="History" name="history_tab" attrs="{'invisible': [('is_customer_vendor', '=', 'is_customer')]}">
+                <div class="row" style="margin:1%;">
+                    <div style="width:70%;border:solid #e6e5e5 0.1px;margin-bottom:1%;padding:1%;">
+                                <h6 style="color: #423e3e;position: relative;bottom: 11.5%;left: 3.5%;font-size: 12px;">Accounts Payable History</h6>
+                            <div style="padding:1%;">
+                                <label for="amount_paid1" string="" style="width:15%" />
+                                <label for="amount_paid1" string="Year To Date" style="width:11%;margin-right:5%" />
+                                <label for="amount_paid1" string="Last Date" style="width:11%" /><br/>
+                            </div>
+                            <label for="amount_paid1" string="Amount Paid" style="width:15%" />
+                            <field name="amount_paid1" style="width: 10%;margin-right:5%" widget="monetary"/>
+                            <field name="amount_paid2" style="width: 10%" widget="monetary"/><br/>
+                            <label for="discount_taken1" string="Discounts Taken" style="width:15%" />
+                            <field name="discount_taken1" style="width: 10%;margin-right:5%" widget="monetary"/>
+                            <field name="discount_taken2" style="width: 10%" widget="monetary" /><br/>
+                            <label for="discount_lost1" string="Discounts Lost" style="width:15%" />
+                            <field name="discount_lost1" style="width: 10%;margin-right:5%" widget="monetary"/>
+                            <field name="discount_lost2" style="width: 10%" widget="monetary"/>
+                            <label for="vendor_bal_due" string="Vendor Balance Due" style="width:17%;margin-left:5%;" />
+                            <field name="vendor_bal_due" style="width: 10%" /><br/><br/>
+                        </div>
+                        <div style="width:70%;border:solid #e6e5e5 0.1px;padding:1%;">
+                            <h6 style="color: #423e3e;position: relative;bottom: 12.5%;left: 3.5%;font-size: 12px;">Purchasing History</h6>
+                            <!-- headers -->
+                            <label for="warehouse_cq" string="" style="width:17%" />
+                            <label for="warehouse_cq" string="Current Qtr" style="width:20%" />
+                            <label for="warehouse_cq" string="Last Qtr" style="width:19%" />
+                            <label for="warehouse_cq" string="Year To Date" style="width:22%" />
+                            <label for="warehouse_cq" string="Last Year" style="width:18%" /><br/>
+                            <!-- headers end -->
+                            <label for="warehouse_cq" string="Warehouse($/Buys)" style="width:16%" />
+                            <field name="warehouse_cq" style="width: 10%;margin-right:1%;" widget="monetary"/>
+                            <field name="warehouse_cq_b" style="width: 5%;margin-right:4%;" />
+                            <field name="warehouse_lq" style="width: 10%;margin-right:1%;" widget="monetary"/>
+                            <field name="warehouse_lq_b" style="width: 5%;margin-right:4%;" />
+                            <field name="warehouse_ytd" style="width: 10%;margin-right:1%;" widget="monetary"/>
+                            <field name="warehouse_ytd_b" style="width: 5%;margin-right:7%;" />
+                            <field name="warehouse_ly" style="width: 10%;margin-right:1%;" widget="monetary"/>
+                            <field name="warehouse_ly_b" style="width: 5%;margin-right:4%;"/><br/>
+
+                            <!-- <label for="dropshiip_cq" string="Drop/Ship" style="width:16%" />
+                            <field name="dropshiip_cq" style="width: 10%;margin-right:10%;" />
+                            <field name="dropshiip_lq" style="width: 10%;margin-right:10%;" />
+                            <field name="dropshiip_ytd" style="width: 10%;margin-right:13%;" />
+                            <field name="dropshiip_ly" style="width: 10%;" /><br/> -->
+
+                            <!-- <label for="special_cq" string="Special" style="width:16%" />
+                            <field name="special_cq" style="width: 10%;margin-right:10%;" />
+                            <field name="special_lq" style="width: 10%;margin-right:10%;" />
+                            <field name="special_ytd" style="width: 10%;margin-right:13%;" />
+                            <field name="special_ly" style="width: 10%;" /><br/> -->
+
+                            <label for="units_ordered_ytd" string="Units Ordered" style="width:16%" />
+                            <label for="units_ordered_ytd" string="" style="width:10%;margin-right:10%;" />
+                            <label for="units_ordered_ytd" string="" style="width:10%;margin-right:10%;" />
+                            <field name="units_ordered_ytd" style="width: 10%;margin-right:13%;" />
+                            <field name="units_ordered_ly" style="width: 10%;" /><br/>
+
+                            <label for="received_ytd" string="Recieved" style="width:16%" />
+                            <label for="received_ytd" string="" style="width:10%;margin-right:10%;" />
+                            <label for="received_ytd" string="" style="width:10%;margin-right:10%;" />
+                            <field name="received_ytd" style="width: 10%;" />
+                                <b style="margin-left:1%;">Fill%</b>
+                                <field name="recieved_ytd_fill" style="width:5%;margin-right:2.5%;margin-left:1%;"/>
+                            <field name="received_ly" style="width: 10%;" />
+                                <b style="margin-left:1%;">Fill%</b>
+                                <field name="recieved_ly_fill" style="width:4%;margin-left:1%;"/><br/>
+
+                            <label for="last_received" string="Last Recieved" style="width:12%;" />
+                            <field name="last_received" style="width: 10%;" />
+                            
+                        </div></div>
+                </page>
+                <!-- CUSTOMER PAGE START-->
+                <page string="Main" autofocus="'1" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">
+                    <div class="row" col="3" style="width:100%;"> 
+                        <div style="padding:2% !important;width:33%;">
+                            <div class="row" col="2" style="width:100%;">
+                                <div style="width: 30%;">
+                                    <label for="street" string="Address" style="width:100%;margin-left: 15px;"/>
+                                </div>
+                                <div class="o_address_format" style="width:70%">
+                                    <field name="street" placeholder="Address1..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Address 2..." class="o_address_street" />
+                                    <field name="city" placeholder="City" class="o_address_city" />
+                                    <field name="state_id" class="o_address_state" placeholder="State" />
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip" />
+                                    <field  name="country_id" />                 
+                                </div>
+                            </div>
+                            <label for="fax" string="Fax" style="width:23%;"/>
+                            <field  name="fax" style="width:55%;"/><br/><br/><br/><br/><br/>
+                            <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;margin-top: -2px;" >
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Credit Message</h6>
+                                <field  name="credit_message1"/><br/>
+                                <field  name="credit_message2"/>
+                            </div>
+                        </div>
+                            <div style="padding:2% !important;width:33%;">
+                                <label for="credit_limit" string="Credit Limit" style="width:40%;"/>
+                                <field  name="credit_limit" style="width:50%;"/>
+                                <label for="trade_discount" string="Trade Discount %" style="width:40%;"/>
+                                <field  name="trade_discount" style="width:50%;"/>
+                                <label for="account_code1" string="Account Code" style="width:40%;"/>
+                                <field  name="account_code1" style="width:50%;"/>
+                                <label for="monthly_payment" string="Monthly Payment" style="width:40%;"/>
+                                <field  name="monthly_payment" style="width:50%;"/>
+                                <label for="category_plan_id" string="Category Plan" style="width:40%;"/>
+                                <field  name="category_plan_id" style="width:50%;"/>
+                                <label for="terms_code" string="Terms Code" style="width:40%;"/>
+                                <field  name="terms_code" style="width:50%;"/>
+                                <label for="pure_archive_invoices" string="Pure Archive Invoices" style="width:41%;"/>
+                                <field  name="pure_archive_invoices" style="width:49%;"/><br/><br/>
+                                <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">PO Decisions</h6>
+                                    <label for="po_required" string="PO Required" style="width:30%;"/>
+                                    <field  name="po_required" string="po_required" style="width:50%;"/><br/>
+                                    <label for="default_po" string="Default PO" style="width:30%;"/>
+                                    <field  name="default_po" style="width:50%;"/>
+                                </div>     
+                            </div>
+                            <div style="padding:2% !important;width:33%;">
+                                <label for="balance_method" string="Balance Method" style="width:40%;"/>
+                                <field  name="balance_method" style="width:50%;"/>
+                                <label for="charge_allowed" string="Charge Allowed" style="width:40%;"/>
+                                <field  name="charge_allowed" style="width:50%;"/>
+                                <label for="std_sell_price" string="Std Sell Price" style="width:40%;"/>
+                                <field  name="std_sell_price" style="width:50%;"/>
+                                <label for="finace_charges" string="Finance Charges" style="width:40%;"/>
+                                <field  name="finace_charges" style="width:50%;" widget="monetary"/>
+                                <label for="store_acct_opened_id" string="Store Acct Opened" style="width:40%;"/>
+                                <field  name="store_acct_opened_id" style="width:50%;"/>
+                                <label for="print_statments" string="Print Statements" style="width:40%;"/>
+                                <field  name="print_statments" style="width:50%;"/>
+                                <label for="charge_allowed" string="Charge Allowed" style="width:40%;"/>
+                                <field  name="charge_allowed" style="width:50%;"/>
+                                <label for="check_allowed" string="Check Allowed" style="width:40%;"/>
+                                <field  name="check_allowed" style="width:50%;"/>
+                                <label for="keep_dept_history" string="Keep Dept History" style="width:40%;"/>
+                                <field  name="keep_dept_history" style="width:50%;"/>
+                                <label for="print_invoices_in_pos" string="Print Invoices In POS" style="width:40%;"/>
+                                <field  name="print_invoices_in_pos" style="width:50%;"/>
+                                <label for="taxable" string="Taxable" style="width:40%;"/> 
+                                <field  name="taxable" style="width:50%;"/>
+                                <label for="last_activity_date" string="Last Activity Date" style="width:40%;"/> 
+                                <field  name="last_activity_date" style="width:50%;"/>
+                            </div>
+                        </div>            
+                </page>
+                <page string="Credit" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">
+
+                     <!-- smart buttons  -->
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                Future
+                            </span><br/>
+                            <span class="o_stat_text">
+                                1,122.62
+                            </span>
+                        </div>
+                    </button>
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                Current
+                            </span><br/>
+                            <span class="o_stat_text">
+                                <field  name="current_total"/>
+                            </span>
+                        </div>    
+
+                    </button>
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                1-30
+                            </span><br/>
+                            <span class="o_stat_text">
+                                <field  name="thirty_total"/>
+                            </span>
+                        </div>
+                    </button>
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                31-60
+                            </span><br/>
+                            <span class="o_stat_text">
+                                <field  name="sixty_total"/>
+                            </span>
+                        </div>
+                    </button>
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                61-90
+                            </span><br/>
+                            <span class="o_stat_text">
+                               <field  name="ninety_total"/>
+                            </span>
+                        </div>
+                    </button>
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                Over 90
+                            </span><br/>
+                            <span class="o_stat_text">
+                                <field  name="over_total"/>
+                            </span>
+                        </div>
+                    </button> 
+                    <hr style="width:100%;text-align:left;margin-left:0"/> 
+
+                    <div class="row" col="3" style="width:100%;"> 
+                        <div style="padding:2% !important;width:33%;">
+                            <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Balance History</h6>                                    
+                                <label for="finace_chgs_ytd" string="Finace Chgs YTD" style="width:50%;"/>
+                                <field  name="finace_chgs_ytd" style="width:35%;" widget="monetary"/><br/>
+                                <label for="credit_limit" string="Credit Limit" style="width:50%;" />
+                                <field  name="credit_limit" style="width:35%;" widget="monetary"/><br/>
+                                <label for="higest_acc_balance" string="Higest Acct Balance" style="width:50%;"/>
+                                <field  name="higest_acc_balance" widget="monetary" style="width:35%;"/><br/>
+                                <label for="credit_available" string="Credit Available" style="width:50%;"/>
+                                <field  name="credit_available" widget="monetary" style="width:35%;"/><br/>
+                                <label for="running_balance" string="Running Balance" style="width:50%;"/>
+                                <field  name="running_balance" widget="monetary" style="width:35%;"/><br/>
+                                <label for="statment_balance" string="Statement Balance" style="width:50%;"/>
+                                <field  name="statment_balance" widget="monetary" style="width:35%;"/><br/>
+                                <label for="statment_discount" string="Statement Discount" style="width:50%;"/>
+                                <field  name="statment_discount" widget="monetary" style="width:35%;"/><br/>
+                                <label for="returns" string="Returns ($) YTD" style="width:50%;"/>
+                                <field  name="returns" widget="monetary" style="width:35%;"/><br/>
+                                <label for="transations" widget="monetary" string="# Transations YTD" style="width:50%;"/>
+                                <field  name="transations" style="width:35%;"/><br/><br/>
+                            </div>
+                        </div>
+
+                        <div style="padding:2% !important;width:33%;">
+                            <div style="padding:2% !important;">
+                                <label for="last_sale" string="Last Sale" style="width:30%;"/>
+                                <field  name="last_sale" style="width:50%;"/><br/>
+                                <label for="acct_opened" string="Acct Opened" style="width:30%;"/>
+                                <field  name="acct_opened" style="width:50%;"/>
+                            </div>     
+                        </div>
+                        <div style="padding:2% !important;width:33%;">
+                        </div>
+                    </div>   
+                </page>
+                <page string="Sales" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">
+                   <div class="row" col="5" style="border:solid #e6e5e5 0.1px;width:90%;"> 
+                        <div style="padding:2% !important;width:10%;"><br/>
+                            
+                        </div>
+                        <div style="padding:2% !important;width:13%;"><br/>
+                            <label for="period_to_date_sale" string="Sale" style="width:100%;margin-left: 40px;margin-bottom: 9px;"/><br/>
+                            <label for="period_to_date_cost" string="Cost" style="width:100%;margin-left: 40px;margin-bottom: 9px;"/><br/>
+                            <label for="period_to_date_gp" string="GP %" style="width:100%;margin-left: 40px;margin-bottom: 9px;"/><br/>
+                            <label for="period_to_date_gp_dollor" string="GP $" style="width:40%;margin-left: 40px;margin-bottom: 9px;"/><br/>
+                            <label for="terms_disc" string="Terms Disc" style="width:100%;margin-left: 40px;margin-bottom: 9px;"/>
+
+                        </div>
+                        <div style="padding:2% !important;width:15%;">
+                            <label for="period_to_date_sale" string="Period-To-Date" style="width:100%;"/><br/>
+                            <field  name="period_to_date_sale" style="width:60%;"/><br/>
+                            <field  name="period_to_date_cost" style="width:60%;"/><br/>
+                            <field  name="period_to_date_gp" style="width:60%;"/><label for="period_to_date_gp" string="%" style="width:3%;"/><br/>
+                            <field  name="period_to_date_gp_dollor" style="width:60%;"/><br/>
+                            <field  name="terms_disc" style="width:60%;"/>
+                        </div>
+                        <div style="padding:2% !important;width:15%;">
+                            <label for="year_to_date_sale" string="Year-To-Date" style="width:100%;"/><br/>
+                            <field  name="year_to_date_sale" style="width:60%;"/><br/>
+                            <field  name="year_to_date_cost" style="width:60%;"/><br/>
+                            <field  name="year_to_date_gp" style="width:60%;"/><label for="year_to_date_gp" string="%" style="width:3%;"/><br/>
+                            <field  name="year_to_date__dollor" style="width:60%;"/>
+                        </div>
+                        <div style="padding:2% !important;width:15%;">
+                            <label for="last_year_sale" string="Last Year" style="width:100%;"/><br/>
+                            <field  name="last_year_sale" style="width:60%;"/><br/>
+                            <field  name="last_year_cost" style="width:60%;"/><br/>
+                            <field  name="last_year_gp" style="width:60%;"/><label for="last_year_gp" string="%" style="width:3%;"/><br/>
+                            <field  name="last_year_gp_dollor" style="width:60%;"/>
+                        </div>
+                    </div>
+                    <group></group>
+                    <div class="row" col="5" style="border:solid #e6e5e5 0.1px;width:90%;"> 
+                        <div style="padding:2% !important;width:10%;"><br/>
+                            
+                        </div>
+                        <div style="padding:2% !important;width:17%;"><br/>
+                            <label for="year_to_date_fin_chrgs" string="Finance Charges" style="width:100%;margin-left: 40px;margin-bottom: 9px;"/><br/>
+                            <label for="year_to_date_returns" string="Return($) YTD" style="width:100%;margin-left: 40px;margin-bottom: 9px;"/><br/>
+                            <label for="year_to_date_transaction" string="#Transations YTD" style="width:100%;margin-left: 40px;margin-bottom: 9px;"/>
+                        </div>
+                        <div style="padding:2% !important;width:15%;">
+                            <label for="year_to_date_fin_chrgs" string="Year-To-Date" style="width:100%;"/><br/>
+                            <field  name="year_to_date_fin_chrgs" style="width:60%;"/><br/>
+                            <field  name="year_to_date_returns" style="width:60%;"/><br/>
+                            <field  name="year_to_date_transaction" style="width:60%;"/>
+                        </div>
+                        <div style="padding:2% !important;width:15%;">
+                            <label for="last_year_gp_fin_chrgs" string="Last Year" style="width:100%;"/><br/>
+                            <field  name="last_year_gp_fin_chrgs" style="width:60%;"/><br/>
+                        </div>
+                        <div style="padding:2% !important;width:20%;">
+                            <br/><br/><br/><br/>
+                            <label for="customer_sales_summary" string="Customer Sales Summary" style="width:100%;"/><br/>
+                            <field  name="customer_sales_summary" style="width:35%;" invisible='1'/>
+                        </div>
+                    </div>
+                </page>
+                <page string="Payment" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">
+                     <!-- smart buttons  -->
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                Future
+                            </span><br/>
+                            <span class="o_stat_text">
+                                1,122.62
+                            </span>
+                        </div>
+                    </button>
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                Current
+                            </span><br/>
+                            <span class="o_stat_text">
+                                <field  name="current_total"/>
+                            </span>
+                        </div>    
+
+                    </button>
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                1-30
+                            </span><br/>
+                            <span class="o_stat_text">
+                                <field  name="thirty_total"/>
+                            </span>
+                        </div>
+                    </button>
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                31-60
+                            </span><br/>
+                            <span class="o_stat_text">
+                                <field  name="sixty_total"/>
+                            </span>
+                        </div>
+                    </button>
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                61-90
+                            </span><br/>
+                            <span class="o_stat_text">
+                               <field  name="ninety_total"/>
+                            </span>
+                        </div>
+                    </button>
+                    <button style="pointer-events:none;" class="oe_stat_button pull_right" name="action_student_schedules" width="150" type="object">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                Over 90
+                            </span><br/>
+                            <span class="o_stat_text">
+                                <field  name="over_total"/>
+                            </span>
+                        </div>
+                    </button> 
+                    <hr style="width:100%;text-align:left;margin-left:0"/> 
+                    <div class="row" col="3" style="width:100%;"> 
+                        <div style="padding:2% !important;width:30%;">
+                            <label for="higest_acc_balance" string="Higest Acct Balance" style="width:50%;"/>
+                            <field  name="higest_acc_balance" style="width:35%;"/><br/>
+                            <label for="date_last_pay" string="Date Last Pay" style="width:50%;"/>
+                            <field  name="date_last_pay" style="width:35%;"/>
+                            <label for="amount_last_pay" string="Amount Last Pay" style="width:50%;"/>
+                            <field  name="amount_last_pay" style="width:35%;"/>
+                            <label for="finace_charges" string="Finance Charges" style="width:50%;"/>
+                            <field  name="finace_charges" style="width:35%;" widget="monetary"/>
+                            <label for="monthly_payment" string="Monthly Payment" style="width:50%;"/>
+                            <field  name="monthly_payment" style="width:35%;"/>
+                            <label for="credit_limit" string="Credit Limit" style="width:50%;"/>
+                            <field  name="credit_limit" style="width:35%;"/><br/>
+                            <label for="running_balance" string="Running Balance" style="width:50%;"/>
+                            <field  name="running_balance" style="width:35%;"/><br/>
+                            <label for="credit_available" string="Credit Available" style="width:50%;"/>
+                            <field  name="credit_available" style="width:35%;"/><br/>
+                        </div>  
+
+                        <div style="padding:2% !important;width:45%;">
+                        <div class="row" col="3" style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
+                            <h6 style="color: #423e3e;position: relative;margin-top: -15px;left: 0.5%;font-size: 12px;">Late Payment History</h6>
+                            <label for="of_times_no_activity" string="" style="width:100%;"/><br/><br/>
+                            <div style="padding:2% !important;width:25%;"><br/>
+                                <label for="of_times_no_activity" string="No Activity" style="width:95%;margin-left: 30px;margin-bottom: 9px;"/><br/>
+                                <label for="of_times_current" string="Current" style="width:95%;margin-left: 30px;margin-bottom: 9px;"/><br/>
+                                <label for="of_times_1_30" string="1 - 30" style="width:95%;margin-left: 30px;margin-bottom: 9px;"/><br/>
+                                <label for="of_times_31_60" string="31 - 60" style="width:95%;margin-left: 30px;margin-bottom: 9px;"/><br/>
+                                <label for="of_times_61_90" string="61 - 90" style="width:95%;margin-left: 30px;margin-bottom: 9px;"/>
+                                <label for="of_times_over_90" string="Over 90" style="width:95%;margin-left: 30px;margin-bottom: 9px;"/>
+                            </div>
+                            <div style="padding:2% !important;width:35%;">
+                                <label for="of_times_no_activity" string="# of Times" style="width:100%;"/>
+                                <field  name="of_times_no_activity" style="width:95%;"/>
+                                <field  name="of_times_current" style="width:95%;"/>
+                                <field  name="of_times_1_30" style="width:95%;"/><br/>
+                                <field  name="of_times_31_60" style="width:95%;"/><br/>
+                                <field  name="of_times_61_90" style="width:95%;"/><br/>
+                                <field  name="of_times_over_90" style="width:95%;"/>
+                            </div>
+                            <div style="padding:2% !important;width:35%;">
+                                <label for="last_occured_no_activity" string="Last Occured" style="width:95%;"/><br/>
+                                <field  name="last_occured_no_activity" style="width:95%;"/><br/>
+                                <field  name="last_occured_current" style="width:95%;"/><br/>
+                                <field  name="last_occured_1_30" style="width:95%;"/><br/>
+                                <field  name="last_occured_31_60" style="width:95%;"/><br/>
+                                <field  name="last_occured_61_90" style="width:95%;"/><br/>
+                                <field  name="last_occured_over_90" style="width:95%;"/><br/>
+                            </div>    
+                        </div></div>
+                    </div>
+                </page>
+                <page string="Names" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">
+                    <div class="row" col="3" style="width:100%;"> 
+                        <div style="padding:2% !important;width:33%;">
+                            <div style="padding:2% !important;">
+                                <label for="social_security" string="Social Security" style="width:50%;"/>
+                                <field  name="social_security" style="width:35%;"/><br/>
+                                <label for="birth_date" string="Birth Date" style="width:50%;"/>
+                                <field  name="birth_date" style="width:35%;"/><br/>
+                                <label for="pst_registration" string="PST Regisration" style="width:50%;"/>
+                                <field  name="pst_registration" style="width:35%;"/><br/>
+                                <label for="gst_registration" string="GST Regisration" style="width:50%;"/>
+                                <field  name="gst_registration" style="width:35%;"/><br/>
+                                <label for="pesticide_license" string="Pesticide License" style="width:50%;"/>
+                                <field  name="pesticide_license" style="width:35%;"/><br/>
+                                <label for="pesticide_lic_exp" string="Pesticide Lic. Exp." style="width:50%;"/>
+                                <field  name="pesticide_lic_exp" style="width:35%;"/><br/>
+                                <label for="freght_factor" string="Freght Factor" style="width:50%;"/>
+                                <field  name="freght_factor" style="width:35%;"/><br/>
+                                <label for="rescale_code" string="Resale Code" style="width:50%;"/>
+                                <field  name="rescale_code" style="width:35%;"/><br/>
+                                <label for="alternate_phone" string="Alternative Phone" style="width:50%;"/>
+                                <field  name="alternate_phone" style="width:35%;"/><br/>
+                                <label for="alternate_fax" string="Alternative Fax" style="width:50%;"/>
+                                <field  name="alternate_fax" style="width:35%;"/><br/>
+                                <label for="open_quote_1" string="Open Quote Doc#/St" style="width:50%;"/>
+                                <field  name="open_quote_1" style="width:19%;"/>
+                                <label for="open_quote_1" string="/" style="width:2%;"/>
+                                <field  name="open_quote_2" style="width:13%;"/><br/>
+                                <label for="rebate_plan" string="Rebate Plan" style="width:50%;"/>
+                                <field  name="rebate_plan" style="width:35%;"/><br/><br/>
+                            </div>
+                        </div>
+                        <div style="padding:2% !important;width:33%;">
+                            <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Account Codes</h6>
+                                <label for="business_type" string="Business Type" style="width:60%;"/>
+                                <field  name="business_type" style="width:20%;"/><br/>
+                                <label for="location" string="Location" style="width:60%;"/>
+                                <field  name="location" style="width:20%;"/><br/>
+                                <label for="customer_ranks" string="Customer Rank" style="width:60%;"/>
+                                <field  name="customer_ranks" style="width:20%;"/><br/>
+                                <label for="statment_type" string="Statement Type" style="width:60%;"/>
+                                <field  name="statment_type" style="width:20%;"/><br/><br/>
+                            </div>
+                            <group></group>
+                            <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">E-mail Information</h6>
+                                <label for="statment_fmt" string="Statement/Fmt" style="width:50%;"/>
+                                <field  name="statment_fmt" style="width:19%;"/>
+                                <label for="statment_fmt2" string="/" style="width:2%;"/>
+                                <field  name="statment_fmt2" style="width:13%;"/><br/>
+
+                                <label for="Invoice_credit" string="Invoice/Credit" style="width:60%;"/>
+                                <field  name="Invoice_credit" style="width:20%;"/><br/>
+                                
+                                <label for="order_sp_ord_estimate" string="Order/Sp.Ord/Estimate" style="width:60%;"/>
+                                <field  name="order_sp_ord_estimate" style="width:20%;"/><br/><br/>
+                            </div>
+
+                            <div style="padding:2% !important;">
+                                <label for="fax_pos_stmt" string="Fax POS/Stmt" style="width:50%;"/>
+                                <field  name="fax_pos_stmt" style="width:19%;"/>
+                                <label for="fax_pos_stmt1" string="/" style="width:2%;"/>
+                                <field  name="fax_pos_stmt1" style="width:13%;"/><br/>
+                                <label for="ace_rewards_status" string="Ace Rewards Status" style="width:60%;"/>
+                                <field  name="ace_rewards_status" style="width:20%;"/>
+                                <label for="tax_override_plan" string="Tax Override Plan" style="width:60%;"/>
+                                <field  name="tax_override_plan" style="width:20%;"/>    
+                            </div>     
+                        </div>
+                        <div style="padding:2% !important;width:33%;">
+                            <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
+                                <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Customer Information</h6>
+                                <label for="prompt_in_pos" string="Prompt in POS?" style="width:60%;"/>
+                                <field  name="prompt_in_pos" style="width:20%;"/>
+                                <label for="prompt_threshold" string="Prompt Threshold" style="width:50%;"/>
+                                <field  name="prompt_threshold" style="width:35%;"/>
+                            </div>
+                            <group></group>
+
+
+                        </div>
+                    </div> 
+                    <div>
+                        <field name="names_ids">
+                            <tree  editable="bottom">
+                               <field name="name" />
+                                <field name="show_in_POS" />
+                                <field name="phone" />
+                                <field name="cell" />
+                                <field name="fax" />
+                                <field name="pager" />
+                                <field name="email" />
+                            </tree>
+                        </field>
+                    </div>
+                </page>
+                <page string="Notes" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">
+                    <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
+                        <div class="row" col="2" style="width:100%;">  
+                            <div style="padding:2% !important;width:30%;">
+                                <label for="customer_id" string="Note Group" style="width:26%;margin-bottom: -15px;"/>
+                                <field name="customer_id" style="width:30%;margin-bottom: -15px;"></field><br/>
+                            </div>    
+
+                            <div style="padding:2% !important;width:35%;">
+                                <label for="name" string="Name" style="width:20%;margin-bottom: -15px;"/>
+                                <field  name="name" style="width:30%;margin-bottom: -15px;"/><br/>
+                            </div> 
+                        </div> 
+                        <div class="row" col="3" style="width:100%;">
+                            <div style="padding:2% !important;width:30%;margin-top: -15px;">
+                                <label for="types" string="Type" style="width:30%;margin-top: -15px;"/>
+                                <field  name="types" style="width:5%;margin-top: -15px;"/><label for="types" string="MCR" style="width:3%;margin-top: -15px;"/>
+                            </div>
+                            <div style="padding:2% !important;width:35%;margin-top: -15px;">
+                                <label for="display_repeat" string="Display Repeats" style="width:30%;margin-top: -15px;"/>
+                                <field  name="display_repeat" style="width:5%;margin-top: -15px;"/>
+                            </div>
+                            <div style="padding:2% !important;width:35%;margin-top: -15px;">
+                                <label for="print_repeat" string="Print Repeats" style="width:30%;margin-top: -15px;"/>
+                                <field  name="print_repeat" style="width:5%;margin-top: -15px;"/>
+                            </div>
+                        </div> 
+                    </div>
+                    <group></group>
+                    <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
+                        <h6 style="color: #423e3e;position: relative;margin-top: -30px;left: 0.5%;font-size: 12px;">Message</h6><br/><br/>
+                        <field  name="message" style="width:98%;margin-top: -30px;margin-left: 10px;margin-right: -10px;"/>
+                    </div>
+                </page>
+                <!-- CUSTOMER PAGE STOP-->
+            </xpath>
+        </field>
+</record>
+
 <!-- wgd.vendors form view -->
 <record id="vendors_form_view" model="ir.ui.view">
     <field name="name">vendors.view.form</field>
@@ -495,9 +1301,15 @@
     <field name="name">AR Unpaid Invoices</field>
 </record>
 
+<record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+    <field name="context">{'default_is_customer_vendor': 'is_vendor','search_default_supplier':
+        1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}
+    </field>
+</record>
+
 <menuitem id="wgd_root_menu" name="Vendors" active="True" sequence="0"/>
 
-<menuitem id="Vendors" name="Vendor Details" parent="wgd_root_menu" action="vendor_details"/>
+<menuitem id="Vendors" name="Vendor Details" parent="wgd_root_menu" action="account.res_partner_action_supplier"/>
 
 
 </odoo>

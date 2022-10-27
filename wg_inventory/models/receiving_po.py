@@ -13,7 +13,7 @@ class Stockmov(models.Model):
     # ln = fields.Integer(compute='_get_line_number', string='Ln#', readonly=False, default=False)
     loc = fields.Char(string="Loc")
     Descriptionss = fields.Char(string="Description")
-    QOH = fields.Float(string="QOH")
+    QOH = fields.Float(string="QOH", related='product_id.qty_available')
     QOO_Pur = fields.Float(string="QOO(Pur)")
     um_pur = fields.Char(string="U/M(Pur)")
     Qty_Being_Recvd = fields.Float(string="Qty Being Recvd(Stk)")
@@ -37,7 +37,7 @@ class Stockmov(models.Model):
             [('name', '=', self.product_id.name), ('id', '=', self.product_id.product_tmpl_id.id)])
 
         self.description_picking = onc_sku.desc
-        self.QOH = onc_sku.qty_available
+
 
     @api.depends('Cost_Pur', 'product_uom_qty')
     def _cal_cost(self):
