@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wgd_customer_wgd_customer,wgd_customer.wgd_customer,model_wgd_customer_wgd_customer,base.group_user,1,1,1,1
+my_customer,wgd_customer.my_customer,model_my_customer,base.group_user,1,1,1,1
+credit,wgd_customer.credit,model_credit,base.group_user,1,1,1,1
+job,wgd_customer.job,model_job,base.group_user,1,1,1,1
+sort,wgd_customer.sort,model_sort,base.group_user,1,1,1,1
+bill,wgd_customer.bill,model_bill,base.group_user,1,1,1,1
+names,wgd_customer.names,model_names,base.group_user,1,1,1,1
+category,wgd_customer.category,model_category,base.group_user,1,1,1,1
+terms,wgd_customer.terms,model_terms,base.group_user,1,1,1,1
+balance,wgd_customer.balance,model_balance,base.group_user,1,1,1,1
+wgd.job.no,wgd_customer.wgd.job.no,model_wgd_job_no,base.group_user,1,1,1,1
