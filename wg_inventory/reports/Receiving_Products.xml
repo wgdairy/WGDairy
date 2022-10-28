@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <odoo>
+ <data>
+<record id="Receiving_product_new" model="ir.ui.view">
+    <field name="name">stock.picking.forms</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.view_picking_form"/>
+    <field name="arch" type="xml">
+    <xpath expr="//form" position="replace">
+                <form>
+
+            <sheet>
+
+
+
+<!--                <div>-->
+<!--                    <page string="Operationsss" name="operationsss">-->
+
+<!--                    <field name="move_ids_without_package" >-->
+<!--                                <tree>-->
+<!--                                    <field name="sku_id" />-->
+<!--                                    <field name="statuss" />-->
+<!--                                    <field name="Lot" />-->
+<!--                                    <field name="Loc" />-->
+<!--                                    <field name="Description" />-->
+<!--                                    <field name="QOH" />-->
+<!--                                    <field name="Description" />-->
+<!--                                    <field name="QOH" />-->
+<!--                                    <field name="QOO_Pur" />-->
+<!--                                    <field name="um_pur" />-->
+<!--                                    <field name="Qty_Being_Recvd" />-->
+<!--                                    <field name="Variance" />-->
+<!--                                    <field name="Varaiance_Pur" />-->
+<!--                                    <field name="Qty_Being_Recvd_Pur" />-->
+<!--                                    <field name="Cost_Pur" />-->
+<!--                                    <field name="QOO_Ext_Cost" />-->
+<!--                                    <field name="Added_in_Receiving" />-->
+<!--                                    <field name="ERP_d" />-->
+<!--                                    <field name="ERP_d_Qty" />-->
+<!--                                    <field name="Total_Qty_Received" />-->
+<!--                                    <field name="Total_Qty_Rehjected" />-->
+<!--                                    <field name="Reject_Reasons" />-->
+
+<!--                                    <field name="location_id" invisible="1"/>-->
+<!--                                    <field name="location_dest_id" invisible="1"/>-->
+<!--                                    <field name="scrapped" invisible="1"/>-->
+<!--                                    <field name="picking_code" invisible="1"/>-->
+<!--                                    <field name="product_type" invisible="1"/>-->
+<!--                                    <field name="show_details_visible" invisible="1"/>-->
+<!--                                    <field name="show_reserved_availability" invisible="1"/>-->
+<!--                                    <field name="show_operations" invisible="1" readonly="1"/>-->
+<!--                                    <field name="additional" invisible="1"/>-->
+<!--                                    <field name="move_lines_count" invisible="1"/>-->
+<!--                                    <field name="is_locked" invisible="1"/>-->
+<!--                                    <field name="product_uom_category_id" invisible="1"/>-->
+<!--                                    <field name="has_tracking" invisible="1"/>-->
+<!--                                    <field name="display_assign_serial" invisible="1"/>-->
+<!--                                    <field name="product_id" required="1" context="{'default_detailed_type': 'product'}" attrs="{'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('move_lines_count', '&gt;', 0)]}"/>-->
+<!--                                    <field name="description_picking" string="Description" optional="hide"/>-->
+<!--                                    <field name="date" optional="hide"/>-->
+<!--                                    <field name="date_deadline" optional="hide"/>-->
+<!--                                    <field name="is_initial_demand_editable" invisible="1"/>-->
+<!--                                    <field name="is_quantity_done_editable" invisible="1"/>-->
+
+<!--                                </tree>-->
+<!--                    </field>-->
+<!--                    </page>-->
+<!--                </div>-->
+
+
+
+
+<!--                <notebook>-->
+<!--                    <page  autofocus="1" string="Stocking">-->
+
+<!--                    </page>-->
+
+<!--                </notebook>-->
+            </sheet>
+        </form>
+    </xpath>
+
+<!--        <xpath expr="//field[@name='sales_price']" position="after">-->
+<!--		    <field name="your_new_field"/>-->
+<!--		</xpath>-->
+    </field>
+</record>
+<!--    <template id="report_receving_po_custom" inherit_id="stock.report_picking">-->
+<!--            <xpath expr="//div[@class='page']" position="replace">-->
+
+<!--&lt;!&ndash;                <div t-field="o.line" />&ndash;&gt;-->
+<!--                <h1 t-field="o.line" class="mt0 float-left"/>-->
+<!--                <span>mm</span>-->
+
+<!--                <table>-->
+<!--                      <tr>-->
+<!--                        <th>Status</th>-->
+<!--                        <th>Lot#</th>-->
+<!--                        <th>Loc</th>-->
+<!--                      </tr>-->
+<!--                      <tr>-->
+<!--                        <td>Alfreds Futterkiste</td>-->
+<!--                        <td>Maria Anders</td>-->
+<!--                        <td>Germany</td>-->
+<!--                      </tr>-->
+<!--                      <tr>-->
+<!--                        <td>Centro comercial Moctezuma</td>-->
+<!--                        <td>Francisco Chang</td>-->
+<!--                        <td>Mexico</td>-->
+<!--                      </tr>-->
+<!--                </table>-->
+<!--&lt;!&ndash;                </span>&ndash;&gt;-->
+<!--            </xpath>-->
+<!--    </template>-->
+
+
+ </data>
+ </odoo>
