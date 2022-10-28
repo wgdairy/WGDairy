@@ -122,8 +122,8 @@
                             </div>
 
                             <div style="padding:10px; !important;width:15%;">
-                                <label for="class_inven" string="Class" style="width:20%;margin-bottom: -15px;"/>
-                                <field  name="class_inven" style="width:50%;margin-top: -15px;"/><br/>
+                                <label for="class_invent" string="Class" style="width:20%;margin-bottom: -15px;"/>
+                                <field  name="class_invent" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
 <!--                            <div style="padding:10px; !important;width:20%;">-->
 <!--                                <label for="fineline" string="Fineline" style="width:25%;margin-bottom: -15px;"/>-->
@@ -547,8 +547,8 @@
                                 <field name="lot_item" style="width:40%;" />
                                 <label for="promt_for_transfer" string="Prompt For Transfer" style="width:55%;"/>
                                 <field name="promt_for_transfer" style="width:40%;" />
-                                <label for="multi_selling_user_code" string="Multi Selling User Code" style="width:55%;"/>
-                                <field name="multi_selling_user_code" style="width:40%;" />
+                                <label for="multi_selling_user_codes" string="Multi Selling User Code" style="width:55%;"/>
+                                <field name="multi_selling_user_codes" style="width:40%;" />
                         </div>
 <!--                            <div style="padding:2% !important;width:25%;">-->
 
@@ -1182,7 +1182,7 @@
                 <field name="company_id" string="Store" filter_domain="[('company_id','=ilike',self)]"/>
                 <field name="desc" string="Desc" />
                 <field name="types" string="Type" />
-                <field name="class_inven" string="Class" />
+                <field name="class_invent" string="Class" />
                 <field name="fineline" string="Fineline" />
                 <field name="prime_vede" string="Prime Vend" />
                 <field name="mfg_vende" string="Mfg Vend" />
@@ -1233,7 +1233,7 @@
             <field name="desc" string="Desc"/>
             <field name="instores" string="In Stores"/>
             <field name="deptart" string="Dept"/>
-            <field name="class_inven" string="Class"/>
+            <field name="class_invent" string="Class"/>
             <!--                 <field name="fineline" string="Fineline"/> -->
             <field name="prime_vede" string="Prime Vend"/>
 <!--            <field name="mfg_vende" string="Mfg Vend"/>-->

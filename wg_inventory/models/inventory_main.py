@@ -38,6 +38,7 @@ class Inventorys(models.Model):
     upc = fields.Char('UPC')
     # dept = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     deptart = fields.Many2one('hr.department', ondelete='restrict', index=True, )
+    class_invent = fields.Char('Class')
     class_inven = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     # prime_ved = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Prime Vend")
     # mfg_vend = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Mfg Vend")
@@ -173,6 +174,7 @@ class Inventorys(models.Model):
     lot_item = fields.Selection([('y', 'Y'), ('n', 'N'), ])
     promt_for_transfer = fields.Selection([('y', 'Y'), ('n', 'N'), ])
     multi_selling_user_code = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
+    multi_selling_user_codes = fields.Integer('Multi Selling User Code')
 
     # -----------
 
@@ -1080,13 +1082,13 @@ class Inventorys(models.Model):
             self.upc = store_datas.upc
             self.sequence = store_datas.sequence
             self.deptart = store_datas.deptart
-            self.class_inven = store_datas.class_inven
+            self.class_invent = store_datas.class_invent
             self.types = store_datas.types
             self.instores = store_datas.instores
             self.prime_vede = store_datas.prime_vede
             self.mfg_vende = store_datas.mfg_vende
             self.company_id = store_datas.company_id
-            self.class_inven = store_datas.class_inven
+            self.class_invent = store_datas.class_invent
             self.types = store_datas.types
             self.instores = store_datas.instores
 
@@ -1135,7 +1137,7 @@ class Inventorys(models.Model):
             self.upc = store_datas.upc
             self.sequence = store_datas.sequence
             self.deptart = store_datas.deptart
-            self.class_inven = store_datas.class_inven
+            self.class_invent = store_datas.class_invent
             self.types = store_datas.types
             self.instores = store_datas.instores
             self.prime_vede = store_datas.prime_vede
@@ -1156,13 +1158,13 @@ class Inventorys(models.Model):
         self.upc = company_onchange_data.upc
         self.sequence = company_onchange_data.sequence
         self.deptart = company_onchange_data.deptart
-        self.class_inven = company_onchange_data.class_inven
+        self.class_invent = company_onchange_data.class_invent
         self.types = company_onchange_data.types
         self.instores = company_onchange_data.instores
         self.prime_vede = company_onchange_data.prime_vede
         self.mfg_vende = company_onchange_data.mfg_vende
         self.company_id = company_onchange_data.company_id
-        self.class_inven = company_onchange_data.class_inven
+        self.class_invent = company_onchange_data.class_invent
         self.types = company_onchange_data.types
         self.instores = company_onchange_data.instores
 
@@ -1189,13 +1191,13 @@ class Inventorys(models.Model):
         self.upc = store_data.upc
         self.sequence = store_data.sequence
         self.deptart = store_data.deptart
-        self.class_inven = store_data.class_inven
+        self.class_invent = store_data.class_invent
         self.types = store_data.types
         self.instores = store_data.instores
         self.prime_vede = store_data.prime_vede
         self.mfg_vende = store_data.mfg_vende
         self.company_id = store_data.company_id
-        self.class_inven = store_data.class_inven
+        self.class_invent = store_data.class_invent
         self.types = store_data.types
         self.instores = store_data.instores
 
