@@ -489,9 +489,9 @@ class Inventorys(models.Model):
 
     @api.constrains('weight', 'purch_conv_factor', 'purch_decimal_pi')
     def validate_con_stocking_five_digit(self):
-        if self.weight:
-            val = "Weight"
-            self.validate_float_five(self.weight, val)
+        # if self.weight:
+        #     val = "Weight"
+        #     self.validate_float_five(self.weight, val)
         if self.purch_conv_factor:
             val = "*Purch Conv Factor"
             self.validate_float_five(self.purch_conv_factor, val)
@@ -503,9 +503,9 @@ class Inventorys(models.Model):
 
     @api.onchange('weight', 'purch_conv_factor', 'purch_decimal_pi')
     def validate_oc_stocking_five_digit(self):
-        if self.weight:
-            val = "Weight"
-            self.validate_float_five(self.weight, val)
+        # if self.weight:
+        #     val = "Weight"
+        #     self.validate_float_five(self.weight, val)
         if self.purch_conv_factor:
             val = "*Purch Conv Factor"
             self.validate_float_five(self.purch_conv_factor, val)
@@ -1337,3 +1337,8 @@ class MfgVendor(models.Model):
     #             name = rec.name
     #         result.append((rec.id, name))
     #     return result
+
+class Stockrecrules(models.Model):
+    _inherit = "stock.warehouse.orderpoint"
+
+    department_id = fields.Many2one('hr.department', ondelete='restrict', index=True,string="Dept" )

@@ -877,9 +877,9 @@
                                     <div style="margin-left:10px;margin-bottom:129px;">
                                         <label for="qty_available" string="Qty On Hand" style="width:40%;"/>
                                         <field name="qty_available" style="width:40%;" />
-                                        <label for="load_retail" string="Retail" style="width:40%;"/>
+                                        <label for="load_retail" string="List" style="width:40%;"/>
                                         <field name="load_retail" style="width:40%;"/>
-                                        <label for="list_price" string="List" style="width:40%;"/>
+                                        <label for="list_price" string="Retail" style="width:40%;"/>
                                         <field name="list_price" style="width:40%;"  />
                                         <label for="load_repl_cost" string="Repl Cost" style="width:40%;"/>
                                         <field name="load_repl_cost" style="width:40%;" />
@@ -967,8 +967,8 @@
                                         </div>
                                         <label for="load_min_of_std_pack" string="Min # of Std Pkgs" style="width:54%;"/>
                                         <field name="load_min_of_std_pack"  style="width:40%;" />
-                                        <label for="load_secondary_vend" string="Secondary Vend" style="width:54%;"/>
-                                        <field name="load_secondary_vend"  style="width:40%;" />
+                                        <label for="secondary_vends" string="Secondary Vend" style="width:54%;"/>
+                                        <field name="secondary_vends"  style="width:40%;" domain="[('supplier_rank', '=', 1)]"/>
                                         <label for="load_vend_stk" string="Vend Stk #" style="width:54%;"/>
                                         <field name="load_vend_stk"  style="width:40%;"  />
                                         <label for="prime_vend_history" string="Prime Vend" style="width:54%;"/>

@@ -31,6 +31,7 @@
         'views/receiving_po_new.xml',
         # 'reports/Receiving_Products.xml',
         'reports/inventory_transfer.xml',
+        'views/recrules.xml',
 
 
     ],
