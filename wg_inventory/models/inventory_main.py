@@ -12,6 +12,19 @@ class Inventorys(models.Model):
     desc = fields.Char('Desc')
     mfg = fields.Many2many('wg.mfg.vendor', string='Mfg#', compute="_get_mfg", store=True)
     mfg_ven = fields.Text('Mfg#', compute="_combine_mfg_vendor")
+    list_price = fields.Float(
+        'Sales Price', default=1.0,compute="_compute_list_price",
+        digits='Product Price',
+        help="Price at which the product is sold to customers.",
+    )
+
+    @api.depends('reail')
+    def _compute_list_price(self):
+        for rec in self:
+            if rec.reail:
+                rec.list_price = rec.reail
+            else:
+                rec.list_price = ''
 
     @api.depends('seller_ids')
     def _get_mfg(self):

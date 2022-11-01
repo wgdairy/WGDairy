@@ -877,10 +877,10 @@
                                     <div style="margin-left:10px;margin-bottom:129px;">
                                         <label for="qty_available" string="Qty On Hand" style="width:40%;"/>
                                         <field name="qty_available" style="width:40%;" />
-                                        <label for="load_retail" string="List" style="width:40%;"/>
-                                        <field name="load_retail" style="width:40%;"/>
-                                        <label for="list_price" string="Retail" style="width:40%;"/>
-                                        <field name="list_price" style="width:40%;"  />
+                                        <!-- <label for="load_retail" string="List" style="width:40%;"/> -->
+                                        <field name="load_retail" style="width:40%;" invisible="1"/>
+                                        <!-- <label for="list_price" string="Retail" style="width:40%;"/> -->
+                                        <field name="list_price" style="width:40%;"  invisible="1"/>
                                         <label for="load_repl_cost" string="Repl Cost" style="width:40%;"/>
                                         <field name="load_repl_cost" style="width:40%;" />
                                         <label for="mfg_cost" string="Mfg Cost" style="width:40%;"/>
