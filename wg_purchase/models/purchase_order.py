@@ -233,7 +233,7 @@ class wg_po(models.Model):
         ex_cost = 0
         for rec in self:
 
-            ex_cost = rec.product_qty * rec.price_unit
+            ex_cost = rec.product_qty * rec.cost_stk
             rec.Ext_Cost = float(ex_cost)
 
 
