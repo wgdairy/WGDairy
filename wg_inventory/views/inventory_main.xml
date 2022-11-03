@@ -529,8 +529,8 @@
 
                                 <label for="seas_promo" string="Seas Promo" style="width:55%;"/>
                                 <field name="seas_promo" style="width:40%;" />
-                                <label for="catalog_pg" string="Catalog Pg #" style="width:55%;"/>
-                                <field name="catalog_pg" style="width:40%;" />
+                                <label for="load_cataloh_pg" string="Catalog Pg #" style="width:55%;"/>
+                                <field name="load_cataloh_pg" style="width:40%;" />
                                 <label for="keep_sale_history"  string="Keep Sale History?" style="width:55%;"/>
                                 <field name="keep_sale_history" style="width:40%;" />
                                 <label for="keep_promo_history" string="Keep Promo History?" style="width:55%;"/>
@@ -722,8 +722,8 @@
                                     <field name="sale_units" style="width:40%;" />
                                     <label for="sale" string="Sales $" style="width:50%;"/>
                                     <field name="sale" style="width:40%;" />
-                                    <label for="repl_cost" string="Repl Cost" style="width:50%;"/>
-                                    <field name="repl_cost" style="width:40%;" />
+                                    <label for="repl_cost_hist" string="Repl Cost" style="width:50%;"/>
+                                    <field name="repl_cost_hist" style="width:40%;" />
                                     <label for="avg_cost" string="Avg Cost" style="width:50%;"/>
                                     <field name="avg_cost" style="width:40%;" />
                                     <label for="gross_pro" string="Gross Prof $" style="width:50%;"/>

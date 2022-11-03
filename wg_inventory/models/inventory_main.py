@@ -277,7 +277,8 @@ class Inventorys(models.Model):
     turns = fields.Float()
     his_future_order = fields.Char('Future Order')
     his_order_multiple = fields.Float('Order Multiple')
-    his_popularity_code = fields.Selection([('y', 'Y'), ('n', 'N'), ])
+    his_popularity_code = fields.Selection([('a', 'A'), ('b', 'B'),('c', 'C'), ('d', 'D'),('x', 'X'), ])
+
 
     # last year
     last_year_sale_unit = fields.Char(compute='total_sale_last_year', )
@@ -396,6 +397,7 @@ class Inventorys(models.Model):
     decimal_place = fields.Float()
     conversion = fields.Float()
     repl_cost = fields.Float()
+    repl_cost_hist = fields.Float()
     mfg_cost = fields.Float()
     avg_cost_pricing = fields.Float()
     mkt_cost = fields.Float()
