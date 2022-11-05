@@ -20,7 +20,7 @@ class Stockmov(models.Model):
     Variance = fields.Float(string="Variance(Stk)", compute='_cal_variance')
     Varaiance_Pur = fields.Float(string="Varaiance(Pur)")
     Qty_Being_Recvd_Pur = fields.Float(string="Qty Being Recvd(Pur)")
-    Cost_Pur = fields.Float(string="Cost(Pur)")
+    Cost_Pur = fields.Float(string="Cost(Pur)",compute='_cal_cost_po_line',readonly=False,)
     QOO_Ext_Cost = fields.Float(string="QOO Ext Cost", compute='_cal_cost')
     Added_in_Receiving = fields.Selection([('yes', 'YES'), ('no', 'NO'), ], string="Added in Receiving")
     ERP_d = fields.Selection([('yes', 'YES'), ('no', 'NO'), ], string="ERP d")
@@ -38,6 +38,14 @@ class Stockmov(models.Model):
 
         self.description_picking = onc_sku.desc
 
+
+    @api.onchange('product_id')
+    def _cal_cost_po_line(self):
+        onc_cost = self.env['purchase.order.line'].search([('order_id.name', '=', self.picking_id.origin)])
+        for r in onc_cost:
+            for i in self:
+                if r.product_id == i.product_id:
+                    i.Cost_Pur = r.cost_stk
 
     @api.depends('Cost_Pur', 'product_uom_qty')
     def _cal_cost(self):

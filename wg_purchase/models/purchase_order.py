@@ -228,7 +228,7 @@ class wg_po(models.Model):
         self.load_retail = float(onc_sku.load_retail)
         self.price_unit = onc_sku.list_price
 
-    @api.depends('product_qty','price_unit',)
+    @api.depends('product_qty','cost_stk')
     def _compute_extcost(self):
         ex_cost = 0
         for rec in self:
