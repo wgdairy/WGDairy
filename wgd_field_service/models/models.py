@@ -20,9 +20,10 @@
 
 #access_wgd_field_service_wgd_field_service,wgd_field_service.wgd_field_service,model_wgd_field_service_wgd_field_service,base.group_user,1,1,1,1
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
 from collections import defaultdict
+from odoo.tools.misc import format_date
 
 class TripsTolls(models.Model):
     _name = 'trips.tolls'
@@ -292,3 +293,146 @@ class SaleOrderFieldServiceInherit(models.Model):
             'country_id':self.country_id.id,
         }
         return invoice_vals
+
+class AccountingReportInherit(models.AbstractModel):
+    _inherit = 'account.aged.partner'
+
+    @api.model
+    def _get_column_details(self, options):
+        columns = [
+            self._header_column(),
+            self._field_column('report_date'),
+
+            self._field_column('account_name', name=_("Account"), ellipsis=True),
+            self._field_column('expected_pay_date'),
+            self._field_column('period0', name=_("Current")),
+            self._field_column('period1', sortable=True),
+            self._field_column('period2', sortable=True),
+            self._field_column('period3', sortable=True),
+            self._field_column('period4',name=_("90+"), sortable=True),
+            self._field_column('period5', sortable=True),
+            self._custom_column(  # Avoid doing twice the sub-select in the view
+                name=_('Total'),
+                classes=['number'],
+                formatter=self.format_value,
+                getter=(lambda v: v['period0'] + v['period1'] + v['period2'] + v['period3'] + v['period4'] + v['period5']),
+                sortable=True,
+            ),
+        ]
+
+        if self.user_has_groups('base.group_multi_currency'):
+            columns[2:2] = [
+                self._field_column('amount_currency'),
+                self._field_column('currency_id'),
+            ]
+        return columns
+
+    def _format_partner_id_line(self, res, value_dict, options):
+        res['name'] = value_dict['partner_name'][:128] if value_dict['partner_name'] else _('Unknown Partner')
+        res['trust'] = value_dict['partner_trust']
+        partner = self.env['res.partner'].browse(res['partner_id'])
+        res['customer_id'] = partner.customer_id
+
+
+class PartnerLedgerReport(models.AbstractModel):
+    _inherit = "account.partner.ledger"
+
+    @api.model
+    def _get_report_line_total(self, options, initial_balance, debit, credit, balance):
+        columns = [
+            # {'name': self.format_value(initial_balance), 'class': 'number'},
+            {'name': self.format_value(debit), 'class': 'number'},
+            {'name': self.format_value(credit), 'class': 'number'},
+        ]
+        if self.user_has_groups('base.group_multi_currency'):
+            columns.append({'name': ''})
+        columns.append({'name': self.format_value(balance), 'class': 'number'})
+        return {
+            'id': 'partner_ledger_total_%s' % self.env.company.id,
+            'name': _('Total'),
+            'class': 'total',
+            'level': 1,
+            'columns': columns,
+            'colspan': 6,
+        }
+
+    @api.model
+    def _get_report_line_move_line(self, options, partner, aml, cumulated_init_balance, cumulated_balance):
+        if aml['payment_id']:
+            caret_type = 'account.payment'
+        else:
+            caret_type = 'account.move'
+
+        date_maturity = aml['date_maturity'] and format_date(self.env, fields.Date.from_string(aml['date_maturity']))
+        columns = [
+            {'name': aml['journal_code']},
+            {'name': aml['account_code']},
+            {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'class': 'o_account_report_line_ellipsis'},
+            {'name': date_maturity or '', 'class': 'date'},
+            {'name': aml['matching_number'] or ''},
+            # {'name': self.format_value(cumulated_init_balance), 'class': 'number'},
+            {'name': self.format_value(aml['debit'], blank_if_zero=True), 'class': 'number'},
+            {'name': self.format_value(aml['credit'], blank_if_zero=True), 'class': 'number'},
+        ]
+        if self.user_has_groups('base.group_multi_currency'):
+            if aml['currency_id']:
+                currency = self.env['res.currency'].browse(aml['currency_id'])
+                formatted_amount = self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True)
+                columns.append({'name': formatted_amount, 'class': 'number'})
+            else:
+                columns.append({'name': ''})
+        columns.append({'name': self.format_value(cumulated_balance), 'class': 'number'})
+        return {
+            'id': aml['id'],
+            'parent_id': 'partner_%s' % (partner.id if partner else 0),
+            'name': format_date(self.env, aml['date']),
+            'class': 'text' + aml.get('class', ''),  # do not format as date to prevent text centering
+            'columns': columns,
+            'caret_options': caret_type,
+            'level': 2,
+        }
+
+    @api.model
+    def _get_report_line_partner(self, options, partner, initial_balance, debit, credit, balance):
+        company_currency = self.env.company.currency_id
+        unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
+
+        columns = [
+            # {'name': self.format_value(initial_balance), 'class': 'number'},
+            {'name': '', 'class': 'number'},
+            {'name': '', 'class': 'number'},
+        ]
+        if self.user_has_groups('base.group_multi_currency'):
+            columns.append({'name': ''})
+        columns.append({'name': self.format_value(initial_balance), 'class': 'number'})
+
+        return {
+            'id': 'partner_%s' % (partner.id if partner else 0),
+            'partner_id': partner.id if partner else None,
+            'name': partner is not None and (partner.name or '')[:128] or _('Unknown Partner'),
+            'columns': columns,
+            'level': 2,
+            'trust': partner.trust if partner else None,
+            'unfoldable': not company_currency.is_zero(debit) or not company_currency.is_zero(credit),
+            'unfolded': 'partner_%s' % (partner.id if partner else 0) in options['unfolded_lines'] or unfold_all,
+            'colspan': 6,
+        }
+
+    def _get_columns_name(self, options):
+        columns = [
+            {},
+            {'name': _('JRNL')},
+            {'name': _('Account')},
+            {'name': _('Ref')},
+            {'name': _('Due Date'), 'class': 'date'},
+            {'name': _('Matching Number')},
+            {'name': _('Initial Balance'), 'class': 'number','pl_report':True},
+            {'name': _('Debit'), 'class': 'number'},
+            {'name': _('Credit'), 'class': 'number'}]
+
+        if self.user_has_groups('base.group_multi_currency'):
+            columns.append({'name': _('Amount Currency'), 'class': 'number'})
+
+        columns.append({'name': _('Balance'), 'class': 'number'})
+
+        return columns

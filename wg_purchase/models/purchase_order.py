@@ -212,7 +212,8 @@ class wg_po(models.Model):
             onc_cost = self.env['product.template'].search(
             [('name', '=', rec.product_id.name), ('id', '=', rec.product_id.product_tmpl_id.id)],limit=1)
 
-            rec.cost_stk = onc_cost.list
+            # rec.cost_stk = onc_cost.list
+            rec.cost_stk = onc_cost.avg_cost_pricing
 
 
     @api.onchange('product_id')
