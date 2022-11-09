@@ -226,7 +226,7 @@ class wg_po(models.Model):
 
         self.dept = onc_sku.deptart
         # self.price_unit = onc_sku.list_price
-        self.load_retail = float(onc_sku.load_retail)
+
         self.price_unit = onc_sku.list_price
 
     @api.depends('product_qty','cost_stk')
