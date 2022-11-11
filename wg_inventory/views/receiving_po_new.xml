@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="Receiving_product_new" model="ir.ui.view">
+            <field name="name">stock.picking.forms</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_type_id']" position="before">
+                    <field name="origin" position="move"></field>
+                    <field name="company_id" string="Store"></field>
+                    <field name="BkOrd" ></field>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <label for="partner_id" string="Vendor" style="width:80px !important;" />
+                        <field name="partner_id" position="move" style="margin-left:-15px;" domain="[('supplier_rank', '=', 1)]" />
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="attributes">
+                    <attribute name="string">PO</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_deadline']" position="attributes">
+                    <attribute name="string">Due Date</attribute>
+                </xpath>
+                <xpath expr="//div[@class='o_td_label']" position="attributes">
+
+                    <attribute name="invisible">True</attribute>
+
+                </xpath>
+
+                <xpath expr="//field[@name='date_deadline']" position="after">
+                    <field name="orig_stk_unit" />
+                    <field name="orig_stk_cost" />
+                    <field name="orig_stk_weight" />
+
+                </xpath>
+
+                <xpath expr="//field[@name='move_ids_without_package']" position="attributes">
+                    <attribute name="class">res_po_line</attribute>
+                </xpath>
+
+                                <xpath expr="//field[@name='move_ids_without_package']" position="inside">
+                    <field name="move_ids_without_package" >
+                        <tree editable="bottom">
+                        <field name="company_id" invisible="1"/>
+                        <field name="state" />
+<!--                        <field name="ln" />-->
+                        <field name="location_id" string="Loc"  />
+                        <field name="product_id" string="SKU" />
+                        <field name="description_picking" string="Description" />
+                        <field name="QOH" />
+                        <field name="product_uom_qty" string="QOO(Pur)" />
+                        <field name="product_uom" position="move"  /> <!--string="U/M(Pur)"-->
+                            <field name="product_uom_category_id" invisible="1"/>
+                        <field name="quantity_done" string="Qty Being Recvd(Stk)"/>
+                        <field name="Variance" />
+                        <field name="Varaiance_Pur" invisible="1" />
+                        <field name="Qty_Being_Recvd_Pur" invisible="1"/>
+                        <field name="Cost_Pur" />
+                        <field name="QOO_Ext_Cost" />
+<!--                        <field name="Added_in_Receiving" />-->
+<!--                            <field name="ERP_d" />-->
+<!--                        <field name="ERP_d_Qty" />-->
+                        <field name="Total_Qty_Received" />
+                        <field name="Total_Qty_Rejected" />
+                        <field name="Reject_Reasons" />
+                            <field name="picking_type_id" invisible="1"/>
+                             <field name="location_dest_id" invisible="1" />
+
+
+                        </tree>
+
+                    </field>
+                </xpath>
+
+                <xpath expr="//page[@name='extra']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='note']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+<!--                <xpath expr="//notebook" position="after">-->
+
+<!--                        <div class="row" col="4" style="width:100%;">-->
+
+<!--                            <div style="padding:2% !important;width:25%;">-->
+<!--                                <label for="line" string="Line" style="width:15%;"/>-->
+<!--                                <field name="line" style="width:40%;"/>-->
+<!--                                <br/>-->
+<!--                                <label for="sku_pur" string="SKU" style="width:15%;"/>-->
+<!--                                <field name="sku_pur" style="width:40%;"/>-->
+<!--                                <br/>-->
+<!--                                <label for="company_id" string="Store" style="width:15%;"/>-->
+<!--                                <field name="company_id" style="width:40%;"/>-->
+
+<!--                            </div>-->
+<!--                            <div style="padding:2% !important;width:25%;">-->
+<!--                                <label for="descri" string="Description" style="width:30%;"/>-->
+<!--                                <field name="descri" style="width:40%;"/>-->
+<!--                                <br/>-->
+<!--                                <label for="qoo" string="QOO" style="width:30%;"/>-->
+<!--                                <field name="qoo" style="width:40%;"/>-->
+<!--                                <br/>-->
+<!--                                <label for="qoh" string="QOH" style="width:30%;"/>-->
+<!--                                <field name="qoh" style="width:40%;"/>-->
+<!--                            </div>-->
+<!--                            <div style="padding:2% !important;width:50%;">-->
+<!--                                <div class="row" col="3" style="width:100%;">-->
+<!--                                    <div style="padding:1% !important;width:40%;">-->
+<!--                                        <br />-->
+<!--                                        <label for="received_stk" string="Received(Stk)" style="width:50%;"/>-->
+<!--                                        <field name="received_stk" style="width:40%;"/>-->
+<!--                                        <br/>-->
+<!--                                        <label for="received_pur" string="Received(Pur)" style="width:50%;"/>-->
+<!--                                        <field name="received_pur" style="width:40%;"/>-->
+<!--                                        <br/>-->
+<!--                                    </div>-->
+<!--                                    <div style="padding:1% !important;width:40%;">-->
+<!--                                        <br />-->
+<!--                                        <label for="cost_stk" string="Cost(Stk)" style="width:35%;"/>-->
+<!--                                        <field name="cost_stk" style="width:40%;"/>-->
+<!--                                        <br/>-->
+<!--                                        <label for="cost_pur" string="Cost(Pur)" style="width:35%;"/>-->
+<!--                                        <field name="cost_pur" style="width:40%;"/>-->
+<!--                                        <br/>-->
+<!--                                    </div>-->
+
+
+<!--                                    <div style="padding:2% !important;width:20%;">-->
+<!--                                        <br />-->
+<!--                                        <br />-->
+<!--                                        <label for="retail" string="Retail" style="width:50%;"/>-->
+<!--                                        <field name="retail" style="width:40%;"/>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                            </div>-->
+
+<!--                        </div>-->
+
+
+<!--                </xpath>-->
+
+
+
+            </field>
+        </record>
+
+    </data>
+</odoo>
