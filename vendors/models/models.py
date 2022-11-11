@@ -983,6 +983,11 @@ class VendorContact(models.Model):
     #     return result
 
     def name_get(self):
+        '''
+            For get many2one filed of same model with id and name 
+            for filter by name and filter by id fields
+            by using the hide_code context filter name and id in xml part
+        '''
         result = []
         for rec in self:
             if self.env.context.get('hide_code'):
@@ -1304,6 +1309,9 @@ class VendorContact(models.Model):
     def _smart_button(self):
         '''
             Fetch invoice details from aged recivable 
+            where the invoice type are out_invoice and out_refund, 
+            state must be posted and invoice date date must be greater than todays date
+            then we filter the invoice by comparing todays date and due date
         '''
         current_date    = date.today()
         customer_invoices = self.env['account.move'].search([('move_type', '=', 'out_invoice'),('partner_id', '=', self.id),('state', '=', 'posted'),('invoice_date', '<=', current_date)])
@@ -1400,6 +1408,9 @@ class VendorContact(models.Model):
     #         return res
 
     def validate_float(self, float_value, val):
+        '''
+            To raise the validation base on float and integer field limit. 
+        '''
         if float_value:
             if val == "Period GP %" or val == "Last Year GP":
                 if len(str(float_value)) > 6:
@@ -1415,6 +1426,9 @@ class VendorContact(models.Model):
             'last_year_gp_fin_chrgs','year_to_date_returns','year_to_date_transaction',
             'customer_sales_summary','period_to_date_gp','last_year_gp','amount_last_pay','monthly_payment')
     def validate_con_qut_on_hant(self):
+        '''
+            check the field and call the function for raise validation for fcheck float field validation
+        '''
         if self.credit_limit:
             val = "Credit Limit"
             self.validate_float(self.credit_limit,val)

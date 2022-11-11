@@ -32,6 +32,7 @@ class wg_po(models.Model):
     ven_zip = fields.Char()
     ven_country_id = fields.Many2one("res.country", help='Exportable')
     ven_state = fields.Many2one("res.country.state", ondelete='restrict', help='Exportable')
+    ven_state_ids = fields.Many2one("res.country.state", ondelete='restrict', help='Exportable')
     ven_phone = fields.Char()
     ven_fax = fields.Char()
 
@@ -112,20 +113,20 @@ class wg_po(models.Model):
     @api.onchange('partner_id')
     def _onchange_sku(self):
 
-        onc_ve_fa = self.env['wgd.vendors'].search(
-            [('partner_id', '=', self.partner_id.id)])
+        # onc_ve_fa = self.env['wgd.vendors'].search(
+        #     [('partner_id', '=', self.partner_id.id)])
         onc_vend = self.env['res.partner'].search(
             [('name', '=', self.partner_id.name), ('id', '=', self.partner_id.id)])
 
         self.ven_street = onc_vend.street
         self.ven_street2 = onc_vend.street2
         self.ven_city = onc_vend.city
-        self.ven_state_id = onc_vend.state_id
+        self.ven_state_ids = onc_vend.state_id.id
         self.ven_zip = onc_vend.zip
-        self.ven_country_id = onc_vend.country_id
-        self.ven_phone = onc_ve_fa.phone
-        self.ven_fax = onc_ve_fa.fax
-        self.Store_ids = onc_ve_fa.company_id
+        self.ven_country_id = onc_vend.state_id.country_id.id
+        self.ven_phone = onc_vend.phone
+        self.ven_fax = onc_vend.fax
+        self.Store_ids = onc_vend.company_id
 
 
     def _bak_order(self):
@@ -184,7 +185,7 @@ class wg_po(models.Model):
     qty_available = fields.Float()
     # product_qty = fields.Float()
     # list_price = fields.Float()
-    load_retail = fields.Float(related='product_id.product_tmpl_id.load_retail',readonly=False,)
+    load_retail = fields.Float(related='product_id.product_tmpl_id.reail',readonly=False,)
     order_point = fields.Float(related='product_id.product_tmpl_id.order_point')
     UM_Pur = fields.Many2one('uom.uom', ondelete='restrict', index=True, )
     min_op = fields.Float(related='product_id.product_tmpl_id.reordering_min_qty')
@@ -211,7 +212,8 @@ class wg_po(models.Model):
             onc_cost = self.env['product.template'].search(
             [('name', '=', rec.product_id.name), ('id', '=', rec.product_id.product_tmpl_id.id)],limit=1)
 
-            rec.cost_stk = onc_cost.list_price
+            # rec.cost_stk = onc_cost.list
+            rec.cost_stk = onc_cost.avg_cost_pricing
 
 
     @api.onchange('product_id')
@@ -224,15 +226,15 @@ class wg_po(models.Model):
 
         self.dept = onc_sku.deptart
         # self.price_unit = onc_sku.list_price
-        self.load_retail = float(onc_sku.load_retail)
+
         self.price_unit = onc_sku.list_price
 
-    @api.depends('product_qty','price_unit',)
+    @api.depends('product_qty','cost_stk')
     def _compute_extcost(self):
         ex_cost = 0
         for rec in self:
 
-            ex_cost = rec.product_qty * rec.price_unit
+            ex_cost = rec.product_qty * rec.cost_stk
             rec.Ext_Cost = float(ex_cost)
 
 

@@ -73,14 +73,16 @@
                         </div>
                     </div>
                 <div class="row" col="4" style="width:100%;">
-                        <div style="padding:10px; !important;width:20%;">
-                                <label for="name" string="SKU" style="width:18%;margin-bottom: -15px;"/>
-                                <field name="name" style="width:50%;margin-bottom: -15px;"></field>
+                        <div style="padding:10px; !important;width:35%;">
+                                <label for="name" string="Name" style="width:10%;margin-bottom: -15px;"/>
+                                <field name="name" style="width:60%;margin-bottom: -15px;"></field>
                             </div>
 
-                            <div style="padding:10px; !important;width:39%;">
-                                <label for="desc" string="Desc" style="width:10%;margin-bottom: -15px;"/>
-                                <field  name="desc" style="width:80%;margin-bottom: -15px;"/>
+                            <div style="padding:10px; !important;width:26%;">
+                                <label for="sku" string="SKU" style="width:10%;margin-bottom: -15px;"/>
+                                <field  name="sku" style="width:40%;margin-bottom: -15px;"/>
+<!--                                <label for="desc" string="Desc" style="width:10%;margin-bottom: -15px;"/>-->
+<!--                                <field  name="desc" style="width:80%;margin-bottom: -15px;" invisible="1"/>-->
                             </div>
                             <div style="padding:10px; !important;width:12%;">
                                 <label for="types" string="Type" style="width:25%;margin-bottom: -15px;"/>
@@ -106,12 +108,12 @@
                                 <field  name="upc" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
                             <div style="padding:10px; !important;width:20%;">
-                                <label for="sequence" string="Sequence" style="width:35%;margin-bottom: -15px;"/>
+                                <label for="sequence" string="Sequence" style="width:25%;margin-bottom: -15px;"/>
                                 <field  name="sequence" style="width:50%;margin-top: -15px;"/><br/>
                             </div>
 
                             <div style="padding:10px; !important;width:20%;">
-                                <label for="instores" string="In Stores" style="width:45%;margin-bottom: -15px;padding:5px;"/>
+                                <label for="instores" string="In Stores" style="width:25%;margin-bottom: -15px;padding:5px;"/>
                                 <field name="instores" style="width:50%;margin-top: -15px;" widget="many2many_tags"/><br/>
                             </div>
                         </div>
@@ -131,7 +133,7 @@
 <!--                            </div>-->
 
                             <div style="padding:10px; !important;width:20%;">
-                                <label for="prime_vede" string="Prime Vend" style="width:40%;margin-bottom: -15px;"/>
+                                <label for="prime_vede" string="Prime Vend" style="width:30%;margin-bottom: -15px;"/>
                                 <field name="prime_vede" style="width:50%;margin-top: -15px;" domain="[('supplier_rank', '=', 1)]" context="{'default_supplier_rank' : 1}" /><br/>
                             </div>
                                 <div style="padding:10px; !important;width:20%;">
@@ -529,8 +531,8 @@
 
                                 <label for="seas_promo" string="Seas Promo" style="width:55%;"/>
                                 <field name="seas_promo" style="width:40%;" />
-                                <label for="catalog_pg" string="Catalog Pg #" style="width:55%;"/>
-                                <field name="catalog_pg" style="width:40%;" />
+                                <label for="load_cataloh_pg" string="Catalog Pg #" style="width:55%;"/>
+                                <field name="load_cataloh_pg" style="width:40%;" />
                                 <label for="keep_sale_history"  string="Keep Sale History?" style="width:55%;"/>
                                 <field name="keep_sale_history" style="width:40%;" />
                                 <label for="keep_promo_history" string="Keep Promo History?" style="width:55%;"/>
@@ -722,8 +724,8 @@
                                     <field name="sale_units" style="width:40%;" />
                                     <label for="sale" string="Sales $" style="width:50%;"/>
                                     <field name="sale" style="width:40%;" />
-                                    <label for="repl_cost" string="Repl Cost" style="width:50%;"/>
-                                    <field name="repl_cost" style="width:40%;" />
+                                    <label for="repl_cost_hist" string="Repl Cost" style="width:50%;"/>
+                                    <field name="repl_cost_hist" style="width:40%;" />
                                     <label for="avg_cost" string="Avg Cost" style="width:50%;"/>
                                     <field name="avg_cost" style="width:40%;" />
                                     <label for="gross_pro" string="Gross Prof $" style="width:50%;"/>
@@ -877,10 +879,10 @@
                                     <div style="margin-left:10px;margin-bottom:129px;">
                                         <label for="qty_available" string="Qty On Hand" style="width:40%;"/>
                                         <field name="qty_available" style="width:40%;" />
-                                        <label for="load_retail" string="List" style="width:40%;"/>
-                                        <field name="load_retail" style="width:40%;"/>
-                                        <label for="list_price" string="Retail" style="width:40%;"/>
-                                        <field name="list_price" style="width:40%;"  />
+                                        <!-- <label for="load_retail" string="List" style="width:40%;"/> -->
+                                        <field name="load_retail" style="width:40%;" invisible="1"/>
+                                        <!-- <label for="list_price" string="Retail" style="width:40%;"/> -->
+                                        <field name="list_price" style="width:40%;"  invisible="1"/>
                                         <label for="load_repl_cost" string="Repl Cost" style="width:40%;"/>
                                         <field name="load_repl_cost" style="width:40%;" />
                                         <label for="mfg_cost" string="Mfg Cost" style="width:40%;"/>
@@ -1173,7 +1175,8 @@
       <field name="arch" type="xml">
         <xpath expr="//search" position="replace">
             <search>
-                <field name="name" string="SKU" filter_domain="[('name','=ilike',self)]"/>
+                <field name="name" string="Name" filter_domain="[('name','=ilike',self)]"/>
+                <field name="sku" string="SKU" filter_domain="[('sku','=ilike',self)]"/>
                 <field name="deptart" string="Department" />
                 <field name="types" string="Type" />
                 <field name="mfg" string="Manufacturer" filter_domain="[('mfg','=ilike',self)]"/>
