@@ -1179,14 +1179,11 @@
       <field name="arch" type="xml">
         <xpath expr="//search" position="replace">
             <search>
-<<<<<<< HEAD
-                <field name="name" string="Name" filter_domain="[('name','=ilike',self)]"/>
-                <field name="sku" string="SKU" filter_domain="[('sku','=ilike',self)]"/>
-=======
+
                 <field name="sku" string="SKU" filter_domain="[('sku','=ilike',self)]"/>
                 <field name="name" string="Description" filter_domain="[('name','=ilike',self)]"/>
                 <field name="company_id" string="Store" filter_domain="[('company_id','=ilike',self)]"/>
->>>>>>> b0cf34985dde2284bb796cb1b4031684e0f122b4
+
                 <field name="deptart" string="Department" />
                 <field name="sequence" string="Sequence" filter_domain="[('sequence','=ilike',self)]"/>
                 <field name="upc" string="UPC" filter_domain="[('upc','=ilike',self)]"/>
