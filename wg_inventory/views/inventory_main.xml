@@ -134,15 +134,11 @@
 <!--                                <field  name="fineline" style="width:50%;margin-top: -15px;"/><br/>-->
 <!--                            </div>-->
 
-<<<<<<< HEAD
-                            <div style="padding:10px; !important;width:20%;">
-                                <label for="prime_vede" string="Prime Vend" style="width:30%;margin-bottom: -15px;"/>
-                                <field name="prime_vede" style="width:50%;margin-top: -15px;" domain="[('supplier_rank', '=', 1)]" context="{'default_supplier_rank' : 1}" /><br/>
-=======
+
                             <div style="padding:10px; !important;width:26%;">
                                 <label for="prime_vede" string="Prime Vend" style="width:18%;margin-bottom: -15px;"/>
                                 <field name="prime_vede" style="width:32%;margin-top: -15px;" domain="[('supplier_rank', '=', 1)]" context="{'default_supplier_rank' : 1}" /><br/>
->>>>>>> b0cf34985dde2284bb796cb1b4031684e0f122b4
+
                             </div>
                                 <div style="padding:10px; !important;width:20%;">
                                 <label for="mfg_vende" string="Mfg Vend" style="width:35%;margin-bottom: -15px;"/>
