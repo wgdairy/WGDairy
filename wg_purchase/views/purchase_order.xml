@@ -82,7 +82,7 @@
                                         <field name="ven_street" placeholder="Street ..." class="o_address_street"/>
                                         <field name="ven_street2" placeholder="Street2..." class="o_address_street" />
                                         <field name="ven_city" placeholder="City" class="o_address_city" />
-                                        <field name="ven_state" class="o_address_state" placeholder="State" domain="[('country_id','ilike','United States')]"/>
+                                        <field name="ven_state_ids" class="o_address_state" placeholder="State" domain="[('country_id','ilike','United States')]"/>
                                         <field name="ven_zip" placeholder="ZIP" class="o_address_zip" />
                                         <field  name="ven_country_id" class="o_address_street"/>
                                     </div>
@@ -94,7 +94,7 @@
                             <field name="Reference" style="width:60%"/><br />
                             <label for="Alt_po" string="Alt po"  style="width:30%;"/>
                             <field name="Alt_po" style="width:60%" /><br />
-                            <label for="BkOrds" string="BkOrds" style="width:30%;" />
+                            <label for="BkOrds" string="BkOrd'd" style="width:30%;" />
                             <field name="BkOrds" style="width:50%"/><br />
                             <label for="Order_Type" string="Order Type" style="width:30%;" />
                             <field name="Order_Type" style="width:15%;margin-bottom:20px;"  /><br />
@@ -117,7 +117,7 @@
                                         <field name="ship_street2" placeholder="Street 2..." class="o_address_street" />
                                         <field name="ship_city" placeholder="City" class="o_address_city" />
                                         <field name="ship_state_id" class="o_address_state" placeholder="State" domain="[('country_id','ilike','United States')]" />
-                                        <field name="ven_zip" placeholder="ZIP" class="o_address_zip" />
+                                        <field name="ship_zip" placeholder="ZIP" class="o_address_zip" />
                                         <field  name="ship_country_id" class="o_address_street" />
                                     </div>
 

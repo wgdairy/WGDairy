@@ -8,10 +8,23 @@ from datetime import date
 class Inventorys(models.Model):
     _inherit = "product.template"
 
-    # sku = fields.Char('SKU')
+    sku = fields.Char('SKU')
     desc = fields.Char('Desc')
     mfg = fields.Many2many('wg.mfg.vendor', string='Mfg#', compute="_get_mfg", store=True)
     mfg_ven = fields.Text('Mfg#', compute="_combine_mfg_vendor")
+    list_price = fields.Float(
+        'Sales Price', default=1.0,compute="_compute_list_price",
+        digits='Product Price',
+        help="Price at which the product is sold to customers.",
+    )
+
+    @api.depends('reail')
+    def _compute_list_price(self):
+        for rec in self:
+            if rec.reail:
+                rec.list_price = rec.reail
+            else:
+                rec.list_price = ''
 
     @api.depends('seller_ids')
     def _get_mfg(self):
@@ -264,7 +277,8 @@ class Inventorys(models.Model):
     turns = fields.Float()
     his_future_order = fields.Char('Future Order')
     his_order_multiple = fields.Float('Order Multiple')
-    his_popularity_code = fields.Selection([('y', 'Y'), ('n', 'N'), ])
+    his_popularity_code = fields.Selection([('a', 'A'), ('b', 'B'),('c', 'C'), ('d', 'D'),('x', 'X'), ])
+
 
     # last year
     last_year_sale_unit = fields.Char(compute='total_sale_last_year', )
@@ -383,6 +397,7 @@ class Inventorys(models.Model):
     decimal_place = fields.Float()
     conversion = fields.Float()
     repl_cost = fields.Float()
+    repl_cost_hist = fields.Float()
     mfg_cost = fields.Float()
     avg_cost_pricing = fields.Float()
     mkt_cost = fields.Float()
@@ -489,9 +504,9 @@ class Inventorys(models.Model):
 
     @api.constrains('weight', 'purch_conv_factor', 'purch_decimal_pi')
     def validate_con_stocking_five_digit(self):
-        if self.weight:
-            val = "Weight"
-            self.validate_float_five(self.weight, val)
+        # if self.weight:
+        #     val = "Weight"
+        #     self.validate_float_five(self.weight, val)
         if self.purch_conv_factor:
             val = "*Purch Conv Factor"
             self.validate_float_five(self.purch_conv_factor, val)
@@ -503,9 +518,9 @@ class Inventorys(models.Model):
 
     @api.onchange('weight', 'purch_conv_factor', 'purch_decimal_pi')
     def validate_oc_stocking_five_digit(self):
-        if self.weight:
-            val = "Weight"
-            self.validate_float_five(self.weight, val)
+        # if self.weight:
+        #     val = "Weight"
+        #     self.validate_float_five(self.weight, val)
         if self.purch_conv_factor:
             val = "*Purch Conv Factor"
             self.validate_float_five(self.purch_conv_factor, val)
@@ -1337,3 +1352,8 @@ class MfgVendor(models.Model):
     #             name = rec.name
     #         result.append((rec.id, name))
     #     return result
+
+class Stockrecrules(models.Model):
+    _inherit = "stock.warehouse.orderpoint"
+
+    department_id = fields.Many2one('hr.department', ondelete='restrict', index=True,string="Dept" )
