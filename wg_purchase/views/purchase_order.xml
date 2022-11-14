@@ -177,7 +177,8 @@
                 <xpath expr="//field[@name='order_line']//tree/field[@name='qty_received']" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
-                <xpath expr="//field[@name='order_line']//tree/field[@name='name']" position="after">
+                <xpath expr="//field[@name='order_line']//tree/field[@name='product_id']" position="after">
+                    <field name="product_id" context="{'form_view_ref': 'wg_inventory.product_new','tree_view_ref': 'wg_inventory.product_template_tree_view'}" />
                     <field name="OM" string="OM" />
                     <field name="qty_available" string="QOH" />
                     <field name="product_qty" position="move" />
@@ -232,6 +233,53 @@
 
             </field>
         </record>
+
+        <!--product Search view-->
+
+    <record id="view_purchase_product_inherit_search" model="ir.ui.view">
+      <field name="name">purchase.product.search.inherit.searchs</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_search_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//search" position="inside">
+
+
+                <field name="name" string="Name" filter_domain="[('name','=ilike',self)]"/>
+                <field name="sku" string="SKU" filter_domain="[('sku','=ilike',self)]"/>
+                <field name="deptart" string="Department" />
+                <field name="types" string="Type" />
+                <field name="mfg" string="Manufacturer" filter_domain="[('mfg','=ilike',self)]"/>
+                <field name="upc" string="UPC" filter_domain="[('upc','=ilike',self)]"/>
+                <field name="sequence" string="Sequence" filter_domain="[('sequence','=ilike',self)]"/>
+                <field name="company_id" string="Store" filter_domain="[('company_id','=ilike',self)]"/>
+                <field name="desc" string="Desc" />
+                <field name="types" string="Type" />
+                <field name="class_invent" string="Class" />
+                <field name="fineline" string="Fineline" />
+                <field name="prime_vede" string="Prime Vend" />
+                <field name="mfg_vende" string="Mfg Vend" />
+                <field name="qty_available" string="Qty On Hand" />
+                <field name="commited_qty" string="Committed Qty" />
+                <field name="purchased_product_qty" string="Qty On Order" />
+                <field name="custbackorder" string="Cust Backorder" />
+
+        </xpath>
+
+          <xpath expr="//field[@name='name']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+                    <xpath expr="//field[@name='categ_id']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+                    <xpath expr="//field[@name='attribute_line_ids']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//field[@name='pricelist_id']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+
+      </field>
+    </record>
 
 
 

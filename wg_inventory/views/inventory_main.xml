@@ -73,18 +73,18 @@
                         </div>
                     </div>
                 <div class="row" col="4" style="width:100%;">
-                        <div style="padding:10px; !important;width:35%;">
-                                <label for="name" string="Name" style="width:10%;margin-bottom: -15px;"/>
-                                <field name="name" style="width:60%;margin-bottom: -15px;"></field>
+                        <div style="padding:10px; !important;width:29%;">
+                                <label for="name" string="Desc" style="width:9%;margin-bottom: -15px;"/>
+                                <field name="name" style="width:70%;margin-bottom: -15px;"></field>
                             </div>
 
                             <div style="padding:10px; !important;width:26%;">
-                                <label for="sku" string="SKU" style="width:10%;margin-bottom: -15px;"/>
+                                <label for="sku" string="SKU" style="width:17%;margin-bottom: -15px;"/>
                                 <field  name="sku" style="width:40%;margin-bottom: -15px;"/>
 <!--                                <label for="desc" string="Desc" style="width:10%;margin-bottom: -15px;"/>-->
 <!--                                <field  name="desc" style="width:80%;margin-bottom: -15px;" invisible="1"/>-->
                             </div>
-                            <div style="padding:10px; !important;width:12%;">
+                            <div style="padding:10px; !important;width:13%;">
                                 <label for="types" string="Type" style="width:25%;margin-bottom: -15px;"/>
                                 <field  name="types" style="width:50%;margin-bottom: -15px;"/>
                             </div>
@@ -96,20 +96,20 @@
                         </div>
 
                         <div class="row" col="4" style="width:100%;">
-                            <div style="padding:10px; !important;width:20%;">
+                            <div style="padding:10px; !important;width:13%;">
                                 <label for="mfg" string="Mfg#" style="width:18%;margin-bottom: -15px;"/>
                                 <field name="mfg" style="width:50%;margin-top: -15px;" widget="many2many_tags" invisible="1"></field>
                                 <field name="mfg_ven" style="width:50%;margin-top: -15px;vertical-align: top;"/>
                                 <br/>
                             </div>
 
-                            <div style="padding:10px; !important;width:20%;">
-                                <label for="upc" string="UPC" style="width:18%;margin-bottom: -15px;"/>
-                                <field  name="upc" style="width:50%;margin-top: -15px;"/><br/>
+                            <div style="padding:10px; !important;width:16%;">
+                                <label for="upc" string="UPC" style="width:20%;margin-bottom: -15px;"/>
+                                <field  name="upc" style="width:40%;margin-top: -15px;"/><br/>
                             </div>
-                            <div style="padding:10px; !important;width:20%;">
-                                <label for="sequence" string="Sequence" style="width:25%;margin-bottom: -15px;"/>
-                                <field  name="sequence" style="width:50%;margin-top: -15px;"/><br/>
+                            <div style="padding:10px; !important;width:26%;">
+                                <label for="sequence" string="Sequence" style="width:17%;margin-bottom: -15px;"/>
+                                <field  name="sequence" style="width:32%;margin-top: -15px;"/><br/>
                             </div>
 
                             <div style="padding:10px; !important;width:20%;">
@@ -118,23 +118,23 @@
                             </div>
                         </div>
                         <div class="row" col="5" style="width:100%;">
-                            <div style="padding:10px; !important;width:15%;">
-                                <label for="deptart" string="Dept" style="width:20%;margin-bottom: -15px;"/>
-                                <field name="deptart" style="width:55%;margin-top: -15px;" options="{'no_create_edit': True}"></field><br/>
+                            <div style="padding:10px; !important;width:13%;">
+                                <label for="deptart" string="Dept" style="width:25%;margin-bottom: -15px;"/>
+                                <field name="deptart" style="width:50%;margin-top: -15px;" options="{'no_create_edit': True}"></field><br/>
                             </div>
 
-                            <div style="padding:10px; !important;width:15%;">
+                            <div style="padding:10px; !important;width:16%;">
                                 <label for="class_invent" string="Class" style="width:20%;margin-bottom: -15px;"/>
-                                <field  name="class_invent" style="width:50%;margin-top: -15px;"/><br/>
+                                <field  name="class_invent" style="width:42%;margin-top: -15px;"/><br/>
                             </div>
 <!--                            <div style="padding:10px; !important;width:20%;">-->
 <!--                                <label for="fineline" string="Fineline" style="width:25%;margin-bottom: -15px;"/>-->
 <!--                                <field  name="fineline" style="width:50%;margin-top: -15px;"/><br/>-->
 <!--                            </div>-->
 
-                            <div style="padding:10px; !important;width:20%;">
-                                <label for="prime_vede" string="Prime Vend" style="width:30%;margin-bottom: -15px;"/>
-                                <field name="prime_vede" style="width:50%;margin-top: -15px;" domain="[('supplier_rank', '=', 1)]" context="{'default_supplier_rank' : 1}" /><br/>
+                            <div style="padding:10px; !important;width:26%;">
+                                <label for="prime_vede" string="Prime Vend" style="width:18%;margin-bottom: -15px;"/>
+                                <field name="prime_vede" style="width:32%;margin-top: -15px;" domain="[('supplier_rank', '=', 1)]" context="{'default_supplier_rank' : 1}" /><br/>
                             </div>
                                 <div style="padding:10px; !important;width:20%;">
                                 <label for="mfg_vende" string="Mfg Vend" style="width:35%;margin-bottom: -15px;"/>
@@ -1175,19 +1175,19 @@
       <field name="arch" type="xml">
         <xpath expr="//search" position="replace">
             <search>
-                <field name="name" string="Name" filter_domain="[('name','=ilike',self)]"/>
                 <field name="sku" string="SKU" filter_domain="[('sku','=ilike',self)]"/>
+                <field name="name" string="Description" filter_domain="[('name','=ilike',self)]"/>
+                <field name="company_id" string="Store" filter_domain="[('company_id','=ilike',self)]"/>
                 <field name="deptart" string="Department" />
+                <field name="sequence" string="Sequence" filter_domain="[('sequence','=ilike',self)]"/>
+                <field name="upc" string="UPC" filter_domain="[('upc','=ilike',self)]"/>
                 <field name="types" string="Type" />
                 <field name="mfg" string="Manufacturer" filter_domain="[('mfg','=ilike',self)]"/>
-                <field name="upc" string="UPC" filter_domain="[('upc','=ilike',self)]"/>
-                <field name="sequence" string="Sequence" filter_domain="[('sequence','=ilike',self)]"/>
-                <field name="company_id" string="Store" filter_domain="[('company_id','=ilike',self)]"/>
-                <field name="desc" string="Desc" />
-                <field name="types" string="Type" />
                 <field name="class_invent" string="Class" />
-                <field name="fineline" string="Fineline" />
                 <field name="prime_vede" string="Prime Vend" />
+<!--                <field name="desc" string="Desc" />-->
+                <field name="types" string="Type" />
+                <field name="fineline" string="Fineline" />
                 <field name="mfg_vende" string="Mfg Vend" />
                 <field name="qty_available" string="Qty On Hand" />
                 <field name="commited_qty" string="Committed Qty" />
@@ -1227,19 +1227,16 @@
             <attribute name="optional">Hide</attribute>
         </field>
         <xpath expr="//field[@name='name']" position="replace">
-            <field name="name" string="SKU"/>
-            <field name="types" string="Type"/>
+            <field name="sku" string="SKU"/>
+            <field name="name" string="Desc"/>
             <field name="company_id" string="Store"/>
-<!--            <field name="mfg" string="Mfg#"/>-->
-            <field name="upc" string="UPC"/>
-            <field name="sequence" string="Sequence"/>
-            <field name="desc" string="Desc"/>
-            <field name="instores" string="In Stores"/>
             <field name="deptart" string="Dept"/>
+            <field name="sequence" string="Sequence"/>
+            <field name="upc" string="UPC"/>
+            <field name="instores" string="In Stores"/>
             <field name="class_invent" string="Class"/>
-            <!--                 <field name="fineline" string="Fineline"/> -->
             <field name="prime_vede" string="Prime Vend"/>
-<!--            <field name="mfg_vende" string="Mfg Vend"/>-->
+            <field name="types" string="Type"/>
         </xpath>
     </field>
 </record>
@@ -1472,21 +1469,12 @@
         </field>
     </record>
 
-
-<!-- <menuitem id="wgd_root_menu" name="WG Inventory" active="True" sequence="0"/> -->
-
-<!-- <menuitem id="product" name="Product Details" parent="wgd_root_menu" action="product_details"/>
-        <menuitem id="menu_customer_details_report"
-         name="Inventory Transfer Report"
-         parent="wgd_root_menu"
-         action="inv_transfer_report"
-         sequence="3"/> -->
  <menuitem
     id="menu_mfg_vendor"
     name="Mfg#"
     action="wg_mfg_vendor_action"
     parent="stock.menu_stock_config_settings"
     sequence="200"/>
- <menuitem id="inventory_transfer_report" name="Inventory Transfer Report" parent="stock.menu_warehouse_report" action="inv_transfer_report"/>
+ <menuitem id="wg_inventory_transfer_report" name="Inventory Transfer Report" parent="stock.menu_warehouse_report" action="inv_transfer_report"/>
 
 </odoo>
