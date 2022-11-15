@@ -195,6 +195,7 @@ class wg_po(models.Model):
     location_id = fields.Char()
     ln = fields.Integer(compute='_get_line_numbers', string='Serial Number', readonly=False, default=False)
     price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price',related='product_id.product_tmpl_id.list_price' )
+    desc_sku = fields.Char(related='product_id.product_tmpl_id.name', string='Description', readonly=False)
 
     def _get_line_numbers(self):
         line_num = 1

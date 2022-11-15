@@ -982,23 +982,23 @@ class VendorContact(models.Model):
     #         result.append((rec.id, name))
     #     return result
 
-    def name_get(self):
-        '''
-            For get many2one filed of same model with id and name 
-            for filter by name and filter by id fields
-            by using the hide_code context filter name and id in xml part
-        '''
-        result = []
-        for rec in self:
-            if self.env.context.get('hide_code'):
-                name = rec.name
-            else:
-                if rec.customer_id:
-                    name = rec.customer_id
-                else:
-                    name = rec.name
-            result.append((rec.id, name))
-        return result
+    # def name_get(self):
+    #     '''
+    #         For get many2one filed of same model with id and name 
+    #         for filter by name and filter by id fields
+    #         by using the hide_code context filter name and id in xml part
+    #     '''
+    #     result = []
+    #     for rec in self:
+    #         if self.env.context.get('hide_code'):
+    #             name = rec.customer_id
+    #         else:
+    #             if rec.customer_id:
+    #                 name = rec.customer_id
+    #             else:
+    #                 name = rec.name
+    #         result.append((rec.id, name))
+    #     return result
         
     @api.onchange('filter_by_name')
     def onchange_name(self):

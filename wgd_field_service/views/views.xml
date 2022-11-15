@@ -207,7 +207,7 @@
                             <span class="text-nowrap" t-field="line.product_id"/>
                         </td>
                         <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
-                            <span class="text-nowrap" t-field="line.name"/>
+                            <span class="text-nowrap" t-field="line.product_id.name"/>
                         </td>
                         <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                             <span class="text-nowrap" t-field="line.quantity"/>
@@ -408,8 +408,16 @@
                         <div style="width:51.5%"></div>
                 </div>
             </xpath>
-            <xpath expr="//tree/field[@name='name']" position="after">
-                <field name="sugg"/>
+            <xpath expr="//tree/field[@name='product_id']" position="replace">
+                <field name="product_id" string="SKU"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree/field[@name='name']" position="after">
+                 <field name="product_id" context="{'form_view_ref': 'wg_inventory.product_new','tree_view_ref': 'wg_inventory.product_template_tree_view'}" invisible="1"  />
+            </xpath>
+            <xpath expr="//tree/field[@name='name']" position="replace">
+                <field name="name" invisible="1"/>
+                <field name="description"/>
+                <field name="avg_cost"/>
             </xpath>
             <xpath expr="//tree/field[@name='tax_id']" position="attributes">
                <attribute name="domain">[('type_tax_use','=','sale'),('country_id', '=', parent.tax_country_id)]</attribute>
