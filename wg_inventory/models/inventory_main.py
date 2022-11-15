@@ -1252,6 +1252,13 @@ class Inventorys(models.Model):
 
         return result
 
+    # @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if name :
+            args += [('sku', operator, name)]
+        return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+
 
 # Table in pricing tab
 class Pricetable(models.Model):
