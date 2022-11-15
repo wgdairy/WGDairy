@@ -201,9 +201,14 @@ class SaleOrderInherit(models.Model):
 class SaleOrderLineInherit(models.Model):
     _inherit = 'sale.order.line'
 
-    sugg = fields.Monetary(string="SUGG")
+    avg_cost = fields.Monetary(string="Average Cost")
+    description = fields.Char('Description', related='product_id.name', readonly=False)
     # tax_id = fields.Many2many('account.tax', string='Taxes', domain=['|', ('active', '=', False), ('active', '=', True)], default=lambda self:self.order_id.w_tax)
 
+    @api.onchange('product_id')
+    def onchange_tax(self):
+        if self.product_id:
+            self.avg_cost = self.product_id.avg_cost_pricing
     # @api.onchange('product_id')
     # def onchange_tax(self):
     #     print(self.order_id.w_tax)
