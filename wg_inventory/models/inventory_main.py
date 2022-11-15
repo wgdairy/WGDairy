@@ -1260,6 +1260,7 @@ class Inventorys(models.Model):
         return self._search(args, limit=limit, access_rights_uid=name_get_uid)
 
 
+
 # Table in pricing tab
 class Pricetable(models.Model):
     _name = "pricingtables"
