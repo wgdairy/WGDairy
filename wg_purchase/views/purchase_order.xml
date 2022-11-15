@@ -177,20 +177,23 @@
                 <xpath expr="//field[@name='order_line']//tree/field[@name='qty_received']" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
-                <xpath expr="//field[@name='order_line']//tree/field[@name='product_id']" position="after">
-                    <field name="product_id" context="{'form_view_ref': 'wg_inventory.product_new','tree_view_ref': 'wg_inventory.product_template_tree_view'}" />
+                <xpath expr="//field[@name='order_line']//tree/field[@name='name']" position="after">
+                    <field name="product_id" context="{'form_view_ref': 'wg_inventory.product_new','tree_view_ref': 'wg_inventory.product_template_tree_view'}" invisible="1" />
+                    <field name="desc_sku" string="Description" />
                     <field name="OM" string="OM" />
                     <field name="qty_available" string="QOH" />
                     <field name="product_qty" position="move" />
                     <field name="cost_stk" string="Cost(Stk)" />
                     <field name="load_retail" string="Current Retail"/>
-<!--                    <field name="price_subtotal" string="Ext Cost" />  &lt;!&ndash; widget="monetary"&ndash;&gt;-->
                     <field name="Ext_Cost" string="Ext Cost" />
                     <field name="product_uom" position="move" />
                     <field name="order_point" string="Order Point" />
                     <field name="min_op" string="Min OP+" />
                     <field name="max_stock_level" string="Max Stock Level" />
                     <field name="dept" string="Dept" />
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='name']" position="attributes">
+                    <attribute name="invisible">True</attribute>
                 </xpath>
                 <xpath expr="//page[@name='products']" position="attributes">
                     <field name="pur_order_lines" class="tree_width_po" />
@@ -244,7 +247,7 @@
         <xpath expr="//search" position="inside">
 
 
-                <field name="name" string="Name" filter_domain="[('name','=ilike',self)]"/>
+                <field name="name" string="Desc" filter_domain="[('name','=ilike',self)]"/>
                 <field name="sku" string="SKU" filter_domain="[('sku','=ilike',self)]"/>
                 <field name="deptart" string="Department" />
                 <field name="types" string="Type" />
@@ -252,7 +255,6 @@
                 <field name="upc" string="UPC" filter_domain="[('upc','=ilike',self)]"/>
                 <field name="sequence" string="Sequence" filter_domain="[('sequence','=ilike',self)]"/>
                 <field name="company_id" string="Store" filter_domain="[('company_id','=ilike',self)]"/>
-                <field name="desc" string="Desc" />
                 <field name="types" string="Type" />
                 <field name="class_invent" string="Class" />
                 <field name="fineline" string="Fineline" />

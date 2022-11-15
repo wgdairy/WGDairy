@@ -41,7 +41,7 @@
             <div class="row" col="2" style="width:100%;" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">  
                 <div style="padding:2% !important;width:56%;">
                     <label for="filter_by_name" string="Filter By Name" style="width:16%;margin-bottom: -15px;"/>
-                    <field name="filter_by_name" style="width:42%;margin-bottom: -15px;" context="{'hide_code': True}"></field><br/>
+                    <field name="filter_by_name" style="width:42%;margin-bottom: -15px;"></field><br/>
                 </div>    
                 <div style="padding:2% !important;width:44%;">
                     <label for="filter_by_id" string="Filter By ID" style="width:18%;margin-bottom: -15px;"/>

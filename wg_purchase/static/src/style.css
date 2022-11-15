@@ -44,3 +44,9 @@
 .po_line table thead > tr > th:nth-child(14){
   width: 10% !important;
 }
+.po_line table thead > tr > th:nth-child(15){
+  width: 0% !important;
+}
+.po_line table thead > tr > th:nth-child(16){
+  width: 10% !important;
+}

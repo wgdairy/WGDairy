@@ -1241,6 +1241,18 @@ class Inventorys(models.Model):
         pass
 
 
+class Inventorys(models.Model):
+    _inherit = "product.product"
+
+    def name_get(self):
+
+        result = []
+        for rec in self:
+            result.append((rec.id,rec.product_tmpl_id.sku))
+
+        return result
+
+
 # Table in pricing tab
 class Pricetable(models.Model):
     _name = "pricingtables"
