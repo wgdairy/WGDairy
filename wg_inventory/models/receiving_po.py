@@ -29,7 +29,10 @@ class Stockmov(models.Model):
     Total_Qty_Rejected = fields.Float(string="Total Qty Rejected")
     Reject_Reasons = fields.Char(string="Reject Reasons")
 
-
+    @api.onchange('quantity_done')
+    def onchange_qty_recieved(self):
+        if self.quantity_done:
+            self.Total_Qty_Received = self.quantity_done
 
     @api.onchange('product_id')
     def _onchange_sku(self):

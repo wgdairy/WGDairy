@@ -230,6 +230,17 @@ class wg_po(models.Model):
 
         self.price_unit = onc_sku.list_price
 
+        res = {}
+        if onc_sku:
+            if self.partner_id != onc_sku.prime_vede :
+                if self.partner_id != onc_sku.mfg_vende:
+                    res = {'warning': {'title': _('Warning'),'message': _('My warning message.')}}
+            elif self.partner_id != onc_sku.mfg_vende:
+                if self.partner_id != onc_sku.prime_vede:
+                    res = {'warning': {'title': _('Warning'),'message': _('My warning message.')}}
+        if res:
+            return res
+
     @api.depends('product_qty','cost_stk')
     def _compute_extcost(self):
         ex_cost = 0
