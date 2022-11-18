@@ -30,6 +30,7 @@
                 </div>
                 <field name="user_ids" invisible="1"/>
                 <field name="lang" invisible='1'/>
+                <field  name="customer_vendor_id" invisible="1"/>
             </group>
         </xpath>
 
@@ -1212,6 +1213,24 @@
                 <field name="vendor" string="Vendor ID"/>
             </xpath>
         </field>
+    </record>
+
+    <!-- res.partner inherit tree view -->
+    <record id="res_partner_tree_inherits" model="ir.ui.view">
+        <field name="name">res.partner.inherit.view.trees</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+        <xpath expr="//tree//field[@name='display_name']" position="before">
+            <field name="customer_vendor_id" string="ID"/>
+            <field name="name" string="Name"/>
+
+        </xpath>
+        <xpath expr="//tree//field[@name='display_name']" position="replace">
+            <field name="display_name" invisible="1"/>
+
+        </xpath>
+    </field>
     </record>
 
     <!-- res.partner inherit kanban view -->
