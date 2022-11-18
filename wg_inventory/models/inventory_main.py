@@ -1241,7 +1241,7 @@ class Inventorys(models.Model):
         pass
 
 
-class Inventorys(models.Model):
+class ProVarience(models.Model):
     _inherit = "product.product"
 
     def name_get(self):
