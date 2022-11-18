@@ -270,21 +270,52 @@
 
         </xpath>
 
+          <xpath expr="//field[@name='categ_id']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+      </field>
+    </record>
+
+
+          <record id="view_purchase_product_inherit_search_two" model="ir.ui.view">
+      <field name="name">purchase.product.search.inherit.searchs.two</field>
+      <field name="model">product.product</field>
+      <field name="inherit_id" ref="product.product_search_form_view"/>
+      <field name="arch" type="xml">
+
+          <xpath expr="//field[@name='product_template_attribute_value_ids']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+                    <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
           <xpath expr="//field[@name='name']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
-                    <xpath expr="//field[@name='categ_id']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
-                    <xpath expr="//field[@name='attribute_line_ids']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='pricelist_id']" position="attributes">
               <attribute name="invisible">1</attribute>
           </xpath>
 
       </field>
     </record>
+
+                  <record id="view_purchase_product_inherit_search_inheited_one" model="ir.ui.view">
+      <field name="name">purchase.product.search.inherit.searchs_one</field>
+      <field name="model">product.product</field>
+      <field name="inherit_id" ref="stock.product_search_form_view_stock"/>
+      <field name="arch" type="xml">
+
+          <xpath expr="//field[@name='location_id']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+                    <xpath expr="//field[@name='warehouse_id']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+
+      </field>
+    </record>
+
+
+
+
+
 
 
 
