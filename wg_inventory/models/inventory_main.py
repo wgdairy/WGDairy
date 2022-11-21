@@ -1151,7 +1151,7 @@ class Inventorys(models.Model):
         else:
             store_datas = self.env['product.template'].search([('id', '=', self.sku_onchange.id), ])
 
-
+            self.onchange_dept = None
             self.name = store_datas.name
             self.desc = store_datas.desc
             # self.mfg = store_datas.mfg
@@ -1229,7 +1229,6 @@ class Inventorys(models.Model):
 
         company_onchange_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id)],
                                                          limit=1)
-
         self.name = company_onchange_data.name
         self.desc = company_onchange_data.desc
         # self.mfg = store_data.mfg
@@ -1261,32 +1260,32 @@ class Inventorys(models.Model):
         '''
         Function to autopopulate the fields based on the department while selecting the sku in filter by Department field.
         '''
+        if self.onchange_dept:
+            store_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id),('deptart', '=', self.onchange_dept.id)],
+                                                             limit=1)
 
-        store_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id),('deptart', '=', self.onchange_dept.id)],
-                                                         limit=1)
-
-        self.name = store_data.name
-        self.desc = store_data.desc
-        # self.mfg = store_data.mfg
-        self.upc = store_data.upc
-        self.sequence = store_data.sequence
-        self.deptart = store_data.deptart
-        self.class_invent = store_data.class_invent
-        self.types = store_data.types
-        self.instores = store_data.instores
-        self.prime_vede = store_data.prime_vede
-        self.mfg_vende = store_data.mfg_vende
-        self.company_id = store_data.company_id
-        self.class_invent = store_data.class_invent
-        self.types = store_data.types
-        self.instores = store_data.instores
+            self.name = store_data.name
+            self.desc = store_data.desc
+            # self.mfg = store_data.mfg
+            self.upc = store_data.upc
+            self.sequence = store_data.sequence
+            self.deptart = store_data.deptart
+            self.class_invent = store_data.class_invent
+            self.types = store_data.types
+            self.instores = store_data.instores
+            self.prime_vede = store_data.prime_vede
+            self.mfg_vende = store_data.mfg_vende
+            self.company_id = store_data.company_id
+            self.class_invent = store_data.class_invent
+            self.types = store_data.types
+            self.instores = store_data.instores
 
 
-        self.load_retail = store_data.load_retail
-        self.qty_available = store_data.qty_available
-        self.list_price = store_data.list_price
-        self.load_repl_cost = store_data.load_repl_cost
-        self.mfg_cost = store_data.mfg_cost
+            self.load_retail = store_data.load_retail
+            self.qty_available = store_data.qty_available
+            self.list_price = store_data.list_price
+            self.load_repl_cost = store_data.load_repl_cost
+            self.mfg_cost = store_data.mfg_cost
 
 
 

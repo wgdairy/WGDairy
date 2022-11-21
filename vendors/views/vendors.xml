@@ -370,8 +370,8 @@
                             <div style="padding:2% !important;width:33%;">
                                 <label for="balance_method" string="Balance Method" style="width:40%;"/>
                                 <field  name="balance_method" style="width:50%;"/>
-                                <label for="charge_allowed" string="Charge Allowed" style="width:40%;"/>
-                                <field  name="charge_allowed" style="width:50%;"/>
+<!--                                <label for="charge_allowed" string="Charge Allowed" style="width:40%;"/>-->
+<!--                                <field  name="charge_allowed" style="width:50%;"/>-->
                                 <label for="std_sell_price" string="Std Sell Price" style="width:40%;"/>
                                 <field  name="std_sell_price" style="width:50%;"/>
                                 <label for="finace_charges" string="Finance Charges" style="width:40%;"/>
