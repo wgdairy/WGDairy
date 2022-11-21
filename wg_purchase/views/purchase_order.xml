@@ -250,7 +250,7 @@
         <xpath expr="//search" position="inside">
 
 
-                <field name="name" string="Desc" filter_domain="[('name','=ilike',self)]"/>
+                <field name="name" string="Description" filter_domain="[('name','=ilike',self)]"/>
                 <field name="sku" string="SKU" filter_domain="[('sku','=ilike',self)]"/>
                 <field name="deptart" string="Department" />
                 <field name="types" string="Type" />
@@ -258,9 +258,9 @@
                 <field name="upc" string="UPC" filter_domain="[('upc','=ilike',self)]"/>
                 <field name="sequence" string="Sequence" filter_domain="[('sequence','=ilike',self)]"/>
                 <field name="company_id" string="Store" filter_domain="[('company_id','=ilike',self)]"/>
-                <field name="types" string="Type" />
+                <!-- <field name="types" string="Type" /> -->
                 <field name="class_invent" string="Class" />
-                <field name="fineline" string="Fineline" />
+                <!-- <field name="fineline" string="Fineline" /> -->
                 <field name="prime_vede" string="Prime Vend" />
                 <field name="mfg_vende" string="Mfg Vend" />
                 <field name="qty_available" string="Qty On Hand" />
