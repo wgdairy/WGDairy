@@ -31,11 +31,17 @@ class Stockmov(models.Model):
 
     @api.onchange('quantity_done')
     def onchange_qty_recieved(self):
+        '''
+        Function to Auto populate the Total Qty Received.
+        '''
         if self.quantity_done:
             self.Total_Qty_Received = self.quantity_done
 
     @api.onchange('product_id')
     def _onchange_sku(self):
+        '''
+        Function to Auto populate the Description.
+        '''
         onc_sku = self.env['product.template'].search(
             [('name', '=', self.product_id.name), ('id', '=', self.product_id.product_tmpl_id.id)])
 
@@ -44,6 +50,9 @@ class Stockmov(models.Model):
 
     @api.onchange('product_id')
     def _cal_cost_po_line(self):
+        '''
+        Function to Auto populate the Cost,Get Cost form product
+        '''
         onc_cost = self.env['purchase.order.line'].search([('order_id.name', '=', self.picking_id.origin)])
         for r in onc_cost:
             for i in self:
@@ -52,16 +61,25 @@ class Stockmov(models.Model):
 
     @api.depends('Cost_Pur', 'product_uom_qty')
     def _cal_cost(self):
+        '''
+        Function to compute the QOO ext cost
+        '''
         for rec in self:
             rec.QOO_Ext_Cost = rec.product_uom_qty * rec.Cost_Pur
 
     @api.depends('QOO_Pur','quantity_done')
     def _cal_variance(self):
+        '''
+        Function to compute the Variance
+        '''
         for recs in self:
             recs.Variance = recs.product_uom_qty - recs.quantity_done
 
     @api.onchange('product_id')
     def _cal_qoh(self):
+        '''
+        Function to Auto populate the Cost QOH, Get QOH form product
+        '''
         onc_sku = self.env['product.template'].search([('name', '=', self.product_id.name), ('id', '=', self.product_id.product_tmpl_id.id)])
         self.QOH = onc_sku.qty_available
 
@@ -93,6 +111,9 @@ class Stockpick(models.Model):
 
 
     def _backord(self):
+        '''
+        If any Back order Set Back order field to Y, if no back orders,Set Back order field to N.
+        '''
         bak = self.env['purchase.order'].search([('name', '=', self.origin)])
         self.BkOrd = bak.BkOrds
 
