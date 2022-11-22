@@ -138,16 +138,19 @@ class wg_po(models.Model):
         This function check the back order,if any back order show in BkOrds field.
         '''
 
-        vari = 0
-        bk_order = self.env['stock.picking'].search([('origin', '=', self.name),('company_id', '=', self.company_id.id)])
+        bk_orders = self.env['stock.picking'].search([('origin', '=', self.name), ('company_id', '=', self.company_id.id),('state', '!=', 'done')],limit=1)
+      
 
-        for rec in bk_order.move_lines:
-            vari += rec.Variance
 
-        if vari == 0:
-            self.BkOrds = 'N'
+        if bk_orders:
+
+            if bk_orders.backorder_id and bk_orders.state != 'done':
+
+                self.BkOrds = 'Y'
+            else:
+                self.BkOrds = 'N'
         else:
-            self.BkOrds = 'Y'
+            self.BkOrds = 'N'
 
 
 
@@ -258,10 +261,10 @@ class wg_po(models.Model):
         if onc_sku:
             if self.partner_id != onc_sku.prime_vede :
                 if self.partner_id != onc_sku.mfg_vende:
-                    res = {'warning': {'title': _('Warning'),'message': _('Product not related to specified customer.')}}
+                    res = {'warning': {'title': _('Warning'),'message': _('Product not related to vendor.')}}
             elif self.partner_id != onc_sku.mfg_vende:
                 if self.partner_id != onc_sku.prime_vede:
-                    res = {'warning': {'title': _('Warning'),'message': _('Product not related to specified customer.')}}
+                    res = {'warning': {'title': _('Warning'),'message': _('Product not related to vendor.')}}
         if res:
             return res
 
