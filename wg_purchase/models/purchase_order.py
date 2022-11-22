@@ -138,20 +138,31 @@ class wg_po(models.Model):
         '''
         This function check the back order,if any back order show in BkOrds field.
         '''
-
-        bk_orders = self.env['stock.picking'].search([('origin', '=', self.name), ('company_id', '=', self.company_id.id),('state', '!=', 'done')],limit=1)
+        for r in self:
+            bk_orders = self.env['stock.picking'].search([('origin', '=', r.name), ('company_id', '=', r.company_id.id),('state', '!=', 'done')],limit=1)
       
+            if bk_orders:
 
+                # for r in bk_orders:
 
-        if bk_orders:
+                if bk_orders.backorder_id and bk_orders.state != 'done':
 
-            if bk_orders.backorder_id and bk_orders.state != 'done':
-
-                self.BkOrds = 'Y'
+                    self.BkOrds = 'Y'
+                else:
+                    self.BkOrds = 'N'
             else:
                 self.BkOrds = 'N'
-        else:
-            self.BkOrds = 'N'
+
+
+        # if bk_orders:
+
+        #     if bk_orders.backorder_id and bk_orders.state != 'done':
+        #
+        #         self.BkOrds = 'Y'
+        #     else:
+        #         self.BkOrds = 'N'
+        # else:
+        #     self.BkOrds = 'N'
 
 
 
