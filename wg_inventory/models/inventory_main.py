@@ -480,12 +480,18 @@ class Inventorys(models.Model):
 
     # validate all
     def validate_float(self, float_value, val):
+        '''
+        Fuction to validate 10 digit phone number
+        '''
         if float_value:
             if len(str(float_value)) > 12:
                 raise ValidationError("10 digits be allowed in %s" % val)
 
     # validate 5 digit
     def validate_float_five(self, float_value, val):
+        '''
+        Fuction to validate 5 digit phone number
+        '''
         if float_value:
             # print("*****************************************************", len(str(float_value)),float_value)
             if len(str(float_value)) > 7:
@@ -493,6 +499,9 @@ class Inventorys(models.Model):
 
     @api.onchange('company_id')
     def validate_store(self):
+        '''
+        Fuction to validate selected company is allowed to logged in user
+        '''
         if self.company_id:
             selected_companies = self.env['res.company'].browse(self._context.get('allowed_company_ids'))
             if self.company_id not in selected_companies:
@@ -504,6 +513,9 @@ class Inventorys(models.Model):
 
     @api.constrains('weight', 'purch_conv_factor', 'purch_decimal_pi')
     def validate_con_stocking_five_digit(self):
+        '''
+        Fuction to validate 5 digit *Purch Conv Factor and *Purch Decimal PI(constrain)
+        '''
         # if self.weight:
         #     val = "Weight"
         #     self.validate_float_five(self.weight, val)
@@ -518,6 +530,9 @@ class Inventorys(models.Model):
 
     @api.onchange('weight', 'purch_conv_factor', 'purch_decimal_pi')
     def validate_oc_stocking_five_digit(self):
+        '''
+        Fuction to validate 5 digit *Purch Conv Factor and *Purch Decimal PI(onchange)
+        '''
         # if self.weight:
         #     val = "Weight"
         #     self.validate_float_five(self.weight, val)
@@ -534,6 +549,9 @@ class Inventorys(models.Model):
                     'standard_pack', 'order_multiple', 'raincheck_qty', 'raincheck_qty', 'new_order_qty',
                     'fixed_order_qty')
     def validate_con_qut_on_hant(self):
+        '''
+        Fuction to validate 10 digit in fields(constrains)
+        '''
         if self.qut_on_hant:
             val = "Qty On Hand"
             self.validate_float(self.qut_on_hant, val)
@@ -575,6 +593,9 @@ class Inventorys(models.Model):
                   'standard_pack', 'order_multiple', 'raincheck_qty', 'raincheck_qty', 'new_order_qty',
                   'fixed_order_qty')
     def validate_oc_ten_digit(self):
+        '''
+        Fuction to validate 10 digit in fields(onchange)
+        '''
         if self.qut_on_hant:
             val = "Qty On Hand"
             self.validate_float(self.qut_on_hant, val)
@@ -617,6 +638,9 @@ class Inventorys(models.Model):
                     'mkt_cost_gp', 'mfg_cost_gp', 'avg_cost_gp', 'reail_gp', 'promotion_gp', 'price_one_gp',
                     'price_two_gp', 'price_three_gp', 'price_four_gp', 'price_five_gp', 'desiered_gp', 'repl_gp')
     def validate_con_pricing_five_digit(self):
+        '''
+        Fuction to validate 5 digit in fields(constrains)
+        '''
         if self.decimal_place:
             val = "Decimal Place Price"
             self.validate_float_five(self.decimal_place, val)
@@ -676,6 +700,10 @@ class Inventorys(models.Model):
                   'mkt_cost_gp', 'mfg_cost_gp', 'avg_cost_gp', 'reail_gp', 'promotion_gp', 'price_one_gp',
                   'price_two_gp', 'price_three_gp', 'price_four_gp', 'price_five_gp', 'desiered_gp', 'repl_gp')
     def validate_oc_pricing_five_digit(self):
+        '''
+        Fuction to validate 10 digit in fields(onchange)
+        '''
+
         if self.decimal_place:
             val = "Decimal Place Price"
             self.validate_float_five(self.decimal_place, val)
@@ -735,6 +763,9 @@ class Inventorys(models.Model):
                     'avg_cost_pricing', 'avg_cost_stock', 'avg_cost_alt', 'mkt_cost', 'mkt_cost_stock', 'mkt_cost_alt',
                     'reail', 'reail_stock', 'reail_alt')
     def validate_con_pricing_one(self):
+        '''
+        Fuction to validate 10 digit in fields
+        '''
         if self.repl_cost:
             val = "Repl Cost Pricing"
             self.validate_float(self.repl_cost, val)
@@ -788,6 +819,9 @@ class Inventorys(models.Model):
                     'price_three_alt', 'price_four', 'price_four_stock', 'price_four_alt', 'price_five',
                     'price_five_stock', 'price_five_alt')
     def validate_con_pricing_two(self):
+        '''
+        Fuction to validate 10 digit in fields
+        '''
         if self.promotion:
             val = "Promotion Pricing"
             self.validate_float(self.promotion, val)
@@ -867,6 +901,9 @@ class Inventorys(models.Model):
                   'avg_cost_pricing', 'avg_cost_stock', 'avg_cost_alt', 'mkt_cost', 'mkt_cost_stock', 'mkt_cost_alt',
                   'reail', 'reail_stock', 'reail_alt')
     def validate_oc_pricing_one(self):
+        '''
+        Fuction to validate 10 digit in fields
+        '''
         if self.repl_cost:
             val = "Repl Cost Pricing"
             self.validate_float(self.repl_cost, val)
@@ -920,6 +957,9 @@ class Inventorys(models.Model):
                   'price_three_alt', 'price_four', 'price_four_stock', 'price_four_alt', 'price_five',
                   'price_five_stock', 'price_five_alt')
     def validate_oc_pricing_two(self):
+        '''
+        Fuction to validate 10 digit in fields
+        '''
         if self.promotion:
             val = "Promotion Pricing"
             self.validate_float(self.promotion, val)
@@ -979,6 +1019,9 @@ class Inventorys(models.Model):
     # 10 digit three
     @api.onchange('retail_old', 'catalog_retail', 'market_cost', 'mfg_chg')
     def validate_oc_pricing_three(self):
+        '''
+        Fuction to validate 10 digit in fields
+        '''
         if self.retail_old:
             val = "Retail(old)"
             self.validate_float(self.retail_old, val)
@@ -997,6 +1040,9 @@ class Inventorys(models.Model):
 
     def validation_sale(self):
 
+        '''
+        Fuction to calculate the sales unit
+        '''
         todays_date = date.today().replace(month=1, day=1)
         total_sales = self.env['sale.order'].search([('state', '=', 'sale'), ('date_order', '>=', todays_date)])
         self.sale_units = len(total_sales)
@@ -1004,6 +1050,10 @@ class Inventorys(models.Model):
     # Total amount
 
     def total_sale_amount(self):
+
+        '''
+        Fuction to calculate the sales
+        '''
 
         todays_date = date.today().replace(month=1, day=1)
 
@@ -1020,6 +1070,11 @@ class Inventorys(models.Model):
     # Total sale order in last year
 
     def total_sale_last_year(self):
+
+        '''
+        Fuction to calculate the total last year sales
+        '''
+
         curr_year = date.today()
         las_year = curr_year.year - 1
         last_year_jan = date.today().replace(year=las_year, month=1, day=1)
@@ -1033,6 +1088,11 @@ class Inventorys(models.Model):
     # Total amount in last year
     # @api.onchange('mfg_vende')
     def total_sales_amount_last_year(self):
+
+        '''
+        Fuction to calculate the total last year sales amount
+        '''
+
         curr_year = date.today()
         tot_amount = 0
         las_year = curr_year.year - 1
@@ -1081,16 +1141,17 @@ class Inventorys(models.Model):
 
     @api.onchange('sku_onchange')
     def _store_change(self):
-        # if self.company_onchange
-        # store_data = self.env['product.template'].search([('id', '=', self.sku_onchange.id), ('company_id.id', '=', self.company_onchange.id)],
-        #                                                  limit=1)
+
+        '''
+        Function to autopopulate the fields while selecting the sku in filter by sku field.
+        '''
 
         if not self.company_onchange:
             raise ValidationError("Filter BY Store is Empty")
         else:
             store_datas = self.env['product.template'].search([('id', '=', self.sku_onchange.id), ])
 
-
+            self.onchange_dept = None
             self.name = store_datas.name
             self.desc = store_datas.desc
             # self.mfg = store_datas.mfg
@@ -1161,12 +1222,13 @@ class Inventorys(models.Model):
 
     @api.onchange('company_onchange')
     def _company_change(self):
-        # if self.company_onchange
-        # store_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id),],
-        #                                                  limit=1)
+
+        '''
+        Function to autopopulate the fields based on the company while selecting the company in filter by store field.
+        '''
+
         company_onchange_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id)],
                                                          limit=1)
-
         self.name = company_onchange_data.name
         self.desc = company_onchange_data.desc
         # self.mfg = store_data.mfg
@@ -1194,39 +1256,45 @@ class Inventorys(models.Model):
 
     @api.onchange('onchange_dept')
     def _onchange_dept(self):
-        # if self.onchange_dept
-        # store_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id),],
-        #                                                  limit=1)
-        store_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id),('deptart', '=', self.onchange_dept.id)],
-                                                         limit=1)
 
-        self.name = store_data.name
-        self.desc = store_data.desc
-        # self.mfg = store_data.mfg
-        self.upc = store_data.upc
-        self.sequence = store_data.sequence
-        self.deptart = store_data.deptart
-        self.class_invent = store_data.class_invent
-        self.types = store_data.types
-        self.instores = store_data.instores
-        self.prime_vede = store_data.prime_vede
-        self.mfg_vende = store_data.mfg_vende
-        self.company_id = store_data.company_id
-        self.class_invent = store_data.class_invent
-        self.types = store_data.types
-        self.instores = store_data.instores
+        '''
+        Function to autopopulate the fields based on the department while selecting the sku in filter by Department field.
+        '''
+        if self.onchange_dept:
+            store_data = self.env['product.template'].search([('name', '=', self.sku_onchange.name),('company_id', '=', self.company_onchange.id),('deptart', '=', self.onchange_dept.id)],
+                                                             limit=1)
+
+            self.name = store_data.name
+            self.desc = store_data.desc
+            # self.mfg = store_data.mfg
+            self.upc = store_data.upc
+            self.sequence = store_data.sequence
+            self.deptart = store_data.deptart
+            self.class_invent = store_data.class_invent
+            self.types = store_data.types
+            self.instores = store_data.instores
+            self.prime_vede = store_data.prime_vede
+            self.mfg_vende = store_data.mfg_vende
+            self.company_id = store_data.company_id
+            self.class_invent = store_data.class_invent
+            self.types = store_data.types
+            self.instores = store_data.instores
 
 
-        self.load_retail = store_data.load_retail
-        self.qty_available = store_data.qty_available
-        self.list_price = store_data.list_price
-        self.load_repl_cost = store_data.load_repl_cost
-        self.mfg_cost = store_data.mfg_cost
+            self.load_retail = store_data.load_retail
+            self.qty_available = store_data.qty_available
+            self.list_price = store_data.list_price
+            self.load_repl_cost = store_data.load_repl_cost
+            self.mfg_cost = store_data.mfg_cost
 
 
 
     @api.model
     def create(self, vals):
+
+        '''
+        Override the create method for avoid duplication, Add validation while creating already existing product in same company and department.
+        '''
 
         valdate_sku = self.env['product.template'].search(
             [('name', '=', vals['name']), ('company_id.id', '=', vals['company_id']),('deptart', '=', vals['deptart'])], limit=1)
@@ -1238,13 +1306,20 @@ class Inventorys(models.Model):
 
 
     def action_student_schedules(self):
+        '''
+        Action for smart button in history tab of product
+        '''
         pass
 
 
-class Inventorys(models.Model):
+class ProVarience(models.Model):
     _inherit = "product.product"
 
     def name_get(self):
+
+        '''
+        Name get for product.product model,show sku field in product
+        '''
 
         result = []
         for rec in self:
@@ -1253,6 +1328,9 @@ class Inventorys(models.Model):
         return result
     # @api.model
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        '''
+        Name serach method for product.product model,search by sku field in product
+        '''
         args = list(args or [])
         if name :
             args += [('sku', operator, name)]

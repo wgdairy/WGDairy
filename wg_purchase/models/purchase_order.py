@@ -2,6 +2,7 @@
 
 # from odoo import models, fields, api
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 import datetime
 
@@ -53,7 +54,7 @@ class wg_po(models.Model):
 
     def action_rfq_send(self):
         '''
-        This function opens a window to compose an email, with the edi purchase template message loaded by default
+        This function opens a window to compose an email, with the edi purchase template message loaded by default, show the date and time of mail send in Date send field.
         '''
         self.ensure_one()
         ir_model_data = self.env['ir.model.data']
@@ -113,6 +114,10 @@ class wg_po(models.Model):
     @api.onchange('partner_id')
     def _onchange_sku(self):
 
+        '''
+        This function auto populate the address,phone and fax of vendor selected in purchase order.
+        '''
+
         # onc_ve_fa = self.env['wgd.vendors'].search(
         #     [('partner_id', '=', self.partner_id.id)])
         onc_vend = self.env['res.partner'].search(
@@ -130,16 +135,34 @@ class wg_po(models.Model):
 
 
     def _bak_order(self):
-        vari = 0
-        bk_order = self.env['stock.picking'].search([('origin', '=', self.name),('company_id', '=', self.company_id.id)])
+        '''
+        This function check the back order,if any back order show in BkOrds field.
+        '''
+        for r in self:
+            bk_orders = self.env['stock.picking'].search([('origin', '=', r.name), ('company_id', '=', r.company_id.id),('state', '!=', 'done')],limit=1)
+      
+            if bk_orders:
 
-        for rec in bk_order.move_lines:
-            vari += rec.Variance
+                # for r in bk_orders:
 
-        if vari == 0:
-            self.BkOrds = 'N'
-        else:
-            self.BkOrds = 'Y'
+                if bk_orders.backorder_id and bk_orders.state != 'done':
+
+                    self.BkOrds = 'Y'
+                else:
+                    self.BkOrds = 'N'
+            else:
+                self.BkOrds = 'N'
+
+
+        # if bk_orders:
+
+        #     if bk_orders.backorder_id and bk_orders.state != 'done':
+        #
+        #         self.BkOrds = 'Y'
+        #     else:
+        #         self.BkOrds = 'N'
+        # else:
+        #     self.BkOrds = 'N'
 
 
 
@@ -147,12 +170,18 @@ class wg_po(models.Model):
 
 
     def _cal_tot_cost(self):
+        '''
+         Function to calculate the total cost.Total cost is sum of all price unit in products.
+        '''
         tot_cost = 0
         for rec in self.order_line:
             tot_cost += rec.price_unit
         self.Total_Cost = str(tot_cost)
 
     def _cal_stk_unit(self):
+        '''
+         Function to calculate the total stock unit.Total stock unit is sum of all stock in products.
+        '''
         tot_stk = 0
         for rec in self.order_line:
             tot_stk += rec.qty_available
@@ -161,6 +190,9 @@ class wg_po(models.Model):
 
 
     def _cal_tot_weight(self):
+        '''
+         Function to calculate the total Weight unit.Total Weight is sum of all weight in products.
+        '''
         tot_weight = 0
         for rec in self.order_line:
             tot_weight += rec.product_id.product_tmpl_id.weight
@@ -198,6 +230,9 @@ class wg_po(models.Model):
     desc_sku = fields.Char(related='product_id.product_tmpl_id.name', string='Description', readonly=False)
 
     def _get_line_numbers(self):
+        '''
+            Function to Generate line number in purchase order line.
+        '''
         line_num = 1
         if self.ids:
             first_line_rec = self.browse(self.ids[0])
@@ -208,6 +243,10 @@ class wg_po(models.Model):
 
     @api.onchange('product_id')
     def _get_cost_stk(self):
+
+        '''
+         Function to auto populate the cost(stk).Get cost from produt
+        '''
         for rec in self:
 
             onc_cost = self.env['product.template'].search(
@@ -219,35 +258,52 @@ class wg_po(models.Model):
 
     @api.onchange('product_id')
     def _onchange_skus(self):
+        '''
+                 Function to auto populate the quantity,department,unit prie.
+        '''
         onc_sku = self.env['product.template'].search(
             [('name', '=', self.product_id.name), ('id', '=', self.product_id.product_tmpl_id.id)])
 
 
         self.qty_available = onc_sku.qty_available
-
         self.dept = onc_sku.deptart
-        # self.price_unit = onc_sku.list_price
-
         self.price_unit = onc_sku.list_price
 
         res = {}
         if onc_sku:
             if self.partner_id != onc_sku.prime_vede :
                 if self.partner_id != onc_sku.mfg_vende:
-                    res = {'warning': {'title': _('Warning'),'message': _('Product not related to specified customer.')}}
+
+
+                    res = {'warning': {'title': _('Warning'),'message': _('Product not related to vendor.')}}
             elif self.partner_id != onc_sku.mfg_vende:
                 if self.partner_id != onc_sku.prime_vede:
-                    res = {'warning': {'title': _('Warning'),'message': _('Product not related to specified customer.')}}
+                    res = {'warning': {'title': _('Warning'),'message': _('Product not related to vendor.')}}
+
         if res:
             return res
 
     @api.depends('product_qty','cost_stk')
     def _compute_extcost(self):
+        '''
+            Function to calculate the ext cost.
+        '''
         ex_cost = 0
         for rec in self:
 
             ex_cost = rec.product_qty * rec.cost_stk
             rec.Ext_Cost = float(ex_cost)
+
+class InheritMove(models.Model):
+    _inherit = 'account.move'
+
+    @api.model
+    def create(self,vals):
+        res = super(InheritMove, self).create(vals)
+        if res.release_to_pay_manual:
+            if res.release_to_pay_manual == 'exception' or res.release_to_pay_manual == 'no':
+                raise ValidationError('Vendor Bill and PO do not match')
+        return res
 
 
 

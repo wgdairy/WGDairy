@@ -9,6 +9,9 @@ class myInventoryDepartment(models.Model):
 
     @api.model
     def create(self, values):
+        '''
+            Override the create method for avoid duplication of department, Add validation while creating already existing department.
+        '''
         if 'name' in values:
             same_name = self.env['hr.department'].search([('name', '=', values['name'])])
             if same_name:

@@ -654,7 +654,7 @@ class VendorContact(models.Model):
 
     #Customer vendor seprator
     is_customer_vendor = fields.Selection(string='Contact Type', selection=[('is_customer', 'Customer'), ('is_vendor', 'Vendor')], default='is_customer')
-
+    customer_vendor_id = fields.Char('ID')
     # main tab fields
     vendor = fields.Char('Vendor')
     sort_name = fields.Char('Sort Name')
@@ -1000,6 +1000,13 @@ class VendorContact(models.Model):
     #         result.append((rec.id, name))
     #     return result
         
+    @api.onchange('customer_id','vendor')
+    def onchange_customer_id_vendor(self):
+        if self.customer_id:
+            self.customer_vendor_id = self.customer_id
+        if self.vendor:
+            self.customer_vendor_id = self.vendor
+            
     @api.onchange('filter_by_name')
     def onchange_name(self):
         '''
