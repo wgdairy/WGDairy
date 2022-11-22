@@ -32,9 +32,13 @@ class Stockmov(models.Model):
     @api.onchange('quantity_done')
     def onchange_qty_recieved(self):
 
+
         '''
         Function to Auto populate the Total Qty Received.
         '''
+
+
+
 
         if self.quantity_done:
             self.Total_Qty_Received = self.quantity_done

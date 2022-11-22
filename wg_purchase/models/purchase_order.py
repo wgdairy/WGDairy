@@ -273,13 +273,10 @@ class wg_po(models.Model):
         if onc_sku:
             if self.partner_id != onc_sku.prime_vede :
                 if self.partner_id != onc_sku.mfg_vende:
-
-
                     res = {'warning': {'title': _('Warning'),'message': _('Product not related to vendor.')}}
             elif self.partner_id != onc_sku.mfg_vende:
                 if self.partner_id != onc_sku.prime_vede:
                     res = {'warning': {'title': _('Warning'),'message': _('Product not related to vendor.')}}
-
         if res:
             return res
 
