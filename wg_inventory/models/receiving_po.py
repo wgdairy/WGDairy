@@ -114,7 +114,7 @@ class Stockpick(models.Model):
         '''
         If any Back order Set Back order field to Y, if no back orders,Set Back order field to N.
         '''
-        bak = self.env['purchase.order'].search([('name', '=', self.origin)])
+        bak = self.env['purchase.order'].search([('name', '=', self.origin)],limit=1)
         self.BkOrd = bak.BkOrds
 
 

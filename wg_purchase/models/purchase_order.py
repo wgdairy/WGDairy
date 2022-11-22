@@ -2,6 +2,7 @@
 
 # from odoo import models, fields, api
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 import datetime
 
@@ -278,6 +279,17 @@ class wg_po(models.Model):
 
             ex_cost = rec.product_qty * rec.cost_stk
             rec.Ext_Cost = float(ex_cost)
+
+class InheritMove(models.Model):
+    _inherit = 'account.move'
+
+    @api.model
+    def create(self,vals):
+        res = super(InheritMove, self).create(vals)
+        if res.release_to_pay_manual:
+            if res.release_to_pay_manual == 'exception' or res.release_to_pay_manual == 'no':
+                raise ValidationError('Vendor Bill and PO do not match')
+        return res
 
 
 
