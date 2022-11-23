@@ -312,19 +312,24 @@
       </field>
     </record>
 
+
+<!--        inherit purchase order list view-->
     <record id="purchase_order_view_tree_inherited" model="ir.ui.view">
         <field name="name">purchase.order.view.tree.inherited</field>
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='origin']" position="after">
-                <field name="BkOrds"/>
+                <field name="BkOrds" string="BkOrd'd"/>
+            </xpath>
+            <xpath expr="//field[@name='amount_untaxed']" position="replace">
+                <field name="amount_untaxed"/>
+            </xpath>
+            <xpath expr="//field[@name='amount_total']" position="replace">
+                <field name="amount_total"/>
             </xpath>
         </field>
     </record>
-
-
-
 
 
 

@@ -145,7 +145,7 @@
             </field>
         </record>
 
-
+        <!--inherit inventory receipts list view-->
         <record id="vpicktree_inherit" model="ir.ui.view">
             <field name="name">vpicktree.inherit</field>
             <field name="model">stock.picking</field>

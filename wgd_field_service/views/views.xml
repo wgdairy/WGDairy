@@ -461,6 +461,47 @@
         </field>
     </record>
 
+      <!--inherited accounting>vendor>bills tree view-->
+      <record id="account_out_invoice_tree_inherited" model="ir.ui.view">
+          <field name="name">account.out.invoice.tree.inherited</field>
+          <field name="model">account.move</field>
+          <field name="inherit_id" ref="account.view_in_invoice_bill_tree"/>
+          <field name="arch" type="xml">
+              <xpath expr="//field[@name='payment_state']" position="replace">
+                  <field name="payment_state" widget="badge"
+                           decoration-danger="payment_state == 'not_paid'"
+                           decoration-warning="payment_state in ('partial', 'in_payment')"
+                           decoration-success="payment_state in ('paid', 'reversed')"/>
+              </xpath>
+              <xpath expr="//field[@name='amount_untaxed_signed']" position="replace">
+                  <field name="amount_untaxed_signed"/>
+              </xpath>
+              <xpath expr="//field[@name='amount_total_signed']" position="replace">
+                  <field name="amount_total_signed"/>
+              </xpath>
+          </field>
+      </record>
+
+
+<!--      inherited accounting>vendor>payments list view-->
+      <record id="account_supplier_payment_tree_inherited" model="ir.ui.view">
+          <field name="name">account.supplier.payment.tree.inherited</field>
+          <field name="model">account.payment</field>
+          <field name="inherit_id" ref="account.view_account_supplier_payment_tree"/>
+          <field name="arch" type="xml">
+              <xpath expr="//field[@name='partner_id']" position="attributes">
+                  <attribute name="optional">show</attribute>
+              </xpath>
+              <xpath expr="//field[@name='amount_company_currency_signed']" position="replace">
+                  <field name="amount_company_currency_signed"/>
+              </xpath>
+          </field>
+      </record>
+
+
+
+
+
     <record id="action_sales" model="ir.actions.act_window">
         <field name="name">Sale Order FieldService</field>
         <field name="res_model">sale.order</field>
