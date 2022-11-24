@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/field_service.xml',
+        'views/check_report_inherit.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

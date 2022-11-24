@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="check_top_report"  inherit_id="l10n_us_check_printing.print_check_top">
+                <xpath expr="//div" position="replace">
+                       <div t-att-data-oe-model="o._name" t-att-data-oe-id="o.id" t-foreach="o._check_get_pages()" t-as="page" class="page article ckus_page ckus_top_page" t-attf-style="top: {{ o.company_id.account_check_printing_margin_top }}in; left: {{ o.company_id.account_check_printing_margin_left }}in;">
+                           <t t-call="l10n_us_check_printing.ckus_check" />
+                           <t t-call="l10n_us_check_printing.ckus_stub"><t t-set="stub_num" t-value="1"/></t>
+                       </div>
+                </xpath>
+    </template>
+
+    <template id="check_middle_report"  inherit_id="l10n_us_check_printing.print_check_middle">
+                <xpath expr="//div" position="replace">
+                    <div t-att-data-oe-model="o._name" t-att-data-oe-id="o.id" t-foreach="o._check_get_pages()" t-as="page" class="page article ckus_page ckus_middle_page" t-attf-style="top: {{ o.company_id.account_check_printing_margin_top }}in; left: {{ o.company_id.account_check_printing_margin_left }}in;">
+                        <t t-call="l10n_us_check_printing.ckus_check" />
+                        <t t-call="l10n_us_check_printing.ckus_stub"><t t-set="stub_num" t-value="2"/></t>
+                       </div>
+                </xpath>
+    </template>
+
+    <template id="check_bottom_report"  inherit_id="l10n_us_check_printing.print_check_bottom">
+                <xpath expr="//div" position="replace">
+                        <div t-att-data-oe-model="o._name" t-att-data-oe-id="o.id" t-foreach="o._check_get_pages()" t-as="page" class="page article ckus_page ckus_bottom_page" t-attf-style="top: {{ o.company_id.account_check_printing_margin_top }}in; left: {{ o.company_id.account_check_printing_margin_left }}in;">
+                           <t t-call="l10n_us_check_printing.ckus_stub"><t t-set="stub_num" t-value="2"/></t>
+                           <t t-call="l10n_us_check_printing.ckus_check" />
+                        </div>
+                </xpath>
+    </template>
+
+
+
+</odoo>

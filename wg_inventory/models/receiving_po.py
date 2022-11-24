@@ -118,7 +118,7 @@ class Stockpick(models.Model):
             bak = self.env['purchase.order'].search([('name', '=', rec.origin)],limit=1)
             # for r in bak:
 
-            self.BkOrd = bak.BkOrds
+            rec.BkOrd = bak.BkOrds
 
 
 

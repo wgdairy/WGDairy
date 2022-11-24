@@ -147,11 +147,11 @@ class wg_po(models.Model):
 
                 if bk_orders.backorder_id and bk_orders.state != 'done':
 
-                    self.BkOrds = 'Y'
+                    r.BkOrds = 'Y'
                 else:
-                    self.BkOrds = 'N'
+                    r.BkOrds = 'N'
             else:
-                self.BkOrds = 'N'
+                r.BkOrds = 'N'
 
 
         # if bk_orders:

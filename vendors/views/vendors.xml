@@ -124,8 +124,8 @@
                             </div>
                             <label for="phone" string="Phone" style="width:23%"/>
                             <field  name="phone" style="width:50%;"/><br/>
-                            <label for="phone2" string="Alternate Phone" style="width:23%"/>
-                            <field  name="phone2" style="width:50%;"/><br/>
+                            <label for="alternate_phone" string="Alternate Phone" style="width:23%"/>
+                            <field  name="alternate_phone" style="width:50%;"/><br/>
                             <label for="fax" string="Fax" style="width:23%;"/>
                             <field  name="fax" style="width:50%;"/><br/>
                             <label for="contact" string="Contact" style="width:23%;"/>

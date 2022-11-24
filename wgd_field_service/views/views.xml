@@ -498,7 +498,10 @@
           </field>
       </record>
 
-
+<!--      added default filter in AR customer invoice accounting module-->
+      <record id="account.action_move_out_invoice_type" model="ir.actions.act_window">
+             <field name="context">{"search_default_open":1}</field>
+      </record>
 
 
 

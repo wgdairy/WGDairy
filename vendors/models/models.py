@@ -661,7 +661,7 @@ class VendorContact(models.Model):
     pay_to_vendor = fields.Many2one('res.partner','Pay To Vendor')
     pay_to_vendor2 = fields.Many2one('res.partner', 'Pay to Vendor')
     # phone = fields.Char('Phone')
-    phone2 = fields.Char('Alternate Phone')
+    alternate_phone = fields.Char('Alternate Phone')
     # function for getting 'United States' as default country 
     # @api.model
     # def _get_default_country(self):
@@ -1634,6 +1634,63 @@ class VendorContact(models.Model):
             start_group += seperator
             start_group += third_group
             self.fax= start_group
+
+    @api.onchange('contact')
+    def _onchange_contact(self):
+        '''
+            validate contact
+        '''
+        if self.contact:
+            phone = str(self.contact)
+            letters = re.findall("[^0-9]", phone)
+            for val in letters:
+                phone = phone.replace(val, '')
+            seperator = "-"
+            start_group = phone[:3]
+            second_group = phone[3:6]
+            third_group = phone[6:10]
+            start_group += seperator
+            start_group += second_group
+            start_group += seperator
+            start_group += third_group
+            self.contact = start_group
+
+
+
+
+    @api.onchange('mobile')
+    def _onchange_mobile(self):
+        '''
+            validate mobile in contact tab
+        '''
+        if self.mobile:
+            phone = str(self.mobile)
+            letters = re.findall("[^0-9]", phone)
+            for val in letters:
+                phone = phone.replace(val, '')
+            seperator = "-"
+            start_group = phone[:3]
+            second_group = phone[3:6]
+            third_group = phone[6:10]
+            start_group += seperator
+            start_group += second_group
+            start_group += seperator
+            start_group += third_group
+            self.mobile = start_group
+
+
+
+    @api.onchange('email')
+    def validate_mail(self):
+        '''
+            validate email in contact tab
+        '''
+        if self.email:
+            match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', self.email)
+            if match == None:
+                raise ValidationError('Not a valid E-mail ID')
+
+
 
     @api.onchange('alternate_phone')
     def _onchange_alternate_phone(self):
