@@ -105,11 +105,11 @@
             </xpath>
 
             <!-- <xpath expr="//header" position="inside">
-                <field name="display_create_invoice_primary" invisible="1"/>    
+                <field name="display_create_invoice_primary" invisible="1"/>
                 <button name="create_estimate" string="Create Estimate" type="object" class="oe_highlight"/>
             </xpath> -->
 
-           
+
           </field>
         </record>
 
@@ -286,7 +286,7 @@
         </xpath>
             <xpath expr="//t[@t-set='address']" position="replace">
                 <!-- <div class="pt-5"> -->
-       
+
                     <div class="address row">
                         <div style="border:solid 1px black;padding:2%;width:47%;margin-right:2%; margin-left:2%;">
                             <b><t t-esc="o.company_id.name"/></b><br/>
@@ -334,7 +334,7 @@
                 <b><t t-esc="o.company_id.name"/></b><br/>
                 <t t-esc="o.company_id.street"/><br/>
                 <t t-esc="o.company_id.street2"/><br/>
-                <t t-esc="o.company_id.city"/> <t t-esc="o.company_id.state_id.name"/> 
+                <t t-esc="o.company_id.city"/> <t t-esc="o.company_id.state_id.name"/>
                 <t t-esc="o.company_id.zip"/><br/>
                 <t t-esc="o.company_id.country_id.name"/>
             </div>
@@ -356,6 +356,7 @@
     <template id="line_template_inherit" inherit_id="account_reports.line_template">
         <xpath expr="//span[hasclass('account_report_line_name')]//span" position="before">
             <t t-esc="line.get('customer_id')"/>
+            <t t-esc="line.get('partner_code')"/>     
         </xpath>
     </template>
 
@@ -376,7 +377,87 @@
             </tr>
         </xpath>
     </template>
-    
+
+    <!-- INHERIT PARTNER LEDGER REPORT HEADER-->
+    <template id="main_template" inherit_id="account_reports.main_template">
+        <xpath expr="//div/div[2]/div[1]" position="replace">
+            <div class="o_account_reports_header">
+                <div class="print_only">
+                    <t t-if="not options.get('multi_company')">
+                        <img t-att-src="image_data_uri(report.get('company_logo'))" height="110" width="150"/><br/>
+                        <t t-esc="report.get('company_name')"/><br/>
+                        <t t-if="report.get('company_street')"><span t-esc="report.get('company_street')"/>,</t>
+                        <t t-if="report.get('company_street2')"><span t-esc="report.get('company_street2')"/>,</t>
+                        <t t-if="report.get('company_city')"><span t-esc="report.get('company_city')"/></t><br/>
+                        <t t-if="report.get('company_state')"><span t-esc="report.get('company_state')"/>,</t>
+                        <t t-if="report.get('company_zip')"><span t-esc="report.get('company_zip')"/>,</t>
+                        <t t-if="report.get('company_country')"><span t-esc="report.get('company_country')"/></t><br/>
+                        <t t-if="report.get('company_phone')"><span t-esc="report.get('company_phone')"/></t><br/>
+                    </t>
+                    <div class="row" col="4">
+                        <t t-if="options.get('multi_company')">
+                            <!-- <t t-esc="options"/> -->
+                            <div class="print_only">
+                                <img class="img" src="/wgd_field_service/static/wg_logo.png"  height="110" width="150"/>
+                            </div>
+                             <div class="print_only">
+                                <table>
+                                    <tr>
+                                        <td t-foreach="options['multi_company']" t-as="c">         
+                                           <td>
+                                                <t t-esc="c.get('name')"/><br/>
+                                                <t t-if="c.get('street')"><span t-esc="c.get('street')"/>,</t>
+                                                <t t-if="c.get('street2')"><span t-esc="c.get('street2')"/>,</t>
+                                                <t t-if="c.get('city')"><span t-esc="c.get('city')"/></t><br/>
+                                                <t t-if="c.get('state')"><span t-esc="c.get('state')"/>,</t>
+                                                <t t-if="c.get('zip')"><span t-esc="c.get('zip')"/>,</t>
+                                                <t t-if="c.get('country')"><span t-esc="c.get('country')"/></t><br/>
+                                                <t t-if="c.get('phone')"><span t-esc="c.get('phone')"/></t>
+                                            </td>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+                <div class="print_only"><h2><t t-esc="report.get('name')"></t></h2></div>
+                    <t t-call="account_reports.filter_info_template"/>
+            </div>
+        </xpath>
+    </template>
+    <template id="filter_info_template" inherit_id="account_reports.filter_info_template">
+        <xpath expr="//div/div[2]/div[4]" position="replace">
+            <div class="col-12">
+                <t t-if="report.get('name') != 'Monthly Statement'">
+                    <t t-if="options.get('partner_ids') != None">
+                        Partners:
+                        <t t-set="res_partner_value">All</t>
+                        <t t-foreach="options['selected_partner_ids']" t-as="partner_name">
+                            <t t-set="res_partner_value" t-value="''"/>
+                            <t t-esc="partner_name"/>
+                        </t>
+                        <t t-esc="res_partner_value"/>
+                    </t>
+                </t>
+            </div>
+        </xpath>
+        <xpath expr="//div/div[2]/div[5]" position="replace">
+            <div class="col-12">
+                <t t-if="report.get('name') != 'Monthly Statement'">
+                    <t t-if="options.get('partner_categories') != None">
+                        Partner Categories:
+                        <t t-set="res_partner_category_value">All</t>
+                        <t t-foreach="options['selected_partner_categories']" t-as="partner_category_name">
+                            <t t-set="res_partner_category_value" t-value="''"/>
+                            <t t-esc="partner_category_name"/>
+                        </t>
+                        <t t-esc="res_partner_category_value"/>
+                    </t>
+                </t>
+            </div>
+        </xpath>
+    </template>
     <record id="view_order_form_inherit_fieldservice" model="ir.ui.view">
         <field name="name">sale.order.form.inherit.field.service</field>
         <field name="model">sale.order</field>
@@ -421,6 +502,7 @@
                 <field name="name" invisible="1"/>
                 <field name="description"/>
                 <field name="avg_cost"/>
+                <field name="primary_location"/>
             </xpath>
             <xpath expr="//tree/field[@name='tax_id']" position="attributes">
                <attribute name="domain">[('type_tax_use','=','sale'),('country_id', '=', parent.tax_country_id)]</attribute>
@@ -438,7 +520,7 @@
                 <field name="clerk"/>
                 <field name="w_tax" string="Tax"/>
                 <field name="payment_term_id" string="Payment Terms"/>
-            </xpath> 
+            </xpath>
             <xpath expr="//group" position="after">
                  <div class="row" col="2" style="width:100%;">
                     <div class="row" col="2" style="width:50%">
@@ -499,13 +581,13 @@
       </record>
 
 <!--      added default filter in AR customer invoice accounting module-->
+
       <record id="account.action_move_out_invoice_type" model="ir.actions.act_window">
-             <field name="context">{"search_default_open":1}</field>
+          <field name="context">{"search_default_open":1,'default_move_type': 'out_invoice'}</field>
       </record>
 
 
-
-    <record id="action_sales" model="ir.actions.act_window">
+      <record id="action_sales" model="ir.actions.act_window">
         <field name="name">Sale Order FieldService</field>
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,form,kanban</field>

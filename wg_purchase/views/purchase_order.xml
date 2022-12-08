@@ -183,9 +183,11 @@
                 <xpath expr="//field[@name='order_line']//tree/field[@name='name']" position="after">
                     <field name="product_id" context="{'form_view_ref': 'wg_inventory.product_new','tree_view_ref': 'wg_inventory.product_template_tree_view'}" invisible="1" />
                     <field name="desc_sku" string="Description" />
-                    <field name="OM" string="OM" />
                     <field name="qty_available" string="QOH" />
+                    <field name="primary_locations" string="Primary Location" />
+                    <field name="OM" string="OM" />
                     <field name="product_qty" position="move" />
+                    <field name="qty_received" />
                     <field name="cost_stk" string="Cost(Stk)" />
                     <field name="load_retail" string="Current Retail"/>
                     <field name="Ext_Cost" string="Ext Cost" />

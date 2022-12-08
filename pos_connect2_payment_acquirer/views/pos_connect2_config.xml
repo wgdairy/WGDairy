@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <data>
+        <record id="view_pos_connect2_configuration_tree" model="ir.ui.view" >
+            <field name="name">pos_connect2.configuration.tree</field>
+            <field name="model">pos_connect2.configuration</field>
+            <field name="arch" type="xml">
+                <tree string="John Deere Tree">
+                    <field name="name"/>
+                    <field name="terminal_number"/>
+                    <field name="merchant_number"/>
+                    <!-- <field name="publishable_key"/>
+                    <field name="secret_key"/> -->
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_pos_connect_configuration_form" model="ir.ui.view" >
+            <field name="name">pos_connect2.configuration.form</field>
+            <field name="model">pos_connect2.configuration</field>
+            <field name="arch" type="xml">
+                <form string="John Deere">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active_record" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active_record" widget="boolean_button"/>
+                            </button>
+                        </div>
+                        <group>
+                            <field name="name"/>
+                            <field name="api_url"/>
+                            <field name="terminal_number"/>
+                            <field name="merchant_number"/>
+                        </group>
+                        <group>
+                            <field name="credit_plan_number"/>
+                            <field name="descriptive_billing_code"/>
+                            <field name="dbc_code"/>
+                            <field name="john_deere_financial_legal_invoice_disclosure"/>
+                            
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_connect_configuration_form" model="ir.actions.act_window">
+            <field name="name">John Deere Configurations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos_connect2.configuration</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="pos_connect2_payment_acquirer.view_pos_connect2_configuration_tree"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Configure your John Deere
+              </p>
+            </field>
+        </record>
+
+        <record id="sequence_conncect_transaction" model="ir.sequence">
+           <field name="name">Connect2 Transaction</field>
+           <field name="code">pos.connect.transaction</field>
+           <field name="active">TRUE</field>
+           <field name="prefix">CTR</field>
+           <field name="padding">6</field>
+           <field name="number_increment">1</field>
+        </record>
+
+
+
+
+
+<menuitem
+        id="menu_pos_pos_connect_config"
+        name="John Deere Configurations"
+        groups="point_of_sale.group_pos_manager"
+        parent="point_of_sale.menu_point_config_product"
+        sequence="38"
+        action="pos_connect2_payment_acquirer.action_connect_configuration_form"
+        />
+    </data>
+
+</odoo>

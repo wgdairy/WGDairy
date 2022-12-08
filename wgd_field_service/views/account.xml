@@ -1,0 +1,22 @@
+<odoo>
+
+<record id="inheri_partner_ledger_" model="ir.ui.view">
+        <field name="name">inherit.partner.ledger.wgd</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree_grouped" />
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='debit']" position="after">
+                        <field name="finance_charges" string="Finance Charge" />
+                </xpath>
+
+
+
+        </field>
+
+</record>
+
+
+
+</odoo>

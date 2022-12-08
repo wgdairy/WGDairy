@@ -23,7 +23,7 @@ class vendors(models.Model):
     pay_to_vendor2 = fields.Many2one('res.partner', 'Pay to Vendor')
     phone = fields.Char('Phone')
     phone2 = fields.Char('Alternate Phone')
-    # function for getting 'United States' as default country 
+    # function for getting 'United States' as default country
     @api.model
     def _get_default_country(self):
         country = self.env['res.country'].search([('code', '=', 'US')], limit=1)
@@ -139,7 +139,7 @@ class vendors(models.Model):
     special_lq = fields.Monetary()
     special_ytd = fields.Monetary()
     special_ly = fields.Monetary()
-    
+
     units_ordered_ytd = fields.Integer('Units Ordered')
     units_ordered_ly = fields.Integer('Units Ordered')
     received_ytd = fields.Float('Recieved')
@@ -173,7 +173,7 @@ class vendors(models.Model):
                     name = rec.name
             result.append((rec.id, name))
         return result
-    
+
     def write(self, vals):
         if 'vendor' in vals:
             vendor_dup = self.env['wgd.vendors'].search([('vendor','=',vals['vendor'])])
@@ -183,7 +183,7 @@ class vendors(models.Model):
             res = super(vendors, self).write(vals)
         return res
 
-    @api.model    
+    @api.model
     def create(self, vals):
         print(self.vendor, vals['vendor'])
         if 'vendor' in vals or 'company_id' in vals:
@@ -376,7 +376,7 @@ class vendors(models.Model):
         if float_value:
             if len(str(float_value)) > 12:
                 raise ValidationError("10 digits be allowed in %s" % val)
-    
+
     # validation for monetary fields with more than 10 digits
     @api.constrains('amount_paid1','amount_paid2','discount_taken1','discount_taken2',
                     'discount_lost1','discount_lost2','warehouse_cq','warehouse_lq'
@@ -479,7 +479,7 @@ class vendors(models.Model):
     #         start_group += seperator
     #         start_group += third_group
     #         self.contact  = start_group
-        
+
     @api.onchange('fax')
     def _onchange_fax(self):
         '''
@@ -519,12 +519,12 @@ class vendors(models.Model):
             start_group += seperator
             start_group += third_group
             self.alternate_fax  = start_group
-    
+
     def button_(self):
         pass
 
-    
-    
+
+
 class ContactLines(models.Model):
     '''
         Model for Contact tab in vendor form.
@@ -661,7 +661,7 @@ class VendorContact(models.Model):
     pay_to_vendor = fields.Many2one('res.partner','Pay To Vendor')
     pay_to_vendor2 = fields.Many2one('res.partner', 'Pay to Vendor')
     # phone = fields.Char('Phone')
-    alternate_phone = fields.Char('Alternate Phone')
+    # alternate_phone = fields.Char('Alternate Phone')
     # function for getting 'United States' as default country 
     # @api.model
     # def _get_default_country(self):
@@ -788,7 +788,7 @@ class VendorContact(models.Model):
     special_lq = fields.Monetary()
     special_ytd = fields.Monetary()
     special_ly = fields.Monetary()
-    
+
     units_ordered_ytd = fields.Integer('Units Ordered')
     units_ordered_ly = fields.Integer('Units Ordered')
     received_ytd = fields.Float('Recieved')
@@ -799,7 +799,7 @@ class VendorContact(models.Model):
 
     filter_by_vname = fields.Many2one('wgd.vendors')
     filter_by_vid = fields.Many2one('wgd.vendors')
-    
+
     ########################## CUSTOMER FIELDS ###########################
 
     customer_id             = fields.Char("Customer ID",help='Exportable')
@@ -810,6 +810,19 @@ class VendorContact(models.Model):
     ace_rewards             = fields.Char("Ace Rewards",help='Exportable')
     filter_by_name          = fields.Many2one('res.partner')
     filter_by_id            = fields.Many2one('res.partner')
+
+    @api.model
+    def create(self, vals):
+        if vals.get('is_customer_vendor') == 'is_customer':
+            vals['customer_id'] = self.env['ir.sequence'].next_by_code('wgd.customer.sequence') or 'New'
+            result = super(VendorContact, self).create(vals)
+            return result
+
+        elif vals.get('is_customer_vendor') == 'is_vendor':
+            vals['vendor'] = self.env['ir.sequence'].next_by_code('wgd.vendors.sequence') or 'New'
+            result = super(VendorContact, self).create(vals)
+            return result
+
 
     # notebook page1 Main
     phone                   = fields.Char('Phone',help='Exportable')
@@ -846,7 +859,7 @@ class VendorContact(models.Model):
     # notebook page2 Credit
     finace_chgs_ytd         = fields.Float("Finace Chgs YTD", digits=(2,2))
     higest_acc_balance      = fields.Float("Higest Acct Balance")
-    credit_available        = fields.Float("Credit Available",compute="_total_credit") 
+    credit_available        = fields.Float("Credit Available",compute="_total_credit")
     running_balance         = fields.Float("Running Balance",compute="_total_running_bal")
     statment_balance        = fields.Float("Statment Balance",compute="_total_stmt_bal")
     statment_discount       = fields.Float("Statment Discount")
@@ -868,7 +881,7 @@ class VendorContact(models.Model):
     std_sell_prices         = fields.Integer("Std Sell Price")
     delete_all              = fields.Boolean(string = "Delete All Department History?")
     customer_sales_summary  = fields.Char('Customer Sales Summary',help='Exportable')
-    credit_ids              = fields.One2many('credit', 'customer_id',string=" ")  
+    credit_ids              = fields.One2many('credit', 'customer_id',string=" ")
     period_to_date_sale     = fields.Float("Sale")
     period_to_date_cost     = fields.Float("Cost")
     period_to_date_gp       = fields.Float("GP %")
@@ -932,7 +945,7 @@ class VendorContact(models.Model):
     alternate_fax           = fields.Char('Alternative Fax',help='Exportable')
     open_quote_1            = fields.Char('Open Quote Doc#/St',help='Exportable')
     open_quote_2            = fields.Char('',help='Exportable')
-    rebate_plan             = fields.Selection([('1',' '),('2','2')], "Rebate Plan",help='Exportable')   
+    rebate_plan             = fields.Selection([('1',' '),('2','2')], "Rebate Plan",help='Exportable')
     business_type           = fields.Selection([('1',' '),('2','2')], "Business Type",help='Exportable')
     location                = fields.Selection([('1',' '),('2','2')], "Location",help='Exportable')
     customer_ranks          = fields.Selection([('1',' '),('2','2')], "Customer Rank",help='Exportable')
@@ -946,28 +959,28 @@ class VendorContact(models.Model):
     ace_rewards_status      = fields.Selection([('A','A'),('I','I'),('N','N')], "Ace Rewards Status",default='A',help='Exportable')
     tax_override_plan       = fields.Selection([('1',' '),('2','2')], "Tax Override Plan",help='Exportable')
     prompt_in_pos           = fields.Selection([('1',' '),('2','2')], "Prompt in POS?",help='Exportable')
-    prompt_threshold        = fields.Char('Prompt Threshold',help='Exportable')   
+    prompt_threshold        = fields.Char('Prompt Threshold',help='Exportable')
     price_pick_ticket       = fields.Selection([('y','Y'),('n','N')], "Price Pick Ticket", default='y',help='Exportable')
     open_quotes             = fields.Selection([('y','Y'),('n','N')], "Open Quote", default='n',help='Exportable')
     global_credit_check     = fields.Selection([('1',' '),('2','2')], "Global Credit Check",help='Exportable')
     print_lumber_totals     = fields.Selection([('y','Y'),('n','N')], "Print Lumber Totals", default='y',help='Exportable')
     default_price_uom       = fields.Many2one('uom.uom')
     statment_by_job         = fields.Selection([('s','S')], "Statment By Job", default='s',help='Exportable')
-    additional_flag          = fields.Char('Additional Flags',help='Exportable')    
-    names_ids              = fields.One2many('names', 'customer_id',string=" ") 
+    additional_flag          = fields.Char('Additional Flags',help='Exportable')
+    names_ids              = fields.One2many('names', 'customer_id',string=" ")
 
 # notebook page8 Note
     types                   = fields.Selection([('1','1'),('2','2')], "Type", default='1',help='Exportable')
     display_repeat          = fields.Selection([('yes','Y'),('no','N')], "Display Repeats", default='yes',help='Exportable')
-    print_repeat            = fields.Selection([('yes','Y'),('no','N')], "Print Repeats", default='no',help='Exportable')                 
+    print_repeat            = fields.Selection([('yes','Y'),('no','N')], "Print Repeats", default='no',help='Exportable')
     message                 = fields.Html("Message")
 
 #smart button
-    current_total           = fields.Float("Current",compute="_smart_button")  
-    thirty_total            = fields.Float("Current",compute="_smart_button")  
-    sixty_total             = fields.Float("Current",compute="_smart_button")  
-    ninety_total            = fields.Float("Current",compute="_smart_button")  
-    over_total              = fields.Float("Current",compute="_smart_button")  
+    current_total           = fields.Float("Current",compute="_smart_button")
+    thirty_total            = fields.Float("Current",compute="_smart_button")
+    sixty_total             = fields.Float("Current",compute="_smart_button")
+    ninety_total            = fields.Float("Current",compute="_smart_button")
+    over_total              = fields.Float("Current",compute="_smart_button")
 
     def action_student_schedules(self):
         pass
@@ -999,14 +1012,14 @@ class VendorContact(models.Model):
     #                 name = rec.name
     #         result.append((rec.id, name))
     #     return result
-        
+
     @api.onchange('customer_id','vendor')
     def onchange_customer_id_vendor(self):
         if self.customer_id:
             self.customer_vendor_id = self.customer_id
         if self.vendor:
             self.customer_vendor_id = self.vendor
-            
+
     @api.onchange('filter_by_name')
     def onchange_name(self):
         '''
@@ -1161,7 +1174,7 @@ class VendorContact(models.Model):
 
 
     @api.onchange('filter_by_id')
-    def onchange_id(self):       
+    def onchange_id(self):
         '''
             Auto fill the customer data on the all fields based on selected customer ID 
         '''
@@ -1203,7 +1216,7 @@ class VendorContact(models.Model):
                 self.taxable= customer_id.taxable
                 self.keep_dept_history= customer_id.keep_dept_history
                 self.print_invoices_in_pos= customer_id.print_invoices_in_pos
-                self.last_activity_date=customer_id.last_activity_date    
+                self.last_activity_date=customer_id.last_activity_date
 
                 self.customer_id= customer_id.customer_id
                 self.job_ids= customer_id.job_ids
@@ -1311,7 +1324,7 @@ class VendorContact(models.Model):
                 self.ninety_total= customer_id.ninety_total
                 self.over_total= customer_id.over_total
                 self.message= customer_id.message
-    
+
     @api.depends('current_total','thirty_total','sixty_total','ninety_total','over_total')
     def _smart_button(self):
         '''
@@ -1325,9 +1338,9 @@ class VendorContact(models.Model):
         refund__invoices  = self.env['account.move'].search([('move_type', '=', 'out_refund'),('partner_id', '=', self.id),('state', '=', 'posted'),('invoice_date', '<=', current_date)])
         day = 0
         current_total1 = 0.0
-        total_30 = 0.0 
+        total_30 = 0.0
         total_60 = 0.0
-        total_90 = 0.0 
+        total_90 = 0.0
         over_90  = 0.0
         for record in customer_invoices:
             if record.invoice_date == current_date:
@@ -1344,7 +1357,7 @@ class VendorContact(models.Model):
                         total_60 = total_60 + record.amount_residual
                     elif day < 91:
                         total_90 = total_90 + record.amount_residual
-                    else: 
+                    else:
                         over_90 = over_90 + record.amount_residual
             else:
                 if record.invoice_date_due == current_date or record.invoice_date_due > current_date:
@@ -1360,7 +1373,7 @@ class VendorContact(models.Model):
                         total_60 = total_60 + record.amount_residual
                     elif day < 91:
                         total_90 = total_90 + record.amount_residual
-                    else: 
+                    else:
                         over_90 = over_90 + record.amount_residual
 
         for record in refund__invoices:
@@ -1378,7 +1391,7 @@ class VendorContact(models.Model):
                         total_60 = total_60 - record.amount_residual
                     elif day < 91:
                         total_90 = total_90 - record.amount_residual
-                    else: 
+                    else:
                         over_90 = over_90 - record.amount_residual
             else:
                 if record.invoice_date_due == current_date or record.invoice_date_due > current_date:
@@ -1394,8 +1407,8 @@ class VendorContact(models.Model):
                         total_60 = total_60 - record.amount_residual
                     elif day < 91:
                         total_90 = total_90 - record.amount_residual
-                    else: 
-                        over_90 = over_90 - record.amount_residual            
+                    else:
+                        over_90 = over_90 - record.amount_residual
         self.current_total = current_total1
         self.thirty_total  = total_30
         self.sixty_total   = total_60
@@ -1425,7 +1438,7 @@ class VendorContact(models.Model):
             elif len(str(float_value)) > 12:
                 raise ValidationError("10 digits be allowed in %s" % val)
 
-            
+
     @api.constrains('credit_limit','finace_chgs_ytd','higest_acc_balance','credit_available',
         'running_balance','statment_balance','statment_discount','returns','period_to_date_sale','year_to_date_sale','year_to_date_cost',
             'year_to_date_gp','last_year_sale','last_year_cost','period_to_date_gp_dollor'
@@ -1444,7 +1457,7 @@ class VendorContact(models.Model):
             self.validate_float(self.finace_chgs_ytd,val)
         if self.higest_acc_balance:
             val = "Higest Acc Balance"
-            self.validate_float(self.higest_acc_balance,val)        
+            self.validate_float(self.higest_acc_balance,val)
         if self.credit_available:
             val = "Credit Available"
             self.validate_float(self.credit_available,val)
@@ -1523,7 +1536,7 @@ class VendorContact(models.Model):
         '''
             Statment Balance =  sum of  journals debit sum - sum of journals credit sum
         '''
-        
+
         invoices_recivable = self.env['account.move.line'].search([('account_id', '=', '121000 Account Receivable'),('partner_id', '=', self.id)])
         invoices_payable   = self.env['account.move.line'].search([('account_id', '=', '211000 Account Payable'),('partner_id', '=', self.id)])
         invoices            = invoices_recivable + invoices_payable
@@ -1592,7 +1605,7 @@ class VendorContact(models.Model):
             start_group += second_group
             start_group += seperator
             start_group += third_group
-            self.social_security  = start_group
+            self.social_security = start_group
 
     @api.onchange('phone')
     def _onchange_phone(self):
@@ -1614,7 +1627,7 @@ class VendorContact(models.Model):
             start_group += third_group
             self.phone  = start_group
 
-        
+
     @api.onchange('fax')
     def _onchange_fax(self):
         '''
@@ -1633,86 +1646,103 @@ class VendorContact(models.Model):
             start_group += second_group
             start_group += seperator
             start_group += third_group
-            self.fax= start_group
+            self.fax = start_group
 
-    @api.onchange('contact')
-    def _onchange_contact(self):
+    @api.onchange('alternate_phone')
+    def _onchange_alternate_phone(self):
         '''
-            validate contact
+            onchange for  alternate phone number
         '''
-        if self.contact:
-            phone = str(self.contact)
-            letters = re.findall("[^0-9]", phone)
+
+        phone1 = str(self.alternate_phone)
+        if len(phone1) == 10:
+            letters = re.findall("[^0-9]", phone1)
             for val in letters:
-                phone = phone.replace(val, '')
-            seperator = "-"
-            start_group = phone[:3]
-            second_group = phone[3:6]
-            third_group = phone[6:10]
-            start_group += seperator
+                phone1 = phone1.replace(val, '')
+            seperator1 = "("
+            seperator2 = ")"
+            seperator3 = " "
+            seperator4 = "-"
+
+            start_group = seperator1
+            first_group = phone1[:3]
+            second_group = phone1[3:6]
+            third_group = phone1[6:10]
+            start_group += first_group
+            start_group += seperator2
+            start_group += seperator3
             start_group += second_group
-            start_group += seperator
+            start_group += seperator4
             start_group += third_group
-            self.contact = start_group
+            self.alternate_phone = start_group
 
 
+
+    @api.constrains('alternate_phone')
+    def validate_alternate_phone(self):
+        '''
+            validate alternate phone number
+        '''
+        if self.alternate_phone:
+            phone1 = str(self.alternate_phone)
+            if len(phone1) < 14 or len(phone1) > 14:
+                raise ValidationError('Please enter a valid Phone Number')
 
 
     @api.onchange('mobile')
     def _onchange_mobile(self):
         '''
-            validate mobile in contact tab
+            onchange for mobile in contact tab
         '''
-        if self.mobile:
-            phone = str(self.mobile)
-            letters = re.findall("[^0-9]", phone)
+
+        phone1 = str(self.mobile)
+        if len(phone1) == 10:
+            letters = re.findall("[^0-9]", phone1)
             for val in letters:
-                phone = phone.replace(val, '')
-            seperator = "-"
-            start_group = phone[:3]
-            second_group = phone[3:6]
-            third_group = phone[6:10]
-            start_group += seperator
+                phone1 = phone1.replace(val, '')
+            seperator1 = "("
+            seperator2 = ")"
+            seperator3 = " "
+            seperator4 = "-"
+
+            start_group = seperator1
+            first_group = phone1[:3]
+            second_group = phone1[3:6]
+            third_group = phone1[6:10]
+            start_group += first_group
+            start_group += seperator2
+            start_group += seperator3
             start_group += second_group
-            start_group += seperator
+            start_group += seperator4
             start_group += third_group
             self.mobile = start_group
 
+    @api.constrains('mobile')
+    def validate_mobile(self):
+        '''
+            validate mobile in contact tab
+        '''
+        if self.mobile:
+            phone1 = str(self.mobile)
+            if len(phone1) < 14 or len(phone1) > 14:
+                raise ValidationError(f'Please enter a valid Phone Number for {self.name}')
 
 
-    @api.onchange('email')
+
+
+    @api.constrains('email')
     def validate_mail(self):
         '''
             validate email in contact tab
         '''
+
         if self.email:
             match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', self.email)
             if match == None:
-                raise ValidationError('Not a valid E-mail ID')
+                raise ValidationError(f'Please enter a valid E-mail ID for {self.name}')
 
 
 
-    @api.onchange('alternate_phone')
-    def _onchange_alternate_phone(self):
-        '''
-            validate alternate phone number
-        '''
-        if self.alternate_phone:
-            phone1   =str(self.alternate_phone)
-            letters = re.findall("[^0-9]",phone1)
-            for val in letters:
-                phone1 = phone1.replace(val,'')
-            seperator="-"
-            start_group =phone1[:3]
-            second_group=phone1[3:6]
-            third_group =phone1[6:10]
-            start_group += seperator
-            start_group += second_group
-            start_group += seperator
-            start_group += third_group
-            self.alternate_phone  = start_group
-
-        
     @api.onchange('alternate_fax')
     def _onchange_alternate_fax(self):
         '''
@@ -1756,7 +1786,7 @@ class VendorContact(models.Model):
         for record in self:
             credit_limits = record.credit_limit
         self.credit_available = float(credit_limits) - float(total)
-    
+
     @api.onchange('is_customer_vendor')
     def onchange_customer(self):
         if self.is_customer_vendor == 'is_customer':

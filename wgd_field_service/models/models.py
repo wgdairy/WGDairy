@@ -202,6 +202,7 @@ class SaleOrderLineInherit(models.Model):
     _inherit = 'sale.order.line'
 
     avg_cost = fields.Monetary(string="Average Cost")
+    primary_location = fields.Many2one('stock.location',string="Primary Location", related='product_id.product_tmpl_id.primary_location')
     description = fields.Char('Description', related='product_id.name', readonly=False)
     # tax_id = fields.Many2many('account.tax', string='Taxes', domain=['|', ('active', '=', False), ('active', '=', True)], default=lambda self:self.order_id.w_tax)
 
@@ -231,7 +232,7 @@ class CustomerInvoiceInherit(models.Model):
     country_id = fields.Many2one('res.country', string='Country', ondelete='restrict')
     payment_term_id = fields.Many2one(
         'account.payment.term', string='Payment Terms', check_company=True,  # Unrequired company
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", default=lambda self: self.partner_id.property_payment_term_id)
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", related="partner_id.terms_code")
 
     
     @api.onchange('partner_id')
@@ -411,10 +412,16 @@ class PartnerLedgerReport(models.AbstractModel):
             columns.append({'name': ''})
         columns.append({'name': self.format_value(initial_balance), 'class': 'number'})
 
+        if partner.is_customer_vendor == 'is_customer':
+            partner_code = partner.customer_id
+        elif partner.is_customer_vendor == 'is_vendor':
+            partner_code = partner.vendor
+
         return {
             'id': 'partner_%s' % (partner.id if partner else 0),
             'partner_id': partner.id if partner else None,
             'name': partner is not None and (partner.name or '')[:128] or _('Unknown Partner'),
+            'partner_code':partner_code,
             'columns': columns,
             'level': 2,
             'trust': partner.trust if partner else None,
@@ -441,3 +448,52 @@ class PartnerLedgerReport(models.AbstractModel):
         columns.append({'name': _('Balance'), 'class': 'number'})
 
         return columns
+
+class AccountReportInherit(models.AbstractModel):
+    _inherit = "account.report"
+
+    ####################################################
+    #OVERRIDE # OPTIONS: MULTI COMPANY
+    ####################################################
+
+    def _init_filter_multi_company(self, options, previous_options=None):
+        if self.filter_multi_company:
+            if self._context.get('allowed_company_ids'):
+                # Retrieve the companies through the multi-companies widget.
+                companies = self.env['res.company'].browse(self._context['allowed_company_ids'])
+            else:
+                # When called from testing files, 'allowed_company_ids' is missing.
+                # Then, give access to all user's companies.
+                companies = self.env.companies
+            if len(companies) > 1:
+                options['multi_company'] = [
+                    {'id': c.id, 'name': c.company_name, 'logo':c.logo, 'street':c.street, 'street2':c.street2, 'city':c.city, 'state':c.state_id.code, 'zip':c.zip, 'country':c.country_id.name, 'phone':c.phone} for c in companies
+                ]
+
+    def _get_html_render_values(self, options, report_manager):
+        return {
+            'report': {
+                'name': self._get_report_name(),
+                'summary': report_manager.summary,
+                'company_name': self.env.company.company_name,
+                'company_logo': self.env.company.logo,
+                'company_street': self.env.company.street,
+                'company_street2': self.env.company.street2,
+                'company_city': self.env.company.city,
+                'company_state': self.env.company.state_id.code, 
+                'company_zip': self.env.company.zip,
+                'company_country': self.env.company.country_id.name,
+                'company_phone': self.env.company.phone,             
+            },
+            'options': options,
+            'context': self.env.context,
+            'model': self,
+        }
+
+class ReportPartnerLedger(models.AbstractModel):
+    _inherit = "account.partner.ledger"
+    _description = "Partner Ledger Inherit"
+
+    @api.model
+    def _get_report_name(self):
+        return _('Monthly Statement')

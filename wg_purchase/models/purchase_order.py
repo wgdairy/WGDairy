@@ -203,7 +203,7 @@ class wg_po(models.Model):
     _inherit = "purchase.order.line"
 
     Popularity_Code = fields.Char(string='Popularity Code')
-    OM = fields.Char()
+    OM = fields.Float()
     Ext_Cost = fields.Float('Ext Cost',compute='_compute_extcost')
     UM_Pur = fields.Float('UM(Pur)')
     cost_stk = fields.Float('Cost(Stk)',compute='_get_cost_stk',readonly=False,store=True)
@@ -227,8 +227,8 @@ class wg_po(models.Model):
     location_id = fields.Char()
     ln = fields.Integer(compute='_get_line_numbers', string='Serial Number', readonly=False, default=False)
     price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price',related='product_id.product_tmpl_id.list_price' )
-    desc_sku = fields.Char(related='product_id.product_tmpl_id.name', string='Description', readonly=False)
-
+    desc_sku = fields.Char(related='product_id.product_tmpl_id.sku', string='Description', readonly=False)
+    primary_locations = fields.Many2one('stock.location',string="Primary Location", related='product_id.product_tmpl_id.primary_location')
     def _get_line_numbers(self):
         '''
             Function to Generate line number in purchase order line.
@@ -268,6 +268,7 @@ class wg_po(models.Model):
         self.qty_available = onc_sku.qty_available
         self.dept = onc_sku.deptart
         self.price_unit = onc_sku.list_price
+        
 
         res = {}
         if onc_sku:
@@ -292,16 +293,33 @@ class wg_po(models.Model):
             rec.Ext_Cost = float(ex_cost)
 
 class InheritMove(models.Model):
-    _inherit = 'account.move'
+    _inherit = 'account.move.line'
 
-    @api.model
-    def create(self,vals):
-        res = super(InheritMove, self).create(vals)
-        if res.release_to_pay_manual:
-            if res.release_to_pay_manual == 'exception' or res.release_to_pay_manual == 'no':
-                raise ValidationError('Vendor Bill and PO do not match')
-        return res
+    @api.onchange('quantity')
+    def onchange_quantity(self):
+        if self.move_id.move_type == 'in_invoice' or self.move_id.move_type == 'in_refund':
+            actual_qty = 0
+            rec_qty = 0
+            if self.product_id:
+                if self.purchase_order_id:
+                    purchase_lines = self.env['purchase.order.line'].search([('product_id','=',self.product_id.id),('order_id','=', self.purchase_order_id.name)])
+                    for i in purchase_lines:
+                        actual_qty += i.product_qty
+                        rec_qty += i.qty_received
+                    if self.quantity > rec_qty or self.quantity < rec_qty:
+                        res = {'warning': {'title': _('Warning'),'message': _('Vendor Bill and PO do not match - quantities not matching.')}}
+                        return res
 
+    @api.onchange('price_unit')
+    def onchange_price_unit(self):
+        if self.move_id.move_type == 'in_invoice' or self.move_id.move_type == 'in_refund':
+            if self.product_id:
+                if self.price_unit:
+                    purchase_lines = self.env['purchase.order.line'].search([('product_id','=',self.product_id.id),('order_id','=', self.purchase_order_id.name)])
+                if self.price_unit:
+                    if self.price_unit != purchase_lines.price_unit:
+                        res = {'warning': {'title': _('Warning'),'message': _('Vendor Bill and PO do not match - Prices not matching.')}}
+                        return res
 
 
 

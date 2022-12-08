@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<templates id="template" xml:space="preserve">
+
+    <templates id="template" xml:space="preserve">
+        <t t-name="InvoiceDetails" t-inherit="pos_invoice_details.InvoiceDetails" t-inherit-mode="extension" owl="1">
+            <xpath expr="//div[hasclass('control-button wk_register_payment')]" position="replace">
+                <div class='control-button wk_register_payment'>Payments1</div>
+            </xpath>
+        </t>
+    </templates>
+
+
+
+    <t t-name="PaymentConnectNotifyPopupWidget" owl="1">
+        <div class="modal-dialog">
+            <div class="popup popup-textinput" style="border-radius:5px; height:220px" >
+                <t t-if="props.failed">
+                    <p style="font-size:32px;font-weight:bold;color:red;margin-top:10%;">
+                        Payment Failed!!
+                    </p>
+                    <p style="font-size:16px;color:red;">
+                        <t t-esc="props.body"/>
+                    </p>
+                </t>
+                <t t-else="">
+                    <div class="order_status" style="height:80px;width:80px;margin-top:15px">
+                        <div class="show_tick draw"></div>
+                    </div>
+                    <h3 id="quote_status" style="color:#5cb85c;height:12px;">
+                        <t t-esc="props.title || 'Request Created !!!!!'"/>
+                    </h3>
+                    <p style="font-size:16px;">
+                        <t t-esc="props.body"/>
+                    </p>
+
+                </t>
+            </div>
+        </div>
+    </t>
+<!-- ############################# -->
+<!-- <form class="credit-card">
+  <div class="form-header">
+    <h4 class="title">Credit card detail</h4>
+  </div>
+ 
+  <div class="form-body">
+    <input type="text" class="card-number" placeholder="Card Number">
+ 
+    <div class="date-field">
+      <div class="month">
+        <select name="Month">
+          <option value="january">January</option>
+          <option value="february">February</option>
+          <option value="march">March</option>
+          <option value="april">April</option>
+          <option value="may">May</option>
+          <option value="june">June</option>
+          <option value="july">July</option>
+          <option value="august">August</option>
+          <option value="september">September</option>
+          <option value="october">October</option>
+          <option value="november">November</option>
+          <option value="december">December</option>
+        </select>
+      </div>
+      <div class="year">
+        <select name="Year">
+          <option value="2016">2016</option>
+          <option value="2017">2017</option>
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+        </select>
+      </div>
+    </div>
+ 
+    <div class="card-verification">
+      <div class="cvv-input">
+        <input type="text" placeholder="CVV">
+      </div>
+      <div class="cvv-details">
+        <p>3 or 4 digits usually found <br> on the signature strip</p>
+      </div>
+    </div>
+ 
+    <button type="submit" class="proceed-btn"><a href="#">Proceed</a></button>
+    <button type="submit" class="paypal-btn"><a href="#">Pay With</a></button>
+  </div>
+</form>
+ -->
+
+<!-- ############################# -->
+
+    <t t-name="connectPurchaseReviewPopUp" owl="1">
+        <div role="dialog" class="modal-dialog">
+            <div class="popup popup-alert" style="max-width: 40%;">
+                <p class="title"><t t-esc=" props.title || 'Scan Me' " /></p>
+                <div class="payment_form_review" style="padding:0px;">
+                    <form id="purchase-review-form" class="">
+                    <div class="basic-fields">
+
+                        <div class="row" style="margin-top:1px;padding:15px;">
+                                <div>
+                                    <p>
+                                        <span id="review_msg"><t t-esc="props.review_msg"/></span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <input class="card-extra-inputs" name="authorization" style="width:100%;padding:5px !important;" id="authorization_no" type="text" placeholder="Authorization Number"></input>
+                                </div>
+                                <div class="" style="padding:15px;">
+                                    <button type="submit" id="submit_review" style="width:50%;z-index: -1 !important;">
+                                        <div class="spinner hidden" id="spinner_review"></div>
+                                        <span id="button-text">Submit</span>
+                                        <!-- <span id="order-amount"><t t-esc="props.total_amount"/></span> -->
+                                    </button>
+                                    <div class="sr-field-error" id="card-errors_review" role="alert"></div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </form>
+                </div>
+                <div class="footer">
+                    <div class="button cancel" t-on-click="cancel">
+                        Cancel
+                    </div>
+                </div>
+                <div class="loader-holder-review">
+                    <div class="wk-payment-loader"></div>
+                </div>
+                <div class="payment_done">
+                    <div class="payment_order_status" style="height:140px;width:140px;margin-top:15px">
+                        <div class="payment_show_tick draw"></div>
+                    </div>
+                    <h3 id="payment_quote_status" style="color:#5cb85c;height:12px;">
+                        <t t-esc="props.title || 'Request Created !!!!!'"/>
+                    </h3>
+                    <p class="payment_amount" style="font-size:16px;">
+                        The Payment has been completed..
+                    </p>
+                </div>
+            </div>
+            
+
+        </div>
+    </t>
+    
+    <t t-name="ConnectPaymentPopUp" owl="1">
+                <div role="dialog" class="modal-dialog">
+                    <div class="popup popup-alert" style="max-width: 40%;">
+                    <p class="title"><t t-esc=" props.title || 'Scan Me' " /></p>
+
+                        <div class="payment_form" style="padding:0px;">
+                            <form id="payment-form" class="connect-form sr-payment-form">
+                                <div class="sr-combo-inputs-row">
+                                    <div class="basic-fields">
+
+                                        <div class="row" style="margin-top:1px;padding:15px;">
+                                        <input class="card-extra-inputs" name="customer_name" style="width:100%;padding:5px !important;" id="customer-name" type="text" placeholder="Name"></input>
+                                        </div>
+
+                                        <div class="row" style="margin-top:1px;padding:15px;">
+                                        <input class="card-extra-inputs" name="phone_number" id="customer-phone" style="width:100%;padding:5px !important;" type="tel" placeholder="Mobile No." ></input>
+                                        </div>
+
+
+                                        <div style="margin-top:1px;padding:15px;">
+                                            <div style=" display: inline">
+                                                <input class="card-extra-inputs" name="card_number" id="customer_card_number" style="width:100%;padding:5px !important;" type="tel" placeholder="Card No."></input>
+                                            </div>                                            
+                                        </div>   
+                                        <div style="margin-top:1px;padding:15px;">
+                                            <div style="ddisplay:inline;width: 100%;text-align: left;float: left;">
+                                            <span style="width:20%">DBC Code :</span>
+                                            <select id="dbc_code_selection_id" style="font-size:24px;width: 80%;height: 50px;">
+                                            </select>
+                                        </div>
+                                        </div>
+
+
+                                        <div style="margin-top:1px;padding:15px;float:left">
+                                         <input type="checkbox" id="accept" name="accept" style="width:50px;min-height:30px;margin-left:-10px;"/><label> Save Card Information</label>                                     
+                                        </div>                                    
+
+                                    </div>
+                                    
+                                    <div class="sr-input sr-card-element" id="card-element" style="margin-top:20px;" hidden="hidden">
+                                        <div class="row row_card" id="row_card_id" style="margin-top:1px;"></div>
+                                        <input type="hidden" class="wk_total"/>
+                                        <input type="hidden" class="wk_currency"/>
+                                        <input type="hidden" class="wk_currency_id"/>
+                                        <input type="hidden"  class="order_number"/>
+                                    </div>
+
+                                    <div class="" style="padding:15px;">
+                                    <button type="submit" id="submit" style="width:100%;">
+                                        <div class="spinner hidden" id="spinner"></div>
+                                        <span id="button-text">Pay</span>
+                                        <span id="order-amount"><t t-esc="props.total_amount"/></span>
+                                    </button>
+                                    <div class="sr-field-error" id="card-errors" role="alert"></div>
+                                    </div>
+
+                                </div>                                
+
+                                
+
+                                
+                            </form>
+                        </div>
+                        <div class="footer">
+                            <div class="button cancel" t-on-click="cancel">
+                                Cancel
+                            </div>
+                        </div>
+                        <div class="loader-holder">
+                            <div class="wk-payment-loader"></div>
+                        </div>
+                            <div class="payment_done">
+                                <div class="payment_order_status" style="height:140px;width:140px;margin-top:15px">
+                                    <div class="payment_show_tick draw"></div>
+                                </div>
+                                <h3 id="payment_quote_status" style="color:#5cb85c;height:12px;">
+                                    <t t-esc="props.title || 'Request Created !!!!!'"/>
+                                </h3>
+                                <p class="payment_amount" style="font-size:16px;">
+                                    The Payment has been completed..
+                                </p>
+                            </div>
+                    </div>
+                </div>
+            <!-- </body>
+        </html> -->
+    </t>
+
+
+
+    <t t-name="PaymentScreenPaymentLines" t-inherit="point_of_sale.PaymentScreenPaymentLines" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('paymentline')]//t[@t-esc='line.payment_method.name']" position="replace">
+            <t t-if="!line.payment_method.is_cash_count and line.connect_payment_pending">
+                <span>WAITING FOR SCAN</span>
+            </t>
+            <t t-else="">
+                <t t-esc="line.payment_method.name" />
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('delete-button')]" position='after'>
+            <t t-if="line.connect_payment_pending and line.is_connect_payment_line">
+                <td class='refresh-button'  t-on-click="trigger('refresh-payment-line', { cid: line.cid })" t-att-data-cid='line.cid'> <i style="font-size:20px;color:white" class='fa fa-refresh fa-spin fa-3x fa-fw' />
+                </td>
+            </t>
+        </xpath>
+    </t>
+
+
+
+
+    <t t-name="ConnectPaymentTemplate" >
+        <div style="max-height:100%;padding:3% 0;height:100%;">
+                <div class="payment_page_html " style="height:100%">
+                    <div style="width:100%;height:100%;padding:0 4%;" class="container-fluid">
+                        <div class="row payment_form" style="padding:0px;height:100%">
+                            <div class="col-md-5">
+                                <div class="outer-banner">
+                                    <!-- <img style="width:100%;height:97%;" class="img-responsive img-fluid" alt="banner" src="/pos_connect2_payment_acquirer/static/lib/img/pos-stripe.png"/> -->
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                            <div class="form-holder">
+                                <form id="payment-form" style="margin-top:8%;" class="container connect-form sr-payment-form">
+                                    <t t-if="customer_name">
+                                        <div class="row" style="display:flex;justify-content:center;">
+                                            <label style="font-family: Montserrat;font-style: normal;font-weight: 600;font-size: 40px;line-height: 20px;color: #919194;">
+                                                <t t-esc="customer_name"/>
+                                            </label><br/>
+                                        </div>
+                                    </t>
+                                    <div class="sr-combo-inputs-row" style="margin-top:7%;">
+                                        <div class="basic-fields" >
+                                            <div class="row">
+                                                <label style="font-family: Montserrat;font-style: normal;font-weight: 600;font-size: 16px;line-height: 20px;color: #919194;">Name On Card</label><br/>
+                                                <input class="card-extra-inputs" name="customer_name" style="font-size:24px;width:100%;" id="customer-name" type="text"></input>
+                                            </div>
+                                            <div class="row" style="margin-top:5px;">
+                                                <label style="font-family: Montserrat;font-style: normal;font-weight: 600;font-size: 16px;line-height: 20px;color: #919194;">Mobile No.</label><br/>
+                                                <input class="card-extra-inputs" name="phone_number" id="customer-phone" style="font-size:24px;width:100%;" type="number"  ></input>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="sr-input sr-card-element" id="card-element" style="font-size:24px;width:100%;margin-top:20px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:20px;">
+                                        <div style="display:inline-block;width:100%;">
+                                            <button type="submit" class="btn btn-success" id="submit" style="float:left;width:140px">
+                                                <div class="spinner hidden" id="spinner"></div>
+                                                <span id="button-text">Pay <t t-esc="payment_amount"/></span>
+                                            </button>
+                                            <button id="cancel_payment" class="btn btn-danger" style="float:right">
+                                                <span id="button-text">Cancel Payment</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="sr-field-error" id="card-errors" role="alert"></div>
+                                </form>
+                                </div>
+                                <div class="loader-holder">
+                                    <div class="wk-payment-loader"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </t>
+
+
+
+
+    <t t-name="PosWelcomeScreenTemplate" >
+        <div style="height:100%;background: #FFFFFF;">
+            <div class="d-flex justify-content-center" style="background-color:#FAFAFA;padding: 1em;box-shadow: 0 5px 5px -5px black;">
+                <div>
+                    <h1 t-esc="company"/>
+                </div>
+            </div>
+            <div class="row" style="height: 86%;max-width:100%;padding:0 3%;">
+                <div class="container" style="margin-top: 10px;max-height:100%;max-width:100%;">
+                    <div class="row" style="height:auto;">
+                        <div class="d-flex flex-column justify-content-center mb-1 mt-2" style="width:100%;">
+                            <div class="text-center welcome_screen">
+                                <t t-if="screen_data and screen_data.welcome_screen_heading">
+                                    <t t-esc="screen_data.welcome_screen_heading"/>
+                                </t>
+                                <t t-if="screen_data and !screen_data.welcome_screen_heading">
+                                    <div>WELCOME!!</div>
+                                </t>
+                            </div>
+                            <div class="text-center welcome-subheading">
+                                <t t-if="screen_data and screen_data.welcome_screen_subheading">
+                                    <t t-esc="screen_data.welcome_screen_subheading"/>
+                                </t>
+                                <t t-if="screen_data and !screen_data.welcome_screen_subheading">
+                                    <div>TO <t t-esc="pos_name"/></div>
+                                </t>
+                            </div>
+                            <t t-if="screen_data.welcome_screen_content">
+                                <div class="text-center">
+                                    <p class="welcome-main_content" t-esc="screen_data.welcome_screen_content"/>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="height:58%;width:100%;justify-content:center;">
+                        <div class="d-flex flex-row justify-content-center" style="width:100%;height:100%">
+                            <t t-if="images">
+                                <t t-foreach="images" t-as="image">
+                                    <div class="d-inline-flex p-2 bd-highlight" style="width:33%;">
+                                        <img style="width:100%; height:100%;" class="img-responsive img-fluid img-thumbnail" t-attr-src="#{image}"/>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+
+</templates>

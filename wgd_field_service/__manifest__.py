@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'project','industry_fsm', 'industry_fsm_sale','wgd_customer','wg_inventory'],
+    'depends': ['base', 'project','industry_fsm', 'industry_fsm_sale','wgd_customer','wg_inventory','l10n_us_check_printing','account',],
 
     # always loaded
     'data': [
@@ -29,6 +29,7 @@
         'views/templates.xml',
         'views/field_service.xml',
         'views/check_report_inherit.xml',
+        'views/account.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

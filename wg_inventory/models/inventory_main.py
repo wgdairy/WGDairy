@@ -71,6 +71,14 @@ class Inventorys(models.Model):
     qty_on_order = fields.Float('Qty On Order')
     custbackorder = fields.Char('Custbackorder')
     location = fields.Char('Location')
+    primary_location = fields.Many2one('stock.location')
+    alt_location = fields.Many2many('stock.location', index=True, )
+
+
+    # location_tab= fields.One2many('stock.quant', 'product_tmpl_id', string="Location")
+
+    # location2 = fields.Many2one('stock.location')
+    # location3 = fields.Many2one('stock.location')
     future_order = fields.Char('Future Order')
     company_onchange = fields.Many2one('res.company', ondelete='restrict', index=True,
                                        default=lambda self: self.env.company.id)
@@ -133,6 +141,9 @@ class Inventorys(models.Model):
         [('Synchronize costs/prices', 'Y'), ('No do not synchronize', 'N'), ('use E4W', 'O')])
     repl_chg = fields.Date(string="Repl Chg")
     retail_chg = fields.Date(string="Retail Chg")
+
+    last_price_change = fields.Date(string="Last Price Change")
+
     selling = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Selling")
     pricing = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Pricing")
     lumber_type = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], )
@@ -285,6 +296,7 @@ class Inventorys(models.Model):
     last_year_sale = fields.Float(compute='total_sales_amount_last_year', )
     last_year_repl_cost = fields.Float()
     last_year_avg_cost = fields.Float()
+    last_12_months_sale = fields.Float()
     last_year_gp = fields.Float()
     last_year_other_purchase = fields.Float()
     last_year_prime_vend = fields.Float()
@@ -1289,20 +1301,20 @@ class Inventorys(models.Model):
 
 
 
-    @api.model
-    def create(self, vals):
-
-        '''
-        Override the create method for avoid duplication, Add validation while creating already existing product in same company and department.
-        '''
-
-        valdate_sku = self.env['product.template'].search(
-            [('name', '=', vals['name']), ('company_id.id', '=', vals['company_id']),('deptart', '=', vals['deptart'])], limit=1)
-
-        if valdate_sku:
-            raise ValidationError("Product Already Exists")
-        else:
-            return super(Inventorys, self).create(vals)
+    # @api.model
+    # def create(self, vals):
+    #
+    #     '''
+    #     Override the create method for avoid duplication, Add validation while creating already existing product in same company and department.
+    #     '''
+    #
+    #     valdate_sku = self.env['product.template'].search(
+    #         [('name', '=', vals['name']), ('company_id.id', '=', vals['company_id']),('deptart', '=', vals['deptart'])], limit=1)
+    #
+    #     if valdate_sku:
+    #         raise ValidationError("Product Already Exists")
+    #     else:
+    #         return super(Inventorys, self).create(vals)
 
 
     def action_student_schedules(self):
@@ -1311,30 +1323,51 @@ class Inventorys(models.Model):
         '''
         pass
 
+    # def name_get(self):
+    #
+    #     '''
+    #     Name get for product.template model,show sku field in product
+    #     '''
+    #
+    #     result = []
+    #     for rec in self:
+    #         result.append((rec.id,rec.sku))
+    #
+    #     return result
+    # # @api.model
+    # def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+    #     '''
+    #     Name serach method for product.template model,search by sku field in product
+    #     '''
+    #     args = list(args or [])
+    #     if name :
+    #         args += [('sku', operator, name)]
+    #     return self._search(args, limit=limit, access_rights_uid=name_get_uid)
 
-class ProVarience(models.Model):
-    _inherit = "product.product"
 
-    def name_get(self):
-
-        '''
-        Name get for product.product model,show sku field in product
-        '''
-
-        result = []
-        for rec in self:
-            result.append((rec.id,rec.product_tmpl_id.sku))
-
-        return result
+# class ProVarience(models.Model):
+#     _inherit = "product.product"
+#
+#     def name_get(self):
+#
+#         '''
+#         Name get for product.product model,show sku field in product
+#         '''
+#
+#         result = []
+#         for rec in self:
+#             result.append((rec.id,rec.product_tmpl_id.sku))
+#
+#         return result
     # @api.model
-    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        '''
-        Name serach method for product.product model,search by sku field in product
-        '''
-        args = list(args or [])
-        if name :
-            args += [('sku', operator, name)]
-        return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+    # def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+    #     '''
+    #     Name serach method for product.product model,search by sku field in product
+    #     '''
+    #     args = list(args or [])
+    #     if name :
+    #         args += [('sku', operator, name)]
+    #     return self._search(args, limit=limit, access_rights_uid=name_get_uid)
 
 # Table in pricing tab
 class Pricetable(models.Model):
