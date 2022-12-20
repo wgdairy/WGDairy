@@ -3,14 +3,18 @@
     <record id="product_details" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">product.template</field>
-        <field name="view_mode">tree,form,kanban</field>
+<!--        <field name="view_type">form</field>-->
+        <field name="view_mode">tree,kanban,form</field>
     </record>
-
+<record id="stock.product_template_action_product" model="ir.actions.act_window">
+    <field name="view_mode">tree,kanban,form</field>
+</record>
     <!-- wgd.vendors form view -->
     <record id="product_new" model="ir.ui.view">
         <field name="name">product.view.form</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
+<!--        <field name="view_mode">tree,form,kanban</field>-->
         <field name="arch" type="xml">
             <xpath expr="//form" position="attributes">
                 <attribute name="class">product_form</attribute>
@@ -58,21 +62,22 @@
 
                     <sheet>
                         <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                            <div class="row" style="width:100%;">
-                                <div style="padding:10px; !important;width:33%;">
-                                    <label for="sku_onchange" string="Filter BY SKU"
-                                           style="width:20%;margin-bottom: -15px;"/>
-                                    <field name="sku_onchange" style="width:30%;margin-bottom: -15px;"></field>
+                           <div class="row" col="5" style="width:100%;">
+                                <div style="padding:10px; !important;width:16%;">
+                                    <label for="sku_onchange" string="Filter BY SKU" style="width:35%;margin-bottom: -15px;"/>
+                                    <field name="sku_onchange" style="width:45%;margin-bottom: -15px;"></field>
                                 </div>
-                                <div style="padding:10px; !important;width:33%;">
-                                    <label for="company_onchange" string="Filter BY Store"
-                                           style="width:20%;margin-bottom: -15px;margin-left:10%"/>
-                                    <field name="company_onchange" style="width:28%;margin-bottom: -15px;"></field>
+<!--                                <div style="padding:10px; !important;width:25%;">-->
+<!--                                    <label for="sku_filter_by_prime_vendors" string="Filter BY Prime Vendor" style="width:40%;margin-bottom: -15px;margin-left:10%"/>-->
+<!--                                    <field name="sku_filter_by_prime_vendors" style="width:40%;margin-bottom: -15px;" domain="[('supplier_rank', '=', 1)]" context="{'default_supplier_rank' : 1}"></field>-->
+<!--                                </div>-->
+                                <div style="padding:10px; !important;width:25%;">
+                                    <label for="company_onchange" string="Filter BY Store" style="width:30%;margin-bottom: -15px;margin-left:10%"/>
+                                    <field name="company_onchange" style="width:40%;margin-bottom: -15px;"></field>
                                 </div>
-                                <div style="padding:10px; !important;width:33%;">
-                                    <label for="onchange_dept" string="Filter BY Department"
-                                           style="width:30%;margin-bottom: -15px;margin-left:19%"/>
-                                    <field name="onchange_dept" style="width:30%;margin-bottom: -15px;"></field>
+                                <div style="padding:10px; !important;width:28%;">
+                                    <label for="onchange_dept" string="Filter BY Department" style="width:30%;margin-bottom: -15px;margin-left:19%"/>
+                                    <field name="onchange_dept" style="width:40%;margin-bottom: -15px;"></field>
                                 </div>
                             </div>
                             <div class="row" col="4" style="width:100%;">
@@ -167,8 +172,20 @@
                                            style="width:18%;margin-bottom: -15px;"/>
                                     <field name="prime_vede" style="width:52%;margin-top: -15px;"
                                            domain="[('supplier_rank', '=', 1)]"
-                                           context="{'default_supplier_rank' : 1}"/>
+                                           context="{'shown_code': 1}"/>
                                     <br/>
+
+<!--                                    <label for="ven_code" string="Vendor Code"-->
+<!--                                           style="width:28%;margin-bottom: -15px;"/>-->
+<!--                                    <field name="ven_code" style="width:42%;margin-top: -15px;"-->
+<!--                                           widget="selection"/>-->
+
+<!--                                           domain="[('supplier_rank', '>=', 1)]"-->
+<!--                                           context="{'shown_code': True}"/>-->
+                                    <label for="vendor_code" string="Vendor Code"
+                                           style="width:28%;margin-bottom: -15px;"/>
+                                    <field name="vendor_code" style="width:42%;margin-top: -15px;"/>
+
                                 </div>
                                 <div style="padding:10px; !important;width:26%;margin-left: -7%;">
                                     <label for="mfg_vende" string="Mfg Vend" style="width:35%;margin-bottom: -15px;"/>
@@ -889,9 +906,9 @@
                                                         <label for="last_year_avg_cost" string="Cost"
                                                                style="width:50%;"/>
                                                         <field name="last_year_avg_cost" style="width:35%;"/>
-                                                        <label for="last_12_months_sale" string="Last 12 months sale"
+                                                        <label for="sales_count" string="Last 12 months sale"
                                                                style="width:50%;"/>
-                                                        <field name="last_12_months_sale" style="width:35%;"/>
+                                                        <field name="sales_count" style="width:35%;"/>
 
 
                                                     </div>
@@ -1459,9 +1476,9 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="replace">
                 <search>
-                    <field name="name" string="SKU" filter_domain="[('name','=ilike',self)]"/>
-                    <field name="sku" string="Description" filter_domain="[('sku','=ilike',self)]"/>
-                    <field name="company_id" string="Store" filter_domain="[('company_id','=ilike',self)]"/>
+                    <field name="name" string="SKU"/>
+                    <field name="sku" string="Description"/>
+                    <field name="company_id" string="Store" />
                     <field name="deptart" string="Department"/>
                     <field name="sequence" string="Sequence" filter_domain="[('sequence','=ilike',self)]"/>
                     <field name="upc" string="UPC" filter_domain="[('upc','=ilike',self)]"/>
@@ -1477,6 +1494,10 @@
                     <field name="commited_qty" string="Committed Qty"/>
                     <field name="purchased_product_qty" string="Qty On Order"/>
                     <field name="custbackorder" string="Cust Backorder"/>
+                    <field name="primary_location" string="Primary Location"/>
+                    <field name="reail" string="Retail"/>
+                    <field name="vendor_code" string="Vendor Code"/>
+
                 </search>
             </xpath>
         </field>
@@ -1511,16 +1532,22 @@
                 <attribute name="optional">Hide</attribute>
             </field>
             <xpath expr="//field[@name='name']" position="replace">
-                <field name="sku" string="Desc"/>
                 <field name="name" string="SKU"/>
+                <field name="sku" string="Desc"/>
+<!--                <field name="name" string="SKU"/>-->
                 <field name="company_id" string="Store"/>
                 <field name="deptart" string="Dept"/>
                 <field name="sequence" string="Sequence"/>
+                <field name="reail" string="Retail"/>
                 <field name="upc" string="UPC"/>
-                <field name="instores" string="In Stores"/>
+
+                <field name="primary_location" string="Primary Location"/>
+
+<!--                <field name="instores" string="In Stores"/>-->
                 <field name="class_invent" string="Class"/>
                 <field name="prime_vede" string="Prime Vend"/>
                 <field name="types" string="Type"/>
+                <field name="vendor_code" string="Vendor Code"/>
             </xpath>
         </field>
     </record>

@@ -1,9 +1,39 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
-from datetime import date
+from datetime import date,datetime
 
 
 # import datetime
+# class VendorTest(models.Model):
+#     _name = "vendor.codes"
+#     # _inherit = "res.partner"
+#
+#     name = fields.Char()
+#     def name_get(self):
+#         result=[]
+#         vendors = self.env['res.partner'].search([('supplier_rank', '=', True)])
+#         for rec in vendors:
+#             if self.env.context.get('shown_code'):
+#                 if rec.vendor:
+#                     name = rec.vendor
+#                 else:
+#                     name = rec.name
+#             else:
+#                 name = rec.name
+#             result.append((rec.id, name))
+#         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!", result)
+#         return result
+
+
+    # @api.model
+    # def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+    #     args = list(args or [])
+    #     if name:
+    #         args += ['|', ('name', operator, name), ('vendor', operator, name)]
+    #     return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+
+
+
 
 class Inventorys(models.Model):
     _inherit = "product.template"
@@ -57,6 +87,9 @@ class Inventorys(models.Model):
     # mfg_vend = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Mfg Vend")
     fineline = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ], string="Fineline")
     prime_vede = fields.Many2one('res.partner', ondelete='restrict', index=True, )
+    # ven_code = fields.Selection(selection='get_field_options', string="Vendor Code")
+    # vendor_test = fields.Many2one('vendor.codes', string = "Vendor ID")
+    vendor_code = fields.Char(compute="_get_vendor_id", string='Vendor Code')
     mfg_vende = fields.Many2many('res.partner', ondelete='restrict', index=True, readonly=True, compute="_get_mfg")
     types = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     # store = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
@@ -74,7 +107,26 @@ class Inventorys(models.Model):
     primary_location = fields.Many2one('stock.location')
     alt_location = fields.Many2many('stock.location', index=True, )
 
+    @api.depends('prime_vede')
+    def _get_vendor_id(self):
+        for rec in self:
+            if rec.prime_vede:
+                rec.vendor_code = rec.prime_vede.vendor
+            else:
+                rec.vendor_code= False
 
+
+    # def get_field_options(self):
+    #
+    # # compute the list as per your requirement and for the list in format below
+    #     vendors = self.env['res.partner'].search([('supplier_rank', '=', True)])
+    #     vendor_list = []
+    #     for rec in vendors:
+    #         vendor_list.append((rec.vendor, rec.vendor))
+    #     # value_list = [('one', 'option 1'), ('two', 'option 2')]
+    #
+    #     print("!!!!!!!!!!!!!!!!!!!", vendor_list)
+    #     return vendor_list
     # location_tab= fields.One2many('stock.quant', 'product_tmpl_id', string="Location")
 
     # location2 = fields.Many2one('stock.location')
@@ -82,7 +134,10 @@ class Inventorys(models.Model):
     future_order = fields.Char('Future Order')
     company_onchange = fields.Many2one('res.company', ondelete='restrict', index=True,
                                        default=lambda self: self.env.company.id)
-    sku_onchange = fields.Many2one('product.template', ondelete='restrict', index=True, )
+    sku_onchange = fields.Many2one('product.template', ondelete='restrict', index=True,
+                                   domain="[('company_id', '=', company_onchange)]")
+    # ('prime_vede', '=', sku_filter_by_prime_vendors),
+    # sku_filter_by_prime_vendors = fields.Many2one('res.partner', ondelete='restrict', index=True)
     onchange_dept = fields.Many2one('hr.department', ondelete='restrict', index=True, )
 
     # stock level------------------------------
@@ -119,7 +174,7 @@ class Inventorys(models.Model):
     # Dates
     date_added = fields.Date(string="Date Added")
     last_sale = fields.Date(string="Last Sale")
-    last_receipt = fields.Date(string="Last Receipt")
+    last_receipt = fields.Datetime(string="Last Receipt", compute="_compute_last_receipt")
     last_phy_inv = fields.Date(string="Last Phys Inv")
     catalog_date = fields.Char(string="Catalog Date")
     fixed_order_qty = fields.Float('Fixed Order QTY')
@@ -295,7 +350,7 @@ class Inventorys(models.Model):
     last_year_sale_unit = fields.Char(compute='total_sale_last_year', )
     last_year_sale = fields.Float(compute='total_sales_amount_last_year', )
     last_year_repl_cost = fields.Float()
-    last_year_avg_cost = fields.Float()
+    last_year_avg_cost = fields.Float(compute='total_avg_cost_last_year', )
     last_12_months_sale = fields.Float()
     last_year_gp = fields.Float()
     last_year_other_purchase = fields.Float()
@@ -1055,9 +1110,24 @@ class Inventorys(models.Model):
         '''
         Fuction to calculate the sales unit
         '''
-        todays_date = date.today().replace(month=1, day=1)
-        total_sales = self.env['sale.order'].search([('state', '=', 'sale'), ('date_order', '>=', todays_date)])
-        self.sale_units = len(total_sales)
+        # todays_date = date.today().replace(month=1, day=1)
+        # total_sales = self.env['sale.order'].search([('state', '=', 'sale'), ('date_order', '>=', todays_date)])
+        # self.sale_units = len(total_sales)
+
+        january_unit = date.today().replace(month=1, day=1)
+        # print ("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", january_unit,'\n\n\n')
+        total_sales = self.env['account.move.line'].search(
+            [('product_id.product_tmpl_id.id', '=', self.id), ('move_id.invoice_date', '>=', january_unit),
+             ('move_id.invoice_date', '<=', datetime.now()), ('move_id.payment_state', 'in', ('in_payment','paid'))])
+        # print ("!!!!!!!!!!!!!!!!!!!!!!!!!!!", total_sales)
+        qty = 0
+        for i in total_sales:
+            # print("##########################",i.product_uom_qty)
+            qty += i.quantity
+        # print(qty)
+        self.sale_units = qty
+
+
 
     # Total amount
 
@@ -1067,17 +1137,35 @@ class Inventorys(models.Model):
         Fuction to calculate the sales
         '''
 
-        todays_date = date.today().replace(month=1, day=1)
+        january_unit = date.today().replace(month=1, day=1)
 
         amount = 0
-        sales_invoice = self.env['sale.order'].search(
-            [('state', '=', 'sale'), ('state', '!=', 'draft'), ('state', '!=', 'cancel'),
-             ('date_order', '>=', todays_date)])
-        if sales_invoice:
-            for sale in sales_invoice:
-                amount += sale.amount_total
+        sales_invoice = self.env['account.move.line'].search(
+            [('product_id.product_tmpl_id.id', '=', self.id), ('move_id.invoice_date', '>=', january_unit),
+             ('move_id.invoice_date', '<=', datetime.now()), ('move_id.payment_state', 'in', ('in_payment','paid'))])
 
-        self.sale = amount
+        subtotal = 0
+
+        for i in sales_invoice:
+            # print("##########################",i.product_uom_qty)
+            subtotal += i.price_subtotal
+            # print(qty)
+        self.sale = subtotal
+
+
+
+
+        # todays_date = date.today().replace(month=1, day=1)
+        #
+        # amount = 0
+        # sales_invoice = self.env['sale.order'].search(
+        #     [('state', '=', 'sale'), ('state', '!=', 'draft'), ('state', '!=', 'cancel'),
+        #      ('date_order', '>=', todays_date)])
+        # if sales_invoice:
+        #     for sale in sales_invoice:
+        #         amount += sale.amount_total
+        #
+        # self.sale = amount
 
     # Total sale order in last year
 
@@ -1092,10 +1180,13 @@ class Inventorys(models.Model):
         last_year_jan = date.today().replace(year=las_year, month=1, day=1)
 
         last_year_dec = date.today().replace(year=las_year, month=12, day=31)
-        last_year_sale = self.env['sale.order'].search(
-            [('date_order', '>=', last_year_jan), ('date_order', '<', last_year_dec), ('state', '=', 'sale')])
-
-        self.last_year_sale_unit = len(last_year_sale)
+        last_year_sale = self.env['account.move.line'].search(
+            [('product_id.product_tmpl_id.id', '=', self.id), ('move_id.invoice_date', '>=', last_year_jan), ('move_id.invoice_date', '<', last_year_dec),
+             ('move_id.payment_state', 'in', ('in_payment','paid'))])
+        qty = 0
+        for i in last_year_sale:
+            qty += i.quantity
+        self.last_year_sale_unit = qty
 
     # Total amount in last year
     # @api.onchange('mfg_vende')
@@ -1110,14 +1201,40 @@ class Inventorys(models.Model):
         las_year = curr_year.year - 1
         last_year_january = date.today().replace(year=las_year, month=1, day=1)
         last_year_december = date.today().replace(year=las_year, month=12, day=31)
-        last_year_all_sale = self.env['sale.order'].search(
-            [('date_order', '>=', last_year_january), ('date_order', '<', last_year_december), ('state', '=', 'sale'),
-             ('state', '!=', 'draft'), ('state', '!=', 'cancel')])
-        if last_year_all_sale:
-            for sal in last_year_all_sale:
-                tot_amount += sal.amount_total
+        last_year_all_sale = self.env['account.move.line'].search([('product_id.product_tmpl_id.id', '=', self.id),
+                                                                   ('move_id.invoice_date', '>=', last_year_january), ('move_id.invoice_date', '<', last_year_december),
+                                                                   ('move_id.payment_state', 'in', ('in_payment','paid'))])
+        for i in last_year_all_sale:
+            # print("##########################",i.product_uom_qty)
+            tot_amount += i.price_subtotal
 
         self.last_year_sale = tot_amount
+
+    def total_avg_cost_last_year(self):
+
+        '''
+        Fuction to calculate the total last year sales amount
+        '''
+
+        curr_year = date.today()
+        tot_amount = 0
+        las_year = curr_year.year - 1
+        last_year_january = date.today().replace(year=las_year, month=1, day=1)
+        last_year_december = date.today().replace(year=las_year, month=12, day=31)
+        last_year_all_sale = self.env['sale.order.line'].search([('product_id.product_tmpl_id.id', '=', self.id),
+                                                                 ('invoice_lines.move_id.invoice_date', '>=',
+                                                                  last_year_january), (
+                                                                 'invoice_lines.move_id.invoice_date', '<',
+                                                                 last_year_december),
+                                                                 ('invoice_lines.move_id.payment_state', 'in',
+                                                                  ('in_payment', 'paid'))])
+        for i in last_year_all_sale:
+            tot_amount += i.avg_cost
+
+        self.last_year_avg_cost = tot_amount
+
+
+
 
     # @api.constrains('prime_vede')
     # def asdf(self):
@@ -1179,6 +1296,7 @@ class Inventorys(models.Model):
             self.class_invent = store_datas.class_invent
             self.types = store_datas.types
             self.instores = store_datas.instores
+            # self.vendor_code = store_datas.vendor
 
 
             self.load_retail = store_datas.load_retail
@@ -1322,6 +1440,14 @@ class Inventorys(models.Model):
         Action for smart button in history tab of product
         '''
         pass
+
+    def _compute_last_receipt(self):
+        for rec in self:
+            print(self._origin.id)
+        receipt_date = self.env['stock.picking'].search(
+            [('product_id.product_tmpl_id', '=', self._origin.id), ('state', '=', 'done')], order='date_done desc',
+            limit=1)
+        rec.last_receipt = receipt_date.date_done
 
     # def name_get(self):
     #

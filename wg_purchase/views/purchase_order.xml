@@ -59,6 +59,7 @@
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="domain">[('supplier_rank', '>=', 1)]</attribute>
+                    <attribute name="context">{'shown_code': 1}</attribute>
                 </xpath>
 
 
@@ -73,6 +74,8 @@
 
                             <label for="Store_ids" string="Store"  style="width:30%;"/>
                             <field name="Store_ids" style="width:60%" /><br />
+                            <label for="vendor_code" string="Vendor Code" style="width:30%;"/>
+                            <field name="vendor_code" style="width:60%;"/><br/>
                             <label for="ven_phone" string="Vendor Phone" style="width:30%;" />
                             <field name="ven_phone" style="width:60%;"  /><br />
                             <label for="ven_fax" string="Vendor Fax" style="width:30%;" />
@@ -269,6 +272,7 @@
                 <field name="commited_qty" string="Committed Qty" />
                 <field name="purchased_product_qty" string="Qty On Order" />
                 <field name="custbackorder" string="Cust Backorder" />
+<!--                <field name="vendor_code" string="Vendor Code"/>-->
 
         </xpath>
 
@@ -321,6 +325,9 @@
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="vendor_code" string="Vendor Code"/>
+            </xpath>
             <xpath expr="//field[@name='origin']" position="after">
                 <field name="BkOrds" string="BkOrd'd"/>
             </xpath>
@@ -330,9 +337,26 @@
             <xpath expr="//field[@name='amount_total']" position="replace">
                 <field name="amount_total"/>
             </xpath>
+
         </field>
     </record>
 
+<!--        inherit purchase order search view-->
+        <record id="purchase_order_view_search_inherited" model="ir.ui.view">
+            <field name="name">purchase.order.view.search.inherited</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="replace">
+                    <search>
+                        <field name="vendor_code" string="Vendor Code"/>
+                        <field name="partner_id" string="Vendor" operator="child_of"/>
+                        <field name="company_id" string="Company"/>
+                        <field name="name" string="Reference"/>
+                    </search>
+                </xpath>
+            </field>
+        </record>
 
 
     </data>

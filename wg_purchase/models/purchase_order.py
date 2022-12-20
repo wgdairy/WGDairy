@@ -10,6 +10,7 @@ import datetime
 class wg_po(models.Model):
     _inherit = "purchase.order"
 
+    vendor_code = fields.Char()
     Store_ids = fields.Many2one('res.company', ondelete='restrict', index=True, )
     # BkOrd = fields.Selection([('y', 'Y'), ('n', 'N'), ])
     BkOrds = fields.Selection([('Y', 'Y'), ('N', 'N'), ],compute='_bak_order')
@@ -46,6 +47,17 @@ class wg_po(models.Model):
     Total_Freight = fields.Char()
     Other_Charges = fields.Char()
     Date_send = fields.Datetime()
+
+    # @api.depends('partner_id')
+    # def _get_vendor_code(self):
+    #     for rec in self:
+    #         if rec.partner_id:
+    #             rec.vendor_code = rec.partner_id.vendor
+    #         else:
+    #             rec.vendor_code = False
+
+
+
 
     # change the string Date Planned to Due Date
     date_planned = fields.Datetime(
@@ -132,6 +144,7 @@ class wg_po(models.Model):
         self.ven_phone = onc_vend.phone
         self.ven_fax = onc_vend.fax
         self.Store_ids = onc_vend.company_id
+        self.vendor_code = onc_vend.vendor
 
 
     def _bak_order(self):

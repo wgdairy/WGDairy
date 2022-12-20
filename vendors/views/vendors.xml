@@ -31,7 +31,7 @@
 <record id="vendor_details" model="ir.actions.act_window">
     <field name="name">Vendors</field>
     <field name="res_model">wgd.vendors</field>
-    <field name="view_mode">tree,form</field>
+    <field name="view_mode">tree,kanban,form</field>
     <field name="context">{'default_supplier_rank': 1}</field>
 </record>    
 
@@ -432,7 +432,8 @@
                                 Future
                             </span><br/>
                             <span class="o_stat_text">
-                                1,122.62
+<!--                                1,122.62-->
+                                <field  name="future_total"/>
                             </span>
                         </div>
                     </button>
@@ -493,11 +494,11 @@
                         <div style="padding:2% !important;width:33%;">
                             <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;" >
                                 <h6 style="color: #423e3e;position: relative;margin-top: -15px;bottom: -7.2%;left: 0.5%;font-size: 12px;">Balance History</h6>                                    
-                                <label for="finace_chgs_ytd" string="Finace Chgs YTD" style="width:50%;"/>
+                                <label for="finace_chgs_ytd" string="Finance Chgs YTD" style="width:50%;"/>
                                 <field  name="finace_chgs_ytd" style="width:35%;" widget="monetary"/><br/>
                                 <label for="credit_limit" string="Credit Limit" style="width:50%;" />
                                 <field  name="credit_limit" style="width:35%;" widget="monetary"/><br/>
-                                <label for="higest_acc_balance" string="Higest Acct Balance" style="width:50%;"/>
+                                <label for="higest_acc_balance" string="Highest Acct Balance" style="width:50%;"/>
                                 <field  name="higest_acc_balance" widget="monetary" style="width:35%;"/><br/>
                                 <label for="credit_available" string="Credit Available" style="width:50%;"/>
                                 <field  name="credit_available" widget="monetary" style="width:35%;"/><br/>
@@ -509,7 +510,7 @@
                                 <field  name="statment_discount" widget="monetary" style="width:35%;"/><br/>
                                 <label for="returns" string="Returns ($) YTD" style="width:50%;"/>
                                 <field  name="returns" widget="monetary" style="width:35%;"/><br/>
-                                <label for="transations" widget="monetary" string="# Transations YTD" style="width:50%;"/>
+                                <label for="transations" widget="monetary" string="# Transactions YTD" style="width:50%;"/>
                                 <field  name="transations" style="width:35%;"/><br/><br/>
                             </div>
                         </div>
@@ -597,7 +598,8 @@
                                 Future
                             </span><br/>
                             <span class="o_stat_text">
-                                1,122.62
+<!--                                1,122.62-->
+                                <field  name="future_total"/>
                             </span>
                         </div>
                     </button>
@@ -841,6 +843,43 @@
             </xpath>
         </field>
 </record>
+
+
+<record id="vendor_customer_form_smart_button" model="ir.ui.view">
+        <field name="name">customer.contact.button</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="sale.res_partner_view_buttons"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button" position="attributes">
+                 <attribute name="attrs">{'invisible': [('is_customer_vendor', '=', 'is_vendor')]} </attribute>
+            </xpath>
+        </field>
+</record>
+
+
+<record id="vendor_vendor_form_smart_button" model="ir.ui.view">
+        <field name="name">vendor.contact.button</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="purchase.res_partner_view_purchase_buttons"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='%(purchase.act_res_partner_2_purchase_order)d']" position="attributes">
+                 <attribute name="attrs">{'invisible': [('is_customer_vendor', '=', 'is_customer')]} </attribute>
+            </xpath>
+        </field>
+</record>
+
+
+<record id="vendor_bill_smart_button" model="ir.ui.view">
+        <field name="name">vendor.bill.button</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="purchase.res_partner_view_purchase_account_buttons"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='%(purchase.act_res_partner_2_supplier_invoices)d']" position="attributes">
+                 <attribute name="attrs">{'invisible': [('is_customer_vendor', '=', 'is_customer')]} </attribute>
+             </xpath>
+        </field>
+</record>
+
 
 <!-- wgd.vendors form view -->
 <record id="vendors_form_view" model="ir.ui.view">
@@ -1214,7 +1253,7 @@
     <record id="vendor_tree_view" model="ir.ui.view">
         <field name="name">wgd.vendors.tree.view</field>
         <field name="model">wgd.vendors</field>
-        <field name="priority">2</field>
+        <field name="priority">0</field>
         <field name="arch" type="xml">
             <tree string="Vendors">
                 <field name="vendor"/>
@@ -1239,6 +1278,10 @@
                 <field name="name"/>
                 <field name="customer_id"/>
                 <field name="vendor" string="Vendor ID"/>
+                <field name="city"/>
+                <field name="state_id"/>
+                <field name="zip"/>
+                <field name="street"/>
             </xpath>
         </field>
     </record>
@@ -1252,12 +1295,19 @@
         <xpath expr="//tree//field[@name='display_name']" position="before">
             <field name="customer_vendor_id" string="ID"/>
             <field name="name" string="Name"/>
+            <field name="full_address" string="Address"/>
 
         </xpath>
         <xpath expr="//tree//field[@name='display_name']" position="replace">
             <field name="display_name" invisible="1"/>
 
         </xpath>
+            <xpath expr="//tree//field[@name='city']" position="replace">
+                <field name="city" invisible="1"/>
+            </xpath>
+            <xpath expr="//tree//field[@name='state_id']" position="replace">
+                <field name="state_id" invisible="1"/>
+            </xpath>
     </field>
     </record>
 
@@ -1389,10 +1439,17 @@
 </record>
 
 <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+    <field name="view_mode">tree,kanban,form</field>
+
     <field name="context">{'default_is_customer_vendor': 'is_vendor','search_default_supplier':
         1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}
     </field>
 </record>
+
+<record id="account.res_partner_action_customer" model="ir.actions.act_window">
+    <field name="view_mode">tree,kanban,form</field>
+</record>
+
 
 <menuitem id="wgd_root_menu" name="Vendors" active="True" sequence="0"/>
 

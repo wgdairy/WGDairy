@@ -681,6 +681,50 @@ class VendorContact(models.Model):
     edi_translation = fields.Selection([],'EDI Translation')
     alternate_fax = fields.Char('Alternate Fax')
     img_id = fields.Selection([],'Catalog Image ID')
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None, context='shown_code'):
+        args = list(args or [])
+        if name:
+            args += ['|', ('name', operator, name), ('vendor', operator, name)]
+        return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+        return args.name_get()
+
+
+
+    def name_get(self):
+        result=[]
+        for rec in self:
+            if self.env.context.get('shown_code', False):
+
+                # res = super(res_partner_x, self).name_get(cr, uid, ids, context=context);
+
+                if rec.vendor:
+                 # rec.display_name = rec.vendor
+
+                    ven_id = rec.vendor
+                    name = rec.name
+                    vendor_id_name = str(rec.vendor) + '-' + str(rec. name)
+                result.append((rec.id, vendor_id_name))
+
+                # result.append((rec.id, name))
+
+                # else:
+            #         # rec.display_name = rec.name
+            #         name = rec.name
+            #     # result.append((rec.id, name))
+            #
+            else:
+                result.append((rec.id, rec.name))
+
+            #     name = rec.name
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!", result)
+        return result
+
+    #
+
+
+
     # function to get year as a list
     @api.model
     def year_selection(self):
@@ -857,14 +901,14 @@ class VendorContact(models.Model):
     last_activity_date      = fields.Date("Last Activity Date")
 
     # notebook page2 Credit
-    finace_chgs_ytd         = fields.Float("Finace Chgs YTD", digits=(2,2))
-    higest_acc_balance      = fields.Float("Higest Acct Balance")
+    finace_chgs_ytd         = fields.Float("Finance Chgs YTD", digits=(2,2))
+    higest_acc_balance      = fields.Float("Highest Acct Balance")
     credit_available        = fields.Float("Credit Available",compute="_total_credit")
     running_balance         = fields.Float("Running Balance",compute="_total_running_bal")
     statment_balance        = fields.Float("Statment Balance",compute="_total_stmt_bal")
     statment_discount       = fields.Float("Statment Discount")
     returns                 = fields.Float("Returns",compute="_total_refund")
-    transations             = fields.Float("Transations",compute="_total_invoices")
+    transations             = fields.Float("Transactions",compute="_total_invoices")
     declining_credit_limit  = fields.Selection([('yes','Y'),('no','N')], "Declining Credit Limit", default='yes',help='Exportable')
     global_credit_check     = fields.Selection([('yes','Y'),('no','N')], "Global Credit Check", default='no',help='Exportable')
     order_bal_credit_avail  = fields.Selection([('yes','Y'),('no','N')], "Use Order Bal in Credit Avail", default='no',help='Exportable')
@@ -976,11 +1020,55 @@ class VendorContact(models.Model):
     message                 = fields.Html("Message")
 
 #smart button
+    future_total            = fields.Float("Current", compute="_smart_button")
     current_total           = fields.Float("Current",compute="_smart_button")
     thirty_total            = fields.Float("Current",compute="_smart_button")
     sixty_total             = fields.Float("Current",compute="_smart_button")
     ninety_total            = fields.Float("Current",compute="_smart_button")
     over_total              = fields.Float("Current",compute="_smart_button")
+
+    full_address = fields.Char('Customer Full Address', compute='_get_address_full', store=False)
+
+    @api.depends('street', 'street2', 'city', 'state_id', 'zip')
+    def _get_address_full(self):
+        for r in self:
+            f_address = r.street
+            f_address_2 = r.street2
+            f_city = r.city
+            f_state_id = r.state_id.code
+            f_zip = r.zip
+            sepertor = ""
+            full_address = ''
+            if f_address:
+                f_address = r.street
+                sepertor = ","
+                full_address += str(f_address) + sepertor
+            if f_address_2:
+                f_address_2 = r.street2
+                sepertor = ","
+                full_address += str(f_address_2) + sepertor
+            else:
+                f_address_2 = ""
+                full_address += str(f_address_2)
+            if f_city:
+                f_city = r.city
+                sepertor = ","
+                full_address += str(f_city) + sepertor
+            if f_state_id:
+                f_state_id = r.state_id.code
+                sepertor = " "
+                full_address += str(f_state_id) + sepertor
+            if f_zip:
+                f_zip = r.zip
+                full_address += str(f_zip)
+
+            r.full_address = full_address
+
+
+
+
+
+
 
     def action_student_schedules(self):
         pass
@@ -1325,7 +1413,8 @@ class VendorContact(models.Model):
                 self.over_total= customer_id.over_total
                 self.message= customer_id.message
 
-    @api.depends('current_total','thirty_total','sixty_total','ninety_total','over_total')
+    # @api.depends('current_total','thirty_total','sixty_total','ninety_total','over_total')
+    @api.depends('future_total', 'current_total', 'thirty_total', 'sixty_total', 'ninety_total', 'over_total')
     def _smart_button(self):
         '''
             Fetch invoice details from aged recivable 
@@ -1414,6 +1503,7 @@ class VendorContact(models.Model):
         self.sixty_total   = total_60
         self.ninety_total  = total_90
         self.over_total    = over_90
+        self.future_total = self.future_total
 
     # @api.model    
     # def create(self, vals):

@@ -13,11 +13,9 @@ odoo.define('pos_connect2_payment_acquirer.payment_screen', function (require) {
     var config_id = src.split('payment/') && src.split('payment/')[1][0];
     var clientSecret = null;
     var card = null;
-    // var stripe = null;
     var current_transaction = null;
     var is_refresh = true;
 
-    // $("head").append($("<script></script>").attr("src", 'https://js.stripe.com/v3/'));
 
 
     var screenRetrieve;
@@ -48,7 +46,6 @@ odoo.define('pos_connect2_payment_acquirer.payment_screen', function (require) {
                             var data = setupElements(data_for_element);
                             $('.main_body').attr('screen-type',vals.type_of_screen)
                             clientSecret = data.clientSecret;
-                            // stripe = data.stripe;
                             card = data.card;
 
                             var form = $('#payment-form');
@@ -58,13 +55,6 @@ odoo.define('pos_connect2_payment_acquirer.payment_screen', function (require) {
                             $('#customer-phone').focus(function(ev){
                                 $('#customer-phone').removeClass('wk-error');
                             });
-                            // $('#payment-form').unbind().on('click','#cancel_payment',function(event){
-                            //     rpc.query({
-                            //         'method': 'update_payment_status',
-                            //         'model':'pos.payment.transaction',
-                            //         'args':[false,{'message':'Payment Has Been Cancelled!'},current_transaction,parseInt(config_id),false]
-                            //     });
-                            // });
                         })
                     }
                     else{

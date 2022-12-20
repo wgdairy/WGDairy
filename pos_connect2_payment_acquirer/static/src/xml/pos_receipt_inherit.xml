@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('pos-receipt-order-data')]" position="inside">
+            <!-- <t t-if='receipt.client'> -->
+               
+                <!-- <div style="font-weight:bold;">
+                    Card : 
+                </div> -->
+                
+                <div style="font-weight:bold;">
+                    DBC :<t t-esc='receipt.dbc_code' />
+                </div>
+                <div>
+                    CPN : <t t-esc='receipt.cpn_no' />
+                </div>
+                <div>
+                     Signature
+                 </div>
 
+                  <div style="font-weight:bold;">
+                    <t t-esc='receipt.legal_disclosure' />
+                </div>
+
+            <!-- </t> -->
+        </xpath>
     </t>
 </templates>

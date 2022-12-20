@@ -62,19 +62,6 @@ odoo.define('pos_connect2_payment_acquirer.pos_connect2_payment_acquirer', funct
         }
     }
 
-    // models.load_models([{
-    //     model: 'pos_connect.configuration',
-    //     label: 'Connect',
-    //     fields: ['name','secret_key', 'publishable_key', 'active_record'],
-    //     loaded: function (self, result) {
-    //         _.each(result, function (res) {
-    //             if (res.active_record) {
-    //                 // self.db.stripeApiKey = res;
-    //             }
-    //         });
-    //     }
-    // }]);
-
     //--Searching wallet journal--
     var super_payment_method_loaded = payment_method_model.loaded;
     payment_method_model.loaded = function (self, payment_methods) {
@@ -119,9 +106,6 @@ odoo.define('pos_connect2_payment_acquirer.pos_connect2_payment_acquirer', funct
     models.PosModel = models.PosModel.extend({
 
         setupElements : function(data) {
-          // var stripe = Stripe('pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3');
-          // var elements = stripe.elements();
-          console.log('elements11111111',elements)
           var style = {
             base: {
               color: '#32325d',
@@ -138,20 +122,7 @@ odoo.define('pos_connect2_payment_acquirer.pos_connect2_payment_acquirer', funct
             }
           };
 
-          // var card = elements.create("card", { style: style });
-          // card.mount("#card-element");
-          // card.addEventListener('change', ({error}) => {
-          //   const displayError = document.getElementById('card-errors');
-          //   if (error) {
-          //     displayError.textContent = error.message;
-          //   } else {
-          //     displayError.textContent = '';
-          //   }
-          // });
-
           return {
-            // stripe: stripe,
-            // card: card,
             clientSecret: data.clientSecret
           };
         },

@@ -36,7 +36,7 @@ class AccountPartner(models.Model):
 
                 elif todays_date > three_mon:
                     untx_amt = r.move_id.amount_untaxed
-                    amt = (untx_amt * 8) / 100
+                    amt = (untx_amt * 6) / 100
                     r.finance_charges = amt
                 else:
 
