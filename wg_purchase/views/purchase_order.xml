@@ -184,7 +184,7 @@
                     <attribute name="invisible">True</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']//tree/field[@name='name']" position="after">
-                    <field name="product_id" context="{'form_view_ref': 'wg_inventory.product_new','tree_view_ref': 'wg_inventory.product_template_tree_view'}" invisible="1" />
+                    <field name="product_id" context="{'form_view_ref': 'wg_inventory.product_new','tree_view_ref': 'wg_inventory.product_template_tree_view','show_desc': 1}" invisible="1" />
                     <field name="desc_sku" string="Description" />
                     <field name="qty_available" string="QOH" />
                     <field name="primary_locations" string="Primary Location" />

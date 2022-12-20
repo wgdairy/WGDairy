@@ -32,7 +32,32 @@ from datetime import date,datetime
     #         args += ['|', ('name', operator, name), ('vendor', operator, name)]
     #     return self._search(args, limit=limit, access_rights_uid=name_get_uid)
 
+class OrderLine(models.Model):
+    _inherit = "product.product"
 
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None, context='show_desc'):
+        args = list(args or [])
+        if name:
+            args += ['|', ('sku', operator, name), ('name', operator, name)]
+        return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+        return args.name_get()
+
+    def name_get(self):
+        result = []
+        for rec in self:
+            if self.env.context.get('show_desc', False):
+
+                desc=''
+                if rec.sku:
+                    desc=rec.sku
+                    # desc = rec.sku
+                    # sku_id_desc = str() + '-' + str()
+                result.append((rec.id, rec.name+'-'+desc))
+
+        if len(result)==0:
+            result = super(OrderLine, self).name_get()
+        return result
 
 
 class Inventorys(models.Model):
@@ -114,6 +139,32 @@ class Inventorys(models.Model):
                 rec.vendor_code = rec.prime_vede.vendor
             else:
                 rec.vendor_code= False
+
+
+    # @api.model
+    # def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None, context='show_desc'):
+    #     args = list(args or [])
+    #     if name:
+    #         args += ['|', ('desc_sku', operator, name), ('product.id', operator, name)]
+    #     return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+    #     return args.name_get()
+    #
+    #
+    # def name_get(self):
+    #     result=[]
+    #     for rec in self:
+    #         if self.env.context.get('show_desc', False):
+    #             if rec.vendor:
+    #                 sku_id = rec.product_id
+    #                 print("!!!!!!!!!!!!!!", sku_id, rec.name)
+    #                 desc = rec.desc_sku
+    #                 sku_id_desc = str(rec.product_id) + '-' + str(rec.desc_sku)
+    #             result.append((rec.id, sku_id_desc))
+    #     else:
+    #         result.append((rec.id, rec.name))
+    #     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!", result)
+    #     return result
+
 
 
     # def get_field_options(self):

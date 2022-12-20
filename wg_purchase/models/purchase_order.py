@@ -242,6 +242,28 @@ class wg_po(models.Model):
     price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price',related='product_id.product_tmpl_id.list_price' )
     desc_sku = fields.Char(related='product_id.product_tmpl_id.sku', string='Description', readonly=False)
     primary_locations = fields.Many2one('stock.location',string="Primary Location", related='product_id.product_tmpl_id.primary_location')
+
+
+    # @api.model
+    # def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None, context='show_desc'):
+    #     args = list(args or [])
+    #     if name:
+    #         args += ['|', ('desc_sku', operator, name), ('product.id', operator, name)]
+    #     return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+    #     return args.name_get()
+    #
+    #
+    # def name_get(self):
+    #     result=[]
+    #     for rec in self:
+    #         if self.env.context.get('show_desc', False):
+    #             if rec.vendor:
+    #                 sku_id = rec.product_id
+    #                 desc = rec.desc_sku
+    #                 sku_id_desc = str(rec.product_id) + '-' + str(rec. desc_sku)
+    #             result.append((rec.id, sku_id_desc))
+
+
     def _get_line_numbers(self):
         '''
             Function to Generate line number in purchase order line.
