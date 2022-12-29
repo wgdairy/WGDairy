@@ -511,6 +511,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="summary_of_work" string="Summary Of Work"/>
                 <field name="job_ord_no" string="Job No"/>
                 <field name="clerk"/>
                 <field name="store"/>

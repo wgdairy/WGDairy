@@ -190,6 +190,7 @@ class SaleOrderInherit(models.Model):
             taxes = self.env['account.tax'].search([('company_id','=',self.company_id.id),('type_tax_use','=','sale')], limit=1)
             self.w_tax = taxes
 
+    summary_of_work = fields.Char('Summary Of Work')   
     job_ord_no = fields.Many2one('wgd.job.no',default=lambda self: self.env['wgd.job.no'].search([('name','=','0')]), limit=1)
     po_no = fields.Integer()
     clerk = fields.Many2one('res.users', default=lambda self:self.env.user)
@@ -317,6 +318,7 @@ class SaleOrderFieldServiceInherit(models.Model):
             'job_ord_no':self.job_ord_no.id,
             'clerk':self.clerk.id,
             'w_tax':self.w_tax.id,
+            'summary_of_work':self.summary_of_work,
             'ship_to':self.ship_to,
             'ship_to_street':self.ship_to_street,
             'ship_to_city':self.ship_to_city,
