@@ -60,20 +60,20 @@ class AccountPartner(models.Model):
 class AccountMovePartner(models.Model):
     _inherit = "account.move"
 
-    @api.onchange('invoice_date', 'highest_name', 'company_id')
-    def _onchange_invoice_date(self):
-        if self.invoice_date:
-            if not self.invoice_payment_term_id and (
-                    not self.invoice_date_due or self.invoice_date_due < self.invoice_date):
-                self.invoice_date_due = self.invoice_date
+    # @api.onchange('invoice_date', 'highest_name', 'company_id')
+    # def _onchange_invoice_date(self):
+    #     if self.invoice_date:
+    #         if not self.invoice_payment_term_id and (
+    #                 not self.invoice_date_due or self.invoice_date_due < self.invoice_date):
+    #             self.invoice_date_due = self.invoice_date
 
-            has_tax = bool(self.line_ids.tax_ids or self.line_ids.tax_tag_ids)
-            accounting_date = self._get_accounting_date(self.invoice_date, has_tax)
-            if accounting_date != self.date:
-                # self.date = accounting_date
-                self._onchange_currency()
-            else:
-                self._onchange_recompute_dynamic_lines()
+    #         has_tax = bool(self.line_ids.tax_ids or self.line_ids.tax_tag_ids)
+    #         accounting_date = self._get_accounting_date(self.invoice_date, has_tax)
+    #         if accounting_date != self.date:
+    #             self.date = accounting_date
+    #             self._onchange_currency()
+    #         else:
+    #             self._onchange_recompute_dynamic_lines()
 
     transaction_type = fields.Selection(selection=[
         ('vendor_bill', 'Vendor Bill For PO'),
