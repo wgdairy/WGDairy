@@ -17,6 +17,7 @@ class PosConnect2Configuration(models.Model):
     api_url = fields.Char(string="URL")
 
     active_record =fields.Boolean(string="Active",default=True)
+    session_id = fields.Many2one('pos.config',string="Session")
 
     def toggle_active_record(self):
         if self.active_record:

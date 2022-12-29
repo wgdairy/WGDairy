@@ -691,7 +691,6 @@ class VendorContact(models.Model):
         return args.name_get()
 
 
-
     def name_get(self):
         result=[]
         for rec in self:
@@ -705,7 +704,14 @@ class VendorContact(models.Model):
                     ven_id = rec.vendor
                     name = rec.name
                     vendor_id_name = str(rec.vendor) + '-' + str(rec. name)
-                result.append((rec.id, vendor_id_name))
+                    result.append((rec.id, vendor_id_name))
+                elif rec.customer_id:
+                 # rec.display_name = rec.vendor
+
+                    ven_id = rec.customer_id
+                    name = rec.name
+                    vendor_id_name = str(rec.customer_id) + '-' + str(rec. name)
+                    result.append((rec.id, vendor_id_name))
 
                 # result.append((rec.id, name))
 
@@ -718,11 +724,8 @@ class VendorContact(models.Model):
                 result.append((rec.id, rec.name))
 
             #     name = rec.name
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!", result)
+        # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!", result)
         return result
-
-    #
-
 
 
     # function to get year as a list
@@ -853,6 +856,7 @@ class VendorContact(models.Model):
     bill_to_id              = fields.Many2one('res.partner')
     ace_rewards             = fields.Char("Ace Rewards",help='Exportable')
     filter_by_name          = fields.Many2one('res.partner')
+    filter_by_names         = fields.Many2one('res.partner')
     filter_by_id            = fields.Many2one('res.partner')
 
     @api.model
@@ -1029,6 +1033,10 @@ class VendorContact(models.Model):
 
     full_address = fields.Char('Customer Full Address', compute='_get_address_full', store=False)
 
+    @api.onchange('terms_code')
+    def py_terms(self):
+        self.property_supplier_payment_term_id = self.terms_code
+
     @api.depends('street', 'street2', 'city', 'state_id', 'zip')
     def _get_address_full(self):
         for r in self:
@@ -1111,12 +1119,12 @@ class VendorContact(models.Model):
     @api.onchange('filter_by_name')
     def onchange_name(self):
         '''
-            Auto fill the customer data on the all fields based on selected customer name 
+            Auto fill the customer data on the all fields based on selected customer/vendor name & ID
         '''
         if self.filter_by_name:
-            customer_name = self.search([('name', '=', self.filter_by_name.name)], limit=1)
-            if customer_name:
-                self.filter_by_id   =""
+            customer_name = self.search([('id', '=', self.filter_by_name.id),('is_customer_vendor','=','is_customer')], limit=1)
+            if customer_name:                
+                self.name           = customer_name.name
                 self.street         = customer_name.street
                 self.street2        = customer_name.street2
                 self.city           = customer_name.city
@@ -1260,6 +1268,92 @@ class VendorContact(models.Model):
                 self.over_total= customer_name.over_total
                 self.message= customer_name.message
 
+    @api.onchange('filter_by_names')
+    def onchange_names(self):
+        '''
+            Auto fill the customer data on the all fields based on selected customer/vendor name & ID
+        '''
+        if self.filter_by_names:
+            name = self.search([('id', '=', self.filter_by_names.id),('is_customer_vendor','=','is_vendor')], limit=1)
+            if name:
+                self.vendor = name.vendor
+                self.name = name.name
+                self.sort_name = name.sort_name
+                self.pay_to_vendor = name.pay_to_vendor
+                self.pay_to_vendor2 = name.pay_to_vendor2
+                self.company_id = name.company_id
+
+                self.phone = name.phone
+                self.assignee = name.assignee
+                self.alternate_phone = name.alternate_phone
+                self.fax = name.fax
+                self.contact = name.contact
+                self.vType = name.vType
+                self.codes = name.codes
+                self.street = name.street
+                self.street2 = name.street2
+                self.city = name.city
+                self.state_id = name.state_id
+                self.zip = name.zip
+                self.country_id = name.country_id
+                self.lead_time = name.lead_time
+                self.update_lead_time = name.update_lead_time
+
+                self.print_date_due = name.print_date_due
+                self.backorder = name.backorder
+                self.freight_policy = name.freight_policy
+                self.drop_ship = name.drop_ship
+                self.ship_via = name.ship_via
+                self.po_item_number = name.po_item_number
+                self.edi_po = name.edi_po
+                self.edi_translation = name.edi_translation
+                self.alternate_fax = name.alternate_fax
+                self.img_id = name.img_id
+                self.lp_year = name.lp_year
+                self.lp_month = name.lp_month
+                self.message = name.message
+                self.auto_distribute = name.auto_distribute
+                self.federal_id_type = name.federal_id_type
+                self.federal_id = name.federal_id
+                self.temp_perm = name.temp_perm
+                self.category = name.category
+                self.last_activity = name.last_activity
+                self.append_rv = name.append_rv
+                self.terms_code = name.terms_code
+                self.due_days = name.due_days
+                self.terms_type = name.terms_type
+                self.disc_days = name.disc_days
+                self.discount = name.discount
+                self.print_check = name.print_check
+                self.remit_address = name.remit_address
+                self.remit_street1 = name.remit_street1
+                self.remit_street2 = name.remit_street2
+                self.remit_city = name.remit_city
+                self.remit_state = name.remit_state
+                self.zip_code = name.zip_code
+                self.remit_country = name.remit_country
+                self.amount_paid1 = name.amount_paid1
+                self.amount_paid2 = name.amount_paid2
+                self.discount_taken1 = name.discount_taken1
+                self.discount_taken2 = name.discount_taken2
+                self.discount_lost1 = name.discount_lost1
+                self.discount_lost2 = name.discount_lost2
+                self.vendor_bal_due = name.vendor_bal_due
+                self.warehouse_cq = name.warehouse_cq
+                self.warehouse_cq_b = name.warehouse_cq_b
+                self.warehouse_lq = name.warehouse_lq
+                self.warehouse_lq_b = name.warehouse_lq_b
+                self.warehouse_ytd = name.warehouse_ytd
+                self.warehouse_ytd_b = name.warehouse_ytd_b
+                self.warehouse_ly = name.warehouse_ly
+                self.warehouse_ly_b = name.warehouse_ly_b
+                self.units_ordered_ytd = name.units_ordered_ytd
+                self.units_ordered_ly = name.units_ordered_ly
+                self.received_ytd = name.received_ytd
+                self.recieved_ytd_fill = name.recieved_ytd_fill
+                self.recieved_ly_fill = name.recieved_ly_fill
+                self.received_ly = name.received_ly
+                self.last_received = name.last_received
 
     @api.onchange('filter_by_id')
     def onchange_id(self):

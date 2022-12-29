@@ -158,7 +158,19 @@ class SaleOrderInherit(models.Model):
     #     customer = self.env['my.customer'].search([('partner_id','=','demo')], limit=1)
     #     print(customer,'afs---------------')
     #     return 'customer'
-    
+    store = fields.Many2one('wg.store')
+
+    @api.onchange('clerk')
+    def onchange_clerk(self):
+        if self.clerk:
+            self.store = self.clerk.employee_id.store
+        
+    @api.onchange('store')
+    def onchange_store(self):
+        if self.store:
+            store_tax = self.env['account.tax'].search([('store','=',self.store.id)],limit=1)
+            self.w_tax = store_tax
+            
     @api.onchange('partner_id')
     def onchange_partner(self):
         if self.partner_id:
@@ -225,6 +237,19 @@ class CustomerInvoiceInherit(models.Model):
     job_ord_no = fields.Many2one('wgd.job.no', default=lambda self: self.env['wgd.job.no'].search([('name','=','0')]), limit=1)
     clerk = fields.Many2one('res.users', default=lambda self:self.env.user)
     w_tax = fields.Many2one('account.tax',default=lambda self: self.env['account.tax'].search([('company_id','=',self.company_id.id)]), limit=1)
+    store = fields.Many2one('wg.store')
+    summary_of_work = fields.Char('Summary Of Work')
+    @api.onchange('clerk')
+    def onchange_clerk(self):
+        if self.clerk:
+            self.store = self.clerk.employee_id.store
+        
+    @api.onchange('store')
+    def onchange_store(self):
+        if self.store:
+            store_tax = self.env['account.tax'].search([('store','=',self.store.id)],limit=1)
+            self.w_tax = store_tax
+
     ship_to = fields.Char('Address')
     ship_to_street = fields.Char('Street')
     ship_to_city = fields.Char('City')
@@ -234,7 +259,7 @@ class CustomerInvoiceInherit(models.Model):
     country_id = fields.Many2one('res.country', string='Country', ondelete='restrict')
     payment_term_id = fields.Many2one(
         'account.payment.term', string='Payment Terms', check_company=True,  # Unrequired company
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", related="partner_id.terms_code")
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", store=True)
 
     
     @api.onchange('partner_id')
@@ -245,7 +270,7 @@ class CustomerInvoiceInherit(models.Model):
                 self.w_tax = taxes
             else:
                 self.w_tax = False
-            customer = self.env['my.customer'].search([('partner_id','=',self.partner_id.id)], limit=1)
+            customer = self.env['res.partner'].search([('id','=',self.partner_id.id)], limit=1)
             self.job_ord_no = customer.job_ids
             self.payment_term_id = customer.terms_code
 
@@ -426,6 +451,7 @@ class PartnerLedgerReport(models.AbstractModel):
             'partner_id': partner.id if partner else None,
             'name': partner is not None and (partner.name or '')[:128] or _('Unknown Partner'),
             'partner_code':partner_code,
+            'address':partner,
             'columns': columns,
             'level': 2,
             'trust': partner.trust if partner else None,
@@ -509,7 +535,7 @@ class AccountReportInherit(models.AbstractModel):
 
         landscape = False
         if len(self.with_context(print_mode=True).get_header(options)[-1]) > 5:
-            landscape = True
+            landscape = False
 
         return self.env['ir.actions.report']._run_wkhtmltopdf(
             pdf_body,

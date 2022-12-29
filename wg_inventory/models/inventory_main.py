@@ -43,21 +43,21 @@ class OrderLine(models.Model):
         return self._search(args, limit=limit, access_rights_uid=name_get_uid)
         return args.name_get()
 
-    def name_get(self):
-        result = []
-        for rec in self:
-            if self.env.context.get('show_desc', False):
-
-                desc=''
-                if rec.sku:
-                    desc=rec.sku
-                    # desc = rec.sku
-                    # sku_id_desc = str() + '-' + str()
-                result.append((rec.id, rec.name+'-'+desc))
-
-        if len(result)==0:
-            result = super(OrderLine, self).name_get()
-        return result
+    # def name_get(self):
+    #     result = []
+    #     for rec in self:
+    #         if self.env.context.get('show_desc', False):
+    #
+    #             desc=''
+    #             if rec.sku:
+    #                 desc=rec.sku
+    #                 # desc = rec.sku
+    #                 # sku_id_desc = str() + '-' + str()
+    #             result.append((rec.id, rec.name+'-'+desc))
+    #
+    #     if len(result)==0:
+    #         result = super(OrderLine, self).name_get()
+    #     return result
 
 
 class Inventorys(models.Model):
@@ -65,6 +65,12 @@ class Inventorys(models.Model):
 
     sku = fields.Char('SKU')
     desc = fields.Char('Desc')
+
+    @api.onchange('sku')
+    def onchange_desc(self):
+        if self.sku:
+            self.description = self.sku
+            
     mfg = fields.Many2many('wg.mfg.vendor', string='Mfg#', compute="_get_mfg", store=True)
     mfg_ven = fields.Text('Mfg#', compute="_combine_mfg_vendor")
     list_price = fields.Float(
@@ -119,9 +125,11 @@ class Inventorys(models.Model):
     types = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     # store = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     company_id = fields.Many2one('res.company', ondelete='restrict', index=True, )
+    store = fields.Many2one('wg.store')
     sequence = fields.Char('Sequence')
     # instore = fields.Char('Instore')
     instores = fields.Many2many('res.company', ondelete='restrict', index=True, )
+    instore = fields.Many2many('wg.store')
     pursku_ids = fields.Many2one('stock.picking')
     # quantity
     qut_on_hant = fields.Float('Qty On Hant ')
@@ -185,8 +193,10 @@ class Inventorys(models.Model):
     future_order = fields.Char('Future Order')
     company_onchange = fields.Many2one('res.company', ondelete='restrict', index=True,
                                        default=lambda self: self.env.company.id)
+
+    store_onchange = fields.Many2one('wg.store',ondelete='restrict', index=True)
     sku_onchange = fields.Many2one('product.template', ondelete='restrict', index=True,
-                                   domain="[('company_id', '=', company_onchange)]")
+                                   domain="[('store', '=', store_onchange)]")
     # ('prime_vede', '=', sku_filter_by_prime_vendors),
     # sku_filter_by_prime_vendors = fields.Many2one('res.partner', ondelete='restrict', index=True)
     onchange_dept = fields.Many2one('hr.department', ondelete='restrict', index=True, )
@@ -1341,9 +1351,11 @@ class Inventorys(models.Model):
             self.class_invent = store_datas.class_invent
             self.types = store_datas.types
             self.instores = store_datas.instores
+            self.instore = store_datas.instore
             self.prime_vede = store_datas.prime_vede
             self.mfg_vende = store_datas.mfg_vende
             self.company_id = store_datas.company_id
+            self.store = store_datas.store
             self.class_invent = store_datas.class_invent
             self.types = store_datas.types
             self.instores = store_datas.instores

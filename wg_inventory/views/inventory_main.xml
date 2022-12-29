@@ -72,8 +72,10 @@
 <!--                                    <field name="sku_filter_by_prime_vendors" style="width:40%;margin-bottom: -15px;" domain="[('supplier_rank', '=', 1)]" context="{'default_supplier_rank' : 1}"></field>-->
 <!--                                </div>-->
                                 <div style="padding:10px; !important;width:25%;">
-                                    <label for="company_onchange" string="Filter BY Store" style="width:30%;margin-bottom: -15px;margin-left:10%"/>
-                                    <field name="company_onchange" style="width:40%;margin-bottom: -15px;"></field>
+                                    <!-- <label for="company_onchange" string="Filter BY Store" style="width:30%;margin-bottom: -15px;margin-left:10%"/>
+                                    <field name="company_onchange" style="width:40%;margin-bottom: -15px;"></field> -->
+                                    <label for="store_onchange" string="Filter BY Store" style="width:30%;margin-bottom: -15px;margin-left:10%"/>
+                                    <field name="store_onchange" style="width:40%;margin-bottom: -15px;"></field>
                                 </div>
                                 <div style="padding:10px; !important;width:28%;">
                                     <label for="onchange_dept" string="Filter BY Department" style="width:30%;margin-bottom: -15px;margin-left:19%"/>
@@ -99,8 +101,10 @@
                                 </div>
 
                                 <div style="padding:10px; !important;width:18%;">
-                                    <label for="company_id" string="Store" style="width:35%;margin-bottom: -15px;"/>
-                                    <field name="company_id" style="width:50%;margin-bottom: -15px;"/>
+                                    <!-- <label for="company_id" string="Store" style="width:35%;margin-bottom: -15px;"/> -->
+                                    <field name="company_id" style="width:50%;margin-bottom: -15px;" invisible="1"/>
+                                    <label for="store" string="Store" style="width:35%;margin-bottom: -15px;"/>
+                                    <field name="store" style="width:50%;margin-bottom: -15px;"/>
                                 </div>
 
                                 <div style="padding:10px; !important;width:25%;">
@@ -133,9 +137,13 @@
                                 </div>
 
                                 <div style="padding:10px; !important;width:18%;">
-                                    <label for="instores" string="In Stores"
+                                    <!-- <label for="instores" string="In Stores"
                                            style="width:25%;margin-bottom: -15px;padding:5px;margin-right:"/>
                                     <field name="instores" style="width:50%;margin-top: -15px;"
+                                           widget="many2many_tags"/> -->
+                                    <label for="instore" string="In Stores"
+                                           style="width:25%;margin-bottom: -15px;padding:5px;margin-right:"/>
+                                    <field name="instore" style="width:50%;margin-top: -15px;"
                                            widget="many2many_tags"/>
                                     <br/>
                                 </div>
@@ -1476,6 +1484,9 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="replace">
                 <search>
+                    <filter string="Store 1" name="store_one" domain="[('store', '=', 1)]" />
+                    <filter string="Store 2" name="store_two" domain="[('store', '=', 2)]" />
+                    <filter string="Store 3" name="store_three" domain="[('store', '=', 3)]" />
                     <field name="name" string="SKU"/>
                     <field name="sku" string="Description"/>
                     <field name="company_id" string="Store" />
@@ -1698,6 +1709,31 @@
     <!--            </tree>-->
     <!--        </field>-->
     <!--    </record>-->
+
+
+    <!-- inherited account.tax form view and added store field  -->
+    <record id="view_tax_form_store" model="ir.ui.view">
+        <field name="name">account.tax.view.form.inherited</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='advanced_options']//field[@name='company_id']" position="after">
+                <field name="store"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- inherited hr.employee form and added store  -->
+    <record id="view_employee_form_store" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit.store</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group//field[@name='coach_id']" position="after">
+                <field name="store"/>
+            </xpath>
+        </field>
+    </record>
 
 
     <record id="inv_transfer_report" model="ir.actions.act_window">

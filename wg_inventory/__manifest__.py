@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','stock','product','account','vendors'],
+    'depends': ['base', 'stock', 'product', 'account', 'vendors'],
 
     # always loaded
     'data': [
@@ -33,7 +33,6 @@
         'reports/inventory_transfer.xml',
         'views/recrules.xml',
 
-
     ],
     # only loaded in demonstration mode
     'demo': [
@@ -41,9 +40,12 @@
     ],
     'assets': {
         'web.assets_backend': [
-            '/wg_inventory/static/src/style.css'
-
-        ]
-    }
+            '/wg_inventory/static/src/style.css',
+            'wg_inventory/static/src/js/pos_product_view.js',
+        ],
+        'web.assets_qweb': [
+            'wg_inventory/static/src/xml/**/*'
+        ],
+}
 
 }

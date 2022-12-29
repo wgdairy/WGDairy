@@ -27,6 +27,8 @@ odoo.define('pos_connect.ConnectPaymentPopUp', function(require) {
             // this._super(options);
             super.mounted();
 
+            console.log("================= get session =====================",this)
+
             var self = this;
             var vals = self.props.vals;
             var is_cus_invoice = false
@@ -159,7 +161,8 @@ odoo.define('pos_connect.ConnectPaymentPopUp', function(require) {
                         'order_no':order_no,
                         'order_line':order_line,
                         'inv_payment':inv_payment,
-                        'dbc_code':code 
+                        'dbc_code':code,
+                        'config_id':self.env.pos.config_id
                         
                     }],
                 'kwargs': {
@@ -383,7 +386,8 @@ odoo.define('pos_connect.connectPurchaseReviewPopUp', function(require) {
                             'order_no':order_no,
                             'inv_payment':vals['inv_payment'],
                             'order_line':order_line,
-                            'dbc_code':vals['dbc_code']
+                            'dbc_code':vals['dbc_code'],
+                            'config_id':this.env.pos.config_id
                             
                         }],
                     'kwargs': {

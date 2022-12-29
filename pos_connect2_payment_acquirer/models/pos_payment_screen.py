@@ -181,7 +181,6 @@ class ConnectTwo(models.Model):
 
 		if order_line:
 			for o_id in order_line:
-				print (o_id['price'],"ddddddddddjjjjjjjjjj")
 				unit_price = float(o_id['price'])
 				quantity = float(o_id['quantity'])
 				sub_total = unit_price*quantity
@@ -199,19 +198,20 @@ class ConnectTwo(models.Model):
 
 		
 
-	def get_config_details(self):
-		return self.env['pos_connect2.configuration'].search([('active_record','=',True)],limit=1)
+	def get_config_details(self,session_pos):
+		print (self.env['pos_connect2.configuration'].search([('active_record','=',True),('session_id','=',session_pos)],limit=1),"lklklklklklklklklklklklklklklklklklkkk9999999")
+		return self.env['pos_connect2.configuration'].search([('active_record','=',True),('session_id','=',session_pos)],limit=1)
 
-	def get_api_url(self):
-		return self.env['pos_connect2.configuration'].search([('active_record','=',True)],limit=1).api_url
+	def get_api_url(self,session_pos):
+		return self.env['pos_connect2.configuration'].search([('active_record','=',True),('session_id','=',session_pos)],limit=1).api_url
 
-	def call_api(self,xml):
+	def call_api(self,xml,session_pos):
 		
 		response =False
 
 		try:
 			# url = 'https://connect2cert.deere.com/POS/services/TransactionBroker'
-			url = self.get_api_url()
+			url = self.get_api_url(session_pos)
 			parser = ET.XMLParser(recover=True)
 			headers = {'Content-Type': 'application/xml'}
 			response=requests.post(url, data=xml, headers=headers)
@@ -237,7 +237,7 @@ class ConnectTwo(models.Model):
 		tr_status = False
 		config_id = self.get_config_details()
 		xml =  self.capture_request_message(config_id,args)
-		response =self.call_api(xml)
+		response =self.call_api(xml,args['config_id'])
 		if response:
 			if response.status_code == 200:
 				data_val = response.content
@@ -274,8 +274,9 @@ class ConnectTwo(models.Model):
 		payment_type =''
 		order_line =False
 		dbc_code = args['dbc_code']
+		session_pos = args['config_id']
 		
-		config_id = self.get_config_details()
+		config_id = self.get_config_details(session_pos)
 		if 'order_line' in args:
 			order_line = args['order_line']
 		
@@ -296,8 +297,6 @@ class ConnectTwo(models.Model):
 		else:
 			order_no = args['order_no']
 
-		print ("===============",order_no,args)
-
 
 		
 		if str(args['check']) == 'True':
@@ -316,11 +315,8 @@ class ConnectTwo(models.Model):
 			purchase=True
 
 
-		print (xml,"====================")
 
-
-
-		response =self.call_api(xml)
+		response =self.call_api(xml,session_pos)
 
 
 
@@ -440,9 +436,9 @@ class ConnectTwo(models.Model):
 		else:
 			order = """
 <POS:lineItem POS:description="Round Up 235z" POS:manufactureName="Monsanto"
-POS:mfgPartNumber="" POS:numberOfUnits="-600" POS:unitOfMeasure="Pounds"
-POS:unitPrice="850.3701" POS:pricingUnitOfMeasure="Ton" POS:skuNumber="54654654"
-POS:upc="" POS:lineItemTotal="-255.11"/>"""
+POS:mfgPartNumber="" POS:numberOfUnits="1" POS:unitOfMeasure="Pounds"
+POS:unitPrice"""+'"'+str(inv_amount)+'"'+""" POS:pricingUnitOfMeasure="Ton" POS:skuNumber="54654654"
+POS:upc="" POS:lineItemTotal="""+'"'+str(inv_amount)+'"'+"""/>"""
 
 		end = """</POS:lineItems></POS:PointOfSale></SOAP-ENV:Body></SOAP-ENV:Envelope> """
 		return xml+order+end
@@ -476,7 +472,7 @@ POS:upc="" POS:lineItemTotal="-255.11"/>"""
 <POS:merchant>
 <POS:terminalNumber>"""+str(config_id.terminal_number)+"""</POS:terminalNumber>
 <POS:merchantNumber>"""+str(config_id.merchant_number)+"""</POS:merchantNumber>
-<POS:invoiceNumber>"""+str(1111111111)+"""</POS:invoiceNumber>
+<POS:invoiceNumber>"""+str(order_no)+"""</POS:invoiceNumber>
 <POS:purchaseOrderNumber/>
 </POS:merchant>
 <POS:customer>

@@ -41,6 +41,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
         <xpath expr="//span[@name='address_name']" position="before">
+            <field name="filter_by_names" string="Filter By Name/ID" domain="[('is_customer_vendor', '=', 'is_vendor')]" context="{'shown_code': 1}" attrs="{'invisible': [('is_customer_vendor', '=', 'is_customer')]}"></field>
             <field name="vendor" string="Vendor" attrs="{'invisible': [('is_customer_vendor', '=', 'is_customer')]}"/>
             <field name="sort_name" string="Sort Name" attrs="{'invisible': [('is_customer_vendor', '=', 'is_customer')]}"/>
             <field name="customer_rank" invisible="1"/>
@@ -68,6 +69,11 @@
         </xpath>
         <xpath expr="//form/sheet/div[2]" position="after">
             <div class="row" col="2" style="width:100%;" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">  
+                <div style="padding:2% !important;width:56%;" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">
+                    <label for="filter_by_name" string="Filter By Name/ID" style="width:20%;margin-bottom: -15px;"/>
+                    <field name="filter_by_name" style="width:42%;margin-bottom: -15px;" domain="[('is_customer_vendor', '=', 'is_customer')]" context="{'shown_code': 1}"></field><br/>
+                </div>
+                <!-- <div style="padding:2% !important;width:44%;">
                 <div style="padding:2% !important;width:56%;">
                     <label for="filter_by_name" string="Filter By Name" style="width:16%;margin-bottom: -15px;"/>
                     <field name="filter_by_name" style="width:42%;margin-bottom: -15px;"></field><br/>
@@ -75,7 +81,7 @@
                 <div style="padding:2% !important;width:44%;">
                     <label for="filter_by_id" string="Filter By ID" style="width:18%;margin-bottom: -15px;"/>
                     <field  name="filter_by_id" style="width:22%;margin-bottom: -15px;" /><br/>
-                </div> 
+                </div>  -->
             </div> 
             <div class="row" col="4" style="width:100%;" attrs="{'invisible': [('is_customer_vendor', '=', 'is_vendor')]}">  
                 <div style="padding:2% !important;width:20%;">
@@ -1282,6 +1288,8 @@
                 <field name="state_id"/>
                 <field name="zip"/>
                 <field name="street"/>
+                <field name="job_ids" string="Job ID"/>
+                <field name="sort_name_id" string="Sort Name"/>
             </xpath>
         </field>
     </record>
@@ -1308,6 +1316,12 @@
             <xpath expr="//tree//field[@name='state_id']" position="replace">
                 <field name="state_id" invisible="1"/>
             </xpath>
+           <!--  <xpath expr="//tree//field[@name='property_account_receivable_id']" position="replace">
+                <field name="property_account_receivable_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//tree//field[@name='property_account_payable_id']" position="replace">
+                <field name="property_account_payable_id" invisible="1"/>
+            </xpath> -->
     </field>
     </record>
 

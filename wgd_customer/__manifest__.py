@@ -40,4 +40,8 @@
         'demo/demo.xml',
     ],
 
+    'assets': {
+        'web.assets_backend': [
+            'wgd_customer/static/src/js/models.js',
+        ],}
 }
