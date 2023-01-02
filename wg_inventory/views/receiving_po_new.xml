@@ -8,10 +8,11 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='picking_type_id']" position="before">
                     <field name="origin" position="move"></field>
-                    <field name="company_id" string="Store"></field>
+                    <field name="company_id" string="Store" invisible="1"></field>
                     <field name="BkOrd" ></field>
+                    <field name="Store" String="Store"></field>
                 </xpath>
-                <xpath expr="//field[@name='company_id']" position="after">
+                <xpath expr="//field[@name='BkOrd']" position="after">
                     <label for="partner_id" string="Vendor" style="width:80px !important;" />
                         <field name="partner_id" position="move" style="margin-left:-15px;" domain="[('supplier_rank', '=', 1)]" />
                 </xpath>

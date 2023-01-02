@@ -15,6 +15,7 @@ class wg_po(models.Model):
 
     vendor_code = fields.Char()
     Store_ids = fields.Many2one('res.company', ondelete='restrict', index=True, )
+    store = fields.Many2one('wg.store')
     # BkOrd = fields.Selection([('y', 'Y'), ('n', 'N'), ])
     BkOrds = fields.Selection([('Y', 'Y'), ('N', 'N'), ],compute='_bak_order')
     # BkOrds = fields.Char(comput='_bak_order')
@@ -59,8 +60,10 @@ class wg_po(models.Model):
     #         else:
     #             rec.vendor_code = False
 
-
-
+    @api.onchange('partner_id')
+    def onchange_clerk(self):
+        if self.partner_id:
+            self.store = self.env.user.employee_id.store
 
     # change the string Date Planned to Due Date
     date_planned = fields.Datetime(

@@ -91,6 +91,7 @@ class Stockpick(models.Model):
     po = fields.Many2one('purchase.order')
     line = fields.Char(string="Line")
     sku_pur = fields.Many2one('product.template')
+    Store = fields.Many2one('wg.store',compute="onchange_clerk")
     store = fields.Selection([('type1', 'Type 1'), ('type2', 'Type 2'), ])
     store_id = fields.Many2one('res.company', ondelete='restrict', index=True, )
     received_stk = fields.Char(string="Received(Stk)")
@@ -110,6 +111,8 @@ class Stockpick(models.Model):
     BkOrd = fields.Char(string='BkOrd', compute='_backord')
 
 
+
+
     def _backord(self):
         '''
         If any Back order Set Back order field to Y, if no back orders,Set Back order field to N.
@@ -119,6 +122,13 @@ class Stockpick(models.Model):
             # for r in bak:
 
             rec.BkOrd = bak.BkOrds
+
+    @api.depends('partner_id')
+    def onchange_clerk(self):
+        if self.partner_id:
+            self.Store = self.env.user.employee_id.store
+
+
 
 
 

@@ -72,8 +72,8 @@
                         <div class="row" style="width:50%;margin-left:20px;margin-top:-9px;">
 
 
-                            <label for="Store_ids" string="Store"  style="width:30%;"/>
-                            <field name="Store_ids" style="width:60%" /><br />
+                            <label for="store" string="Store"  style="width:30%;"/>
+                            <field name="store" style="width:60%" /><br />
                             <label for="vendor_code" string="Vendor Code" style="width:30%;"/>
                             <field name="vendor_code" style="width:60%;"/><br/>
                             <label for="ven_phone" string="Vendor Phone" style="width:30%;" />
