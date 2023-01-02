@@ -45,7 +45,7 @@ class Stockmov(models.Model):
         onc_sku = self.env['product.template'].search(
             [('name', '=', self.product_id.name), ('id', '=', self.product_id.product_tmpl_id.id)])
 
-        self.description_picking = onc_sku.desc
+        self.description_picking = onc_sku.sku
 
 
     @api.onchange('product_id')

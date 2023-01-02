@@ -73,6 +73,10 @@
                     <label for="filter_by_name" string="Filter By Name/ID" style="width:20%;margin-bottom: -15px;"/>
                     <field name="filter_by_name" style="width:42%;margin-bottom: -15px;" domain="[('is_customer_vendor', '=', 'is_customer')]" context="{'shown_code': 1}"></field><br/>
                 </div>
+                <div style="padding:2% !important;width:44%;">
+                    <label for="billing_entity" string="Billing Entity" style="width:17%;margin-top: -15px;"/>
+                    <field name="billing_entity" string="Billing Entity" style="width:30%;margin-top: -15px;"/>
+                </div>
                 <!-- <div style="padding:2% !important;width:44%;">
                 <div style="padding:2% !important;width:56%;">
                     <label for="filter_by_name" string="Filter By Name" style="width:16%;margin-bottom: -15px;"/>
@@ -1282,14 +1286,16 @@
             <!-- Add you xpath here -->
             <xpath expr="//field[@name='name']" position="replace">
                 <field name="name"/>
-                <field name="customer_id"/>
-                <field name="vendor" string="Vendor ID"/>
+                <field name="customer_id" filter_domain="[('customer_id','=',self)]"/>
+                <field name="vendor" string="Vendor ID" filter_domain="[('vendor','=',self)]"/>
                 <field name="city"/>
                 <field name="state_id"/>
                 <field name="zip"/>
                 <field name="street"/>
                 <field name="job_ids" string="Job ID"/>
                 <field name="sort_name_id" string="Sort Name"/>
+                <filter name="is_customer" string="Customer" domain="[('is_customer_vendor','=','is_customer')]"/>
+                <filter name="is_vendor" string="Vendor" domain="[('is_customer_vendor','=','is_vendor')]"/>
             </xpath>
         </field>
     </record>
@@ -1452,18 +1458,26 @@
     <field name="name">AR Unpaid Invoices</field>
 </record>
 
-<record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+<!--<record id="account.res_partner_action_supplier" model="ir.actions.act_window">-->
+<!--    <field name="view_mode">tree,kanban,form</field>-->
+
+<!--    <field name="context">{'search_default_is_vendor': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True}-->
+<!--    </field>-->
+<!--</record>-->
+
+    <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
     <field name="view_mode">tree,kanban,form</field>
 
-    <field name="context">{'default_is_customer_vendor': 'is_vendor','search_default_supplier':
-        1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}
+    <field name="context">{'default_is_customer_vendor': 'is_vendor','search_default_is_vendor': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True}
     </field>
 </record>
 
 <record id="account.res_partner_action_customer" model="ir.actions.act_window">
-    <field name="view_mode">tree,kanban,form</field>
-</record>
+        <field name="view_mode">tree,kanban,form</field>
 
+        <field name="context">{'search_default_is_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True}
+        </field>
+    </record> 
 
 <menuitem id="wgd_root_menu" name="Vendors" active="True" sequence="0"/>
 

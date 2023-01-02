@@ -113,6 +113,8 @@
           </field>
         </record>
 
+<!-- INHERIT THE CUSTOMER/POS INVOICE -->
+
         <template id="report_invoice_document" inherit_id="account.report_invoice_document">
         <xpath expr="//div[hasclass('page')]" position="replace">
         <div class="page">
@@ -292,7 +294,9 @@
                         <div style="border:solid 1px black;padding:2%;width:47%;margin-right:2%; margin-left:2%;">
                             <b><t t-esc="o.company_id.name"/></b><br/>
                             <t t-esc="o.company_id.street"/><br/>
+                            <t t-if="o.company_id.street2">
                             <t t-esc="o.company_id.street2"/><br/>
+                            </t>
                             <t t-esc="o.company_id.city"/> <t t-esc="o.company_id.state_id.name"/>
                             <t t-esc="o.company_id.zip"/><br/>
                             <t t-esc="o.company_id.country_id.name"/>
@@ -300,11 +304,12 @@
                         <div name="address" style="width:47%;">
                             <address style="border:solid 1px black;padding:5%;height:100%;"><address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
                             <div>
+                                <span itemprop="name"><t t-esc="o.partner_id.billing_entity"/></span><br/>
                                 <span itemprop="name"><t t-esc="o.partner_id.name"/></span>
                             </div>
                             <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
                                 <div class="d-flex align-items-baseline">
-                                    <span class="w-100 o_force_ltr d-block" itemprop="streetAddress"><t t-esc="o.partner_id.street"/><br/><t t-esc="o.partner_id.street2"/><br/><t t-esc="o.partner_id.city"/> <t t-esc="o.partner_id.state_id.name"/> <t t-esc="o.partner_id.zip"/><br/><t t-esc="o.partner_id.country_id.name"/></span>
+                                    <span class="w-100 o_force_ltr d-block" itemprop="streetAddress"><t t-esc="o.partner_id.street"/><br/><t t-if="o.partner_id.street2"><t t-esc="o.partner_id.street2"/><br/></t><t t-esc="o.partner_id.city"/> <t t-esc="o.partner_id.state_id.name"/> <t t-esc="o.partner_id.zip"/><br/><t t-esc="o.partner_id.country_id.name"/></span>
                                 </div>
                             </div>
                             </address></address>
@@ -380,7 +385,7 @@
         </xpath>
     </template>
 
-    <!-- INHERIT PARTNER LEDGER REPORT HEADER-->
+    <!-- INHERIT PARTNER LEDGER REPORT HEADER START-->
     <template id="main_template" inherit_id="account_reports.main_template">	
         <xpath expr="//div/div[2]/div[1]" position="replace">	
             <div class="o_account_reports_header">	
@@ -446,6 +451,16 @@
                                     </t>	
                                 </div>	
                             </div>	
+                            <div class="print_only" style="margin-left:228.8px !important;"> 
+                                <t t-foreach="lines['lines']" t-as="line">
+                                    <t t-if="line.get('address','')"> 
+
+                                         <t t-if="line['address'].is_customer_vendor == 'is_customer'"><br/>
+                                             JOB #<t t-esc="line['address'].job_ids.name"/><br/>
+                                         </t>    
+                                    </t>
+                              </t>  
+                            </div>
                             <div class="print_only"><h2 style="margin-left:128.8px !important;"> <t t-esc="report.get('name')"></t></h2></div>	
                             <t t-call="account_reports.filter_info_template"/>	
                         </div>	
@@ -505,6 +520,9 @@
             </div>
         </xpath>
     </template>
+    <!-- INHERIT PARTNER LEDGER REPORT HEADER END-->
+
+    <!-- INHERIT SALES ORDER FORM -->
     <record id="view_order_form_inherit_fieldservice" model="ir.ui.view">
         <field name="name">sale.order.form.inherit.field.service</field>
         <field name="model">sale.order</field>
@@ -512,6 +530,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='payment_term_id']" position="after">
                 <field name="summary_of_work" string="Summary Of Work"/>
+                <!-- <field name="billing_entity" string="Billing Entity"/>          -->
                 <field name="job_ord_no" string="Job No"/>
                 <field name="clerk"/>
                 <field name="store"/>
@@ -559,6 +578,8 @@
         </field>
     </record>
 
+    <!-- INHERIT CUSTOMER INVOICE FORM-->
+    
     <record id="view_invoice_form_inherit_customer_invoice" model="ir.ui.view">
         <field name="name">account.move.form.inherit.customer.invoice</field>
         <field name="model">account.move</field>
@@ -574,10 +595,11 @@
 
 
             <xpath expr="//page[@id='invoice_tab']" position="attributes">
-                <attribute name="attrs">{'invisible':[('transaction_type', '=', 'journal_transaction'),('move_type', 'not in' , 'out_invoice')]}</attribute>
+                <attribute name="attrs">{'invisible':[('transaction_type', '=', 'journal_transaction'),('move_type', 'not in' ,( 'out_invoice','out_refund','in_refund','in_receipt','out_receipt'))]}</attribute>
             </xpath>
             <xpath expr="//field[@name='payment_reference']" position="after">
                 <field name="summary_of_work" string="Summary Of Work"/>
+                <!-- <field name="billing_entity" string="Billing Entity"/>          -->
                 <field name="job_ord_no" string="Job No"/>
                 <field name="clerk"/>
                 <field name="store"/>
@@ -602,6 +624,12 @@
                     </div>
                         <div style="width:51.5%"></div>
                 </div>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='product_id']" position="after">
+                <field name="desc_sku" string="Description" />
+            </xpath>
+             <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='name']" position="attributes">
+                <attribute name="invisible">True</attribute>
             </xpath>
         </field>
     </record>

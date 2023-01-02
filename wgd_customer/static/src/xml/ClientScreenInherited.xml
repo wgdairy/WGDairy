@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ClientLine" t-inherit="point_of_sale.ClientLine" t-inherit-mode="extension" owl="1">
+
+        <xpath expr="//td[hasclass('client-line-email')]" position="replace">
+            <td class="client-line-job">
+                <!-- <t t-esc="props.invoice_by__job_id[props.partner.id] or ''" /> -->
+                <t t-esc="props.partner.customer_id or ''" />
+                <span t-if="highlight"><br/></span>
+            </td>
+            <td class="client-line-job">
+                <!-- <t t-esc="props.invoice_by__job_id[props.partner.id] or ''" /> -->
+                <t t-esc="props.partner.job_ids[1] or ''" />
+                <span t-if="highlight"><br/></span>
+            </td>
+            <td class="client-line-job">
+                <!-- <t t-esc="props.invoice_by__job_id[props.partner.id] or ''" /> -->
+                <t t-esc="props.partner.sort_name_id or ''" />
+                <span t-if="highlight"><br/></span>
+            </td>
+        </xpath>
+
+    </t>
+
+    <t t-name="ClientListScreen" t-inherit="point_of_sale.ClientListScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//th[hasclass('client-line-email')]" position="replace">
+
+                <th class="client-line-job">Customer ID</th>
+
+                <th class="client-line-job">Job ID</th>
+
+                <th class="client-line-job">Sort Name ID</th>
+
+        </xpath>
+    </t>
+
+
+
+</templates>

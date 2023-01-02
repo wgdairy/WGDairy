@@ -175,8 +175,8 @@ class SaleOrderInherit(models.Model):
     def onchange_partner(self):
         if self.partner_id:
             if self.partner_id.taxable == "yes":
-                taxes = self.env['account.tax'].search([('company_id','=',self.company_id.id),('type_tax_use','=','sale')], limit=1)
-                self.w_tax = taxes
+                store_tax = self.env['account.tax'].search([('store','=',self.store.id)],limit=1)
+                self.w_tax = store_tax
             else:
                 self.w_tax = False
             # customer = self.env['my.customer'].search([('partner_id','=',self.partner_id.id)], limit=1)
@@ -191,6 +191,7 @@ class SaleOrderInherit(models.Model):
             self.w_tax = taxes
 
     summary_of_work = fields.Char('Summary Of Work')   
+    billing_entity  = fields.Char('Billing Entity')   
     job_ord_no = fields.Many2one('wgd.job.no',default=lambda self: self.env['wgd.job.no'].search([('name','=','0')]), limit=1)
     po_no = fields.Integer()
     clerk = fields.Many2one('res.users', default=lambda self:self.env.user)
@@ -218,7 +219,7 @@ class SaleOrderLineInherit(models.Model):
 
     avg_cost = fields.Monetary(string="Average Cost")
     primary_location = fields.Many2one('stock.location',string="Primary Location", related='product_id.product_tmpl_id.primary_location')
-    description = fields.Char('Description', related='product_id.name', readonly=False)
+    description = fields.Char('Description', related='product_id.sku', readonly=False)
     # tax_id = fields.Many2many('account.tax', string='Taxes', domain=['|', ('active', '=', False), ('active', '=', True)], default=lambda self:self.order_id.w_tax)
 
     @api.onchange('product_id')
@@ -231,6 +232,19 @@ class SaleOrderLineInherit(models.Model):
     #     if self.order_id.w_tax:
     #         self.tax_id = self.order_id.w_tax
 
+    # Modified default tax compute function 
+    def _compute_tax_id(self):
+        for line in self:
+            line = line.with_company(line.company_id)
+            fpos = line.order_id.fiscal_position_id or line.order_id.fiscal_position_id.get_fiscal_position(line.order_partner_id.id)
+            # If company_id is set, always filter taxes by the company
+            taxes = line.product_id.taxes_id.filtered(lambda t: t.company_id == line.env.company)
+            # line.tax_id = fpos.map_tax(taxes)
+            if self.order_id.w_tax:
+                line.tax_id = self.order_id.w_tax
+            else:
+                line.tax_id = False
+
 
 class CustomerInvoiceInherit(models.Model):
     _inherit = 'account.move'
@@ -240,6 +254,8 @@ class CustomerInvoiceInherit(models.Model):
     w_tax = fields.Many2one('account.tax',default=lambda self: self.env['account.tax'].search([('company_id','=',self.company_id.id)]), limit=1)
     store = fields.Many2one('wg.store')
     summary_of_work = fields.Char('Summary Of Work')
+    billing_entity  = fields.Char('Billing Entity')   
+
     @api.onchange('clerk')
     def onchange_clerk(self):
         if self.clerk:
@@ -267,8 +283,8 @@ class CustomerInvoiceInherit(models.Model):
     def onchange_partner(self):
         if self.partner_id:
             if self.partner_id.taxable == "yes":
-                taxes = self.env['account.tax'].search([('company_id','=',self.company_id.id),('type_tax_use','=','sale')], limit=1)
-                self.w_tax = taxes
+                store_tax = self.env['account.tax'].search([('store','=',self.store.id)],limit=1)
+                self.w_tax = store_tax
             else:
                 self.w_tax = False
             customer = self.env['res.partner'].search([('id','=',self.partner_id.id)], limit=1)
@@ -319,6 +335,7 @@ class SaleOrderFieldServiceInherit(models.Model):
             'clerk':self.clerk.id,
             'w_tax':self.w_tax.id,
             'summary_of_work':self.summary_of_work,
+            'billing_entity':self.billing_entity,
             'ship_to':self.ship_to,
             'ship_to_street':self.ship_to_street,
             'ship_to_city':self.ship_to_city,
@@ -477,7 +494,8 @@ class PartnerLedgerReport(models.AbstractModel):
         if self.user_has_groups('base.group_multi_currency'):
             columns.append({'name': _('Amount Currency'), 'class': 'number'})
 
-        columns.append({'name': _('Balance'), 'class': 'number'})
+        # columns.append({'name': _('Balance'), 'class': 'number'})
+        columns.append({'name': _('Subtotal'), 'class': 'number'})
 
         return columns
 class AccountReportInherit(models.AbstractModel):

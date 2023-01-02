@@ -858,6 +858,7 @@ class VendorContact(models.Model):
     filter_by_name          = fields.Many2one('res.partner')
     filter_by_names         = fields.Many2one('res.partner')
     filter_by_id            = fields.Many2one('res.partner')
+    billing_entity          = fields.Char('Billing Entity')   
 
     @api.model
     def create(self, vals):

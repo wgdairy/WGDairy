@@ -46,8 +46,8 @@ let PaymentStripe = PaymentInterface.extend({
     },
 
     discoverReaders: async function () {
-        // const config = {simulated: true};
-        let discoverResult = await this.terminal.discoverReaders({});
+        const config = {simulated: true};
+        let discoverResult = await this.terminal.discoverReaders(config);
         if (discoverResult.error) {
             this._showError(_.str.sprintf(_t('Failed to discover: %s'), discoverResult.error));
         } else if (discoverResult.discoveredReaders.length === 0) {

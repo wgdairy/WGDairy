@@ -6,7 +6,7 @@ from odoo.tools.misc import formatLang, format_date, get_lang
 
 from datetime import date, timedelta
 from collections import defaultdict
-
+from odoo.addons.account.models.account_move import AccountMoveLine
 
 class AccountPartner(models.Model):
     _inherit = "account.move.line"
@@ -15,6 +15,114 @@ class AccountPartner(models.Model):
                                       related='move_id.finance_charge')
     two_finance_charge = fields.Monetary(string='Finance Charge')
     four_finance_charge = fields.Monetary(string='Finance Charge')
+    move_id = fields.Many2one('account.move', string='Journal Entry',
+                              index=True, required=True, readonly=True, auto_join=True, ondelete="cascade",
+                              check_company=True,
+                              help="The move of this entry line.")
+
+    ref = fields.Char(related='move_id.ref', store=True, copy=False, index=True, readonly=False)
+    parent_state = fields.Selection(related='move_id.state', store=True, readonly=True)
+    journal_id = fields.Many2one(related='move_id.journal_id', store=True, index=True, copy=False)
+    company_id = fields.Many2one(related='move_id.company_id', store=True, readonly=True)
+
+    account_id = fields.Many2one('account.account', string='Account',
+                                 index=True, ondelete="cascade",
+                                 domain="[('deprecated', '=', False), ('company_id', '=', 'company_id'),('is_off_balance', '=', False)]",
+                                 check_company=True,
+                                 tracking=True)
+
+    discount = fields.Float(string='Discount (%)', digits='Discount', default=0.0)
+    debit = fields.Monetary(string='Debit', default=0.0, currency_field='company_currency_id')
+    credit = fields.Monetary(string='Credit', default=0.0, currency_field='company_currency_id')
+    balance = fields.Monetary(string='Balance', store=True,
+                              currency_field='company_currency_id',
+                              compute='_compute_balance',
+                              help="Technical field holding the debit - credit in order to open meaningful graph views from reports")
+    desc_sku = fields.Char(related='product_id.product_tmpl_id.sku', string='Description', readonly=False)
+    
+    # Modified default tax compute function 
+    def _get_computed_taxes(self):
+        self.ensure_one()
+
+        if self.move_id.is_sale_document(include_receipts=True):
+            # Out invoice.
+            if self.move_id.store:
+                tax_ids = self.move_id.w_tax
+            elif self.product_id.taxes_id:
+                tax_ids = self.product_id.taxes_id.filtered(lambda tax: tax.company_id == self.move_id.company_id)
+            elif self.account_id.tax_ids:
+                tax_ids = self.account_id.tax_ids
+            else:
+                tax_ids = self.env['account.tax']
+            if not tax_ids and not self.exclude_from_invoice_tab:
+                if not self.move_id.w_tax:
+                    tax_ids = False
+                else:
+                    tax_ids = self.move_id.company_id.account_sale_tax_id
+        elif self.move_id.is_purchase_document(include_receipts=True):
+            # In invoice.
+            if self.product_id.supplier_taxes_id:
+                tax_ids = self.product_id.supplier_taxes_id.filtered(lambda tax: tax.company_id == self.move_id.company_id)
+            elif self.account_id.tax_ids:
+                tax_ids = self.account_id.tax_ids
+            else:
+                tax_ids = self.env['account.tax']
+            if not tax_ids and not self.exclude_from_invoice_tab:
+                tax_ids = self.move_id.company_id.account_purchase_tax_id
+        else:
+            # Miscellaneous operation.
+            tax_ids = self.account_id.tax_ids
+
+        if self.company_id and tax_ids:
+            tax_ids = tax_ids.filtered(lambda tax: tax.company_id == self.company_id)
+
+        return tax_ids
+
+
+
+
+
+    @api.model
+    def default_get(self, default_fields):
+        # OVERRIDE
+        # payment = models.Model.default_get(self, fields)
+        values = super(AccountMoveLine, self).default_get(default_fields)
+
+        if 'account_id' in default_fields and not values.get('account_id') \
+            and (self._context.get('journal_id') or self._context.get('default_journal_id')) \
+            and self._context.get('default_move_type') in ('out_invoice', 'out_refund',  'in_refund', 'out_receipt', 'in_receipt'):  #'in_invoice',
+            # Fill missing 'account_id'.
+            journal = self.env['account.journal'].browse(self._context.get('default_journal_id') or self._context['journal_id'])
+            values['account_id'] = journal.default_account_id.id
+        elif self._context.get('line_ids') and any(field_name in default_fields for field_name in ('debit', 'credit', 'account_id', 'partner_id')):
+            move = self.env['account.move'].new({'line_ids': self._context['line_ids']})
+
+            # Suggest default value for debit / credit to balance the journal entry.
+            balance = sum(line['debit'] - line['credit'] for line in move.line_ids)
+            # if we are here, line_ids is in context, so journal_id should also be.
+            journal = self.env['account.journal'].browse(self._context.get('default_journal_id') or self._context['journal_id'])
+            currency = journal.exists() and journal.company_id.currency_id
+            if currency:
+                balance = currency.round(balance)
+            if balance < 0.0:
+                values.update({'debit': -balance})
+            if balance > 0.0:
+                values.update({'credit': balance})
+
+            # Suggest default value for 'partner_id'.
+            if 'partner_id' in default_fields and not values.get('partner_id'):
+                if len(move.line_ids[-2:]) == 2 and  move.line_ids[-1].partner_id == move.line_ids[-2].partner_id != False:
+                    values['partner_id'] = move.line_ids[-2:].mapped('partner_id').id
+
+            # Suggest default value for 'account_id'.
+            if 'account_id' in default_fields and not values.get('account_id'):
+                if len(move.line_ids[-2:]) == 2 and  move.line_ids[-1].account_id == move.line_ids[-2].account_id != False:
+                    values['account_id'] = move.line_ids[-2:].mapped('account_id').id
+        if values.get('display_type') or self.display_type:
+            values.pop('account_id', None)
+
+        return values
+
 
 
     # @api.depends('product_id')
@@ -60,45 +168,53 @@ class AccountPartner(models.Model):
 class AccountMovePartner(models.Model):
     _inherit = "account.move"
 
-    # @api.onchange('invoice_date', 'highest_name', 'company_id')
-    # def _onchange_invoice_date(self):
-    #     if self.invoice_date:
-    #         if not self.invoice_payment_term_id and (
-    #                 not self.invoice_date_due or self.invoice_date_due < self.invoice_date):
-    #             self.invoice_date_due = self.invoice_date
-
-    #         has_tax = bool(self.line_ids.tax_ids or self.line_ids.tax_tag_ids)
-    #         accounting_date = self._get_accounting_date(self.invoice_date, has_tax)
-    #         if accounting_date != self.date:
-    #             self.date = accounting_date
-    #             self._onchange_currency()
-    #         else:
-    #             self._onchange_recompute_dynamic_lines()
 
     transaction_type = fields.Selection(selection=[
         ('vendor_bill', 'Vendor Bill For PO'),
         ('journal_transaction', 'Journal Transaction'),
     ], string='Transaction Type', required=True, default="journal_transaction")
     finance_charge = fields.Monetary(string='Finance Charge', store=True, compute='_compute_finance_charges')
-    two_finance_charge = fields.Monetary(string='Finance Charge', store=True,
-                                         compute='_compute_finance_charges')
-    four_finance_charge = fields.Monetary(string='Finance Charge', store=True,
-                                          compute='_compute_finance_charges')
+    two_finance_charge = fields.Monetary(string='Finance Charge', store=True)
+    four_finance_charge = fields.Monetary(string='Finance Charge', store=True)
     parant_invoice = fields.Char()
+
+    @api.onchange('invoice_date', 'highest_name', 'company_id')
+    def _onchange_invoice_date(self):
+        if self.invoice_date:
+            if not self.invoice_payment_term_id and (not self.invoice_date_due or self.invoice_date_due < self.invoice_date):
+                self.invoice_date_due = self.invoice_date
+
+            has_tax = bool(self.line_ids.tax_ids or self.line_ids.tax_tag_ids)
+            accounting_date = self._get_accounting_date(self.invoice_date, has_tax)
+            if accounting_date != self.date:
+                if self.move_type == 'in_invoice':
+                    # self.date = accounting_date
+                    self._onchange_currency()
+                else:
+                    self.date = accounting_date
+                    self._onchange_currency()
+
+            else:
+                self._onchange_recompute_dynamic_lines()
 
     # @api.onchange('job_ord_no')
     @api.depends('invoice_date')
     def _compute_finance_charges(self):
         untx_amt = 0
         todays_date = date.today()
-        # today = fields.Date.today()
+
 
         for r in self:
 
             if r.invoice_date:
                 inv_date = r.invoice_date
+                if inv_date.month == 2:
+                    one_mon = inv_date.replace(day=28)
+
+                else:
+                    one_mon = inv_date.replace(day=30)
                 # date_rep = r.invoice_date
-                one_mon = inv_date.replace(day=30)
+                # one_mon = inv_date.replace(day=30)
                 # two_mo = date_rep.replace(day=30)
                 # three_mo = date_rep.replace(day=30)
                 two_per = one_mon + relativedelta(months=2)
@@ -110,51 +226,36 @@ class AccountMovePartner(models.Model):
                 untx_amt = r.amount_untaxed
                 # four_finance_charge = 0
 
+
                 if todays_date > two_per_fin_date and todays_date <= four_per_fin_date:
-
-                    amt = (untx_amt * 2) / 100
-                    r.finance_charge = amt
-                    r.two_finance_charge = amt + untx_amt
-
+                    amt_two = (untx_amt * 2) / 100
+                    r.finance_charge = amt_two
                 elif todays_date > four_per_fin_date and todays_date <= six_per_fin_date:
-                    two_fin_charge = r.two_finance_charge
-                    if two_fin_charge:
-                        # untx_amt = r.amount_untaxed
-                        amt = (two_fin_charge * 2) / 100
-                        r.finance_charge = amt
-                        r.four_finance_charge = amt + two_fin_charge
-                    else:
-                        # untx_amt = r.amount_untaxed
-                        amt = (untx_amt * 2) / 100
-                        r.finance_charge = amt
-                        r.four_finance_charge = amt + untx_amt
+                    amt = (untx_amt * 2) / 100
+                    amt_four_two = amt + untx_amt
+                    amt_four_three =  (amt_four_two * 2) / 100
+                    amt_tot = amt_four_three + amt
+                    r.finance_charge = amt_tot
 
-                    # else:
-                    #     untx_amt = r.amount_untaxed
-                    #     amt = (untx_amt * 4) / 100
-                    #     r.finance_charge = amt
                 elif todays_date > six_per_fin_date:
-                    six_fin_charge = r.four_finance_charge
-                    if six_fin_charge:
-                        # untx_amt = r.amount_untaxed
-                        amt = (six_fin_charge * 2) / 100
-                        r.finance_charge = amt
-                    else:
-                        # untx_amt = r.amount_untaxed
-                        amt = (untx_amt * 2) / 100
-                        r.finance_charge = amt
-                    # else:
-                    #     untx_amt = r.amount_untaxed
-                    #     amt = (untx_amt * 6) / 100
-                    #     r.finance_charge = amt
+                    # six_fin_charge = r.four_finance_charge
+                    amt = (untx_amt * 2) / 100
+                    amt_six_one =  amt + untx_amt
+                    amt_six_two = (amt_six_one * 2) / 100
+                    amt_six_three = amt + amt_six_two + untx_amt
+                    amt_six_four = (amt_six_three * 2) / 100
+                    amt_six_total = amt + amt_six_two + amt_six_four
+                    r.finance_charge = amt_six_total
                 else:
                     r.finance_charge = 0
-                    r.two_finance_charge = 0
-                    r.four_finance_charge = 0
+                    # r.two_finance_charge = 0
+                    # r.four_finance_charge = 0
             else:
                 r.finance_charge = 0
-                r.two_finance_charge = 0
-                r.four_finance_charge = 0
+                # r.two_finance_charge = 0
+                # r.four_finance_charge = 0
+
+
 
     def _post(self, soft=True):
         """Post/Validate the documents.
@@ -315,12 +416,12 @@ class AccountMovePartner(models.Model):
                 move_line_vals['finance_charges'] = rec.finance_charge
                 move_line_vals['quantity'] = 1
                 move_line_vals['account_id'] = account.id
+                # move_line_vals['date'] = rec.invoice_date
                 move_line_vals['date_maturity'] = rec.invoice_date_due
                 move_line_ids.append(move_line_vals)
                 move_line.append(move_line_ids)
                 move_vals = {}
                 move_vals['date'] = rec.date
-                # move_vals['date'] = date.today()
                 move_vals['state'] = 'draft'
                 # move_vals['invoice_date'] = rec.invoice_date
                 move_vals['invoice_date'] = date.today()
@@ -334,13 +435,16 @@ class AccountMovePartner(models.Model):
                 invoice = rec.env['account.move'].search([('parant_invoice', '=', self.name)])
 
                 if invoice:
+                    # invoice.update(move_vals)
+                    invoice.state = 'draft'
+                    invoice.write({'invoice_line_ids': [(5, 0, 0)]})
                     invoice.update(move_vals)
+
                     invoice._onchange_invoice_line_ids()
                     invoice.state = 'posted'
                 else:
                     journal = rec.env['account.move'].create(move_vals)
                     journal._onchange_invoice_line_ids()
                     journal.state = 'posted'
-
 
 

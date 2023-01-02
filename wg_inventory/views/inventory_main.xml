@@ -100,19 +100,21 @@
                                     <field name="types" style="width:50%;margin-bottom: -15px;margin-right: 4%"/>
                                 </div>
 
-                                <div style="padding:10px; !important;width:18%;">
-                                    <!-- <label for="company_id" string="Store" style="width:35%;margin-bottom: -15px;"/> -->
-                                    <field name="company_id" style="width:50%;margin-bottom: -15px;" invisible="1"/>
-                                    <label for="store" string="Store" style="width:35%;margin-bottom: -15px;"/>
-                                    <field name="store" style="width:50%;margin-bottom: -15px;"/>
-                                </div>
-
                                 <div style="padding:10px; !important;width:25%;">
                                     <label for="primary_location" string=" Primary Location"
                                            style="width:29%;margin-bottom: -15px;"/>
                                     <field name="primary_location" style="width:50%;margin-top: -15px;"/>
                                     <br/>
                                 </div>
+
+                                <div style="padding:10px; !important;width:18%;">
+                                    <!-- <label for="company_id" string="Store" style="width:35%;margin-bottom: -15px;"/> -->
+                                    <field name="company_id" style="width:50%;margin-bottom: -15px;" invisible="1"/>
+                                    <label for="store" string="Store" style="width:35%;margin-bottom: -15px;" invisible="1"/>
+                                    <field name="store" style="width:50%;margin-bottom: -15px;" invisible="1"/>
+                                </div>
+
+
 
                             </div>
 
@@ -131,8 +133,8 @@
                                     <br/>
                                 </div>
                                 <div style="padding:10px; !important;width:18%;">
-                                    <label for="sequence" string="Sequence" style="width:20%;margin-bottom: -15px;"/>
-                                    <field name="sequence" style="width:57%;margin-top: -15px;"/>
+                                    <label for="seque" string="Sequence" style="width:20%;margin-bottom: -15px;"/>
+                                    <field name="seque" style="width:57%;margin-top: -15px;"/>
                                     <br/>
                                 </div>
 
@@ -1491,7 +1493,7 @@
                     <field name="sku" string="Description"/>
                     <field name="company_id" string="Store" />
                     <field name="deptart" string="Department"/>
-                    <field name="sequence" string="Sequence" filter_domain="[('sequence','=ilike',self)]"/>
+                    <field name="seque" string="Sequence" filter_domain="[('seque','=ilike',self)]"/>
                     <field name="upc" string="UPC" filter_domain="[('upc','=ilike',self)]"/>
                     <field name="types" string="Type"/>
                     <field name="mfg" string="Manufacturer" filter_domain="[('mfg','=ilike',self)]"/>
@@ -1546,9 +1548,9 @@
                 <field name="name" string="SKU"/>
                 <field name="sku" string="Desc"/>
 <!--                <field name="name" string="SKU"/>-->
-                <field name="company_id" string="Store"/>
+                <!-- <field name="company_id" string="Store"/> -->
                 <field name="deptart" string="Dept"/>
-                <field name="sequence" string="Sequence"/>
+                <field name="seque" string="Sequence"/>
                 <field name="reail" string="Retail"/>
                 <field name="upc" string="UPC"/>
 

@@ -127,6 +127,7 @@ class Inventorys(models.Model):
     company_id = fields.Many2one('res.company', ondelete='restrict', index=True, )
     store = fields.Many2one('wg.store')
     sequence = fields.Char('Sequence')
+    seque = fields.Char('Sequence')
     # instore = fields.Char('Instore')
     instores = fields.Many2many('res.company', ondelete='restrict', index=True, )
     instore = fields.Many2many('wg.store')
@@ -1346,7 +1347,8 @@ class Inventorys(models.Model):
             self.desc = store_datas.desc
             # self.mfg = store_datas.mfg
             self.upc = store_datas.upc
-            self.sequence = store_datas.sequence
+            # self.sequence = store_datas.sequence
+            self.seque = store_datas.seque
             self.deptart = store_datas.deptart
             self.class_invent = store_datas.class_invent
             self.types = store_datas.types
@@ -1404,7 +1406,8 @@ class Inventorys(models.Model):
             self.desc = store_datas.desc
             # self.mfg = store_datas.mfg
             self.upc = store_datas.upc
-            self.sequence = store_datas.sequence
+            # self.sequence = store_datas.sequence
+            self.seque = store_datas.seque
             self.deptart = store_datas.deptart
             self.class_invent = store_datas.class_invent
             self.types = store_datas.types
@@ -1426,7 +1429,8 @@ class Inventorys(models.Model):
         self.desc = company_onchange_data.desc
         # self.mfg = store_data.mfg
         self.upc = company_onchange_data.upc
-        self.sequence = company_onchange_data.sequence
+        # self.sequence = company_onchange_data.sequence
+        self.seque = company_onchange_data.seque
         self.deptart = company_onchange_data.deptart
         self.class_invent = company_onchange_data.class_invent
         self.types = company_onchange_data.types
@@ -1461,7 +1465,8 @@ class Inventorys(models.Model):
             self.desc = store_data.desc
             # self.mfg = store_data.mfg
             self.upc = store_data.upc
-            self.sequence = store_data.sequence
+            # self.sequence = store_data.sequence
+            self.seque = store_data.seque
             self.deptart = store_data.deptart
             self.class_invent = store_data.class_invent
             self.types = store_data.types

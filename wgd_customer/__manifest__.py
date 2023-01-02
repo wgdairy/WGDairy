@@ -29,6 +29,7 @@
         # 'views/views.xml',
         'views/templates.xml',
         'views/company.xml',
+        'views/job_menu.xml',
 
     ],
     # css view
@@ -43,5 +44,8 @@
     'assets': {
         'web.assets_backend': [
             'wgd_customer/static/src/js/models.js',
+        ],
+        'web.assets_qweb': [
+        'wgd_customer/static/src/xml/**/*'
         ],}
 }

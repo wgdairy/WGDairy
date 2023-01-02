@@ -29,6 +29,7 @@
         'views/templates.xml',
         'views/inventory_main.xml',
         'views/receiving_po_new.xml',
+        'views/warehouse_store_menu.xml',
         # 'reports/Receiving_Products.xml',
         'reports/inventory_transfer.xml',
         'views/recrules.xml',

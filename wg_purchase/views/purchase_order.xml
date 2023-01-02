@@ -98,8 +98,8 @@
                             <field name="Date_Created" style="width:60%;" /><br />
                             <label for="Reference" string="Reference" style="width:30%;" />
                             <field name="Reference" style="width:60%"/><br />
-                            <label for="Alt_po" string="Alt po"  style="width:30%;"/>
-                            <field name="Alt_po" style="width:60%" /><br />
+                            <label for="Alt_po" string="Alt po"  style="width:30%;" invisible="1"/>
+                            <field name="Alt_po" style="width:60%" invisible="1"/><br />
                             <label for="BkOrds" string="BkOrd'd" style="width:30%;" />
                             <field name="BkOrds" style="width:50%"/><br />
                             <label for="Order_Type" string="Order Type" style="width:30%;" />
@@ -221,9 +221,9 @@
                 <xpath expr="//field[@name='order_line']//tree/field[@name='product_qty']" position="attributes">
                     <attribute name="string">QOO(Stk)</attribute>
                 </xpath>
-<!--                <xpath expr="//field[@name='order_line']//tree/field[@name='price_unit']" position="attributes">-->
-<!--                    <attribute name="string">Cost(Stk)</attribute>-->
-<!--                </xpath>-->
+                <xpath expr="//field[@name='order_line']//tree/field[@name='price_unit']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
 
             </field>
         </record>
