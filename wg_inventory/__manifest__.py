@@ -43,6 +43,7 @@
         'web.assets_backend': [
             '/wg_inventory/static/src/style.css',
             'wg_inventory/static/src/js/pos_product_view.js',
+            'wg_inventory/static/src/js/ProductScreen.js',
         ],
         'web.assets_qweb': [
             'wg_inventory/static/src/xml/**/*'

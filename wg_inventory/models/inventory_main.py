@@ -66,6 +66,18 @@ class Inventorys(models.Model):
     sku = fields.Char('SKU')
     desc = fields.Char('Desc')
 
+    @api.model
+    def store_tax(self, id):
+        store_tax = 0
+        customer = self.env['res.partner'].search([('id','=',id[0])],limit=1)
+        if customer and customer.taxable == 'yes':
+            user = self.env.user
+            store = user.employee_id.store
+            store_tax = [self.env['account.tax'].search([('store','=',store.id)],limit=1).id]
+        else:
+            store_tax = []
+        return store_tax
+
     @api.onchange('sku')
     def onchange_desc(self):
         if self.sku:
