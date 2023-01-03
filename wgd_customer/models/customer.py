@@ -1188,3 +1188,13 @@ class AccountPaymentInherit(models.Model):
     ar_note = fields.Char('A/R Note')
     st = fields.Char('St')
     discount = fields.Char('Discount Taken')
+    job_ids     = fields.Many2one('wgd.job.no')
+
+
+    @api.onchange('partner_id')
+    def _onchange_partner_id(self):
+        '''
+            populate job number
+        '''
+        if self.partner_id:
+            self.job_ids = self.partner_id.job_ids
