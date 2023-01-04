@@ -11,7 +11,7 @@
 
 
         <xpath expr="//field[@name='location_id']" position="after">
-            <field name="department_id"/>
+            <field name="department_id" invisible="1"/>
         </xpath>
 
 

@@ -21,6 +21,7 @@ class AccountTaxInherited(models.Model):
     _inherit = "account.tax"
 
     store = fields.Many2one('wg.store', name="Store")
+    pos_session = fields.Many2one('pos.config')
 
 class HrEmployeeInherited(models.Model):
     """Inherited base hr.employee model and added store field """

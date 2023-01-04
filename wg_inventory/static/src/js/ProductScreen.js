@@ -30,6 +30,7 @@ odoo.define('wg_inventory.pos_product_screen', function (require) {
                     NumberBuffer.reset();
             }
             else{
+                var pos_session = this.env.pos.config_id
                 var customer = this.currentOrder.get_client() //getting the customer
                 var store_tax = 0
                                         
@@ -41,7 +42,7 @@ odoo.define('wg_inventory.pos_product_screen', function (require) {
                 await rpc.query({
                     method:'store_tax',
                     model: 'product.template',
-                    args: [[customer.id]]}).then(function (result) { 
+                    args: [pos_session,customer.id]}).then(function (result) { 
                         store_tax = result[0]
                         if(product.taxes_id){
                             product.taxes_id = [result[0]]

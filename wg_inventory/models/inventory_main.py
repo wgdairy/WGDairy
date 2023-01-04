@@ -67,13 +67,11 @@ class Inventorys(models.Model):
     desc = fields.Char('Desc')
 
     @api.model
-    def store_tax(self, id):
-        store_tax = 0
-        customer = self.env['res.partner'].search([('id','=',id[0])],limit=1)
+    def store_tax(self,pos_session, customer):
+        store_tax = []
+        customer = self.env['res.partner'].search([('id','=',customer)],limit=1)
         if customer and customer.taxable == 'yes':
-            user = self.env.user
-            store = user.employee_id.store
-            store_tax = [self.env['account.tax'].search([('store','=',store.id)],limit=1).id]
+            store_tax = [self.env['account.tax'].search([('pos_session','=', pos_session)], limit=1).id]
         else:
             store_tax = []
         return store_tax
@@ -944,9 +942,9 @@ class Inventorys(models.Model):
         if self.mkt_cost_alt:
             val = "Mkt Cost Alt"
             self.validate_float(self.mkt_cost_alt, val)
-        if self.reail:
-            val = "Reail Pricing"
-            self.validate_float(self.reail, val)
+        # if self.reail:
+        #     val = "Reail Pricing"
+        #     self.validate_float(self.reail, val)
         if self.reail_stock:
             val = "Reail Stock"
             self.validate_float(self.reail_stock, val)
@@ -1082,9 +1080,9 @@ class Inventorys(models.Model):
         if self.mkt_cost_alt:
             val = "Mkt Cost Alt"
             self.validate_float(self.mkt_cost_alt, val)
-        if self.reail:
-            val = "Reail Pricing"
-            self.validate_float(self.reail, val)
+        # if self.reail:
+        #     val = "Reail Pricing"
+        #     self.validate_float(self.reail, val)
         if self.reail_stock:
             val = "Reail Stock"
             self.validate_float(self.reail_stock, val)

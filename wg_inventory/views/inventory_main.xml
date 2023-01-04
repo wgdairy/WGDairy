@@ -1721,6 +1721,7 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='advanced_options']//field[@name='company_id']" position="after">
                 <field name="store"/>
+                <field name="pos_session"/>
             </xpath>
         </field>
     </record>

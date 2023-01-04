@@ -15,7 +15,7 @@ DB.include({
 
 	        _partner_search_string: function(partner){
 	        var str =  partner.name || '';
-	        console.log("*****gffffffffffffffffff***********************ffffffffffffffffffffffffffffffffffffffffffffffame_id",partner)
+	        
 
 	        if(partner.barcode){
 	            str += '|' + partner.barcode;

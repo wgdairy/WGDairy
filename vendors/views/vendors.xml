@@ -1309,7 +1309,7 @@
         <xpath expr="//tree//field[@name='display_name']" position="before">
             <field name="customer_vendor_id" string="ID"/>
             <field name="name" string="Name"/>
-            <field name="job_ids" string="Job ID"/>
+            <field name="job_ids" string="Job No"/>
             <field name="full_address" string="Address"/>
         </xpath>
         <xpath expr="//tree//field[@name='display_name']" position="replace">
