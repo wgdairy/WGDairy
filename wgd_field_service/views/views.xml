@@ -635,7 +635,7 @@
     </record>
 
     <!-- INHERIT CUSTOMER PAYMENT FORM-->
-    <record id="view_invoice_form_inherit_customer_invoice" model="ir.ui.view">
+    <record id="view_invoice_form_inherit_customer_payment" model="ir.ui.view">
         <field name="name">account.payment.form.inherit.customer.payments</field>
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_form"/>
@@ -645,7 +645,7 @@
             </xpath>
         </field>
     </record>
-    
+
       <!--inherited accounting>vendor>bills tree view-->
       <record id="account_out_invoice_tree_inherited" model="ir.ui.view">
           <field name="name">account.out.invoice.tree.inherited</field>

@@ -48,6 +48,8 @@ class wg_po(models.Model):
     ship_state_id = fields.Many2one("res.country.state", ondelete='restrict', help='Exportable')
     ship_zip = fields.Char()
     ship_country_id = fields.Many2one("res.country", help='Exportable')
+    ship_phone = fields.Char()
+    ship_fax = fields.Char()
     Total_Freight = fields.Char()
     Other_Charges = fields.Float()
     Date_send = fields.Datetime()
@@ -71,6 +73,19 @@ class wg_po(models.Model):
         help="Delivery date promised by vendor. This date is used to determine expected arrival of products.")
 
 
+
+    @api.onchange('store')
+    def onchange_store(self):
+        if self.store:
+            stores = self.env['wg.store'].search([('id', '=', self.store.id)])
+            self.ship_street     = stores.street
+            self.ship_street2    = stores.street2
+            self.ship_city       = stores.city
+            self.ship_state_id   = stores.state_id
+            self.ship_zip        = stores.zip
+            self.ship_country_id = stores.country_id
+            self.ship_phone      = stores.phone
+            self.ship_fax        = stores.fax
 
 
     def action_create_invoice(self):
@@ -418,7 +433,7 @@ class wg_po(models.Model):
         self.qty_available = onc_sku.qty_available
         self.dept = onc_sku.deptart
         self.price_unit = onc_sku.list_price
-        
+        self.mfg=onc_sku.mfg.name
 
         res = {}
         if onc_sku:

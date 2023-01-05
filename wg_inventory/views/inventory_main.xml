@@ -16,6 +16,15 @@
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
 <!--        <field name="view_mode">tree,form,kanban</field>-->
         <field name="arch" type="xml">
+            <!-- BUTTON PURCHASE TAX DELETE -->
+
+            <xpath expr="//header" position="inside">
+
+                <button name="my_button" string="purchase tax" class="oe_highlight" type="object"/>
+
+            </xpath>
+
+
             <xpath expr="//form" position="attributes">
                 <attribute name="class">product_form</attribute>
             </xpath>
@@ -120,7 +129,7 @@
 
                             <div class="row" col="4" style="width:100%;">
                                 <div style="padding:10px; !important;width:18%;">
-                                    <label for="mfg" string="Mfg#" style="width:18%;margin-bottom: -15px;"/>
+                                    <label for="mfg" string="Mfg1#" style="width:18%;margin-bottom: -15px;"/>
                                     <field name="mfg" style="width:50%;margin-top: -15px;" widget="many2many_tags"
                                            invisible="1"></field>
                                     <field name="mfg_ven" style="width:50%;margin-top: -15px;vertical-align: top;"/>

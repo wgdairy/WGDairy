@@ -188,6 +188,7 @@
                     <field name="desc_sku" string="Description" />
                     <field name="qty_available" string="QOH" />
                     <field name="primary_locations" string="Primary Location" />
+                    <field name="mfg" string="MFG#" />
                     <field name="OM" string="OM" />
                     <field name="product_qty" position="move" />
                     <field name="qty_received" />
