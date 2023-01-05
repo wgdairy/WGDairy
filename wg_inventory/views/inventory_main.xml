@@ -17,14 +17,7 @@
 <!--        <field name="view_mode">tree,form,kanban</field>-->
         <field name="arch" type="xml">
             <!-- BUTTON PURCHASE TAX DELETE -->
-
-            <xpath expr="//header" position="inside">
-
-                <button name="my_button" string="purchase tax" class="oe_highlight" type="object"/>
-
-            </xpath>
-
-
+            
             <xpath expr="//form" position="attributes">
                 <attribute name="class">product_form</attribute>
             </xpath>

@@ -891,6 +891,7 @@ class VendorContact(models.Model):
     pure_archive_invoices   = fields.Char('Pure Archive Invoices',help='Exportable')
     po_required             = fields.Selection([('yes','Y'),('no','N')], "PO Required", default='no',help='Exportable')
     default_po              = fields.Char('Default PO',help='Exportable')
+    po_number               = fields.Char('PO Number')
     charge_allowed          = fields.Selection([('yes','Y'),('no','N')], "Charge Allowed", default='yes',help='Exportable')
     balance_method          = fields.Many2one('balance',default=lambda self: self.env['balance'].search([('name','=','O')]), limit=1)
     std_sell_price          = fields.Selection([('yes','R'),('no','R')], "Std Sell Price/POS", default='no',help='Exportable')

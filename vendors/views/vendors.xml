@@ -403,6 +403,8 @@
                                     <field  name="po_required" string="po_required" style="width:50%;"/><br/>
                                     <label for="default_po" string="Default PO" style="width:30%;"/>
                                     <field  name="default_po" style="width:50%;"/>
+                                    <label for="po_number" string="PO Number" style="width:30%;"/>
+                                    <field  name="po_number" style="width:50%;"/>
                                 </div>     
                             </div>
                             <div style="padding:2% !important;width:33%;">

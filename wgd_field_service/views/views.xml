@@ -177,6 +177,10 @@
                     <strong>Source:</strong>
                     <p class="m-0" t-field="o.invoice_origin"/>
                 </div>
+                <div class="col-auto col-3 mw-100 mb-2" t-if="o.po_number" name="PO_NUmber">
+                    <strong>PO Number:</strong>
+                    <p class="m-0" t-field="o.po_number"/>
+                </div>
                 <div class="col-auto col-3 mw-100 mb-2" t-if="o.partner_id.ref" name="customer_code">
                     <strong>Customer Code:</strong>
                     <p class="m-0" t-field="o.partner_id.ref"/>
@@ -456,8 +460,11 @@
                                     <t t-if="line.get('address','')"> 
 
                                          <t t-if="line['address'].is_customer_vendor == 'is_customer'"><br/>
-                                             JOB #<t t-esc="line['address'].job_ids.name"/><br/>
-                                         </t>    
+                                             JOB #<t t-esc="line['address'].job_ids.name"/>
+                                         </t>
+                                        <t t-if="line['address'].is_customer_vendor == 'is_customer'"><br/>
+                                             PO #<t t-esc="line['address'].po_number"/><br/>
+                                         </t>
                                     </t>
                               </t>  
                             </div>
@@ -604,6 +611,7 @@
                 <field name="clerk"/>
                 <field name="store"/>
                 <field name="w_tax" string="Tax" attrs="{'invisible':[('transaction_type', '=', 'journal_transaction'),('move_type', 'not in' , 'out_invoice')]}"/>
+                <field name="po_number" string="PO Number"/>
                 <field name="payment_term_id" string="Payment Terms"/>
             </xpath>
             <xpath expr="//group" position="after">

@@ -254,7 +254,8 @@ class CustomerInvoiceInherit(models.Model):
     w_tax = fields.Many2one('account.tax',default=lambda self: self.env['account.tax'].search([('company_id','=',self.company_id.id)]), limit=1)
     store = fields.Many2one('wg.store')
     summary_of_work = fields.Char('Summary Of Work')
-    billing_entity  = fields.Char('Billing Entity')   
+    billing_entity  = fields.Char('Billing Entity')
+    po_number = fields.Char('PO Number')
 
     @api.onchange('clerk')
     def onchange_clerk(self):
@@ -290,6 +291,7 @@ class CustomerInvoiceInherit(models.Model):
             customer = self.env['res.partner'].search([('id','=',self.partner_id.id)], limit=1)
             self.job_ord_no = customer.job_ids
             self.payment_term_id = customer.terms_code
+            self.po_number = customer.po_number
 
     @api.onchange('company_id')
     def onchange_company(self):

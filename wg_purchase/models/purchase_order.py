@@ -66,6 +66,8 @@ class wg_po(models.Model):
     def onchange_clerk(self):
         if self.partner_id:
             self.store = self.env.user.employee_id.store
+            if self.store:
+                self.picking_type_id = self.env['stock.picking.type'].search([('warehouse_id','=', self.store.warehouse.id), ('code','=', 'incoming')], limit=1)
 
     # change the string Date Planned to Due Date
     date_planned = fields.Datetime(
@@ -86,6 +88,8 @@ class wg_po(models.Model):
             self.ship_country_id = stores.country_id
             self.ship_phone      = stores.phone
             self.ship_fax        = stores.fax
+            self.picking_type_id = self.env['stock.picking.type'].search([('warehouse_id','=', self.store.warehouse.id), ('code','=', 'incoming')], limit=1)
+
 
 
     def action_create_invoice(self):

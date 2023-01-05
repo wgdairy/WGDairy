@@ -68,17 +68,6 @@ class Inventorys(models.Model):
 
 
 
-
-    def my_button(self):    
-        company_ids = self.env['res.company'].search([('name', '=', 'W.G. Dairy Supply, Inc')])
-        products = self.env['product.template'].search([])
-        account_tax = self.env['account.tax'].search([('name', '=', 'No Tax'),('type_tax_use','=','purchase')])
-        for i in products:
-            i.write({'supplier_taxes_id': [(6, 0, [account_tax.id])]})
-        return
-
-
-
     @api.model
     def store_tax(self,pos_session, customer):
         store_tax = []
