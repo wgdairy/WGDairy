@@ -183,6 +183,7 @@ class SaleOrderInherit(models.Model):
             # self.job_no = customer.job_ids
             # self.payment_term_id = customer.terms_code
             self.job_ord_no = self.partner_id.job_ids
+            self.po_number = self.po_number
 
     @api.onchange('company_id')
     def onchange_company(self):
@@ -255,7 +256,7 @@ class CustomerInvoiceInherit(models.Model):
     store = fields.Many2one('wg.store')
     summary_of_work = fields.Char('Summary Of Work')
     billing_entity  = fields.Char('Billing Entity')
-    po_number = fields.Char('PO Number')
+    po_number = fields.Char('PO Number', related="partner_id.po_number")
 
     @api.onchange('clerk')
     def onchange_clerk(self):
@@ -293,6 +294,7 @@ class CustomerInvoiceInherit(models.Model):
             self.payment_term_id = customer.terms_code
             self.po_number = customer.po_number
 
+
     @api.onchange('company_id')
     def onchange_company(self):
         if self.company_id and self.partner_id:
@@ -301,6 +303,11 @@ class CustomerInvoiceInherit(models.Model):
 
 class SaleOrderFieldServiceInherit(models.Model):
     _inherit = "sale.order"
+
+    po_number = fields.Char('PO Number')
+
+
+
 
     def _prepare_invoice(self):
         """
@@ -337,6 +344,7 @@ class SaleOrderFieldServiceInherit(models.Model):
             'clerk':self.clerk.id,
             'w_tax':self.w_tax.id,
             'summary_of_work':self.summary_of_work,
+            # 'po_number':self.po_number,
             'billing_entity':self.billing_entity,
             'ship_to':self.ship_to,
             'ship_to_street':self.ship_to_street,
@@ -347,6 +355,11 @@ class SaleOrderFieldServiceInherit(models.Model):
             'country_id':self.country_id.id,
         }
         return invoice_vals
+
+    @api.onchange('partner_id')
+    def onchange_po_num(self):
+        self.po_number = self.partner_id.po_number
+
 
 class AccountingReportInherit(models.AbstractModel):
     _inherit = 'account.aged.partner'

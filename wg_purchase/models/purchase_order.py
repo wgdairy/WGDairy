@@ -42,6 +42,7 @@ class wg_po(models.Model):
     ven_phone = fields.Char()
     ven_fax = fields.Char()
 
+    ship_name = fields.Char()
     ship_street = fields.Char()
     ship_street2 = fields.Char()
     ship_city = fields.Char()
@@ -53,6 +54,15 @@ class wg_po(models.Model):
     Total_Freight = fields.Char()
     Other_Charges = fields.Float()
     Date_send = fields.Datetime()
+
+    @api.onchange('order_line')
+    def _check_exist_product_in_line(self):
+      for purchase in self:
+          exist_product_list = []
+          for line in purchase.order_line:
+             if line.product_id.id in exist_product_list:
+                raise ValidationError('Product Already Added.')
+             exist_product_list.append(line.product_id.id)
 
     # @api.depends('partner_id')
     # def _get_vendor_code(self):
@@ -274,7 +284,7 @@ class wg_po(models.Model):
         self.ven_city = onc_vend.city
         self.ven_state_ids = onc_vend.state_id.id
         self.ven_zip = onc_vend.zip
-        self.ven_country_id = onc_vend.state_id.country_id.id
+        self.ven_country_id = onc_vend.country_id.id
         self.ven_phone = onc_vend.phone
         self.ven_fax = onc_vend.fax
         self.Store_ids = onc_vend.company_id
@@ -376,7 +386,8 @@ class wg_po(models.Model):
     price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price',related='product_id.product_tmpl_id.list_price' )
     desc_sku = fields.Char(related='product_id.product_tmpl_id.sku', string='Description', readonly=False)
     primary_locations = fields.Many2one('stock.location',string="Primary Location", related='product_id.product_tmpl_id.primary_location')
-
+    primary_vendor = fields.Many2one('res.partner', related='product_id.prime_vede')
+    part_sold_last_12_monts = fields.Char(string='Parts Sold in 12 Months')
 
     # @api.model
     # def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None, context='show_desc'):
@@ -423,6 +434,14 @@ class wg_po(models.Model):
 
             # rec.cost_stk = onc_cost.list
             rec.cost_stk = onc_cost.avg_cost_pricing
+            store = self.order_id.store
+            if store.warehouse:
+                if store.warehouse.code == 'CREST':
+                    rec.primary_locations = rec.product_id.primary_location
+                elif store.warehouse.code == 'SAINT':
+                    rec.primary_locations = rec.product_id.primary_location_2
+                elif store.warehouse.code == 'JONES':
+                    rec.primary_locations = rec.product_id.primary_location_3
 
 
     @api.onchange('product_id')
@@ -437,7 +456,26 @@ class wg_po(models.Model):
         self.qty_available = onc_sku.qty_available
         self.dept = onc_sku.deptart
         self.price_unit = onc_sku.list_price
-        self.mfg=onc_sku.mfg.name
+        # self.mfg=onc_sku.mfg.name
+        self.part_sold_last_12_monts = onc_sku.sales_count
+
+        mylist = list()
+        if onc_sku.mfg:
+            for rec in onc_sku.mfg:
+                print(rec.name)
+
+                mylist.append(rec.name)
+        mystring = ' '
+        size = len(mylist)
+        print(size)
+
+        for x in mylist:
+            mystring += ' ' + x + ","
+            size = size + 1
+        print(mystring)
+        mystring = mystring[:len(mystring) - 1]
+        # self.mfg = + str(mylist)
+        self.mfg = mystring
 
         res = {}
         if onc_sku:

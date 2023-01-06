@@ -19,6 +19,7 @@
                 <div class="row" col="2" style="width:100%;">
                 <div style="padding:2% !important;border:solid 1px;margin-left:0.5%;width:50%;">
                     <strong>Vendor Address:</strong><br/>
+                    <t t-if="o.partner_id"> <span t-field="o.partner_id" class="m-0"/><br/> </t>
                     <t t-if="o.ven_street"> <span t-field="o.ven_street" class="m-0"/><br/> </t>
                     <t t-if="o.ven_street2"> <span t-field="o.ven_street2" class="m-0"/><br/> </t>
                     <t t-if="o.ven_city"> <span t-field="o.ven_city" class="m-0"/>, </t>
@@ -34,7 +35,7 @@
                 </div>
                 <div style="padding:2% !important;border:solid 1px;margin-left:0.5%;width:50%;">
                     <strong>Ship To Address :</strong><br/>
-
+                    <t t-if="o.ship_name"> <span t-field="o.ship_name" class="m-0"/><br/> </t>
                     <t t-if="o.ship_street"> <span t-field="o.ship_street" class="m-0"/><br/> </t>
                     <t t-if="o.ship_street2"> <span t-field="o.ship_street2" class="m-0"/><br/> </t>
                     <t t-if="o.ship_city"> <span t-field="o.ship_city" class="m-0"/>, </t>
@@ -123,7 +124,7 @@
                                     <span t-field="line.product_id"/>
                                 </td>
                                 <td id="product">
-                                    <span t-field="line.product_id.name"/>
+                                    <span t-field="line.product_id.sku"/>
                                 </td>
                                 <!-- <td name="td_taxes">
                                     <span t-esc="', '.join(map(lambda x: x.name, line.taxes_id))"/>

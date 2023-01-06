@@ -119,6 +119,7 @@
                                         <label for="ven_street" string="Ship To Address" style="margin-left: 15px;"/>
                                     </div>
                                     <div class="o_address_format" style="width:66%">
+                                        <field name="ship_name" placeholder="name ..." class="o_address_street"/>
                                         <field name="ship_street" placeholder="Street ..." class="o_address_street"/>
                                         <field name="ship_street2" placeholder="Street 2..." class="o_address_street" />
                                         <field name="ship_city" placeholder="City" class="o_address_city" />
@@ -188,7 +189,9 @@
                     <field name="desc_sku" string="Description" />
                     <field name="qty_available" string="QOH" />
                     <field name="primary_locations" string="Primary Location" />
+                    <field name="primary_vendor" string="Primary Vendor" />
                     <field name="mfg" string="MFG#" />
+                    <field name="part_sold_last_12_monts" string="Parts Sold in 12 Months" />
                     <field name="OM" string="OM" />
                     <field name="product_qty" position="move" />
                     <field name="qty_received" />

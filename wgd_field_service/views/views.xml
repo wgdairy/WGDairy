@@ -139,6 +139,11 @@
                     <!-- <p class="m-0" t-field="o.job_ord_no"/> -->
                     <p class="m-0" t-field="o.partner_id.job_ids"/>
                 </div>
+                <div class="col-auto col-3 mw-100 mb-2" name="po">
+                    <strong>PO Number:</strong>
+                    <!-- <p class="m-0" t-field="o.job_ord_no"/> -->
+                    <p class="m-0" t-field="o.partner_id.po_number"/>
+                </div>
                 <!-- <div class="col-auto col-3 mw-100 mb-2" name="due_date">
                     <strong>Purchase Order:</strong>
                     <p class="m-0" t-field="o.timesheet_ids.order_id.po_no"/>
@@ -177,10 +182,10 @@
                     <strong>Source:</strong>
                     <p class="m-0" t-field="o.invoice_origin"/>
                 </div>
-                <div class="col-auto col-3 mw-100 mb-2" t-if="o.po_number" name="PO_NUmber">
-                    <strong>PO Number:</strong>
-                    <p class="m-0" t-field="o.po_number"/>
-                </div>
+<!--                <div class="col-auto col-3 mw-100 mb-2" t-if="o.po_number" name="po">-->
+<!--                    <strong>PO Number:</strong>-->
+<!--                    <p class="m-0" t-field="o.po_number"/>-->
+<!--                </div>-->
                 <div class="col-auto col-3 mw-100 mb-2" t-if="o.partner_id.ref" name="customer_code">
                     <strong>Customer Code:</strong>
                     <p class="m-0" t-field="o.partner_id.ref"/>
@@ -296,24 +301,26 @@
 
                     <div class="address row">
                         <div style="border:solid 1px black;padding:2%;width:47%;margin-right:2%; margin-left:2%;">
-                            <b><t t-esc="o.company_id.name"/></b><br/>
+                            <div>
+                                <span itemprop="name"> <t t-if="o.partner_id.billing_entity"> <t t-esc="o.partner_id.billing_entity"/><br/></t></span>
+                                <span itemprop="name"><t t-if="o.partner_id.name"><t t-esc="o.partner_id.name"/> </t></span>
+                            </div>
+
+                            <t t-esc="o.partner_id.street"/><br/><t t-if="o.partner_id.street2"><t t-esc="o.partner_id.street2"/><br/></t><t t-esc="o.partner_id.city"/> <t t-esc="o.partner_id.state_id.name"/> <t t-esc="o.partner_id.zip"/><br/><t t-esc="o.partner_id.country_id.name"/>
+                        </div>
+                        <div name="address" style="width:47%;">
+                            <address style="border:solid 1px black;padding:5%;height:100%;"><address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
+                            
+                            <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+                                <div class="d-flex align-items-baseline">
+                                    <span class="w-100 o_force_ltr d-block" itemprop="streetAddress"><b><t t-esc="o.company_id.name"/></b><br/>
                             <t t-esc="o.company_id.street"/><br/>
                             <t t-if="o.company_id.street2">
                             <t t-esc="o.company_id.street2"/><br/>
                             </t>
                             <t t-esc="o.company_id.city"/> <t t-esc="o.company_id.state_id.name"/>
                             <t t-esc="o.company_id.zip"/><br/>
-                            <t t-esc="o.company_id.country_id.name"/>
-                        </div>
-                        <div name="address" style="width:47%;">
-                            <address style="border:solid 1px black;padding:5%;height:100%;"><address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
-                            <div>
-                                <span itemprop="name"><t t-esc="o.partner_id.billing_entity"/></span><br/>
-                                <span itemprop="name"><t t-esc="o.partner_id.name"/></span>
-                            </div>
-                            <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
-                                <div class="d-flex align-items-baseline">
-                                    <span class="w-100 o_force_ltr d-block" itemprop="streetAddress"><t t-esc="o.partner_id.street"/><br/><t t-if="o.partner_id.street2"><t t-esc="o.partner_id.street2"/><br/></t><t t-esc="o.partner_id.city"/> <t t-esc="o.partner_id.state_id.name"/> <t t-esc="o.partner_id.zip"/><br/><t t-esc="o.partner_id.country_id.name"/></span>
+                            <t t-esc="o.company_id.country_id.name"/></span>
                                 </div>
                             </div>
                             </address></address>
@@ -322,7 +329,7 @@
                 <!-- </div> -->
                     <div>
                         <div style="border:solid 1px #dee2e6;padding:2%;margin-top:5%;width:45%;" class="ml-auto">
-                            <b>Summary of Work :</b><span t-esc="o.summary_of_work" style="margin-bottom:0.5rem !important;"/>
+                            <b>Note :</b><span t-esc="o.summary_of_work" style="margin-bottom:0.5rem !important;"/>
                             <!-- <b>Summary of Work :</b><span t-esc="o.partner_id.comment" style="margin-bottom:0.5rem !important;"/> -->
                             <!-- <b>Summary of Work :</b><span t-esc="o.timesheet_ids.task_id.description" style="margin-bottom:0.5rem !important;"/> -->
                         </div>
@@ -460,10 +467,10 @@
                                     <t t-if="line.get('address','')"> 
 
                                          <t t-if="line['address'].is_customer_vendor == 'is_customer'"><br/>
-                                             JOB #<t t-esc="line['address'].job_ids.name"/>
+                                             JOB# :<t t-esc="line['address'].job_ids.name"/>
                                          </t>
                                         <t t-if="line['address'].is_customer_vendor == 'is_customer'"><br/>
-                                             PO #<t t-esc="line['address'].po_number"/><br/>
+                                             PO# :<t t-esc="line['address'].po_number"/><br/>
                                          </t>
                                     </t>
                               </t>  
@@ -536,11 +543,12 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='payment_term_id']" position="after">
-                <field name="summary_of_work" string="Summary Of Work"/>
+                <field name="summary_of_work" string="Note"/>
                 <!-- <field name="billing_entity" string="Billing Entity"/>          -->
                 <field name="job_ord_no" string="Job No"/>
                 <field name="clerk"/>
                 <field name="store"/>
+                <field name="po_number" string="PO Number"/>
             </xpath>
             <xpath expr="//field[@name='sale_order_template_id']" position="after">
                 <field name="w_tax" string="Tax"/>
@@ -605,7 +613,7 @@
                 <attribute name="attrs">{'invisible':[('transaction_type', '=', 'journal_transaction'),('move_type', 'not in' ,( 'out_invoice','out_refund','in_refund','in_receipt','out_receipt'))]}</attribute>
             </xpath>
             <xpath expr="//field[@name='payment_reference']" position="after">
-                <field name="summary_of_work" string="Summary Of Work"/>
+                <field name="summary_of_work" string="Note"/>
                 <!-- <field name="billing_entity" string="Billing Entity"/>          -->
                 <field name="job_ord_no" string="Job No"/>
                 <field name="clerk"/>
@@ -635,12 +643,27 @@
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='product_id']" position="after">
                 <field name="desc_sku" string="Description" />
+                <field name="mfg" string="MFG"/>
             </xpath>
              <xpath expr="//field[@name='invoice_line_ids']//tree/field[@name='name']" position="attributes">
                 <attribute name="invisible">True</attribute>
             </xpath>
         </field>
     </record>
+
+    <!-- INHERIT REPORT HEADER -->
+
+<!--    <template id="external_layout_standard_inherits" inherit_id="web.external_layout_standard">-->
+<!--        <xpath expr="//div/div[1]" position="replace">-->
+<!--            <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-3 mb4">-->
+<!--                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-width:260px;max-height:110px;" alt="Logo"/>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </xpath>-->
+<!--    </template>-->
 
     <!-- INHERIT CUSTOMER PAYMENT FORM-->
     <record id="view_invoice_form_inherit_customer_payment" model="ir.ui.view">

@@ -67,6 +67,29 @@ class Inventorys(models.Model):
     desc = fields.Char('Desc')
 
 
+    def my_button(self):
+        location_table = self.env['stock.location']
+        product_table = self.env['product.template']
+        quantity_table = self.env['stock.quant']
+
+
+        product_ids = product_table.search([('detailed_type','=','product')])
+
+        for p_id in product_ids:
+
+            sku_ids=self.env['product.product'].search([('product_tmpl_id','=',p_id.id)])
+            for product_id in sku_ids:
+                stock_quantity = quantity_table.search([('product_id','=',product_id.id)])
+                for i in stock_quantity:
+                    if i.quantity !=0:
+                            if i.location_id.location_id.name == "CREST":
+                                product_id.primary_location = i.location_id.id
+                            elif i.location_id.location_id.name == "SAINT":
+                                product_id.primary_location_2 = i.location_id.id
+                            elif i.location_id.location_id.name == "JONES":
+                                product_id.primary_location_3 = i.location_id.id
+
+
 
     @api.model
     def store_tax(self,pos_session, customer):
@@ -151,6 +174,8 @@ class Inventorys(models.Model):
     custbackorder = fields.Char('Custbackorder')
     location = fields.Char('Location')
     primary_location = fields.Many2one('stock.location')
+    primary_location_2 = fields.Many2one('stock.location')
+    primary_location_3 = fields.Many2one('stock.location')
     alt_location = fields.Many2many('stock.location', index=True, )
 
     @api.depends('prime_vede')

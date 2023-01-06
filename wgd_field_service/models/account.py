@@ -39,6 +39,7 @@ class AccountPartner(models.Model):
                               compute='_compute_balance',
                               help="Technical field holding the debit - credit in order to open meaningful graph views from reports")
     desc_sku = fields.Char(related='product_id.product_tmpl_id.sku', string='Description', readonly=False)
+    mfg = fields.Char(string="MFG#")
     
     # Modified default tax compute function 
     def _get_computed_taxes(self):
@@ -78,6 +79,31 @@ class AccountPartner(models.Model):
 
         return tax_ids
 
+    @api.onchange('product_id')
+    def _onchange_skus(self):
+        onc_sku = self.env['product.template'].search(
+            [('name', '=', self.product_id.name), ('id', '=', self.product_id.product_tmpl_id.id)])
+
+
+        mylist = list()
+
+        # print("---------------------222-----", onc_sku.mfg)
+        if onc_sku.mfg:
+            for rec in onc_sku.mfg:
+                print(rec.name)
+
+                mylist.append(rec.name)
+        mystring = ' '
+        size = len(mylist)
+        print(size)
+
+        for x in mylist:
+            mystring += ' ' + x + ","
+            size = size + 1
+        print(mystring)
+        mystring = mystring[:len(mystring) - 1]
+        # self.mfg = + str(mylist)
+        self.mfg = mystring
 
 
 

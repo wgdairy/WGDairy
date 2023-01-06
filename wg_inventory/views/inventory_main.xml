@@ -17,6 +17,12 @@
 <!--        <field name="view_mode">tree,form,kanban</field>-->
         <field name="arch" type="xml">
             <!-- BUTTON PURCHASE TAX DELETE -->
+
+            <xpath expr="//header" position="inside">
+
+                 <button name="my_button" type="object" string="Print2" class="oe_highlight"/>
+
+            </xpath>
             
             <xpath expr="//form" position="attributes">
                 <attribute name="class">product_form</attribute>
@@ -106,6 +112,8 @@
                                     <label for="primary_location" string=" Primary Location"
                                            style="width:29%;margin-bottom: -15px;"/>
                                     <field name="primary_location" style="width:50%;margin-top: -15px;"/>
+                                    <field name="primary_location_2" style="width:50%;margin-top: -15px;" invisible="1"/>
+                                    <field name="primary_location_3" style="width:50%;margin-top: -15px;" invisible="1"/>
                                     <br/>
                                 </div>
 
