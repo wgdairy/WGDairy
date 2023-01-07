@@ -203,6 +203,7 @@ class AccountMovePartner(models.Model):
     two_finance_charge = fields.Monetary(string='Finance Charge', store=True)
     four_finance_charge = fields.Monetary(string='Finance Charge', store=True)
     parant_invoice = fields.Char()
+    note = fields.Char(string='Note')
 
     @api.onchange('invoice_date', 'highest_name', 'company_id')
     def _onchange_invoice_date(self):
@@ -523,6 +524,14 @@ class AccountMovePartner(models.Model):
 
             due_date = one_mon + relativedelta(months=1)
             vals['invoice_date_due'] = due_date
+            pos_ord = self.env['pos.order'].search([('account_move','=',self._origin.id)])
+            cus_not = []
+            notes = 0
+            for rec in pos_ord.lines:
+                if rec.customer_note:
+                    cus_not.append(rec.customer_note)
+                    notes = rec.customer_note
+            vals['note'] = notes
 
             move = self_ctx.new(vals)
             new_vals_list.append(move._move_autocomplete_invoice_lines_values())

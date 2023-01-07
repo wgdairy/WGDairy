@@ -66,34 +66,56 @@ class Inventorys(models.Model):
     sku = fields.Char('SKU')
     desc = fields.Char('Desc')
 
-
-    def my_button(self):
-        location_table = self.env['stock.location']
-        product_table = self.env['product.template']
-        quantity_table = self.env['stock.quant']
+    qty_available_store = fields.Char()
 
 
-        product_ids = product_table.search([('detailed_type','=','product')])
-        print(len(product_ids), 'product-tmpl-length-----------------')
+    @api.model
+    def _get_warehouse_quantity(self):
+        for record in self:
+            qty = '0.0'
+            warehouse_quantity_text = ''
+            store  = self.env.user.employee_id.store
+            product_id = self.env['product.product'].sudo().search([('product_tmpl_id', '=', record.id)])
+            if product_id:
+                quant_ids = self.env['stock.quant'].sudo().search(
+                    [('product_id', '=', product_id[0].id), ('location_id.usage', '=', 'internal')])
+                t_warehouses = {}
+                for quant in quant_ids:
+                    if quant.location_id:
+                        if quant.location_id not in t_warehouses:
+                            t_warehouses.update({quant.location_id: 0})
+                        t_warehouses[quant.location_id] += quant.quantity
 
-        for p_id in product_ids:
+                tt_warehouses = {}
+                for location in t_warehouses:
+                    warehouse = False
+                    location1 = location
+                    while (not warehouse and location1):
+                        warehouse_id = self.env['stock.warehouse'].sudo().search([('lot_stock_id', '=', location1.id)])
+                        if len(warehouse_id) > 0:
+                            warehouse = True
+                        else:
+                            warehouse = False
+                        location1 = location1.location_id
+                    if warehouse_id:
+                        if warehouse_id.name not in tt_warehouses:
+                            tt_warehouses.update({warehouse_id.name: 0})
+                        tt_warehouses[warehouse_id.name] += t_warehouses[location]
 
-            sku_ids=self.env['product.product'].search([('product_tmpl_id','=',p_id.id)])
-            print(len(sku_ids),'product-length-----------------')
-            for product_id in sku_ids:
-                stock_quantity = quantity_table.search([('product_id','=',product_id.id)])
-                print(stock_quantity, 'stock_quantity-------------product')
-                for i in stock_quantity:
-                    if i.quantity !=0:
-                        if i.location_id.location_id.name == "CREST":
-                            product_id.product_tmpl_id.primary_location = i.location_id.id
-                            print('prduct-tmpl-pl------------', product_id.product_tmpl_id.primary_location)
-                        elif i.location_id.location_id.name == "SAINT":
-                            print('prduct-tmpl-pl2------------', product_id.product_tmpl_id.primary_location_2)
-                            product_id.product_tmpl_id.primary_location_2 = i.location_id.id
-                        elif i.location_id.location_id.name == "JONES":
-                            product_id.product_tmpl_id.primary_location_3 = i.location_id.id
-                            print('prduct-tmpl-pl3------------', product_id.product_tmpl_id.primary_location_3)
+
+                for item in tt_warehouses:
+                    if store.warehouse.name in tt_warehouses:
+                        qty = tt_warehouses[store.warehouse.name]
+
+                record.warehouse_quantity = qty
+                #         if tt_warehouses[item] != 0:
+                #             warehouse_quantity_text = warehouse_quantity_text + ' ** ' + item + ': ' + str(
+                #                 tt_warehouses[item])
+                # record.warehouse_quantity = warehouse_quantity_text
+
+    warehouse_quantity = fields.Char(compute='_get_warehouse_quantity', string='Quantity per warehouse')
+
+
 
 
 

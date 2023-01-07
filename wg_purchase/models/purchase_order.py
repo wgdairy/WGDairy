@@ -453,7 +453,7 @@ class wg_po(models.Model):
             [('name', '=', self.product_id.name), ('id', '=', self.product_id.product_tmpl_id.id)])
 
 
-        self.qty_available = onc_sku.qty_available
+        self.qty_available = onc_sku.warehouse_quantity
         self.dept = onc_sku.deptart
         self.price_unit = onc_sku.list_price
         # self.mfg=onc_sku.mfg.name

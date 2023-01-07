@@ -18,11 +18,24 @@
         <field name="arch" type="xml">
             <!-- BUTTON PURCHASE TAX DELETE -->
 
-            <xpath expr="//header" position="inside">
 
-                 <button name="my_button" type="object" string="Print2" class="oe_highlight"/>
+            <xpath expr="//button[@name='action_open_quants']" position="replace">
+                <button type="object"
+                        name="action_open_quants"
+                        attrs="{'invisible':[('show_on_hand_qty_status_button', '=', False)]}"
+                        class="oe_stat_button" icon="fa-cubes">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value" widget="statinfo">
+                            <field name="warehouse_quantity" widget="statinfo" nolabel="1" class="mr4"/>
+                            <field name="uom_name"/>
+                        </span>
+                        <span class="o_stat_text">On Hand</span>
+                    </div>
+                </button>
 
             </xpath>
+
+            
             
             <xpath expr="//form" position="attributes">
                 <attribute name="class">product_form</attribute>
@@ -232,8 +245,8 @@
                                             </h6>
                                             <br/>
                                             <div style="margin-left:15px;margin-bottom:155px;">
-                                                <label for="qty_available" string="Qty On Hand" style="width:55%;"/>
-                                                <field name="qty_available" style="width:40%;"/>
+                                                <label for="warehouse_quantity" string="Qty On Hand" style="width:55%;"/>
+                                                <field name="warehouse_quantity" style="width:40%;"/>
                                                 <label for="commited_qty" string="Commited Qty" style="width:55%;"/>
                                                 <field name="commited_qty" style="width:40%;"/>
                                                 <label for="purchased_product_qty" string="Qty On Order"

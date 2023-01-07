@@ -203,6 +203,7 @@
            <thead>
                 <th class="text-center">SKU</th>
                 <th class="text-center">DESCRIPTION</th>
+                <th class="text-center">MFG#</th>
                 <th class="text-center">SHIPPED</th>
                 <th>ORDERED</th>
                 <th>UM</th>
@@ -219,7 +220,10 @@
                             <span class="text-nowrap" t-field="line.product_id"/>
                         </td>
                         <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
-                            <span class="text-nowrap" t-field="line.product_id.sku"/>
+                            <span t-field="line.product_id.sku"/>
+                        </td>
+                        <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                            <span t-field="line.product_id.mfg"/>
                         </td>
                         <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                             <span class="text-nowrap" t-field="line.quantity"/>
@@ -298,7 +302,7 @@
         </xpath>
             <xpath expr="//t[@t-set='address']" position="replace">
                 <!-- <div class="pt-5"> -->
-
+                <div style = "position:relative;top:-22px;" >
                     <div class="address row">
                         <div style="border:solid 1px black;padding:2%;width:47%;margin-right:2%; margin-left:2%;">
                             <div>
@@ -306,7 +310,7 @@
                                 <span itemprop="name"><t t-if="o.partner_id.name"><t t-esc="o.partner_id.name"/> </t></span>
                             </div>
 
-                            <t t-esc="o.partner_id.street"/><br/><t t-if="o.partner_id.street2"><t t-esc="o.partner_id.street2"/><br/></t><t t-esc="o.partner_id.city"/> <t t-esc="o.partner_id.state_id.name"/> <t t-esc="o.partner_id.zip"/><br/><t t-esc="o.partner_id.country_id.name"/>
+                            <t t-esc="o.partner_id.street"/><br/><t t-if="o.partner_id.street2"><t t-esc="o.partner_id.street2"/><br/></t><t t-esc="o.partner_id.city"/>, <t t-esc="o.partner_id.state_id.code"/>, <t t-esc="o.partner_id.zip"/><br/><t t-esc="o.partner_id.country_id.name"/>
                         </div>
                         <div name="address" style="width:47%;">
                             <address style="border:solid 1px black;padding:5%;height:100%;"><address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
@@ -318,7 +322,7 @@
                             <t t-if="o.company_id.street2">
                             <t t-esc="o.company_id.street2"/><br/>
                             </t>
-                            <t t-esc="o.company_id.city"/> <t t-esc="o.company_id.state_id.name"/>
+                            <t t-esc="o.company_id.city"/>, <t t-esc="o.company_id.state_id.code"/>,
                             <t t-esc="o.company_id.zip"/><br/>
                             <t t-esc="o.company_id.country_id.name"/></span>
                                 </div>
@@ -326,12 +330,15 @@
                             </address></address>
                         </div>
                     </div>
-                <!-- </div> -->
+                </div>
                     <div>
                         <div style="border:solid 1px #dee2e6;padding:2%;margin-top:5%;width:45%;" class="ml-auto">
-                            <b>Note :</b><span t-esc="o.summary_of_work" style="margin-bottom:0.5rem !important;"/>
-                            <!-- <b>Summary of Work :</b><span t-esc="o.partner_id.comment" style="margin-bottom:0.5rem !important;"/> -->
-                            <!-- <b>Summary of Work :</b><span t-esc="o.timesheet_ids.task_id.description" style="margin-bottom:0.5rem !important;"/> -->
+                            <t t-if ="o.note">
+                                <b>Note :</b><span t-esc="o.note" style="margin-bottom:0.5rem !important;"/>
+                            </t>
+                            <t t-if ="not o.note">
+                                <b>Note :</b><span t-esc="o.summary_of_work" style="margin-bottom:0.5rem !important;"/>
+                            </t>
                         </div>
                     </div>
                 <div t-if="o.partner_id.vat" class="mt16">
@@ -653,17 +660,24 @@
 
     <!-- INHERIT REPORT HEADER -->
 
-<!--    <template id="external_layout_standard_inherits" inherit_id="web.external_layout_standard">-->
-<!--        <xpath expr="//div/div[1]" position="replace">-->
-<!--            <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">-->
-<!--                <div class="row">-->
-<!--                    <div class="col-3 mb4">-->
-<!--                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-width:260px;max-height:110px;" alt="Logo"/>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </xpath>-->
-<!--    </template>-->
+    <template id="external_layout_standard_inherits" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[1]" position="replace">
+            <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+                <div class="row">
+                    <div class="col-3 mb4">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 90px;" alt="Logo"/>
+                    </div>
+                <div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>
+                </div>
+                <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                    <div class="col-12">
+                        <div style="border-bottom: 1px solid black;"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
 
     <!-- INHERIT CUSTOMER PAYMENT FORM-->
     <record id="view_invoice_form_inherit_customer_payment" model="ir.ui.view">

@@ -7,6 +7,7 @@
 
 
             <t t-call="web.external_layout">
+                <div style = "position:relative;top:-62px;" > 
                 <div class="text-center">
                     <h4><span t-field="o.company_id.parent_id"/></h4>
                     <h4><span t-field="o.company_id"/></h4>
@@ -23,8 +24,8 @@
                     <t t-if="o.ven_street"> <span t-field="o.ven_street" class="m-0"/><br/> </t>
                     <t t-if="o.ven_street2"> <span t-field="o.ven_street2" class="m-0"/><br/> </t>
                     <t t-if="o.ven_city"> <span t-field="o.ven_city" class="m-0"/>, </t>
-                    <t t-if="o.ven_state"> <span t-field="o.ven_state" class="m-0"/>, </t>
-                    <t t-if="o.ven_zip"> <span t-field="o.ven_zip" class="m-0"/>, </t>
+                    <t t-if="o.ven_state_ids"> <span t-field="o.ven_state_ids" class="m-0"/>, </t>
+                    <t t-if="o.ven_zip"> <span t-field="o.ven_zip" class="m-0"/><br/> </t>
                     <t t-if="o.ven_country_id"> <span t-field="o.ven_country_id" class="m-0"/><br/> </t>
                     <t t-if="o.ven_phone"> 
                     Phone:
@@ -193,6 +194,7 @@
             <p t-field="o.notes"/>
             <div class="oe_structure"/>
         </div>
+    </div>
     </t>
 
     </xpath>
