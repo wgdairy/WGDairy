@@ -74,20 +74,26 @@ class Inventorys(models.Model):
 
 
         product_ids = product_table.search([('detailed_type','=','product')])
+        print(len(product_ids), 'product-tmpl-length-----------------')
 
         for p_id in product_ids:
 
             sku_ids=self.env['product.product'].search([('product_tmpl_id','=',p_id.id)])
+            print(len(sku_ids),'product-length-----------------')
             for product_id in sku_ids:
                 stock_quantity = quantity_table.search([('product_id','=',product_id.id)])
+                print(stock_quantity, 'stock_quantity-------------product')
                 for i in stock_quantity:
                     if i.quantity !=0:
-                            if i.location_id.location_id.name == "CREST":
-                                product_id.primary_location = i.location_id.id
-                            elif i.location_id.location_id.name == "SAINT":
-                                product_id.primary_location_2 = i.location_id.id
-                            elif i.location_id.location_id.name == "JONES":
-                                product_id.primary_location_3 = i.location_id.id
+                        if i.location_id.location_id.name == "CREST":
+                            product_id.product_tmpl_id.primary_location = i.location_id.id
+                            print('prduct-tmpl-pl------------', product_id.product_tmpl_id.primary_location)
+                        elif i.location_id.location_id.name == "SAINT":
+                            print('prduct-tmpl-pl2------------', product_id.product_tmpl_id.primary_location_2)
+                            product_id.product_tmpl_id.primary_location_2 = i.location_id.id
+                        elif i.location_id.location_id.name == "JONES":
+                            product_id.product_tmpl_id.primary_location_3 = i.location_id.id
+                            print('prduct-tmpl-pl3------------', product_id.product_tmpl_id.primary_location_3)
 
 
 
