@@ -68,6 +68,10 @@ class Inventorys(models.Model):
 
     qty_available_store = fields.Char()
 
+    def _compute_store(self):
+        for rec in self:
+            rec.wg_store = self.env.user.employee_id.store.name
+    wg_store = fields.Char('Store', compute="_compute_store")
 
     @api.model
     def _get_warehouse_quantity(self):

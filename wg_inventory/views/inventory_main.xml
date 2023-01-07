@@ -83,54 +83,53 @@
 
                     <sheet>
                         <div style="padding:2% !important;border:solid #e6e5e5 0.1px;margin-left:0.5%;">
-                           <div class="row" col="5" style="width:100%;">
-                                <div style="padding:10px; !important;width:16%;">
-                                    <label for="sku_onchange" string="Filter BY SKU" style="width:35%;margin-bottom: -15px;"/>
-                                    <field name="sku_onchange" style="width:45%;margin-bottom: -15px;"></field>
+                           <div class="row">
+                                <div class="col-md-3">
+                                    <label for="sku_onchange" string="Filter BY SKU" style="width:45%;margin-bottom: -15px;"/>
+                                    <field name="sku_onchange" style="width:50%;margin-bottom: -15px;"></field>
                                 </div>
 <!--                                <div style="padding:10px; !important;width:25%;">-->
 <!--                                    <label for="sku_filter_by_prime_vendors" string="Filter BY Prime Vendor" style="width:40%;margin-bottom: -15px;margin-left:10%"/>-->
 <!--                                    <field name="sku_filter_by_prime_vendors" style="width:40%;margin-bottom: -15px;" domain="[('supplier_rank', '=', 1)]" context="{'default_supplier_rank' : 1}"></field>-->
 <!--                                </div>-->
-                                <div style="padding:10px; !important;width:25%;">
+                                <div class="col-md-3">
                                     <!-- <label for="company_onchange" string="Filter BY Store" style="width:30%;margin-bottom: -15px;margin-left:10%"/>
                                     <field name="company_onchange" style="width:40%;margin-bottom: -15px;"></field> -->
-                                    <label for="store_onchange" string="Filter BY Store" style="width:30%;margin-bottom: -15px;margin-left:10%"/>
-                                    <field name="store_onchange" style="width:40%;margin-bottom: -15px;"></field>
+                                    <label for="store_onchange" string="Filter BY Store" style="width:45%;margin-bottom: -15px;"/>
+                                    <field name="store_onchange" style="width:50%;margin-bottom: -15px;"></field>
                                 </div>
-                                <div style="padding:10px; !important;width:28%;">
-                                    <label for="onchange_dept" string="Filter BY Department" style="width:30%;margin-bottom: -15px;margin-left:19%"/>
-                                    <field name="onchange_dept" style="width:40%;margin-bottom: -15px;"></field>
+                                <div class="col-md-3">
+                                    <label for="onchange_dept" string="Filter BY Department" style="width:45%;margin-bottom: -15px;"/>
+                                    <field name="onchange_dept" style="width:50%;margin-bottom: -15px;"></field>
                                 </div>
                             </div>
-                            <div class="row" col="4" style="width:100%;">
-                                <div style="padding:10px; !important;width:18%;">
+                            <div class="row">
+                                <div class="col-md-3">
                                     <label for="name" string="SKU"
                                            style="width:9%;margin-bottom: -15px;margin-right: 9%"/>
                                     <field name="name" style="width:70%;margin-bottom: -15px;margin-right: 9%"></field>
                                 </div>
 
-                                <div style="padding:10px; !important;width:18%;">
+                                <div class="col-md-3">
                                     <label for="sku" string="Desc" style="width:17%;margin-bottom: -15px;"/>
                                     <field name="sku" style="width:40%;margin-bottom: -15px;"/>
                                     <!--                                <label for="desc" string="Desc" style="width:10%;margin-bottom: -15px;"/>-->
                                     <!--                                <field  name="desc" style="width:80%;margin-bottom: -15px;" invisible="1"/>-->
                                 </div>
-                                <div style="padding:10px; !important;width:18%;">
+                                <div class="col-md-3">
                                     <label for="types" string="Type" style="width:25%;margin-bottom: -15px;"/>
                                     <field name="types" style="width:50%;margin-bottom: -15px;margin-right: 4%"/>
                                 </div>
 
-                                <div style="padding:10px; !important;width:25%;">
-                                    <label for="primary_location" string=" Primary Location"
-                                           style="width:29%;margin-bottom: -15px;"/>
-                                    <field name="primary_location" style="width:50%;margin-top: -15px;"/>
-                                    <field name="primary_location_2" style="width:50%;margin-top: -15px;" invisible="1"/>
-                                    <field name="primary_location_3" style="width:50%;margin-top: -15px;" invisible="1"/>
-                                    <br/>
+                                <div class="col-md-3">
+                                    <label for="primary_location" string="Primary Location"
+                                           style="width:23%;margin-bottom: -15px;"/>
+                                    <field name="primary_location" style="width:35%;margin-top: -15px;" attrs="{'invisible':[('wg_store','in', ('2','3'))]}"/>
+                                    <field name="primary_location_2" style="width:50%;margin-top: -15px;" attrs="{'invisible':[('wg_store','in', ('1','3'))]}"/>
+                                    <field name="primary_location_3" style="width:50%;margin-top: -15px;" attrs="{'invisible':[('wg_store','in', ('1','2'))]}"/><field name="wg_store" invisible="1"/><br/>
                                 </div>
 
-                                <div style="padding:10px; !important;width:18%;">
+                                <div class="col-md-3">
                                     <!-- <label for="company_id" string="Store" style="width:35%;margin-bottom: -15px;"/> -->
                                     <field name="company_id" style="width:50%;margin-bottom: -15px;" invisible="1"/>
                                     <label for="store" string="Store" style="width:35%;margin-bottom: -15px;" invisible="1"/>
@@ -141,8 +140,8 @@
 
                             </div>
 
-                            <div class="row" col="4" style="width:100%;">
-                                <div style="padding:10px; !important;width:18%;">
+                            <div class="row">
+                                <div class="col-md-3">
                                     <label for="mfg" string="Mfg1#" style="width:18%;margin-bottom: -15px;"/>
                                     <field name="mfg" style="width:50%;margin-top: -15px;" widget="many2many_tags"
                                            invisible="1"></field>
@@ -150,47 +149,51 @@
                                     <br/>
                                 </div>
 
-                                <div style="padding:10px; !important;width:18%;">
+                                <div class="col-md-3">
                                     <label for="upc" string="UPC" style="width:20%;margin-bottom: -15px;"/>
                                     <field name="upc" style="width:40%;margin-top: -15px;"/>
                                     <br/>
                                 </div>
-                                <div style="padding:10px; !important;width:18%;">
+                                <div class="col-md-3">
                                     <label for="seque" string="Sequence" style="width:20%;margin-bottom: -15px;"/>
                                     <field name="seque" style="width:57%;margin-top: -15px;"/>
                                     <br/>
                                 </div>
 
-                                <div style="padding:10px; !important;width:18%;">
+                                <div class="col-md-3">
                                     <!-- <label for="instores" string="In Stores"
                                            style="width:25%;margin-bottom: -15px;padding:5px;margin-right:"/>
                                     <field name="instores" style="width:50%;margin-top: -15px;"
                                            widget="many2many_tags"/> -->
-                                    <label for="instore" string="In Stores"
+                                    <!-- <label for="instore" string="In Stores"
                                            style="width:25%;margin-bottom: -15px;padding:5px;margin-right:"/>
                                     <field name="instore" style="width:50%;margin-top: -15px;"
-                                           widget="many2many_tags"/>
-                                    <br/>
-                                </div>
-
-                                <div style="padding:10px; !important;width:25%;">
+                                           widget="many2many_tags"/> -->
                                     <label for="alt_location" string=" Alt Locations"
-                                           style="width:29%;margin-bottom: -15px;"/>
+                                    style="width:29%;margin-bottom: -15px;"/>
                                     <field name="alt_location" style="width:50%;margin-top: -15px;"
                                            widget="many2many_tags"/>
                                     <br/>
                                 </div>
 
+                                <div class="col-md-3">
+                                    <!-- <label for="alt_location" string=" Alt Locations"
+                                           style="width:29%;margin-bottom: -15px;"/>
+                                    <field name="alt_location" style="width:50%;margin-top: -15px;"
+                                           widget="many2many_tags"/>
+                                    <br/> -->
+                                </div>
+
                             </div>
-                            <div class="row" col="5" style="width:100%;">
-                                <div style="padding:10px; !important;width:18%;">
+                            <div class="row">
+                                <div class="col-md-3">
                                     <label for="deptart" string="Dept" style="width:25%;margin-bottom: -15px;"/>
                                     <field name="deptart" style="width:50%;margin-top: -15px;"
                                            options="{'no_create_edit': True}"></field>
                                     <br/>
                                 </div>
 
-                                <div style="padding:10px; !important;width:18%;">
+                                <div class="col-md-3">
                                     <label for="class_invent" string="Class" style="width:20%;margin-bottom: -15px;"/>
                                     <field name="class_invent" style="width:42%;margin-top: -15px;"/>
                                     <br/>
@@ -200,7 +203,7 @@
                                 <!--                                <field  name="fineline" style="width:50%;margin-top: -15px;"/><br/>-->
                                 <!--                            </div>-->
 
-                                <div style="padding:10px; !important;width:25%;">
+                                <div class="col-md-3">
                                     <label for="prime_vede" string="Prime Vend"
                                            style="width:18%;margin-bottom: -15px;"/>
                                     <field name="prime_vede" style="width:52%;margin-top: -15px;"
@@ -220,13 +223,13 @@
                                     <field name="vendor_code" style="width:42%;margin-top: -15px;"/>
 
                                 </div>
-                                <div style="padding:10px; !important;width:26%;margin-left: -7%;">
+                                <div class="col-md-3">
                                     <label for="mfg_vende" string="Mfg Vend" style="width:35%;margin-bottom: -15px;"/>
                                     <field name="mfg_vende" style="width:55%;margin-top: -15px;"
                                            domain="[('supplier_rank', '=', 1)]" widget="many2many_tags"/>
                                     <br/>
                                 </div>
-                                <div style="padding:2px; !important;width:18%;margin-left: -7%;">
+                                <div class="col-md-3">
                                     <label for="reail" string="Retail" style="width:35%;margin-bottom: -15px;"/>
                                     <field name="reail" style="width:63%;margin-top: -15px;"/>
                                     <br/>
