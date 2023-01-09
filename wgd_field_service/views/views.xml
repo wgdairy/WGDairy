@@ -223,7 +223,9 @@
                             <span t-field="line.product_id.sku"/>
                         </td>
                         <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
-                            <span t-field="line.product_id.mfg"/>
+                            <t t-if="line.product_id.mfg">
+                            <span t-field="line.product_id.mfg[0].name"/>
+                            </t>
                         </td>
                         <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                             <span class="text-nowrap" t-field="line.quantity"/>
@@ -307,10 +309,10 @@
                         <div style="border:solid 1px black;padding:2%;width:47%;margin-right:2%; margin-left:2%;">
                             <div>
                                 <span itemprop="name"> <t t-if="o.partner_id.billing_entity"> <t t-esc="o.partner_id.billing_entity"/><br/></t></span>
-                                <span itemprop="name"><t t-if="o.partner_id.name"><t t-esc="o.partner_id.name"/> </t></span>
+                                <span itemprop="name"><t t-if="o.partner_id.name"><b><t t-esc="o.partner_id.name"/></b> </t></span>
                             </div>
 
-                            <t t-esc="o.partner_id.street"/><br/><t t-if="o.partner_id.street2"><t t-esc="o.partner_id.street2"/><br/></t><t t-esc="o.partner_id.city"/>, <t t-esc="o.partner_id.state_id.code"/>, <t t-esc="o.partner_id.zip"/><br/><t t-esc="o.partner_id.country_id.name"/>
+                            <t t-esc="o.partner_id.street"/><br/><t t-if="o.partner_id.street2"><t t-esc="o.partner_id.street2"/><br/></t><t t-esc="o.partner_id.city"/>, <t t-esc="o.partner_id.state_id.code"/> <t t-esc="o.partner_id.zip"/><br/><t t-esc="o.partner_id.country_id.name"/>
                         </div>
                         <div name="address" style="width:47%;">
                             <address style="border:solid 1px black;padding:5%;height:100%;"><address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
@@ -322,7 +324,7 @@
                             <t t-if="o.company_id.street2">
                             <t t-esc="o.company_id.street2"/><br/>
                             </t>
-                            <t t-esc="o.company_id.city"/>, <t t-esc="o.company_id.state_id.code"/>,
+                            <t t-esc="o.company_id.city"/>, <t t-esc="o.company_id.state_id.code"/>
                             <t t-esc="o.company_id.zip"/><br/>
                             <t t-esc="o.company_id.country_id.name"/></span>
                                 </div>
@@ -690,6 +692,31 @@
             </xpath>
         </field>
     </record>
+
+    <!-- INHERIT CHECK REPORT-->
+      <template id="ckus_check_inherits" inherit_id="l10n_us_check_printing.ckus_check">
+            <xpath expr="//div/div[2]" position="replace">
+                <div style=" margin-left: 50px !important;margin-top: 50px !important;" t-esc="page['date']"/>
+            </xpath>
+            <xpath expr="//div/div[3]" position="replace">
+                <!-- <div class="ckus_payee_name" t-esc="page['partner_name']"/> -->
+            </xpath>
+            <xpath expr="//div/div[3]" position="replace">
+                <div style=" margin-left: 650px !important;margin-top: 125px !important;">
+                    <t t-esc="page['amount'].replace(o.currency_id.symbol, '')"/>
+                </div>
+            </xpath>
+            <xpath expr="//div/div[6]" position="after">
+                <div style=" margin-left: 84px !important;margin-top: 178px !important;">
+                   <t t-if="page['partner_street']"> <t t-esc="page['partner_street']" /> </t>
+                   <t t-if="page['partner_street2']">, <t t-esc="page['partner_street2']" />  </t>
+                  <br/> <t t-if="page['partner_city']"> <t t-esc="page['partner_city']" />, </t>
+                   <t t-if="page['partner_state_id']"> <t t-esc="page['partner_state_id']" /> </t>
+                   <t t-if="page['partner_zip']">  <t t-esc="page['partner_zip']" /><br/> </t>
+                   <!-- <t t-if="page['partner_country_id']"> <t t-esc="page['partner_country_id']" /><br/> </t> -->
+                </div>
+            </xpath>
+    </template>
 
       <!--inherited accounting>vendor>bills tree view-->
       <record id="account_out_invoice_tree_inherited" model="ir.ui.view">

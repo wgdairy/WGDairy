@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import date,datetime
+import csv
 
 
 # import datetime
@@ -68,6 +69,47 @@ class Inventorys(models.Model):
 
     qty_available_store = fields.Char()
 
+    def my_alt_button(self):
+        products = self.env['product.template'].search([('detailed_type','=','product')])
+        # print("===================",products)
+        for i in products:
+            # print("iiiiiiii",i)
+            if i.alt_location:
+                print("iiiiiiii",i.alt_location)
+                i.write({'alt_location':[(6,0,[])]})
+
+    def my_button(self):
+        partner_table=self.env['res.partner']
+        user_table=self.env['res.users']
+        chart_of_accounts=self.env['account.account']
+        job_table = self.env['wgd.job.no']
+        mylist = []
+
+        with open('/usr/lib/python3/dist-packages/odoo/addons/wg_inventory/data/final_customers.csv',mode='r') as infile:
+            reader = csv.reader(infile)
+            print("customer csv", reader)
+            for rows in reader:
+                mylist.append(rows)
+        # user loading..........
+        mis_list=[]
+        for row in mylist:
+            cust_id=row[0]
+            job = row[1]
+            sale_p=row[21]
+            cust_taxable=row[48]
+            jb_ids = job_table.search([('name', '=', str(job))])
+            customers=partner_table.search([('is_customer_vendor','=','is_customer'),('customer_vendor_id','=',cust_id),('job_ids','=',jb_ids.id)])
+            print("customerss id====customer====",customers,customers.job_ids.name,cust_taxable,customers.customer_id)
+
+            if customers:
+                if cust_taxable:
+                    if cust_taxable=='Y':
+                        customers.taxable ='yes'
+                        print("customerss id=====yessssssss===", customers.customer_id,customers.name, customers.job_ids.name,job,cust_taxable,customers.taxable)
+                    elif cust_taxable=='N':
+                        customers.taxable='no'
+                        print("customerss id===noooooooooooooo=====", customers.customer_id, customers.name, customers.job_ids.name,job,cust_taxable, customers.taxable)
+          
     def _compute_store(self):
         for rec in self:
             rec.wg_store = self.env.user.employee_id.store.name
@@ -95,7 +137,7 @@ class Inventorys(models.Model):
                     warehouse = False
                     location1 = location
                     while (not warehouse and location1):
-                        warehouse_id = self.env['stock.warehouse'].sudo().search([('lot_stock_id', '=', location1.id)])
+                        warehouse_id = self.env['stock.warehouse'].sudo().search([('view_location_id', '=', location1.location_id.id)])#view_location_id
                         if len(warehouse_id) > 0:
                             warehouse = True
                         else:
@@ -105,7 +147,6 @@ class Inventorys(models.Model):
                         if warehouse_id.name not in tt_warehouses:
                             tt_warehouses.update({warehouse_id.name: 0})
                         tt_warehouses[warehouse_id.name] += t_warehouses[location]
-
 
                 for item in tt_warehouses:
                     if store.warehouse.name in tt_warehouses:

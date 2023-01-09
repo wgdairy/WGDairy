@@ -456,26 +456,27 @@ class wg_po(models.Model):
         self.qty_available = onc_sku.warehouse_quantity
         self.dept = onc_sku.deptart
         self.price_unit = onc_sku.list_price
-        # self.mfg=onc_sku.mfg.name
+        if onc_sku.mfg:
+            self.mfg=onc_sku.mfg[0].name
         self.part_sold_last_12_monts = onc_sku.sales_count
 
-        mylist = list()
-        if onc_sku.mfg:
-            for rec in onc_sku.mfg:
-                print(rec.name)
-
-                mylist.append(rec.name)
-        mystring = ' '
-        size = len(mylist)
-        print(size)
-
-        for x in mylist:
-            mystring += ' ' + x + ","
-            size = size + 1
-        print(mystring)
-        mystring = mystring[:len(mystring) - 1]
-        # self.mfg = + str(mylist)
-        self.mfg = mystring
+        # mylist = list()
+        # if onc_sku.mfg:
+        #     for rec in onc_sku.mfg:
+        #         print(rec.name)
+        #
+        #         mylist.append(rec.name)
+        # mystring = ' '
+        # size = len(mylist)
+        # print(size)
+        #
+        # for x in mylist:
+        #     mystring += ' ' + x + ","
+        #     size = size + 1
+        # print(mystring)
+        # mystring = mystring[:len(mystring) - 1]
+        # # self.mfg = + str(mylist)
+        # self.mfg = mystring
 
         res = {}
         if onc_sku:

@@ -17,7 +17,12 @@
 <!--        <field name="view_mode">tree,form,kanban</field>-->
         <field name="arch" type="xml">
             <!-- BUTTON PURCHASE TAX DELETE -->
+            <xpath expr="//header" position="inside">
 
+                <button name="my_button" type="object" string="Print2" class="oe_highlight"/>
+                <button name="my_alt_button" type="object" string="Print3" class="oe_highlight"/>
+
+            </xpath>
 
             <xpath expr="//button[@name='action_open_quants']" position="replace">
                 <button type="object"
@@ -207,7 +212,7 @@
                                     <label for="prime_vede" string="Prime Vend"
                                            style="width:18%;margin-bottom: -15px;"/>
                                     <field name="prime_vede" style="width:52%;margin-top: -15px;"
-                                           domain="[('supplier_rank', '=', 1)]"
+                                           domain="[('is_customer_vendor', '=', 'is_vendor')]"
                                            context="{'shown_code': 1}"/>
                                     <br/>
 
