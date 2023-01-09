@@ -85,7 +85,7 @@ class Inventorys(models.Model):
         job_table = self.env['wgd.job.no']
         mylist = []
 
-        with open('wg_inventory/data/final_customers.csv',mode='r') as infile:
+        with open('./wg_inventory/data/final_customers.csv',mode='r') as infile:
             reader = csv.reader(infile)
             print("customer csv", reader)
             for rows in reader:
