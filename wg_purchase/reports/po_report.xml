@@ -26,7 +26,7 @@
                     <t t-if="o.ven_city"> <span t-field="o.ven_city" class="m-0"/>, </t>
                     <t t-if="o.ven_state_ids"> <span t-field="o.ven_state_ids" class="m-0"/> </t>
                     <t t-if="o.ven_zip"> <span t-field="o.ven_zip" class="m-0"/><br/> </t>
-                    <t t-if="o.ven_country_id"> <span t-field="o.ven_country_id" class="m-0"/><br/> </t>
+<!--                    <t t-if="o.ven_country_id"> <span t-field="o.ven_country_id" class="m-0"/><br/> </t>-->
                     <t t-if="o.ven_phone"> 
                     Phone:
                     <span t-field="o.ven_phone" /><br/> </t>
@@ -42,7 +42,7 @@
                     <t t-if="o.ship_city"> <span t-field="o.ship_city" class="m-0"/>, </t>
                     <t t-if="o.ship_state_id"> <span t-field="o.ship_state_id" class="m-0"/> </t>
                     <t t-if="o.ship_zip"> <span t-field="o.ship_zip" class="m-0"/><br/> </t>
-                    <t t-if="o.ship_country_id"> <span t-field="o.ship_country_id" class="m-0"/><br/> </t>
+<!--                    <t t-if="o.ship_country_id"> <span t-field="o.ship_country_id" class="m-0"/><br/> </t>-->
     
             </div>
              </div>
@@ -132,8 +132,9 @@
                                 </td> -->
                                 <td name="td_mfg">
 <!--                                    <span t-field="line.mfg"/>-->
-                                    <t t-if="line.product_id.mfg">
-                                    <span t-field="line.product_id.mfg[0].name"/>
+                                    <t t-if="line.mfg">
+                                        <span t-field="line.mfg"/>
+<!--                                    <span t-field="line.product_id.mfg[0].name"/>-->
                              </t>
                                 </td>
                                 <td class="text-left">

@@ -177,7 +177,11 @@
                                     <label for="alt_location" string=" Alt Locations"
                                     style="width:29%;margin-bottom: -15px;"/>
                                     <field name="alt_location" style="width:50%;margin-top: -15px;"
-                                           widget="many2many_tags"/>
+                                           widget="many2many_tags" attrs="{'invisible':[('wg_store','in', ('2','3'))]}"/>
+                                    <field name="alt_location_2" style="width:50%;margin-top: -15px;"
+                                           widget="many2many_tags" attrs="{'invisible':[('wg_store','in', ('1','3'))]}"/>
+                                    <field name="alt_location_3" style="width:50%;margin-top: -15px;"
+                                           widget="many2many_tags" attrs="{'invisible':[('wg_store','in', ('1','2'))]}"/>
                                     <br/>
                                 </div>
 

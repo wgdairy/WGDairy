@@ -156,10 +156,7 @@
                     <strong>Terms:</strong>
                     <p class="m-0" t-field="o.payment_term_id"/>
                 </div>
-                <div class="col-auto col-3 mw-100 mb-2" name="due_date">
-                    <strong>Clerk:</strong>
-                    <p class="m-0" t-field="o.clerk"/>
-                </div>
+                
             </div><br/>
             <div id="informations" class="row mt32 mb32">
                 <!-- <div class="col-auto col-3 mw-100 mb-2" name="due_date">
@@ -170,6 +167,10 @@
                     <strong>Order:</strong>
                     <p class="m-0" t-field="o.timesheet_ids.order_id.w_order"/>
                 </div> -->
+                <div class="col-auto col-3 mw-100 mb-2" name="due_date">
+                    <strong>Clerk:</strong>
+                    <p class="m-0" t-field="o.clerk"/>
+                </div>
                 <div class="col-auto col-3 mw-100 mb-2" t-if="o.invoice_date" name="invoice_date">
                     <strong>Invoice Date:</strong>
                     <p class="m-0" t-field="o.invoice_date"/>
@@ -179,8 +180,10 @@
                     <p class="m-0" t-field="o.invoice_date_due"/>
                 </div>
                 <div class="col-auto col-3 mw-100 mb-2" t-if="o.invoice_origin" name="origin">
-                    <strong>Source:</strong>
-                    <p class="m-0" t-field="o.invoice_origin"/>
+                    <t t-if="o.pos_order_ids.session_id.config_id.picking_type_id.warehouse_id.name">
+                        <strong>Source:</strong>
+                        <p class="m-0" t-field="o.pos_order_ids.session_id.config_id.picking_type_id.warehouse_id.name"/>
+                    </t>
                 </div>
 <!--                <div class="col-auto col-3 mw-100 mb-2" t-if="o.po_number" name="po">-->
 <!--                    <strong>PO Number:</strong>-->
@@ -190,10 +193,10 @@
                     <strong>Customer Code:</strong>
                     <p class="m-0" t-field="o.partner_id.ref"/>
                 </div>
-                <div class="col-auto col-3 mw-100 mb-2" t-if="o.ref" name="reference">
+                <!-- <div class="col-auto col-3 mw-100 mb-2" t-if="o.ref" name="reference">
                     <strong>Reference:</strong>
                     <p class="m-0" t-field="o.ref"/>
-                </div>
+                </div> -->
             </div>
             <br/><br/>
 
@@ -312,7 +315,7 @@
                                 <span itemprop="name"><t t-if="o.partner_id.name"><b><t t-esc="o.partner_id.name"/></b> </t></span>
                             </div>
 
-                            <t t-esc="o.partner_id.street"/><br/><t t-if="o.partner_id.street2"><t t-esc="o.partner_id.street2"/><br/></t><t t-esc="o.partner_id.city"/>, <t t-esc="o.partner_id.state_id.code"/> <t t-esc="o.partner_id.zip"/><br/><t t-esc="o.partner_id.country_id.name"/>
+                            <t t-esc="o.partner_id.street"/><br/><t t-if="o.partner_id.street2"><t t-esc="o.partner_id.street2"/><br/></t><t t-esc="o.partner_id.city"/>, <t t-esc="o.partner_id.state_id.code"/> <t t-esc="o.partner_id.zip"/><!--<br/><t t-esc="o.partner_id.country_id.name"/>-->
                         </div>
                         <div name="address" style="width:47%;">
                             <address style="border:solid 1px black;padding:5%;height:100%;"><address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
@@ -326,7 +329,8 @@
                             </t>
                             <t t-esc="o.company_id.city"/>, <t t-esc="o.company_id.state_id.code"/>
                             <t t-esc="o.company_id.zip"/><br/>
-                            <t t-esc="o.company_id.country_id.name"/></span>
+<!--                         <t t-esc="o.company_id.country_id.name"/>-->
+                                    </span>
                                 </div>
                             </div>
                             </address></address>
@@ -461,7 +465,7 @@
                                                             <t t-if="c.get('city')"><span t-esc="c.get('city')"/> </t>	
                                                             <t t-if="c.get('state')"><span t-esc="c.get('state')"/> </t>	
                                                             <t t-if="c.get('zip')"><span t-esc="c.get('zip')"/></t>	
-                                                            <t t-if="c.get('country')"><span t-esc="c.get('country')"/></t><br/>	
+                                                            <t t-if="c.get('country')"><span t-esc="c.get('country')"/></t><br/>
                                                             <t t-if="c.get('phone')"><span t-esc="c.get('phone')"/></t>	
                                                         </td>	
                                                     </td>	
@@ -706,8 +710,9 @@
                     <t t-esc="page['amount'].replace(o.currency_id.symbol, '')"/>
                 </div>
             </xpath>
-            <xpath expr="//div/div[6]" position="after">
-                <div style=" margin-left: 84px !important;margin-top: 178px !important;">
+            <xpath expr="//div/div[5]" position="replace">
+                <div style=" margin-left: 84px !important;margin-top: 198px !important;">
+                    <div t-esc="page['partner_id']" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
                    <t t-if="page['partner_street']"> <t t-esc="page['partner_street']" /> </t>
                    <t t-if="page['partner_street2']">, <t t-esc="page['partner_street2']" />  </t>
                   <br/> <t t-if="page['partner_city']"> <t t-esc="page['partner_city']" />, </t>
@@ -715,6 +720,8 @@
                    <t t-if="page['partner_zip']">  <t t-esc="page['partner_zip']" /><br/> </t>
                    <!-- <t t-if="page['partner_country_id']"> <t t-esc="page['partner_country_id']" /><br/> </t> -->
                 </div>
+            </xpath>
+            <xpath expr="//div/div[6]" position="replace">
             </xpath>
     </template>
 

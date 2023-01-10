@@ -70,46 +70,415 @@ class Inventorys(models.Model):
     qty_available_store = fields.Char()
 
     def my_alt_button(self):
-        products = self.env['product.template'].search([('detailed_type','=','product')])
-        # print("===================",products)
-        for i in products:
-            # print("iiiiiiii",i)
-            if i.alt_location:
-                print("iiiiiiii",i.alt_location)
-                i.write({'alt_location':[(6,0,[])]})
+
+        product_table = self.env['product.template']
+        company_table = self.env['res.company']
+        location_table = self.env['stock.location']
+
+
+        # with open('/home/odoo/src/user/wg_inventory/data/final_customers.csv',mode='r') as infile:
+        #     reader = csv.reader(infile)
+        #     print("customer csv", reader)
+        #     for rows in reader:
+        #         mylist.append(rows)
+
+        mylist=[]
+
+        with open('/home/odoo/src/user/wg_inventory/data/ah.csv', mode='r') as ahfile:
+            AH_reader = csv.reader(ahfile)
+            print("haiiiiii", AH_reader)
+            for rows in AH_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/al.csv', mode='r') as alfile:
+            AL_reader = csv.reader(alfile)
+            print("haiiiiii", AL_reader)
+            for rows in AL_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/ba.csv',
+                  mode='r') as infile:
+            BA_reader = csv.reader(infile)
+            print("BAAAA skuuu", BA_reader)
+            for rows in BA_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/be.csv', mode='r') as befile:
+            BE_reader = csv.reader(befile)
+            print("BBBEEE skuu", BE_reader)
+            for rows in BE_reader:
+                mylist.append(rows)
+            #
+        with open('/home/odoo/src/user/wg_inventory/data/bu.csv', mode='r') as bufile:
+            BU_reader = csv.reader(bufile)
+            print("BBBBUUUUU skuu", BU_reader)
+            for rows in BU_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/ch.csv', mode='r') as chfile:
+            CH_reader = csv.reader(chfile)
+            print("ch  sku", CH_reader)
+            for rows in CH_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/de.csv', mode='r') as defile:
+            DE_reader = csv.reader(defile)
+            print("DE sku", DE_reader)
+            for rows in DE_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/dp.csv', mode='r') as dpfile:
+            DP_reader = csv.reader(dpfile)
+            print("dp sku", DP_reader)
+            for rows in DP_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/ds.csv',
+                  mode='r') as dsfile:
+            DS_reader = csv.reader(dsfile)
+            print("DS sku", DS_reader)
+            for rows in DS_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/di.csv', mode='r') as difile:
+            DI_reader = csv.reader(difile)
+            print("DIII SKU", DI_reader)
+            for rows in DI_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/gr.csv', mode='r') as grfile:
+            GR_reader = csv.reader(grfile)
+            print("GR sku", GR_reader)
+            for rows in GR_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/hw.csv', mode='r') as hwfile:
+            HW_reader = csv.reader(hwfile)
+            print("hw sku", HW_reader)
+            for rows in HW_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/le.csv',
+                  mode='r') as lefile:
+            LE_reader = csv.reader(lefile)
+            print("LE SKU", LE_reader)
+            for rows in LE_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/us.csv', mode='r') as usfile:
+            US_reader = csv.reader(usfile)
+            print("US sku", US_reader)
+            for rows in US_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/wo.csv', mode='r') as wofile:
+            WO_reader = csv.reader(wofile)
+            print("WO sku", WO_reader)
+            for rows in WO_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/sh.csv', mode='r') as shfile:
+            SH_reader = csv.reader(shfile)
+            print("sh sku", SH_reader)
+            for rows in SH_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/om.csv', mode='r') as omfile:
+            OM_reader = csv.reader(omfile)
+            print("OM sku", OM_reader)
+            for rows in OM_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/ns.csv', mode='r') as nsfile:
+            NS_reader = csv.reader(nsfile)
+            print("NS sku", NS_reader)
+            for rows in NS_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/nf.csv', mode='r') as nffile:
+            NF_reader = csv.reader(nffile)
+            print("NF sku", NF_reader)
+            for rows in NF_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/lq.csv', mode='r') as lqfile:
+            LQ_reader = csv.reader(lqfile)
+            print("Lq Sku", LQ_reader)
+            for rows in LQ_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/la.csv', mode='r') as lafile:
+            LA_reader = csv.reader(lafile)
+            print("La sku", LA_reader)
+            for rows in LA_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/fr.csv', mode='r') as frfile:
+            FR_reader = csv.reader(frfile)
+            print("fr sku", FR_reader)
+            for rows in FR_reader:
+                mylist.append(rows)
+
+        for row in mylist:
+
+            company = 'W.G. Dairy Supply, Inc'
+            store = row[0]
+            dep=row[2]
+            sku_name = row[3]
+            desc = row[6]
+            Sequence = row[18]
+            loc2 = row[77]
+            loc3 = row[78]
+            location_type = 'internal'
+            company_ids = company_table.search([('name', '=', company)])
+
+            if loc2:
+                if store=='1':
+                    loc_ids = location_table.search([('name', '=', 'CREST'), ('usage', '=', 'view')])
+                    location_ids = location_table.search([('name', '=', loc2), ('usage', '=', 'internal'), ('location_id', '=', loc_ids.id)])
+
+                    if location_ids:
+                        print("loc idssssss 2",location_ids)
+                        p = product_table.search([('name', '=', sku_name), ('company_id', '=', company_ids.id), ('deptart', '=', dep)])
+                        if p:
+                            p.write({'alt_location':[(4,location_ids.id)]})
+
+
+                elif store=='2':
+                    loc_ids = location_table.search([('name', '=', 'SAINT'), ('usage', '=', 'view')])
+                    location_ids = location_table.search([('name', '=', loc2), ('usage', '=', 'internal'), ('location_id', '=', loc_ids.id)])
+
+                    if location_ids:
+                        print("loc idssssss 2", location_ids)
+                        p = product_table.search([('name', '=', sku_name), ('company_id', '=', company_ids.id), ('deptart', '=', dep)])
+                        if p:
+                            p.write({'alt_location_2': [(4, location_ids.id)]})
+
+
+                elif store == '3':
+                    loc_ids = location_table.search([('name', '=', 'JONES'), ('usage', '=', 'view')])
+                    location_ids = location_table.search([('name', '=', loc2), ('usage', '=', 'internal'), ('location_id', '=', loc_ids.id)])
+
+                    if location_ids:
+                        print("loc idssssss 2", location_ids)
+                        p = product_table.search([('name', '=', sku_name), ('company_id', '=', company_ids.id), ('deptart', '=', dep)])
+                        if p:
+                            p.write({'alt_location_3':[(4,location_ids.id)]})
+
+
+
 
     def my_button(self):
-        partner_table=self.env['res.partner']
-        user_table=self.env['res.users']
-        chart_of_accounts=self.env['account.account']
-        job_table = self.env['wgd.job.no']
-        mylist = []
+        product_table = self.env['product.template']
+        company_table = self.env['res.company']
+        location_table = self.env['stock.location']
 
-        with open('/home/odoo/src/user/wg_inventory/data/final_customers.csv',mode='r') as infile:
-            reader = csv.reader(infile)
-            print("customer csv", reader)
-            for rows in reader:
+
+
+
+        mylist=[]
+
+        with open('/home/odoo/src/user/wg_inventory/data/ah.csv', mode='r') as ahfile:
+            AH_reader = csv.reader(ahfile)
+            print("haiiiiii", AH_reader)
+            for rows in AH_reader:
                 mylist.append(rows)
-        # user loading..........
-        mis_list=[]
-        for row in mylist:
-            cust_id=row[0]
-            job = row[1]
-            sale_p=row[21]
-            cust_taxable=row[48]
-            jb_ids = job_table.search([('name', '=', str(job))])
-            customers=partner_table.search([('is_customer_vendor','=','is_customer'),('customer_vendor_id','=',cust_id),('job_ids','=',jb_ids.id)])
-            print("customerss id====customer====",customers,customers.job_ids.name,cust_taxable,customers.customer_id)
 
-            if customers:
-                if cust_taxable:
-                    if cust_taxable=='Y':
-                        customers.taxable ='yes'
-                        print("customerss id=====yessssssss===", customers.customer_id,customers.name, customers.job_ids.name,job,cust_taxable,customers.taxable)
-                    elif cust_taxable=='N':
-                        customers.taxable='no'
-                        print("customerss id===noooooooooooooo=====", customers.customer_id, customers.name, customers.job_ids.name,job,cust_taxable, customers.taxable)
-          
+        with open('/home/odoo/src/user/wg_inventory/data/al.csv', mode='r') as alfile:
+            AL_reader = csv.reader(alfile)
+            print("haiiiiii", AL_reader)
+            for rows in AL_reader:
+                mylist.append(rows)
+
+
+        with open('/home/odoo/src/user/wg_inventory/data/ba.csv',
+                  mode='r') as infile:
+            BA_reader = csv.reader(infile)
+            print("BAAAA skuuu", BA_reader)
+            for rows in BA_reader:
+                mylist.append(rows)
+
+
+
+        with open('/home/odoo/src/user/wg_inventory/data/be.csv', mode='r') as befile:
+            BE_reader = csv.reader(befile)
+            print("BBBEEE skuu", BE_reader)
+            for rows in BE_reader:
+                mylist.append(rows)
+        #
+        with open('/home/odoo/src/user/wg_inventory/data/bu.csv',mode='r') as bufile:
+            BU_reader = csv.reader(bufile)
+            print("BBBBUUUUU skuu", BU_reader)
+            for rows in BU_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/ch.csv',mode='r') as chfile:
+            CH_reader = csv.reader(chfile)
+            print("ch  sku", CH_reader)
+            for rows in CH_reader:
+                mylist.append(rows)
+
+
+        with open('/home/odoo/src/user/wg_inventory/data/de.csv',mode='r') as defile:
+            DE_reader = csv.reader(defile)
+            print("DE sku", DE_reader)
+            for rows in DE_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/dp.csv',mode='r') as dpfile:
+            DP_reader = csv.reader(dpfile)
+            print("dp sku", DP_reader)
+            for rows in DP_reader:
+                mylist.append(rows)
+
+
+
+        with open('/home/odoo/src/user/wg_inventory/data/ds.csv',
+                  mode='r') as dsfile:
+            DS_reader = csv.reader(dsfile)
+            print("DS sku", DS_reader)
+            for rows in DS_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/di.csv',mode='r') as difile:
+            DI_reader = csv.reader(difile)
+            print("DIII SKU", DI_reader)
+            for rows in DI_reader:
+                mylist.append(rows)
+
+
+
+
+        with open('/home/odoo/src/user/wg_inventory/data/gr.csv',mode='r') as grfile:
+            GR_reader = csv.reader(grfile)
+            print("GR sku", GR_reader)
+            for rows in GR_reader:
+                mylist.append(rows)
+
+
+        with open('/home/odoo/src/user/wg_inventory/data/hw.csv',mode='r') as hwfile:
+            HW_reader = csv.reader(hwfile)
+            print("hw sku", HW_reader)
+            for rows in HW_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/le.csv',
+                  mode='r') as lefile:
+            LE_reader = csv.reader(lefile)
+            print("LE SKU", LE_reader)
+            for rows in LE_reader:
+                mylist.append(rows)
+
+
+
+        with open('/home/odoo/src/user/wg_inventory/data/us.csv', mode='r') as usfile:
+            US_reader = csv.reader(usfile)
+            print("US sku", US_reader)
+            for rows in US_reader:
+                mylist.append(rows)
+
+
+
+        with open('/home/odoo/src/user/wg_inventory/data/wo.csv', mode='r') as wofile:
+            WO_reader = csv.reader(wofile)
+            print("WO sku", WO_reader)
+            for rows in WO_reader:
+                mylist.append(rows)
+
+
+        with open('/home/odoo/src/user/wg_inventory/data/sh.csv', mode='r') as shfile:
+            SH_reader = csv.reader(shfile)
+            print("sh sku", SH_reader)
+            for rows in SH_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/om.csv', mode='r') as omfile:
+            OM_reader = csv.reader(omfile)
+            print("OM sku", OM_reader)
+            for rows in OM_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/ns.csv', mode='r') as nsfile:
+            NS_reader = csv.reader(nsfile)
+            print("NS sku", NS_reader)
+            for rows in NS_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/nf.csv', mode='r') as nffile:
+            NF_reader = csv.reader(nffile)
+            print("NF sku", NF_reader)
+            for rows in NF_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/lq.csv', mode='r') as lqfile:
+            LQ_reader = csv.reader(lqfile)
+            print("Lq Sku", LQ_reader)
+            for rows in LQ_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/la.csv', mode='r') as lafile:
+            LA_reader = csv.reader(lafile)
+            print("La sku", LA_reader)
+            for rows in LA_reader:
+                mylist.append(rows)
+
+        with open('/home/odoo/src/user/wg_inventory/data/fr.csv', mode='r') as frfile:
+            FR_reader = csv.reader(frfile)
+            print("fr sku", FR_reader)
+            for rows in FR_reader:
+                mylist.append(rows)
+
+
+        for row in mylist:
+
+            company = 'W.G. Dairy Supply, Inc'
+            store = row[0]
+            dep=row[2]
+            sku_name = row[3]
+            desc = row[6]
+            Sequence = row[18]
+            loc2 = row[77]
+            loc3 = row[78]
+            location_type = 'internal'
+            company_ids = company_table.search([('name', '=', company)])
+
+            if loc2:
+                if store=='1':
+                    loc_ids = location_table.search([('name', '=', 'CREST'), ('usage', '=', 'view')])
+                    location_ids = location_table.search([('name', '=', loc3), ('usage', '=', 'internal'), ('location_id', '=', loc_ids.id)])
+
+                    if location_ids:
+                        print("loc idssssss 3",location_ids)
+                        p = product_table.search([('name', '=', sku_name), ('company_id', '=', company_ids.id), ('deptart', '=', dep)])
+                        if p:
+                            p.write({'alt_location':[(4,location_ids.id)]})
+
+
+                elif store=='2':
+                    loc_ids = location_table.search([('name', '=', 'SAINT'), ('usage', '=', 'view')])
+                    location_ids = location_table.search([('name', '=', loc3), ('usage', '=', 'internal'), ('location_id', '=', loc_ids.id)])
+
+                    if location_ids:
+                        print("loc idssssss  3", location_ids)
+                        p = product_table.search([('name', '=', sku_name), ('company_id', '=', company_ids.id), ('deptart', '=', dep)])
+                        if p:
+                            p.write({'alt_location_2': [(4, location_ids.id)]})
+
+
+                elif store == '3':
+                    loc_ids = location_table.search([('name', '=', 'JONES'), ('usage', '=', 'view')])
+                    location_ids = location_table.search([('name', '=', loc3), ('usage', '=', 'internal'), ('location_id', '=', loc_ids.id)])
+
+                    if location_ids:
+                        print("loc idssssss 3", location_ids)
+                        p = product_table.search([('name', '=', sku_name), ('company_id', '=', company_ids.id), ('deptart', '=', dep)])
+                        if p:
+                            p.write({'alt_location_3':[(4,location_ids.id)]})
+
+
+
+
+
     def _compute_store(self):
         for rec in self:
             rec.wg_store = self.env.user.employee_id.store.name
@@ -250,6 +619,8 @@ class Inventorys(models.Model):
     primary_location_2 = fields.Many2one('stock.location')
     primary_location_3 = fields.Many2one('stock.location')
     alt_location = fields.Many2many('stock.location', index=True, )
+    alt_location_2 = fields.Many2many('stock.location','alt_location_saint_rel', index=True,)
+    alt_location_3 = fields.Many2many('stock.location','alt_location_jones_rel', index=True,)
 
     @api.depends('prime_vede')
     def _get_vendor_id(self):
